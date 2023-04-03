@@ -169,6 +169,10 @@
             transform: translateY(0);
             display: block;
         }
+        .icon {
+            position: relative;
+            top: -4px; /* adjust the value as needed */
+        }
            
     </style>
 </head>
@@ -194,7 +198,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : 'inactive' }}" href="{{ route('home') }}">HOME</a>
                         </li>
@@ -206,15 +210,20 @@
                         </li>
                         <li class="nav-item dropdown">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-row">
-                                <li class="nav-item dropdown d-flex align-items-center">
-                                    <a class="nav-link dropdown-toggle text-primary fs-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
+                                <li class="nav-item dropdown align-items-center">
+                                    <a class="nav-link dropdown-toggle text-primary fs-5 align-items-center" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
                                         {{ Auth()->user()->first_name }}
-                                        @if (Auth::user()->hasMedRecord)
-                                                @if (Auth::user()->hasValidatedRecord)
-                                                    <i class="bi bi-patch-check" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
-                                                @else
-                                                    <i class="bi bi-file-earmark-medical" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
-                                                @endif
+                                        @if(Auth::user()->hasMedRecord)
+                                            @if(Auth::user()->hasValidatedRecord)
+                                                <!-- HAS VALIDATED MEDICAL RECORD -->
+                                                <i class="bi bi-person-check icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+                                            @else
+                                                <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
+                                                <i class="bi bi-file-earmark-medical icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
+                                            @endif
+                                        @else
+                                            <!-- NO MEDICAL RECORD -->
+                                            <i class="bi bi-person-x icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="No Medical Record"></i>
                                         @endif
                                     </a>
                                     
@@ -228,6 +237,7 @@
                                     <li>
                                         <a class="dropdown-item" href="#">My Appointments History</a>
                                     </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
