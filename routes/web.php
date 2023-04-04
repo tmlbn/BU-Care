@@ -22,21 +22,22 @@ Auth::routes();
  *  OPEN ROUTES FOR USERS THAT ARE NOT LOGGED IN
  */
 
- Route::get('/records', function(){
+Route::get('/records', function(){
     return view('admin.records');
 });
 Route::get('/', function () {
         return view('home');
 })->name('home');
 
-Route::get('/login', [BUCareAuthController::class, 'login'])->name('login')->middleware('guest');
-Route::post('BUCare', [BUCareAuthController::class, 'BUCareLogin'])->name('BUCare.login')->middleware('guest');
-Route::get('/landing-page', function(){
-    return view('landingpage');
+/**
+ *  GUEST PROTECTED ROUTES
+ */
+Route::group(['middleware' => ['guest']], function() {
+    Route::get('/login', [BUCareAuthController::class, 'login'])->name('login')->middleware('guest');
+    Route::post('BUCare', [BUCareAuthController::class, 'BUCareLogin'])->name('BUCare.login')->middleware('guest');
+    Route::get('/admin/login', [AdminAuthController::class, 'showAdminLogin'])->name('admin.login.show')->middleware('guest');
+    Route::post('admin-login', [AdminAuthController::class, 'adminLogin'])->name('admin.login')->middleware('guest');
 });
-
-Route::get('/admin/login', [AdminAuthController::class, 'showAdminLogin'])->name('admin.login.show')->middleware('guest');
-Route::post('admin-login', [AdminAuthController::class, 'adminLogin'])->name('admin.login')->middleware('guest');
 
 /**
  *  PROTECTED ROUTES FOR PATIENTS
@@ -44,19 +45,14 @@ Route::post('admin-login', [AdminAuthController::class, 'adminLogin'])->name('ad
 Route::group(['middleware' => ['web', 'auth']], function() {
    
     #---------------BUCareAuthController---------------#
-                    /*-----POST-----*/
     Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
 
     #------------MedicalRecordFormController------------#
-                    /*-----GET-----*/
     Route::get('/medical-record-form-registration',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
-                    /*-----POST-----*/
     Route::post('submit-medical-form', [MedicalRecordFormController::class, 'medFormSubmit'])->name('medicalForm.store');
 
     #--------------AppointmentsController---------------#
-                    /*-----GET-----*/
     Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
-                    /*-----POST-----*/
 });
 
 /**
@@ -65,7 +61,8 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 Route::group(['middleware' => ['web', 'admin']], function() {
     Route::get('/admin/home',function () {
         return view('admin.home');
-})->name('admin.home');
+    })->name('admin.home');
+
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin-manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
