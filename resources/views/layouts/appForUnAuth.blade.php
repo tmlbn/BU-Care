@@ -52,26 +52,27 @@
             display: none;
         }
 
-        a.inactive {
+        .nav-link.active {
+            color: #007bff !important;
+            border-bottom: 2px solid #007bff !important;            
+        }
+
+        .nav-link {
             color: #30455c;
             transition: color 0.3s ease;
         }
-    
-        a.inactive:hover{
-            color: #007bff;
+
+        .nav-link:hover {
+            color: #007bff;            
         }
-        
-        a.nav-link.active {
-            color: #007bff !important;
-            border-bottom: 2px solid #007bff !important;
-        }   
+
         .textOrange{
             color: #f1731f !important;
         }
 
         .btn-orange{
             color: white;
-            border: 2px solid #f1731f;
+            border: 2px solid white;
         }
 
         .btn-orange:hover{
@@ -87,18 +88,28 @@
             <div class="container-fluid">
                 <div class="row items-center bg-whitetoblue py-3">
                     <div class="col-md-4">
-                        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 mt-4 ms-5" href="{{ route('home') }}">
-                            <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="width:35%;">
+                        <a class="mb-4 md:mb-0 mt-4 ms-5" href="{{ route('home') }}">
+                            <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height: 60px;">
                         </a>
                     </div>
-                    <div class="col-md-4 text-center my-auto">
+                    <div class="col-md-4 text-center my-auto mx-auto">
                         <nav class="my-auto md:ml-4 md:py-1 md:pl-4 flex flex-wrap">
-                            <a class="me-5 fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : 'inactive' }} text-decoration-none" href="{{ route('home') }}">Home</a>
-                            <a class="me-5 fs-5 {{ Route::currentRouteName() === 'contacts' ? 'active' : 'inactive' }} text-decoration-none" href="#">Contact</a>
-                            <a class="me-5 fs-5 {{ Route::currentRouteName() === 'appointments' ? 'active' : 'inactive' }} text-decoration-none" href="#">Set Appointment</a>
-                            <a class="me-1 fs-5 {{ Route::currentRouteName() === 'about' ? 'active' : 'inactive' }} text-decoration-none" href="#">About</a>
+                            <div class="row justify-content-sm-center mx-auto">
+                                <div class="col-md-auto col-sm-2">
+                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : '' }} text-decoration-none" href="{{ route('home') }}">Home</a>
+                                </div>
+                                <div class="col-md-auto col-sm-2">
+                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'contacts' ? 'active' : '' }} text-decoration-none" href="#">Contact</a>
+                                </div>
+                                <div class="col-md-auto col-sm-3">
+                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'appointments' ? 'active' : '' }} text-decoration-none" href="#">Set Appointment</a>
+                                </div>
+                                <div class="col-md-auto col-sm-2">
+                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'about' ? 'active' : '' }} text-decoration-none" href="#">About</a>
+                                </div>
+                            </div>
                         </nav>
-                    </div>
+                    </div>                    
                     <div class="col-md-4 d-flex justify-content-end my-auto">
                         <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5">
                             <a href="{{ route('login') }}">

@@ -41,15 +41,15 @@
 </style>
 
 <div class="container-fluid ps-md-0 bucarebgcolor">
-    <div class="row g-0">
-        <div class="d-none d-md-flex col-md-4 col-lg-6">
-            <img src="{{ asset('media/BUTorch.jpg') }}" alt="BUTorch.jpg" class="img-fluid"> 
-        </div>
-        <div class="col-md-8 col-lg-6">
-            <div class="login d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                            <div class="col-md-4 col-lg-8 mx-auto">
+  <div class="row g-0">
+      <div class="d-none d-md-flex col-md-6 col-lg-6">
+          <img src="{{ asset('media/BUTorch.jpg') }}" alt="BUTorch.jpg" class="img-fluid" draggable="false"> 
+      </div>
+      <div class="col-md-6 col-lg-6">
+          <div class="login d-flex align-items-center ">
+              <div class="container">
+                  <div class="row">
+                          <div class="col-md-10 col-lg-10 col-sm-12 mx-auto my-auto">
                                     <p class="h1 pb-3 text-light">Admin Log in</p>
                                 <!-- old student login form -->
                                 <form method="POST" action="{{ route('admin.login') }}" class="rounded bg-light p-4 oldDisplay" id="oldStudentLoginForm" style="display:block;">
