@@ -55,12 +55,12 @@ class MedicalRecordFormController extends Controller
             } catch (ModelNotFoundException $e) {
                 // Neither applicant ID nor student ID found
                 $message = 'Patient '.$patientID.' not found.';
-                return redirect()->route('patientMedFormList.show')->with('fail', $message);
+                return redirect()->route('admin.patientMedFormList.show')->with('fail', $message);
             }
         }
     
         // Display the patient form with the found user data
-        return view('medicalRecordFormClinicSide')->with('patient', $patient);
+        return view('admin.medicalRecordFormClinicSide')->with('patient', $patient);
     }
 
         #####---MEDICAL RECORD FORM SUBMISSION---#####
@@ -382,8 +382,9 @@ class MedicalRecordFormController extends Controller
                 $studentSignatureName = filter_var($studentSignature->getClientOriginalName(), FILTER_SANITIZE_STRING);
                 $parentGuardianSignatureName = filter_var($parentGuardianSignature->getClientOriginalName(), FILTER_SANITIZE_STRING);
                     // Store the file on the server
-                $medRecord->studentSignature = $studentSignature->storeAs('uploads', $studentSignatureName);
-                $medRecord->parentGuardianSignature = $parentGuardianSignature->storeAs('uploads', $parentGuardianSignatureName);
+                $medRecord->studentSignature = $studentSignature->storeAs('uploads', $studentSignatureName, 'public');
+                $medRecord->parentGuardianSignature = $parentGuardianSignature->storeAs('uploads', $parentGuardianSignatureName, 'public');
+
                 /**
                  * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE
                  */
