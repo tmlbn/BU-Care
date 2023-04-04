@@ -61,6 +61,12 @@
         top: 0;
         z-index: 1000;
     }
+    @media (max-width: 800px) {
+        /* set position to static when zoomed in */
+        .navbar {
+            position: static;
+        }
+    }
 
     .main-navbar{
     border-bottom: 1px solid #ccc;
@@ -157,6 +163,17 @@
         display: block;
     }
 
+    .signature-container {
+        width: 350px; /* adjust as needed */
+        height: 200px; /* adjust as needed */
+    }
+
+    .signature-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
 </style>
 </head>
 
@@ -189,7 +206,7 @@
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="#">SET APPOINTMENT</a>
                         </li>
                         <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : 'inactive' }}" href="{{ route('admin.patientMedFormList.show') }}">MEDICAL RECORDS</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : (Route::currentRouteName() === 'admin.patientMedForm.show' ? 'active' : 'inactive') }}" href="{{ route('admin.patientMedFormList.show') }}">MEDICAL RECORDS</a>
                         </li>
                         <li class="pt-2 mt">
                             <div class="vr pt-4"></div>
