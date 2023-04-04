@@ -18,7 +18,9 @@
 
     body{
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
+        background-repeat: no-repeat;
         background-attachment: fixed;
+        background-size: cover;
     }
 
     div.settings {

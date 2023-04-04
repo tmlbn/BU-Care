@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordFormController;
 use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\MedicalPatientRecordsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,7 @@ Auth::routes();
  *  OPEN ROUTES FOR USERS THAT ARE NOT LOGGED IN
  */
 
-Route::get('/records', function(){
-    return view('admin.records');
-});
+Route::get('/records/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('medicalPatientRecord.show');
 Route::get('/', function () {
         return view('home');
 })->name('home');

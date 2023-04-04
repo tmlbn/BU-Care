@@ -33,148 +33,158 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     @vite(['resources/sass/app.scss'])
+    <!--style-->
+    @vite(['resources/sass/app.scss'])
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     <style>
 
-    /* Navbar color scheme */
-    .main-navbar {
-    background-color: white;
-    background-image: linear-gradient(to right, white 33.3%, #f1731f 33.3%, #f1731f 66.6%, #009edf 66.6%);
-    }
-
-    /* Brand image */
-
-    .navbar-nav {
-    margin: 0 auto;
-    }
-
-    .nav-link {
-    color: white;
-    }
-
-    /* Disabled medical form */
-    .nav-link.disabled {
-    color: rgba(255, 255, 255, 0.5);
-    }
-
-    .navbar{
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    @media (max-width: 800px) {
-        /* set position to static when zoomed in */
-        .navbar {
-            position: static;
+        /* Navbar color scheme */
+        .main-navbar {
+        background-color: white;
+        background-image: linear-gradient(to right, white 33.3%, #f1731f 33.3%, #f1731f 66.6%, #009edf 66.6%);
         }
-    }
-
-    .main-navbar{
-    border-bottom: 1px solid #ccc;
-    }
-    .main-navbar .top-navbar{
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    .main-navbar .top-navbar .brand-name{
-        color: #fff;
-    }
-    .main-navbar .top-navbar .nav-link{
-        color: #fff;
-        font-size: 16px;
-        font-weight: 500;
-    }
-    .main-navbar .top-navbar .dropdown-menu{
-        padding: 0px 0px;
-        border-radius: 0px;
-    }
-    .main-navbar .top-navbar .dropdown-menu .dropdown-item{
-        padding: 8px 16px;
+    
+        /* Brand image */
+    
+        .navbar-nav {
+        margin: 0 auto;
+        }
+    
+        .nav-link {
+        color: white;
+        }
+    
+        /* Disabled medical form */
+        .nav-link.disabled {
+        color: rgba(255, 255, 255, 0.5);
+        }
+    
+        .navbar{
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+    
+        .main-navbar{
         border-bottom: 1px solid #ccc;
-        font-size: 14px;
-    }
-    .main-navbar .top-navbar .dropdown-menu .dropdown-item i{
-        width: 20px;
-        text-align: center;
-        color: #2874f0;
-        font-size: 14px;
-    }
-    .main-navbar .navbar{
-        padding: 0px;
-        background-color: #ddd;
-    }
-    .main-navbar .navbar .nav-item .nav-link{
-        padding: 8px 20px;
-        color: #000;
-        font-size: 15px;
-    }
-
-    @media only screen and (min-width: 800px) {
+        }
+        .main-navbar .top-navbar{
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .main-navbar .top-navbar .brand-name{
+            color: #fff;
+        }
         .main-navbar .top-navbar .nav-link{
-            font-size: 12px;
-            padding: 8px 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
         }
-        .main-navbar img{
-            height:50%;
+        .main-navbar .top-navbar .dropdown-menu{
+            padding: 0px 0px;
+            border-radius: 0px;
         }
-    }
-    @media only screen and (max-width: 150%) {
-        .vr {
+        .main-navbar .top-navbar .dropdown-menu .dropdown-item{
+            padding: 8px 16px;
+            border-bottom: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .main-navbar .top-navbar .dropdown-menu .dropdown-item i{
+            width: 20px;
+            text-align: center;
+            color: #2874f0;
+            font-size: 14px;
+        }
+        .main-navbar .navbar{
+            padding: 0px;
+            background-color: #ddd;
+        }
+        .main-navbar .navbar .nav-item .nav-link{
+            padding: 8px 20px;
+            color: #000;
+            font-size: 15px;
+        }
+
+        .text-responsive{
+            color:black;
+        }
+        @media (max-width: 650px) {
+            .text-responsive{
+                color: white;
+            }
+        }
+    
+        @media only screen and (min-width: 800px) {
+            .main-navbar .top-navbar .nav-link{
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            .main-navbar img{
+                height:50%;
+            }
+        }
+        @media only screen and (max-width: 150%) {
+            .vr {
+                display: none;
+            }
+        }
+    
+        a.inactive {
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+    
+        a.inactive:hover{
+            color: #f1731f;
+        }
+        
+        a.nav-link.active {
+            color: #f1731f !important;
+            border-bottom: 2px solid #f1731f;
+        }   
+        .textOrange{
+            color: #f1731f !important;
+        }
+    
+        .dropdown-menu {
+            transition: transform 0.3s ease-in-out 0.3s; /* added delay of 0.1s */
+            transform: translateY(-10px);
             display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            float: left;
+            min-width: 10rem;
+            padding: 0.5rem 0;
+            margin: 0.125rem 0 0;
+            font-size: 1rem;
+            color: #212529;
+            text-align: left;
+            list-style: none;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 0.25rem;
         }
-    }
+    
+        .dropdown-menu.show {
+            transform: translateY(0);
+            display: block;
+        }
+        .icon {
+            position: relative;
+            top: -4px; /* adjust the value as needed */
+        }
 
-    a.inactive {
-        color: #007bff;
-        transition: color 0.3s ease;
-    }
+        .pillars-bg{
+            background-repeat: no-repeat; 
+            background-size:100%;
+            background-image:url({{ asset('media/pillars.jpg') }}); 
+        }
 
-    a.inactive:hover{
-        color: #f1731f;
-    }
-    .active, a.nav-link.active {
-        color: #f1731f !important;
-        border-bottom: 2px solid #f1731f;
-    }   
-
-    .dropdown-menu {
-        transition: transform 0.3s ease-in-out 0.1s; /* added delay of 0.1s */
-        transform: translateY(-10px);
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 1000;
-        float: left;
-        min-width: 10rem;
-        padding: 0.5rem 0;
-        margin: 0.125rem 0 0;
-        font-size: 1rem;
-        color: #212529;
-        text-align: left;
-        list-style: none;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 0.25rem;
-    }
-
-    .dropdown-menu.show {
-        transform: translateY(0);
-        display: block;
-    }
-
-    .signature-container {
-        width: 350px; /* adjust as needed */
-        height: 200px; /* adjust as needed */
-    }
-
-    .signature-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-</style>
+    </style>
 </head>
 
 <body>
@@ -182,8 +192,8 @@
         <div class="top-navbar">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-2 d-none d-sm-none d-md-block d-lg-block" style="height:45px; width:170px;">
-                        <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height:90%">
+                    <div class="col-md-2 d-none d-sm-none d-md-block d-lg-block ms-5 my-1" style="height:45px; width:170px;">
+                        <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height:90%;">
                     </div>
                 </div>
             </div>

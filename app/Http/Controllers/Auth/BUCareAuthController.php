@@ -58,7 +58,7 @@ class BUCareAuthController extends Controller
             if ($user) {
                 if (($user->birth_month == $request->applicantBirthMonth) && ($user->birth_date == $request->applicantBirthDate) && ($user->birth_year == $request->applicantBirthYear)) {
                     Auth::login($user);
-                    return view('home');
+                    return redirect()->route('home');
                 } else {
                     return back()->with('fail', 'No data found.');
                 }
@@ -71,7 +71,7 @@ class BUCareAuthController extends Controller
         $credentials = $this->credentials($request);
 
         if (Auth::guard('web')->attempt($credentials, $request->has('remember'))) {
-            return view('home');
+            return redirect()->route('home');
         }
 
         if ($userNotFound = UserStudent::where('student_id_number', $request->studentID)->first()) {

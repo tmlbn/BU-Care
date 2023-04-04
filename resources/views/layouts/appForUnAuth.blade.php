@@ -48,6 +48,15 @@
             }
         }
 
+        .text-responsive{
+            color:black;
+        }
+        @media (max-width: 650px) {
+            .text-responsive{
+                color: white;
+            }
+        }
+
         .nav-link.dropdown-toggle::before {
             display: none;
         }
@@ -79,6 +88,12 @@
             color: black;
             background: #f1731f;
             border: 2px solid #f1731f;
+        }
+
+        .pillars-bg{
+            background-repeat: no-repeat; 
+            background-size:100%;
+            background-image:url({{ asset('media/pillars.jpg') }}); 
         }
     </style>
 

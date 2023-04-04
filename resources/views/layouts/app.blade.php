@@ -173,7 +173,13 @@
             position: relative;
             top: -4px; /* adjust the value as needed */
         }
-           
+
+        .pillars-bg{
+            background-repeat: no-repeat; 
+            background-size:100%;
+            background-image:url({{ asset('media/pillars.jpg') }}); 
+        }
+        
     </style>
 </head>
 

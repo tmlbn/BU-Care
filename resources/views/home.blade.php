@@ -1,9 +1,7 @@
 @extends(Auth::check() ? 'layouts.app' : 'layouts.appForUnAuth')
 
 @section('content')
-
-
-<div class="d-flex bg-cover p-5 p-md-16 p-lg-28" style="background-image:url('media/pillars.jpg'); background-repeat: no-repeat; background-size:100%;">
+<div class="d-flex bg-cover p-5 p-md-16 p-lg-28 pillars-bg">
     <div class="d-flex flex-column text-white mx-auto" style="max-width: 100rem;">
         <img class="" src="{{ asset('media/BU-CareText.png') }}" style="width: 20%;"></h1>
         <div class="col-md-4 border-bottom border-white border-4">
@@ -23,7 +21,6 @@
       </div>
   
       <div class="col-lg-6 col-md-6 flex-grow-1 d-flex flex-column ms-4">
-        <p class="mb-4 fs-3 fw-medium text-gray-900">Bicol University Health Services<br class="d-none d-lg-inline-block">Main Campus</p>
         <p class="mb-4 lead">With the University Health Clinic stations situated in the Main Campus, the University effectively ensures the provision of quick and competent health care at any time. While it strived to gain this certification to ensure that our patients have peace of mind during their clinic visit. MyHealth’s value of compassionate care translates to initiatives such as this to provide constant reassurance that, aside from health, the safety and security of our people and patients matter.</p>
       </div>
     </div>
