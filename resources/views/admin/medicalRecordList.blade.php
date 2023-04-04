@@ -7,7 +7,6 @@
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
         background-attachment: fixed;
     }
-
     div.settings {
     display:grid;
     grid-template-columns: max-content max-content;
@@ -80,17 +79,20 @@
         background-color: #f5c999; /* Change to the desired color on hover */
         color: #2460a0; /* Change the text color to make it visible */
     }
+    .bg-custom{
+        background-color:#f0faff;
+    }
 
 </style>
 @csrf
 <!-- Header -->
-<div class="container-fluid bg-light text-dark p-5">
+<div class="container-fluid bg-custom text-dark p-5">
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">
                 <h5 class="display-7 pt-3">
-                    <p class="fs-2 fst-normal">Bicol University Health Services</p>
-                    <p class="fs-4 fw-lighter">Medical Record List</p>
+                    <p class="fs-2 fw-bold">Bicol University Health Services</p>
+                    <p class="fs-4 fw-normal">Medical Records List</p>
             </header>
         </div>
     </div>
@@ -104,50 +106,53 @@
 
     <div class="d-flex flex-row">
         <div class="col-md-2 custom-col-id border border-dark border-top-0 border-end-0">
-            <p class="fs-4 font-monospace text-center">ID</p>
+            <p class="fs-4 font-monospace fw-bold text-center">ID</p>
         </div>
         <div class="col-md-4 border border-dark border-top-0 border-end-0">
-            <p class="fs-4 font-monospace text-center">NAME</p>
+            <p class="fs-4 font-monospace fw-bold text-center">NAME</p>
         </div>
         <div class="col-md-3 border border-dark border-top-0 border-end-0 custom-col-CC">
-            <p class="fs-4 font-monospace text-center">CAMPUS</p>
+            <p class="fs-4 font-monospace fw-bold text-center">CAMPUS</p>
         </div>
         <div class="col-md-3 border border-dark border-top-0 custom-col-CC">
-            <p class="fs-4 font-monospace text-center">COURSE</p>
+            <p class="fs-4 font-monospace fw-bold text-center">COURSE</p>
         </div>
     </div>
     <!-- Start list of Medical Forms -->
     @foreach ($patients as $patient)
-    <a class="text-decoration-none text-dark" href="{{ route('patientMedForm.show', ['patientID' => $patient->student_id_number ? $patient->student_id_number : $patient->applicant_id_number]) }}" target="_blank">
+    <a class="text-decoration-none text-dark" href="{{ route('admin.patientMedForm.show', ['patientID' => $patient->student_id_number ? $patient->student_id_number : $patient->applicant_id_number]) }}" target="_blank">
     <div class="d-flex flex-row divHover">
         <div class="col-md-2 border border-dark border-top-0 border-end-0 custom-col-id">
             <!-- Applicant ID Number -->
             <div class="d-flex flex-row">
                 <div class="col-sm">
-                    <p class="fs-5 fw-light text-center lessBottomMargin">{{ $patient->applicant_id_number }}</p>
+                    <p class="fs-5 fw-normal text-center lessBottomMargin">{{ $patient->applicant_id_number }}</p>
                 </div>
             </div>
             <!-- Student ID Number -->
             <div class="d-flex flex-row border-dark border-top">
                 <div class="col-sm">
-                    <p class="fs-5 fw-light text-center lessBottomMargin">{{ $patient->student_id_number }}</p>
+                    <p class="fs-5 fw-normal text-center lessBottomMargin">{{ $patient->student_id_number }}</p>
                 </div>
             </div>
         </div>
         <!-- NAME -->
         <div class="col-md-4 border border-dark border-top-0 border-end-0">
-            <p class="fs-5 fw-light text-center mt-2">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</p>
+            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</p>
         </div>
         <!-- CAMPUS -->
         <div class="col-md-3 border border-dark border-top-0 border-end-0 custom-col-CC">
-            <p class="fs-5 fw-light text-center mt-2">{{ $patient->medicalRecord->campus }}</p>
+            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->campus }}</p>
         </div>
         <!-- COURSE -->
         <div class="col-md-3 border border-dark border-top-0 custom-col-CC">
-            <p class="fs-5 fw-light text-center mt-2">{{ $patient->medicalRecord->course }}</p>
+            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->course }}</p>
         </div>
     </div>
+    </a>
     @endforeach
+
+    <p class="text-center fw-light fst-italic pt-1" style="user-select:none;">---------- NOTHING FOLLOWS ----------</p>
 
 </div> 
 @endsection

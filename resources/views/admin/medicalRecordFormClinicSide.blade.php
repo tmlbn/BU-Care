@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
@@ -18,7 +18,9 @@
 
     body{
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
+        background-repeat: no-repeat;
         background-attachment: fixed;
+        background-size: cover;
     }
 
     div.settings {
@@ -71,22 +73,28 @@
 
 </style>
 <!-- Header -->
-<div class="container my-2 bg-light w-20 text-dark p-5 headMargin checkboxes">
+<div class="container position-relative my-2 bg-light w-20 text-dark p-5 headMargin checkboxes">
+    @if($patient->hasValidatedRecord)
+          <!-- HAS VALIDATED MEDICAL RECORD -->
+          <i class="bi bi-person-check icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+        @else
+          <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
+          <i class="bi bi-file-earmark-medical icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Record not Validated"></i>
+        @endif
     <div class="d-flex flex-row">
-        <div class="col-md-6 border border-dark">
-            <header class="text-center">
-                <h5 class="display-7 pt-3">
+        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+            <header class="text-center px-auto py-auto">
+                <h5 class="display-7 pt-3 fs-3 font-monospace">
                     Republic of the Philippines<br>
-                      
                 </h5>
-                <h6>Bicol University</h6>
+                <h6 class="fs-4 font-monospace">Bicol University</h6>
             </header>
         </div>
-        <div class="col-md-6 border border-dark">
-            <header class="text-center p-5">
-                <h2 class="display-7">Student Health Record</h2>
+        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+            <header class="text-center px-auto py-auto">
+              <h2 class="display-7 fs-3 pt-auto font-monospace">Student Health Record</h2>
             </header>
-        </div>
+          </div>          
     </div>
 
     <!--Personal Basic Information-->
@@ -102,24 +110,24 @@
     @endif
 
 <form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5">
-    @csrf
+    @csrf     
     <div class="container">
-        <div class="row display-flex">
-            <div class="col-4">
+        <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
+            <div class="col-sm col-lg-4">
                 <p class="h6">Campus</p>
                 <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div>
-            <div class="col-sm">
+            <div class="col-sm col-lg-4">
                 <p class="h6">Course</p>
                 <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div> 
-            <div class="col-sm">
-                <p class="h6">Course</p>
+            <div class="col-sm col-lg-2">
+                <p class="h6">School Year</p>
                 <input type="text" class="form-control" id="schoolYearStart" name="schoolYearStart" value="{{ $patient->medicalRecord->SYstart }}" readonly>
             </div>
-            <div class="col-sm pt-4 mt-1 settings">
-                <label for="schoolYearEnd" class="form-label" style="padding-top: 5px; margin-left: -20px;"> to </label>
-                <input type="text" class="form-control" id="schoolYearEnd" name="schoolYearEnd" value="{{ $patient->medicalRecord->SYend }}" readonly>
+            <div class="col-sm col-lg-2">
+                <label for="schoolYearEnd" class="form-label" style="padding-top: 5px; margin-left:;"> to </label>
+                <input type="text" class="form-control" id="schoolYearEnd" name="schoolYearEnd" value="{{ $patient->medicalRecord->SYend }}" style="margin-top: -11px;" readonly>
             </div>
         </div>   
     </div>   
@@ -216,8 +224,8 @@
         <h5>Please click the box if one of the following is applicable to you</h5>
 
         <!--Family and Social History-->
-        <div class="d-flex flex-row"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
-            <div class="col-md-7 p-2 border border-dark">
+        <div class="mx-auto row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
+            <div class="col-lg-7 col-md-12 p-2 border border-dark border-lg-end-0">
                 <h5>Family History</h5>
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
@@ -322,8 +330,10 @@
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                 </div><!-- END OF COL OTHERS DIV -->
             </div><!-- END OF ROW OTHERS DIV -->
-        </div><!-- END OF ROW FH -->
-        <div class="col-md-5 p-2 border border-dark">
+        </div><!-- END OF COL FH -->
+
+        <!-- START OF PSH -->
+        <div class="col-lg-5 col-md-12 p-2 border border-dark">
             <h6>Personal Social History</h6>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="PSH_smoking" name="PSH_smoking" {{ $patient->medicalRecord->personalSocialHistory->smoking == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
@@ -365,11 +375,12 @@
                 </div><!-- END OF DRINKING FORM DIV -->
             </div><!-- END OF PSH COL DIV -->
         </div><!-- END OF ROW ENTIRE DIV -->
+        
 
         <!--Personal History-->
-        <h5>Personal History</h5>
-        <div class="d-flex flex-row"><!-- START DIV FOR PAST AND PRESENT ILLNESS -->
-            <div class="col-md-6 p-2 border border-dark">
+        <h5 class="ms-1">Personal History</h5>
+        <div class="mx-auto row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR PAST AND PRESENT ILLNESS -->
+            <div class="col-lg-6 col-md-12 p-2 border border-dark border-lg-end-0">
                 <h6>Past Ilness</h6>
                      <div class="d-flex flex-row">
                             <div class="col-md-4 p-2">
@@ -506,7 +517,7 @@
                             </div><!-- END OF CHECKBOX 3ND COL DIV -->
                         </div><!-- END OF PAST ILLNESS CHECKBOX ROW DIV -->
                     </div><!-- END OF PAST ILLNESS ROW DIV -->
-              <div class="col-md-6 p-2 border border-dark">
+              <div class="col-lg-6 col-md-12 p-2 border border-dark">
                     <h6>Present Ilness</h6>       
                         <div class="d-flex flex-row">
                             <div class="col-md-4 p-2">
@@ -602,7 +613,7 @@
 
         <!--Medical Status
                     HOSPITALIZATION-->
-        <div class="d-flex flex-row">
+        <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
                     <div class="col-sm">
@@ -697,11 +708,11 @@
         </div>   
         
         <!--Immunization History-->
-        <div class="d-flex flex-row">
+        <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">
                 <h6>Immunization History</h6>
-                <div class="d-flex row" style="margin-left: 5%;">
-                    <div class="col-sm-2 p-2">
+                <div class="my-auto row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 align-items-center" style="margin-left: 5%;">
+                    <div class="col-1 p-2">
                         <input class="form-check-input" type="checkbox" {{ $patient->medicalRecord->immunizationHistory->BCG == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;" name="IH_bcg">
                             <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
                                 BCG
@@ -778,23 +789,27 @@
         </div>
     </div>
         <!--Signatures-->
-        <div class="d-flex flex-row">
+        <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
                 <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
-                    <div class="flex-row justify-content-center">
-                        <div class="row my-auto p-5 align-items-center">
-                            <div class="mb-3 col-md-6">
-                                <label for="MR_studentSignature" class="form-label">{{ $patient->medicalRecord->studentSignature }}</label>
-                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" value="a">
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                                <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" required>
+                <div class="flex justify-content-center">
+                    <div class="row my-auto p-5">
+                        <div class="mb-3 col-md-6 d-flex flex-column justify-content-center align-items-center">
+                            <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
+                            <div class="mb-3 col-md-6 signature-container d-flex justify-content-center align-items-center">  
+                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
                             </div>
                         </div>
+                        <div class="mb-3 col-md-6 d-flex flex-column justify-content-center align-items-center">
+                            <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
+                            <div class="mb-3 col-md-6 signature-container d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
+                            </div>
+                        </div>                              
                     </div>
                 </div>
-        </div>
+            </div>
+        </div>        
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
