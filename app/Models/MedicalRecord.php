@@ -54,19 +54,19 @@ class MedicalRecord extends Model
     ];
 
     public function familyHistory(){
-        return $this->hasOne(FamilyHistory::class, 'familyHistoryID');
+        return $this->belongsTo(FamilyHistory::class, 'familyHistoryID');
     }
     public function personalSocialHistory(){
-        return $this->hasOne(PersonalSocialHistory::class, 'personalSocialHistoryID');
+        return $this->belongsTo(PersonalSocialHistory::class, 'personalSocialHistoryID');
     }
     public function pastIllness(){
-        return $this->hasOne(PastIllness::class, 'pastIllnessID');
+        return $this->belongsTo(PastIllness::class, 'pastIllnessID');
     }
     public function presentIllness(){
-        return $this->hasOne(PresentIllness::class, 'presentIllnessID');
+        return $this->belongsTo(PresentIllness::class, 'presentIllnessID');
     }
     public function immunizationHistory(){
-        return $this->hasOne(ImmunizationHistory::class, 'immunizationHistoryID');
+        return $this->belongsTo(ImmunizationHistory::class, 'immunizationHistoryID');
     }
 
     public function usersStudent(){
