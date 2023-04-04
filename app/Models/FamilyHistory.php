@@ -14,6 +14,6 @@ class FamilyHistory extends Model
     protected $primaryKey = 'familyHistoryID';
 
     public function medicalRecord(){
-        return $this->belongsTo(MedicalRecord::class);
+        return $this->belongsTo(MedicalRecord::class, 'MR_id');
     }
 }
