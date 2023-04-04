@@ -54,15 +54,14 @@
                                 <!-- old student login form -->
                                 <form method="POST" action="{{ route('admin.login') }}" class="rounded bg-light p-4 oldDisplay" id="oldStudentLoginForm" style="display:block;">
                                     @csrf
-                                    
-                                    @if (Session::has('fail'))
-                                      <div class="alert alert-danger"> {{ Session::get('fail') }} </div>
-                                    @endif
-                                    @if (Session::has('success'))
-                                      <div class="alert alert-danger"> {{ Session::get('success') }} </div>
-                                    @endif
-
-
+                                    <!-- ERROR MESSAGE -->
+                                      @if (Session::has('fail'))
+                                        <div class="alert alert-danger"> {{ Session::get('fail') }} </div>
+                                      @endif
+                                      @if (Session::has('success'))
+                                        <div class="alert alert-danger"> {{ Session::get('success') }} </div>
+                                      @endif
+                                      
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" id="staffID" name="staffID" value="{{ old('staffID') }}" placeholder="Student ID Number" required autocomplete="staffID" autofocus>
                                             <label for="floatingInput">Staff ID Number</label>
