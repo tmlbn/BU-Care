@@ -141,15 +141,15 @@
         <div class="col-md-3">
             <label for="MR_firstName" class="form-label h6">First Name</label>
             <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" value="{{ $patient->medicalRecord->firstName }}" readonly>
-            </div>
+        </div>
         <div class="col-md-3">
             <label for="MR_middleName" class="form-label h6">Middle Name</label>
             <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->middleName }}" readonly>
-            </div>
+        </div>
         <div class="col-md-1">
             <label for="MR_age" class="form-label h6">Age</label>
             <input type="text" class="form-control" id="MR_age" name="MR_age" value="{{ $patient->medicalRecord->age }}" readonly>
-            </div>
+        </div>
         <div class="col-md-2">
             <label for="MR_sex" class="form-label h6">Sex</label>
             <input type="text" class="form-control" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
