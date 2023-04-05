@@ -73,7 +73,7 @@
 
 </style>
 <!-- Header -->
-<div class="container position-relative my-2 bg-light w-20 text-dark p-5 headMargin checkboxes">
+<div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes">
     @if($patient->hasValidatedRecord)
           <!-- HAS VALIDATED MEDICAL RECORD -->
           <i class="bi bi-person-check icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
@@ -83,12 +83,23 @@
         @endif
     <div class="d-flex flex-row">
         <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
-            <header class="text-center px-auto py-auto">
-                <h5 class="display-7 pt-3 fs-3 font-monospace">
-                    Republic of the Philippines<br>
-                </h5>
-                <h6 class="fs-4 font-monospace">Bicol University</h6>
-            </header>
+            <div class="row">
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <img src="{{ asset('media/BU-logo.png') }}" class="rounded" alt="BUHS-LOGO" style="width:100%; margin-left: 30%;">
+                  </div>                  
+                <div class="col-sm">
+                    <header class="text-center px-auto py-auto">
+                        <h5 class="display-7 pt-3 fs-3 font-monospace">
+                            Republic of the Philippines<br>
+                        </h5>
+                        <h6 class="fw-bold fs-5 font-monospace">Bicol University</h6>
+                        <h6 class="fs-5 font-monospace">Bicol University Health Services</h6>
+                    </header>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <img src="{{ asset('media/BUHS-logo.png') }}" class="rounded float-end" alt="BUHS-LOGO" style="width:100%; margin-right: 30%;">
+                </div>
+            </div>
         </div>
         <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
             <header class="text-center px-auto py-auto">
@@ -109,7 +120,7 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5">
+<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf     
     <div class="container">
         <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
@@ -204,7 +215,7 @@
         </div>
         <div class="col-md-6">
             <label for="MR_parentGuardianContactNumber" class="form-label h6">Parent's/Guardian's Contact No.</label>
-            <input type="text" class="form-control" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" value="{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+            <input type="text" class="form-control" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardianAddress" class="form-label h6">Guardian's Address</label>
@@ -212,7 +223,7 @@
         </div>
         <div class="col-md-6">
             <label for="MR_studentContactNumber" class="form-label h6">Student's Contact No.</label>
-            <input type="text" class="form-control" id="MR_studentContactNumber" name="MR_studentContactNumber" value="{{ $patient->medicalRecord->studentContactNumber }}" readonly>
+            <input type="text" class="form-control" id="MR_studentContactNumber" name="MR_studentContactNumber" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
             </div>
         
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
@@ -793,16 +804,16 @@
             <div class="col-md-12 p-1 border border-dark">
                 <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
                 <div class="flex justify-content-center">
-                    <div class="row my-auto p-5">
-                        <div class="mb-3 col-md-6 d-flex flex-column justify-content-center align-items-center">
+                    <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
                             <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
-                            <div class="mb-3 col-md-6 signature-container d-flex justify-content-center align-items-center">  
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
                                 <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
                             </div>
                         </div>
-                        <div class="mb-3 col-md-6 d-flex flex-column justify-content-center align-items-center">
+                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
                             <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                            <div class="mb-3 col-md-6 signature-container d-flex justify-content-center align-items-center">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
                             </div>
                         </div>                              

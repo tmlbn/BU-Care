@@ -107,7 +107,7 @@
                     <label for="validationDefault16" class="form-label">Contact Number</label>
                     <input type="text" class="form-control" id="validationDefault16" required>
                 </div>
-
+                
             <h5>Illness</h5>    
 
                 <!--Illness-->
@@ -115,7 +115,7 @@
                 <div class="col-lg-12 p-2 border border-dark"> 
                 <!--Column 1-->    
                     <div class="d-flex flex-row">
-                        <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-5 ms-sm-1">
+                        <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
@@ -146,15 +146,11 @@
                                         Diphteria
                                     </label>
                             </div>
-                            <div class="col-md-9">
-                                <label for="validationDefault17" class="form-label">Others(specify)</label>
-                                <input type="text" class="form-control form-control-sm" id="validationDefault17" required>
-                            </div>
                         </div>    
                     
                         <!--Column 2-->
                     
-                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-5 ms-sm-1">
+                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -179,15 +175,18 @@
                                     Hepatitis
                                 </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <div class="col-md-9">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {{ $patient->medicalRecord->allergic == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    Allergy <input type="text" class="form-control form-control-sm">
+                                    Allergy 
                                 </label>
+                                <input type="text" class="form-control form-control-sm" value="{{ $patient->medicalRecord->allergyDetails }}" readonly disabled>
+                            </div>
                         </div>
                     </div> 
                     <!--Column 3--> 
-                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-5 ms-sm-1">
+                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -211,6 +210,15 @@
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Tuberculosis
                                 </label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {{ $patient->medicalRecord->allergic == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Others 
+                                </label>
+                                <input type="text" class="form-control form-control-sm" value="{{ $patient->medicalRecord->allergyDetails }}" readonly disabled>
+                            </div>
                         </div>
                     </div>
                 </div>

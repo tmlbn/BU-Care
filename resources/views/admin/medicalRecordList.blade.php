@@ -106,17 +106,17 @@
         </div>
     @endif
 
-    <div class="d-flex flex-row">
-        <div class="col-md-2 custom-col-id border border-dark border-top-0 border-end-0">
-            <p class="fs-4 font-monospace fw-bold text-center">ID</p>
+    <div class="d-flex flex-row text-align-center justify-content-center">
+        <div class="col-md-2 col-sm-3 custom-col-id border border-dark border-top-0 border-end-0">
+            <p class="fs-4 font-monospace fw-bold text-center">PATIENT ID</p>
         </div>
-        <div class="col-md-4 border border-dark border-top-0 border-end-0">
+        <div class="col-md-4 col-sm-3 border border-dark border-top-0 border-end-0">
             <p class="fs-4 font-monospace fw-bold text-center">NAME</p>
         </div>
-        <div class="col-md-3 border border-dark border-top-0 border-end-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-CC">
             <p class="fs-4 font-monospace fw-bold text-center">CAMPUS</p>
         </div>
-        <div class="col-md-3 border border-dark border-top-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark border-top-0 custom-col-CC">
             <p class="fs-4 font-monospace fw-bold text-center">COURSE</p>
         </div>
     </div>
@@ -124,7 +124,7 @@
     @foreach ($patients as $patient)
     <a class="text-decoration-none text-dark" href="{{ route('admin.patientMedForm.show', ['patientID' => $patient->student_id_number ? $patient->student_id_number : $patient->applicant_id_number]) }}" target="_blank">
     <div class="d-flex flex-row divHover">
-        <div class="col-md-2 border border-dark border-top-0 border-end-0 custom-col-id">
+        <div class="col-md-2 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-id">
             <!-- Applicant ID Number -->
             <div class="d-flex flex-row">
                 <div class="col-sm">
@@ -139,15 +139,15 @@
             </div>
         </div>
         <!-- NAME -->
-        <div class="col-md-4 border border-dark border-top-0 border-end-0">
+        <div class="col-md-4 col-sm-3 border border-dark border-top-0 border-end-0">
             <p class="fs-5 fw-normal text-center mt-2">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</p>
         </div>
         <!-- CAMPUS -->
-        <div class="col-md-3 border border-dark border-top-0 border-end-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-CC">
             <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->campus }}</p>
         </div>
         <!-- COURSE -->
-        <div class="col-md-3 border border-dark border-top-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark border-top-0 custom-col-CC">
             <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->course }}</p>
         </div>
     </div>

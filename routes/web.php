@@ -23,7 +23,6 @@ Auth::routes();
  *  OPEN ROUTES FOR USERS THAT ARE NOT LOGGED IN
  */
 
-Route::get('/records/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('medicalPatientRecord.show');
 Route::get('/', function () {
         return view('home');
 })->name('home');
@@ -66,5 +65,7 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::post('admin-manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');
+
+    Route::get('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('medicalPatientRecord.show');
 });
 
