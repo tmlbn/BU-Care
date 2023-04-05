@@ -19,7 +19,7 @@
     <link rel="stylesheet" href={{ asset('css/bootstrap.min.css') }}>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss'])
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>

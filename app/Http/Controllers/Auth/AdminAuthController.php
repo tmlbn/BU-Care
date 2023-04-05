@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -17,8 +18,8 @@ use DB;
 class AdminAuthController extends Controller
 {
     public function __construct(){
-      $this->middleware('guest')->except('logout');
-    }
+        $this->middleware('guest')->except('logout','register','manualRegister');
+      }
 
     public function showAdminLogin(){
         return view('admin.auth.login');
@@ -61,7 +62,6 @@ class AdminAuthController extends Controller
         Session::flush();
         Auth::guard('admin')->logout();
         
-
         return redirect()->route('admin.login.show');
     }
 
@@ -101,7 +101,7 @@ class AdminAuthController extends Controller
                         $user->first_name = filter_var($request->firstName, FILTER_SANITIZE_STRING);
                         $user->middle_name = filter_var($request->middleName, FILTER_SANITIZE_STRING);
                     $res = $user->save();
-                
+                    
                     if($res){
                         return back()->with('success','Successfully Registered.');
                     } else {
@@ -113,7 +113,7 @@ class AdminAuthController extends Controller
                 } catch (\Exception $e) {
                     // Log error and display user-friendly message
                     Log::error('Failed to register user: ' . $e->getMessage());
-                    return back()->with('fail','Failed to register. Please try again later.');
+                    return back()->with('fail','Failed to register. Please try again later');
                 }
         }elseif($request->applicantID){
             # REGISTER STUDENT

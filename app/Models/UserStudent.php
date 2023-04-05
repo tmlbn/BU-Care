@@ -38,6 +38,7 @@ class UserStudent extends Authenticatable
         'updated_at',
         'MR_id',
         'hasMedRecord',
+        'hasValidatedRecord',
         'user_type'
     ];
 

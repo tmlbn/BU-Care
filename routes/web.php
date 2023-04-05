@@ -24,6 +24,9 @@ Auth::routes();
  */
 
 Route::get('/', function () {
+    if(Auth::guard('admin')->check()){
+        return view('admin.home');
+    }
         return view('home');
 })->name('home');
 
@@ -68,4 +71,3 @@ Route::group(['middleware' => ['web', 'admin']], function() {
 
     Route::get('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('medicalPatientRecord.show');
 });
-

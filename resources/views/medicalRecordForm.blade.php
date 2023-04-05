@@ -1079,10 +1079,8 @@
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
                     <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
-                        <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
-                        </div>
+                        <label for="MR_studentSignature" class="form-label">Student's Signature</label>
+                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" required>
                     </div>
                     <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
