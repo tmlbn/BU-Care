@@ -799,6 +799,27 @@
             </div>
         </div>
     </div>
+    <div class="mx-auto row row-cols-lg-1 mt-2">
+        <div class="col-md-12 p-1 border border-dark">
+            <p class="fs-5 text-center">Please upload the official reading and result of the following:</p>
+            <div class="flex justify-content-center">
+                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
+                        <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
+                        </div>
+                    </div>
+                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
+                        </div>
+                    </div>                              
+                </div>
+            </div>
+        </div>
+    </div>    
         <!--Signatures-->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
@@ -820,35 +841,42 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
+
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+
+    <!-- START OF PHYSICIAN INPUT -->
+        <!-- VITAL SIGNS -->
+        <div class="mx-auto row row-cols-lg-1 mt-2">
+            <div class="col-md-12 p-1 border border-dark">
+                <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
+                <div class="flex justify-content-center">
+                    <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
+                            <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
+                            </div>
+                        </div>
+                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
+                            <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
+                            </div>
+                        </div>                              
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
         </div>
     </div>
-<!-- modal
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Launch static backdrop modal
-    </button>
-    
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            verify
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-            </div>
-        </div>
-        </div>
-    </div>
--->
     </form>    
 </div> 
 @endsection

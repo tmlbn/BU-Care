@@ -60,7 +60,7 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::get('/admin/home',function () {
         return view('admin.home');
     })->name('admin.home');
-
+    Route::post('admin-logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin-manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
