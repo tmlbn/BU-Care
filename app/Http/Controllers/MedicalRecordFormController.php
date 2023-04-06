@@ -42,10 +42,6 @@ class MedicalRecordFormController extends Controller
     }
 
     public function showPatientForm($patientID){
-        /*if(!(UserClinic::where('id','=', Auth::user()->id)->first()->user_type) == 'STAFF'){
-        *  
-        *}
-        */
         try {
             // Try to find a patient with the specified applicant ID
             $patient = UserStudent::with('medicalRecord')->where('applicant_id_number', $patientID)->firstOrFail();
