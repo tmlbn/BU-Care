@@ -124,23 +124,26 @@
     @csrf     
     <div class="container">
         <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
-            <div class="col-sm col-lg-4">
+            <div class="col-xl-5 col-lg-6">
                 <p class="h6">Campus</p>
                 <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div>
-            <div class="col-sm col-lg-4">
+            <div class="col-xl-5 col-lg-6 col-md-6">
                 <p class="h6">Course</p>
-                <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
-            </div> 
-            <div class="col-sm col-lg-2">
-                <p class="h6">School Year</p>
-                <input type="text" class="form-control" id="schoolYearStart" name="schoolYearStart" value="{{ $patient->medicalRecord->SYstart }}" readonly>
+                <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->course }}" readonly>
             </div>
-            <div class="col-sm col-lg-2">
-                <label for="schoolYearEnd" class="form-label" style="padding-top: 5px; margin-left:;"> to </label>
-                <input type="text" class="form-control" id="schoolYearEnd" name="schoolYearEnd" value="{{ $patient->medicalRecord->SYend }}" style="margin-top: -11px;" readonly>
+            <div class="col-xl-2 col-lg-12 col-md-12">
+                <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
+                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                    <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" value="{{ $patient->medicalRecord->SYstart }}" readonly>
+                    <span class="fs-6">-</span>
+                    <input type="text" class="form-control ms-1" id="schoolYearEnd" name="schoolYearEnd" value="{{ $patient->medicalRecord->SYend }}" readonly>
+                </div>
             </div>
-        </div>   
+            
+            
+            
+        </div>
     </div>   
     <div class="d-flex flex-row">
         <h4 class="pb-3"></h4>
@@ -799,27 +802,40 @@
             </div>
         </div>
     </div>
-    <div class="mx-auto row row-cols-lg-1 mt-2">
+    <!-- ATTACHMENTS -->
+    <div class="d-flex flex-row">
         <div class="col-md-12 p-1 border border-dark">
-            <p class="fs-5 text-center">Please upload the official reading and result of the following:</p>
+            <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
-                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
-                        <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
+                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
+                        <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
                         <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings">
                         </div>
                     </div>
-                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->CBCResults) }}" alt="CBC Results">
                         </div>
-                    </div>                              
+                      </div>                      
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
+                        </div>
+                    </div> 
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
         <!--Signatures-->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
