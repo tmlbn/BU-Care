@@ -223,40 +223,40 @@
                                             <div class="d-flex flex-row checkboxes">
                                                 <div class="col-md-4 p-2">
                                                     <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_cancer">
+                                                        <input type="hidden" value="0" name="FH_Headache">
                                                         <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                            <label class="form-check-label" for="FH_cancer">
+                                                            <label class="form-check-label" for="FH_Headache">
                                                                 Headache
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                     <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_heartDisease">
+                                                        <input type="hidden" value="0" name="FH_Dizziness">
                                                         <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                            <label class="form-check-label" for="FH_heartDisease">
+                                                            <label class="form-check-label" for="FH_Dizziness">
                                                                 Dizziness
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                     <div class="form-check">
                                                         <input type="hidden" value="0" name="FH_Stomachache">
                                                         <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
-                                                            <label class="form-check-label" for="FH_hypertension">
+                                                            <label class="form-check-label" for="FH_Stomachache">
                                                                 Stomachache
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                 </div>
                                                 <div class="col-md-4 p-2">
                                                     <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_cancer">
+                                                        <input type="hidden" value="0" name="FH_Nausea">
                                                         <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                            <label class="form-check-label" for="FH_cancer">
-                                                                Headache
+                                                            <label class="form-check-label" for="FH_Nausea">
+                                                                Nausea
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                     <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_heartDisease">
+                                                        <input type="hidden" value="0" name="FH_Consiousness">
                                                         <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                            <label class="form-check-label" for="FH_heartDisease">
-                                                                Dizziness
+                                                            <label class="form-check-label" for="FH_Consiousness">
+                                                                Loss of Consiousness
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                 </div>
