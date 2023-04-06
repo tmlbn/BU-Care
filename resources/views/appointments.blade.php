@@ -139,7 +139,7 @@
                                             $end_am = strtotime('11:45 AM');
                                             while ($start_am <= $end_am) {
                                                 echo "<tr class='am'>";
-                                                echo "<td><a href='#' onClick='alert(\"You clicked on " . date('g:i A', $start_am) . "\"); return false;'>" . date('g:i A', $start_am) . "</a></td>";
+                                                echo "<td><a id='' href='#' onClick='alert(\"You clicked on " . date('g:i A', $start_am) . "\"); return false; DateForm;' >" . date('g:i A', $start_am) . "</a></td>";
                                                 echo "<td>" . date('g:i', $start_am) . " - " . date('g:i A', strtotime('+15 minutes', $start_am)) . "</td>";
                                                 echo "</tr>";
                                                 $start_am = strtotime('+15 minutes', $start_am);
@@ -156,6 +156,12 @@
                                             }
                                         ?>
                                             <script>
+                                                function DateForm() {
+                                                    var appointmentDateInput = document.getElementIdBy("appointmentDate");
+
+                                                    appointmentDateInput.value = ('g:i A', strtotime('+15 minutes', $start_pm));
+                                                }
+
                                                 function showAM() {
                                                     document.querySelectorAll("#time-slots tr").forEach(function(e) {
                                                         e.style.display = "none";
@@ -185,7 +191,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentDate" class="col-form-label">Date:</label>
-                                        <input type="text" class="form-control" id="appointmentDate">
+                                        <input type="text" class="form-control" id="appointmentDate" onclick="alert('You clicked on <?php echo date('g:i A', $start_am); ?>');">
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentTime" class="col-form-label">Time:</label>
