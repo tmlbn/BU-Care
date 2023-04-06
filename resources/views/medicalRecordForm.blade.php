@@ -73,30 +73,40 @@
 
 </style>
 <!-- Header -->
-<div class="container my-2 bg-light w-20 text-dark p-5 headMargin checkboxes">
+<div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes">
     <div class="d-flex flex-row">
-        <div class="col-md-6 border border-dark">
-            <header class="text-center">
-                <h5 class="display-7 pt-3">
-                    Republic of the Philippines<br>
-                      
-                </h5>
-                <h6>Bicol University</h6>
-            </header>
+        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <img src="{{ asset('media/BU-logo.png') }}" class="rounded" alt="BUHS-LOGO" style="width:100%; margin-left: 30%;">
+                  </div>                  
+                <div class="col-sm">
+                    <header class="text-center px-auto py-auto">
+                        <h5 class="display-7 pt-3 fs-3 font-monospace">
+                            Republic of the Philippines<br>
+                        </h5>
+                        <h6 class="fw-bold fs-5 font-monospace">Bicol University</h6>
+                        <h6 class="fs-5 font-monospace">Bicol University Health Services</h6>
+                    </header>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <img src="{{ asset('media/BUHS-logo.png') }}" class="rounded float-end" alt="BUHS-LOGO" style="width:100%; margin-right: 30%;">
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 border border-dark">
-            <header class="text-center p-5">
-                <h2 class="display-7">Student Health Record</h2>
+        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+            <header class="text-center px-auto py-auto">
+              <h2 class="display-7 fs-3 pt-auto font-monospace">Student Health Record</h2>
             </header>
-        </div>
+          </div>          
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5">
+<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
     <div class="container">
-        <div class="row display-flex">
-            <div class="col-4">
+        <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
+            <div class="col-xl-5 col-lg-6">
                 <p class="h6">Campus</p>
                 <select id="campusSelect" name="campusSelect" class="form-select" required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
@@ -122,7 +132,7 @@
                     @enderror
                   </span>
             </div>
-            <div class="col-sm">
+            <div class="col-xl-5 col-lg-6 col-md-6">
                 <p class="h6">Course</p>
                 <select id="courseSelect" name="courseSelect" class="form-select" required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
@@ -136,26 +146,26 @@
                     @enderror
                   </span>
             </div> 
-            <div class="col-sm">
-                <p class="h6">School Year</p>
-                <input type="text" class="form-control" id="schoolYearStart" name="schoolYearStart" placeholder="e.g., 2023" maxlength="4" autofocus required>
-                <span class="text-danger"> 
-                    @error('schoolYearStart') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
-            </div>
-            <div class="col-sm pt-4 mt-1 settings">
-                <label for="schoolYearEnd" class="form-label" style="padding-top: 5px; margin-left: -20px;"> to </label>
-                <input type="text" class="form-control" id="schoolYearEnd" name="schoolYearEnd" placeholder="e.g., 2024" maxlength="4" autofocus size="26" required>
-                <span class="text-danger"> 
-                    @error('schoolYearEnd') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
-            </div>
+            <div class="col-xl-2 col-lg-12 col-md-12">
+                <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
+                    <div class="d-flex align-items-center" style="margin-top:-1%;">
+                        <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" placeholder="YYYY" maxlength="4" required>
+                            <span class="text-danger"> 
+                                @error('schoolYearStart') 
+                                {{ $message }} 
+                                @enderror
+                            </span>
+                        <span class="fs-6">-</span>
+                        <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" placeholder="YYYY" maxlength="4" required>
+                            <span class="text-danger"> 
+                                @error('schoolYearEnd') 
+                                {{ $message }} 
+                                @enderror
+                            </span>
+                    </div>
+            </div>   
         </div>   
-    </div>   
+    </div>
     <div class="d-flex flex-row">
         <h4 class="pb-3"></h4>
     </div>   
@@ -350,8 +360,8 @@
         <h5>Please click the box if one of the following is applicable to you</h5>
 
         <!--Family and Social History-->
-        <div class="d-flex flex-row"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
-            <div class="col-md-7 p-2 border border-dark">
+        <div class="mx-auto row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
+            <div class="col-lg-7 col-md-12 p-2 border border-dark border-lg-end-0">
                 <h5>Family History</h5>
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
@@ -479,12 +489,14 @@
                                 document.getElementById('FH_othersDetails').disabled = !this.checked;
                                 };
                             </script>
-                </div><!-- END OF COL OTHERS DIV -->
-            </div><!-- END OF ROW OTHERS DIV -->
-        </div><!-- END OF ROW FH -->
-        <div class="col-md-5 p-2 border border-dark">
-            <h6>Personal Social History</h6>
-                <div class="form-check">
+                    </div><!-- END OF COL OTHERS DIV -->
+                </div><!-- END OF ROW OTHERS DIV -->
+            </div><!-- END OF COL FH -->
+
+            <!-- START OF PSH -->
+            <div class="col-lg-5 col-md-12 p-2 border border-dark">
+                <h6>Personal Social History</h6>
+                    <div class="form-check">
                     <input type="hidden" name="PSH_smoking" value="0">
                     <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking">
                         <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
@@ -568,9 +580,9 @@
         </div><!-- END OF ROW ENTIRE DIV -->
 
         <!--Personal History-->
-        <h5>Personal History</h5>
-        <div class="d-flex flex-row"><!-- START DIV FOR PAST AND PRESENT ILLNESS -->
-            <div class="col-md-6 p-2 border border-dark">
+        <h5 class="ms-1">Personal History</h5>
+        <div class="mx-auto row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR PAST AND PRESENT ILLNESS -->
+            <div class="col-lg-6 col-md-12 p-2 border border-dark border-lg-end-0">
                 <h6>Past Ilness</h6>
                      <div class="d-flex flex-row">
                             <div class="col-md-4 p-2">
@@ -724,15 +736,15 @@
                                         <label class="form-check-label" for="pi_mumps">
                                             Mumps
                                         </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                            </div><!-- END OF CHECKBOX 3ND COL DIV -->
-                        </div><!-- END OF PAST ILLNESS CHECKBOX ROW DIV -->
-                    </div><!-- END OF PAST ILLNESS ROW DIV -->
-              <div class="col-md-6 p-2 border border-dark">
-                    <h6>Present Ilness</h6>       
-                        <div class="d-flex flex-row">
-                            <div class="col-md-4 p-2">
-                                <div class="form-check">
+                                    </div><!-- END OF CHECKBOX DIV -->
+                                </div><!-- END OF CHECKBOX 3ND COL DIV -->
+                            </div><!-- END OF PAST ILLNESS CHECKBOX ROW DIV -->
+                        </div><!-- END OF PAST ILLNESS ROW DIV -->
+                  <div class="col-lg-6 col-md-12 p-2 border border-dark">
+                        <h6>Present Ilness</h6>       
+                            <div class="d-flex flex-row">
+                                <div class="col-md-4 p-2">
+                                    <div class="form-check">
                                     <input type="hidden" name="PI_chestPain" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="PI_chestPain">
                                         <label class="form-check-label" for="PI_chestPain">
@@ -848,7 +860,7 @@
 
         <!--Medical Status
                     HOSPITALIZATION-->
-        <div class="d-flex flex-row">
+        <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
                     <div class="col-sm">
@@ -971,11 +983,11 @@
         </div>   
         
         <!--Immunization History-->
-        <div class="d-flex flex-row">
+        <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">
                 <h6>Immunization History</h6>
-                <div class="d-flex row" style="margin-left: 5%;">
-                    <div class="col-sm-2 p-2">
+                <div class="my-auto row row-cols-xl-5 row-cols-lg-4 row-cols-md-2 align-items-center" style="margin-left: 5%;">
+                    <div class="col-sm-1 p-2">
                         <input type="hidden" name="IH_bcg" value="0">
                         <input class="form-check-input" type="checkbox" value="1" name="IH_bcg">
                             <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
@@ -1103,9 +1115,9 @@
             <div class="col-md-12 p-1 border border-dark">
                 <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
                     <div class="flex-row justify-content-center">
-                        <div class="row my-auto p-5 align-items-center">
+                        <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5 align-items-center">
                             <div class="mb-3 col-md-6">
-                                <label for="MR_studentSignature" class="form-label">Student's Signature</label>
+                                <label for="MR_studentSignature" class="form-label">Student's Signature over printed name</label>
                                 <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
                             </div>
                             <div class="mb-3 col-md-6">

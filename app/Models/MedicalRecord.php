@@ -41,6 +41,10 @@ class MedicalRecord extends Model
         'medsDetails',
         'allergic',
         'allergyDetails',
+        'chestXray',
+        'CBCResults',
+        'hepaBscreening',
+        'bloodType',
         'studentSignature',
         'parentGuardianSignature',
     ];
