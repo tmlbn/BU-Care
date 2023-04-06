@@ -14,7 +14,10 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap/main.css' rel='stylesheet' />
+
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>

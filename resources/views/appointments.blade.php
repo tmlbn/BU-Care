@@ -1,6 +1,21 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container pt-2">
+<style>
+    .fc-day {
+        border-color: #444444;
+    }
+    .fc-day-number{
+        font-weight: bold;
+        font-size: 20px;
+    }
+    .fc-day-header{
+        border-color: #444444;
+    }
+    .fc-view-container{
+        margin-top: -1%;
+    }
+</style>
+    <div class="container pt-3">
       <div class="" id="calendar"></div>
     </div>
 
@@ -14,20 +29,37 @@
         });
     
         var calendar = $('#calendar').fullCalendar({
+            themeSystem: 'bootstrap4',
             editable:true,
             header:{
-                left:'prev,next today',
+                left:'today',
                 center:'title',
-                right:'month,agendaWeek,agendaDay'
+                right:'prev, next'
             },
             events:'/full-calender',
+            dayRender: function(date, cell) {
+                if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+                cell.css('background-color', '#f1807d');
+                }
+                cell.css('border-color', '#444444');
+            },
             selectable:true,
             selectHelper: true,
+            selectConstraint: {
+                start: '00:00', // Start at midnight
+                end: '24:00', // End at midnight the next day
+                dow: [1,2,3,4,5] // Monday to Friday only
+            },
+            
             select:function(start, end, allDay)
             {
                 var modal = $('#appointmentModal');
                 $('body').append(modal);
                 modal.modal('show');
+
+                // set the appointmentDate input value to the selected date
+                var selectedDate = moment(start).format('YYYY-MMMM-DD');
+                $('#appointmentDate').val(selectedDate);
 
                 $('#appointmentModal .close').on('click', function() {
                     $('#appointmentModal').modal('hide');
@@ -139,7 +171,7 @@
                                             $end_am = strtotime('11:45 AM');
                                             while ($start_am <= $end_am) {
                                                 echo "<tr class='am'>";
-                                                echo "<td><a id='' href='#' onClick='alert(\"You clicked on " . date('g:i A', $start_am) . "\"); return false; DateForm;' >" . date('g:i A', $start_am) . "</a></td>";
+                                                echo "<td><a id='' href='#' onClick='DateForm(\"" . date('g:i A', $start_am) . "\"); return false;' >" . date('g:i A', $start_am) . "</a></td>";
                                                 echo "<td>" . date('g:i', $start_am) . " - " . date('g:i A', strtotime('+15 minutes', $start_am)) . "</td>";
                                                 echo "</tr>";
                                                 $start_am = strtotime('+15 minutes', $start_am);
@@ -156,11 +188,11 @@
                                             }
                                         ?>
                                             <script>
-                                                function DateForm() {
-                                                    var appointmentDateInput = document.getElementIdBy("appointmentDate");
-
-                                                    appointmentDateInput.value = ('g:i A', strtotime('+15 minutes', $start_pm));
+                                                function DateForm(time) {
+                                                    var appointmentTimeInput = document.getElementById("appointmentTime");
+                                                    appointmentTimeInput.value = time;
                                                 }
+
 
                                                 function showAM() {
                                                     document.querySelectorAll("#time-slots tr").forEach(function(e) {
@@ -191,11 +223,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentDate" class="col-form-label">Date:</label>
-                                        <input type="text" class="form-control" id="appointmentDate" onclick="alert('You clicked on <?php echo date('g:i A', $start_am); ?>');">
+                                        <input type="text" class="form-control" id="appointmentDate" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentTime" class="col-form-label">Time:</label>
-                                        <input type="text" class="form-control" id="appointmentTime">
+                                        <input type="text" class="form-control" id="appointmentTime" placeholder="Select Time" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>

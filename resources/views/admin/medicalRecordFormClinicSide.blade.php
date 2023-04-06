@@ -864,27 +864,74 @@
                 <!-- LINE BREAK -->
             </header>
         </section>
-
+        
+        <p class="text-center fw-bold pt-1" style="user-select:none;">---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------</p>
     <!-- START OF PHYSICIAN INPUT -->
         <!-- VITAL SIGNS -->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
-                <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
-                <div class="flex justify-content-center">
-                    <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
-                            <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
-                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
-                            </div>
+                <div class="container">
+                    <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
+                        <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
+                        <div class="col-xl-5 col-lg-6">
+                            <p class="h6">Campus</p>
+                            <select id="campusSelect" name="campusSelect" class="form-select" required>
+                                <option selected="selected" disabled="disabled" value="">SELECT</option>
+                                <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
+                                <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
+                                <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
+                                <option value="College of Education" class="alternate">College of Education</option>
+                                <option value="College of Engineering">College of Engineering</option>
+                                <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
+                                <option value="College of Medicine">College of Medicine</option>
+                                <option value="College of Nursing" class="alternate">College of Nursing</option>
+                                <option value="College of Science">College of Science</option>
+                                <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
+                                <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
+                                <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
+                                <option value="Gubat Campus">Gubat Campus</option>
+                                <option value="Polangui Campus" class="alternate">Polangui Campus</option>
+                                <option value="Tabaco Campus">Tabaco Campus</option>
+                            </select>
+                            <span class="text-danger"> 
+                                @error('campusSelect') 
+                                  {{ $message }} 
+                                @enderror
+                              </span>
                         </div>
-                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
-                            <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
-                            </div>
-                        </div>                              
-                    </div>
+                        <div class="col-xl-5 col-lg-6 col-md-6">
+                            <p class="h6">Course</p>
+                            <select id="courseSelect" name="courseSelect" class="form-select" required>
+                                <option selected="selected" disabled="disabled" value="">SELECT</option>
+                                <option>Information Technology</option>
+                                <option></option>
+                                <option></option>
+                            </select>
+                            <span class="text-danger"> 
+                                @error('courseSelect') 
+                                  {{ $message }} 
+                                @enderror
+                              </span>
+                        </div> 
+                        <div class="col-xl-2 col-lg-12 col-md-12">
+                            <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" placeholder="YYYY" maxlength="4" required>
+                                        <span class="text-danger"> 
+                                            @error('schoolYearStart') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                    <span class="fs-6">-</span>
+                                    <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" placeholder="YYYY" maxlength="4" required>
+                                        <span class="text-danger"> 
+                                            @error('schoolYearEnd') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                </div>
+                        </div>   
+                    </div>   
                 </div>
             </div>
         </div>
