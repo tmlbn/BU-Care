@@ -86,9 +86,20 @@
     }
 
 </style>
+
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
+    <form action="{{ route('import.store') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_file').click()">Choose File</button>
+        <input type="file" name="csv_file" id="csv_file" accept=".csv" style="display: none" onchange="document.getElementById('file-name').textContent = this.files[0].name; document.getElementById('import-btn').style.display = this.files.length ? 'inline-block' : 'none'">
+        <span id="file-name"></span>
+        <button id="import-btn" class="btn btn-success mb-1" style="display: none">Import</button>
+    </form>
+    
+    
+    
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">

@@ -1073,25 +1073,31 @@
         </div>
     </div>
     <!-- ATTACHMENTS -->
-    <div class="mx-auto row row-cols-lg-1 mt-2">
+    <div class="d-flex flex-row">
         <div class="col-md-12 p-1 border border-dark">
-            <p class="fs-5 text-center">Please upload the official reading and result of the following:</p>
+            <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
-                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
-                        <label for="MR_studentSignature" class="form-label">Student's Signature</label>
-                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" required>
+                <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
+                        <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
                     </div>
-                    <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
-                        </div>
-                    </div>                              
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
+                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                      </div>                      
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                    </div> 
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
+                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                    </div> 
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
         <!--Signatures-->
         <div class="d-flex flex-row">
             <div class="col-md-12 p-1 border border-dark">
@@ -1100,11 +1106,11 @@
                         <div class="row my-auto p-5 align-items-center">
                             <div class="mb-3 col-md-6">
                                 <label for="MR_studentSignature" class="form-label">Student's Signature</label>
-                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" required>
+                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                                <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" required>
+                                <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
                             </div>
                         </div>
                     </div>

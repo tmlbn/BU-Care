@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\BUCareAuthController;
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordFormController;
 use App\Http\Controllers\AppointmentsController;
@@ -66,6 +67,10 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::post('admin-logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin-manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
+
+    // POST for Importing CSV File (users_students table) //
+    Route::post('/import', [ImportController::class, 'import'])->name('import.store');
+
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');
 
