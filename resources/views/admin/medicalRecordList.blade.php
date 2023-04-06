@@ -99,7 +99,6 @@
     </form>
     
     
-    
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">
@@ -110,29 +109,88 @@
         </div>
     </div>
 
-    <!--Personal Basic Information-->
     @if(session('fail'))
         <div class="alert alert-danger">
             {{ session('fail') }}
         </div>
     @endif
 
+    <!-- Search function -->
+        <form method="GET" action="{{ route('admin.patientMedFormList.show') }}" id="searchForm">
+                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2" style="margin-right: -3%;">
+                    <div class="row align-items-center">
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="search" name="search" value="{{ request()->input('search') }}" placeholder="Search...">
+                        </div>
+                        <div class="col-sm">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end mt-2">
+                        <div class="col-sm-2 ">
+                            <p class="fs-5 fw-light float-end pt-1">
+                                Filter by:
+                            </p>
+                        </div>
+                        <div class="col-sm-5">
+                            <select id="campusFilter" name="campusFilter" class="form-select" required>
+                                <option selected="selected" disabled="disabled" value="">CAMPUS</option>
+                                <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
+                                <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
+                                <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
+                                <option value="College of Education" class="alternate">College of Education</option>
+                                <option value="College of Engineering">College of Engineering</option>
+                                <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
+                                <option value="College of Medicine">College of Medicine</option>
+                                <option value="College of Nursing" class="alternate">College of Nursing</option>
+                                <option value="College of Science">College of Science</option>
+                                <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
+                                <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
+                                <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
+                                <option value="Gubat Campus">Gubat Campus</option>
+                                <option value="Polangui Campus" class="alternate">Polangui Campus</option>
+                                <option value="Tabaco Campus">Tabaco Campus</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="course" name="course" value="{{ request()->input('course') }}" placeholder="Filter by course...">
+                        </div>
+                    </div>
+                </div>
+        </form>
+
     <div class="d-flex flex-row text-align-center justify-content-center">
-        <div class="col-md-2 col-sm-3 custom-col-id border border-dark border-top-0 border-end-0">
+        <div class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
             <p class="fs-4 font-monospace fw-bold text-center">PATIENT ID</p>
         </div>
-        <div class="col-md-4 col-sm-3 border border-dark border-top-0 border-end-0">
+        <div class="col-md-4 col-sm-3 border border-dark border-end-0">
             <p class="fs-4 font-monospace fw-bold text-center">NAME</p>
         </div>
-        <div class="col-md-3 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark border-end-0 custom-col-CC">
             <p class="fs-4 font-monospace fw-bold text-center">CAMPUS</p>
         </div>
-        <div class="col-md-3 col-sm-3 border border-dark border-top-0 custom-col-CC">
+        <div class="col-md-3 col-sm-3 border border-dark custom-col-CC">
             <p class="fs-4 font-monospace fw-bold text-center">COURSE</p>
         </div>
     </div>
+   
     <!-- Start list of Medical Forms -->
-    @foreach ($patients as $patient)
+    <!-- Modify loop to filter based on search query -->
+    <script>
+        $searchQuery = '';
+        if (isset($_GET['search'])) {
+            $searchQuery = $_GET['search'];
+        }
+    </script>
+      
+
+    @foreach ($patients->filter(function($patient) use ($searchQuery) {
+        return stripos($patient->first_name, $searchQuery) !== false 
+            || stripos($patient->middle_name, $searchQuery) !== false 
+            || stripos($patient->last_name, $searchQuery) !== false
+            || stripos($patient->applicant_id_number, $searchQuery) !== false
+            || stripos($patient->student_id_number, $searchQuery) !== false;
+    }) as $patient)
     <a class="text-decoration-none text-dark" href="{{ route('admin.patientMedForm.show', ['patientID' => $patient->student_id_number ? $patient->student_id_number : $patient->applicant_id_number]) }}" target="_blank">
     <div class="d-flex flex-row divHover">
         <div class="col-md-2 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-id">
