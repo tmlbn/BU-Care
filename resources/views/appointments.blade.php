@@ -217,9 +217,61 @@
                                 </div>
                             <div class="col-md">
                                 <form>
-                                    <div class="form-group">
-                                        <label for="appointmentTitle" class="col-form-label">Appointment Reason:</label>
-                                        <input type="text" class="form-control" id="appointmentTitle">
+                                    <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
+                                        <div class="col-lg-7 col-md-12 p-2 border-lg-end-0">
+                                            <h5>Complaints/Reason for Appointments</h5>
+                                            <div class="d-flex flex-row checkboxes">
+                                                <div class="col-md-4 p-2">
+                                                    <div class="form-check">
+                                                        <input type="hidden" value="0" name="FH_cancer">
+                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
+                                                            <label class="form-check-label" for="FH_cancer">
+                                                                Headache
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                    <div class="form-check">
+                                                        <input type="hidden" value="0" name="FH_heartDisease">
+                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                                            <label class="form-check-label" for="FH_heartDisease">
+                                                                Dizziness
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                    <div class="form-check">
+                                                        <input type="hidden" value="0" name="FH_Stomachache">
+                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
+                                                            <label class="form-check-label" for="FH_hypertension">
+                                                                Stomachache
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                </div>
+                                                <div class="col-md-4 p-2">
+                                                    <div class="form-check">
+                                                        <input type="hidden" value="0" name="FH_cancer">
+                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
+                                                            <label class="form-check-label" for="FH_cancer">
+                                                                Headache
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                    <div class="form-check">
+                                                        <input type="hidden" value="0" name="FH_heartDisease">
+                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                                            <label class="form-check-label" for="FH_heartDisease">
+                                                                Dizziness
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                </div>
+                                            </div>
+                                            <div class="form-check">
+                                                <div class="col-sm" style="margin-left: 8px; margin-top: -7px;">
+                                                <input type="hidden" value="0" name="FH_Others">
+                                                <input class="form-check-input" type="checkbox" value="1" name="FH_Others">
+                                                    <label for="FH_Others" class="form-check-label">
+                                                        Others 
+                                                        <input type="text" class="form-control" id="appointmentTitle">
+                                                    </label>    
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="appointmentDate" class="col-form-label">Date:</label>
