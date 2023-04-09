@@ -35,10 +35,34 @@ class MedicalRecordFormController extends Controller
     }
 
     public function showPatientMedFormList(){
-
-        $patientsList = UserStudent::where('hasMedRecord', 1)->get();
-
-        return view('admin.medicalRecordList', ['patients' => $patientsList]);
+        $searchQuery = request()->search;
+        $filterByCampus = request()->campus;
+        $filterByCourse = request()->course;
+    
+        $patientsList = UserStudent::has('medicalRecord')
+            ->when($searchQuery, function($query, $searchQuery) {
+                return $query->where('first_name', 'LIKE', '%'.$searchQuery.'%')
+                             ->orWhere('middle_name', 'LIKE', '%'.$searchQuery.'%')
+                             ->orWhere('last_name', 'LIKE', '%'.$searchQuery.'%')
+                             ->orWhere('applicant_id_number', 'LIKE', '%'.$searchQuery.'%')
+                             ->orWhere('student_id_number', 'LIKE', '%'.$searchQuery.'%');
+            })
+            ->join('medicalrecords', 'users_students.MR_id', '=', 'medicalrecords.MR_id')
+            ->when($filterByCampus, function($query, $filterByCampus) {
+                return $query->where('medicalrecords.campus', '=', $filterByCampus);
+            })
+            ->when($filterByCourse, function($query, $filterByCourse) {
+                return $query->where('medicalrecords.course', '=', $filterByCourse);
+            })
+            ->select('users_students.*')
+            ->get();
+    
+        return view('admin.medicalRecordList', [
+            'patients' => $patientsList,
+            'searchQuery' => $searchQuery,
+            'filterByCampus' => $filterByCampus,
+            'filterByCourse' => $filterByCourse
+        ]);
     }
 
     public function showPatientForm($patientID){

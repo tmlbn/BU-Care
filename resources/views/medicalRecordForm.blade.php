@@ -75,7 +75,7 @@
 <!-- Header -->
 <div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes">
     <div class="d-flex flex-row">
-        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+        <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
                 <div class="col-2 d-flex align-items-center justify-content-center">
                     <img src="{{ asset('media/BU-logo.png') }}" class="rounded" alt="BUHS-LOGO" style="width:100%; margin-left: 30%;">
@@ -150,19 +150,19 @@
                 <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
                     <div class="d-flex align-items-center" style="margin-top:-1%;">
                         <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" placeholder="YYYY" maxlength="4" required>
-                            <span class="text-danger"> 
-                                @error('schoolYearStart') 
-                                {{ $message }} 
-                                @enderror
-                            </span>
                         <span class="fs-6">-</span>
                         <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" placeholder="YYYY" maxlength="4" required>
-                            <span class="text-danger"> 
-                                @error('schoolYearEnd') 
-                                {{ $message }} 
-                                @enderror
-                            </span>
                     </div>
+                    <span class="text-danger"> 
+                        @error('schoolYearStart') 
+                        {{ $message }} 
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('schoolYearEnd') 
+                        {{ $message }} 
+                        @enderror
+                    </span>
             </div>   
         </div>   
     </div>
@@ -484,11 +484,29 @@
                                 @enderror
                               </span>    
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
-                            <script>
-                                document.getElementById('FH_others').onchange = function() {
-                                document.getElementById('FH_othersDetails').disabled = !this.checked;
-                                };
-                            </script>
+                                <script>
+                                    const fhOthers = document.getElementById('FH_others');
+                                    const fhOthersDetails = document.getElementById('FH_othersDetails');
+                                    
+                                    fhOthers.onchange = function() {
+                                        if (this.checked) {
+                                            fhOthersDetails.disabled = false;
+                                            fhOthersDetails.required = true;
+                                        } else {
+                                            fhOthersDetails.disabled = true;
+                                            fhOthersDetails.required = false;
+                                        }
+                                    };
+
+                                    // Initialize the form state on page load
+                                    if (fhOthers.checked) {
+                                        fhOthersDetails.disabled = false;
+                                        fhOthersDetails.required = true;
+                                    } else {
+                                        fhOthersDetails.disabled = true;
+                                        fhOthersDetails.required = false;
+                                    }
+                                </script>
                     </div><!-- END OF COL OTHERS DIV -->
                 </div><!-- END OF ROW OTHERS DIV -->
             </div><!-- END OF COL FH -->
@@ -866,7 +884,7 @@
                     <div class="col-sm">
                      Do you have history of hospitalization for serious illness, operation, fracture or injury?
                         (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_YES" value="1"/>
+                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_YES" value="1" required/>
                             <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
                             yes
                             </label>
@@ -906,7 +924,7 @@
                     <div class="col-sm">
                         Are you taking any medicine regularly?
                            (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_YES" value="1"/>
+                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_YES" value="1" required/>
                                <label class="form-check-label" for="regMeds_YES" style="margin-right: -15px; margin-left:-5px">
                                yes
                                </label>
@@ -942,10 +960,10 @@
                    </div><!-- END OF ROW DIV -->
 
                    <!-- ALLERGIES -->
-                   <div class="col-sm">
+                   <div class="col-sm" required>
                     Are you allergic to any food or medicine?
                        (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="allergy" id="allergy_YES" value="1"/>
+                           <input class="form-check-input" type="radio" name="allergy" id="allergy_YES" value="1" required/>
                            <label class="form-check-label" for="allergy_YES" style="margin-right: -15px; margin-left:-5px">
                            yes
                            </label>

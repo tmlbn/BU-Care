@@ -80,9 +80,9 @@
         @else
           <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
           <i class="bi bi-file-earmark-medical icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Record not Validated"></i>
-        @endif
+    @endif
     <div class="d-flex flex-row">
-        <div class="col-6 border border-dark d-flex align-items-center justify-content-center">
+        <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
                 <div class="col-2 d-flex align-items-center justify-content-center">
                     <img src="{{ asset('media/BU-logo.png') }}" class="rounded" alt="BUHS-LOGO" style="width:100%; margin-left: 30%;">
@@ -867,6 +867,7 @@
         
         <p class="text-center fw-bold pt-1" style="user-select:none;">---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------</p>
     <!-- START OF PHYSICIAN INPUT -->
+<<<<<<< HEAD
         <!-- VITAL SIGNS -->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
@@ -1252,11 +1253,130 @@
             </div>
         </div>
 
+=======
+        <!-- VITAL SIGNS --> 
+    <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
+        <div class="col-lg-7 col-md-12 p-2 border border-dark border-lg-end-0">
+            <p class="fs-5">VITAL SIGNS:ANTHROPOMETRICS</p>
+                    <div class="mx-auto row mt-2">
+                        <div class="col-lg-5 col-md-2 col-sm-1 col-xs-1">
+                            <!-- BP ROW/COL -->
+                            <div class="col input-group align-items-center my-2">
+                                <label for="systolicBP" class="me-1">BP:</label>
+                                <input type="text" class="form-control" id="systolicBP" name="systolicBP" required>
+                                <div class="input-group-append">
+                                    <span class="fs-6 mx-1">/</span>
+                                </div>
+                                <input type="text" class="form-control" id="diastolicBP" name="diastolicBP" required>
+                                <div class="input-group-append">
+                                    <span class="fs-6 ms-1">mmHg</span>
+                                </div>
+                            </div>
+                            <!-- END OF BP ROW/COL -->
+                            <!-- BP ROW/COL -->
+                            <div class="col-lg-12 col-md-6 col-sm-2 col-xs-2 input-group align-items-center my-2">
+                                <label for="systolicBP" class="me-1">PR:</label>
+                                <input type="text" class="form-control" id="systolicBP" name="systolicBP" required>
+                                <div class="input-group-append">
+                                    <span class="fs-6">/minute</span>
+                                </div>
+                            </div>
+                            <!-- END OF BP ROW/COL -->
+                </div><!-- END OF COL OTHERS DIV -->
+            </div><!-- END OF ROW OTHERS DIV -->
+        </div><!-- END OF COL FH -->
+
+        <!-- START OF PSH -->
+        <div class="col-lg-5 col-md-12 p-2 border border-dark">
+            <h6>Personal Social History</h6>
+                <div class="form-check">
+                <input type="hidden" name="PSH_smoking" value="0">
+                <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking">
+                    <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
+                        Smoking
+                        <br>
+                        ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" disabled> 
+                        <span class="text-danger"> 
+                            @error('PSH_smoking_amount') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                        sticks/day for 
+                        <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" disabled> year/s )
+                        <span class="text-danger"> 
+                            @error('PSH_smoking_freq') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                    </label>
+            </div><!-- END OF SMOKING FORM DIV -->
+
+            <div class="form-check" style="margin-top:5%;">
+                <input type="hidden" name="PSH_drinking" value="0">
+                <input class="form-check-input" type="checkbox" value="1" id="PSH_drinking" name="PSH_drinking">
+                    <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
+                        Drinking 
+                        <br>
+                        ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" disabled>
+                        <span class="text-danger"> 
+                            @error('PSH_drinking_amountOfBeer') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                         Beer per 
+                         <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" disabled> ) 
+                         <span class="text-danger"> 
+                            @error('PSH_drinking_freqOfBeer') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                        <br>
+                            or
+                        <br>
+                        ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" disabled>
+                        <span class="text-danger"> 
+                            @error('PSH_drinking_amountofShots') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                         Shots per 
+                         <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" disabled>)
+                         <span class="text-danger"> 
+                            @error('PSH_drinking_freqOfShots') 
+                              {{ $message }} 
+                            @enderror
+                          </span>  
+                    </label>
+            </div><!-- END OF DRINKING FORM DIV -->
+
+                <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
+            <script>
+               $(document).ready(function() {
+                    /* SMOKING */
+                    $('#PSH_smoking').change(function() {
+                        $('#PSH_smoking_amount').prop('disabled', !this.checked);
+                        $('#PSH_smoking_freq').prop('disabled', !this.checked);
+                    });
+                    
+                    /* DRINKING */
+                    $('#PSH_drinking').change(function() {
+                        $('#PSH_drinking_amountOfBeer').prop('disabled', !this.checked);
+                        $('#PSH_drinking_freqOfBeer').prop('disabled', !this.checked);
+                        $('#PSH_drinking_amountofShots').prop('disabled', !this.checked);
+                        $('#PSH_drinking_freqOfShots').prop('disabled', !this.checked);
+                    });
+                });
+
+            </script>
+
+        </div><!-- END OF PSH COL DIV -->
+    </div><!-- END OF ROW ENTIRE DIV -->
+>>>>>>> 844c0d19cdb3b5819255033b6a893bae4903093a
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
         </div>
     </div>
-    </form>    
 </div> 
+</form>
 @endsection

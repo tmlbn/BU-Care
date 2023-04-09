@@ -1,6 +1,21 @@
 @extends('layouts.app')
 @section('content')
 <style>
+    table{
+        border-collapse: collapse;
+        border-color: black;
+    }
+    .am.selected, .pm.selected, .selected{
+        background-color: #009edf;
+        font-weight: bold;
+        color:white;
+        border: black 2px solid;
+    }
+    tr.am:hover, tr.pm:hover{
+        cursor: pointer;
+        background-color:#009edf;
+        transition-duration: 0.4s;
+    }
     .fc-day {
         border-color: #444444;
     }
@@ -14,6 +29,18 @@
     .fc-view-container{
         margin-top: -1%;
     }
+    .fc-today{
+        background-color: rgb(240, 240, 190) !important;
+    }
+    .fc-past{
+        background-color: rgb(202, 202, 202);
+    }
+    .fc-today:hover, .fc-future:hover{
+        cursor: pointer;
+        background-color:#009edf;
+        transition-duration: 0.4s;
+    }
+    
 </style>
     <div class="container pt-3">
       <div class="" id="calendar"></div>
@@ -39,12 +66,24 @@
             events:'/full-calender',
             dayRender: function(date, cell) {
                 if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-                cell.css('background-color', '#f1807d');
+                    cell.css('background-color', '#f1807d');
                 }
                 cell.css('border-color', '#444444');
+
+                cell.on('click', function() {
+                // Remove the 'selected' class from all cells
+                $('td.fc-selected').removeClass('selected');
+                // Add the 'selected' class to the clicked cell
+                cell.addClass('selected');
+            });
             },
             selectable:true,
             selectHelper: true,
+            selectAllow: function(selectInfo) {
+                var today = moment();
+                // Only allow dates in the future
+                return selectInfo.start.isSameOrAfter(today);
+            },
             selectConstraint: {
                 start: '00:00', // Start at midnight
                 end: '24:00', // End at midnight the next day
@@ -141,21 +180,22 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="appointmentModalLabel">BU-Care Appointment Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointment</p>
+                    <button type="butto" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <div class="col pb-2">
-                                        <button type="button" class="btn btn-primary float-end" onclick="showAM()">AM</button>
+                        <div class="row row-cols-lg-2 rol-cols-md-1"><!-- MODAL DIV -->
+                            <div class="col-lg-3 col-md-12">
+                                <!-- APPOINTMENT TIME SELECT -->
+                                <div class="row row-cols-lg-2 justify-content-center">
+                                    <div class="col-lg-6 col-md-3 pb-2">
+                                        <button type="button" class="btn btn-primary float-lg-end float-md-start" id="ambtn" onclick="showAM()" disabled>AM</button>
                                     </div>
-                                    <div class="col pb-2">
-                                         <button type="button" class="btn btn-primary float-start" onclick="showPM()">PM</button>
+                                    <div class="col-lg-6 col-md-3 pb-2">
+                                         <button type="button" class="btn btn-primary float-lg-start float-md-end" id="pmbtn" onclick="showPM()">PM</button>
                                     </div>
                                   </div>
                                   <table class="table table-bordered">
@@ -170,9 +210,10 @@
                                             $start_am = strtotime('8:00 AM');
                                             $end_am = strtotime('11:45 AM');
                                             while ($start_am <= $end_am) {
-                                                echo "<tr class='am'>";
-                                                echo "<td><a id='' href='#' onClick='DateForm(\"" . date('g:i A', $start_am) . "\"); return false;' >" . date('g:i A', $start_am) . "</a></td>";
-                                                echo "<td>" . date('g:i', $start_am) . " - " . date('g:i A', strtotime('+15 minutes', $start_am)) . "</td>";
+                                                $time = date('g:i A', $start_am);
+                                                echo "<tr class='am t-time' data-time='$time' onClick='handleTimeClick(this);'>";
+                                                echo "<td>$time</td>";
+                                                echo "<td>" .date('g:i', $start_am) . " - " . date('g:i A', strtotime('+15 minutes', $start_am)) . "</td>";
                                                 echo "</tr>";
                                                 $start_am = strtotime('+15 minutes', $start_am);
                                             }
@@ -180,20 +221,22 @@
                                             $start_pm = strtotime('1:00 PM');
                                             $end_pm = strtotime('4:45 PM');
                                             while ($start_pm <= $end_pm) {
-                                                echo "<tr class='pm' style='display: none'>";
-                                                echo "<td><a href='#' onClick='alert(\"You clicked on " . date('g:i A', $start_pm) . "\"); return false;'>" . date('g:i A', $start_pm) . "</a></td>";
-                                                echo "<td>" . date('g:i', $start_pm) . " - " . date('g:i A', strtotime('+15 minutes', $start_pm)) . "</td>";
+                                                $time = date('g:i A', $start_pm);
+                                                echo "<tr class='pm t-time' data-time='$time' onClick='handleTimeClick(this);' style='display:none;'>";
+                                                echo "<td>$time</td>";
+                                                echo "<td>" .date('g:i', $start_pm) . " - " . date('g:i A', strtotime('+15 minutes', $start_pm)) . "</td>";
                                                 echo "</tr>";
                                                 $start_pm = strtotime('+15 minutes', $start_pm);
                                             }
                                         ?>
                                             <script>
-                                                function DateForm(time) {
-                                                    var appointmentTimeInput = document.getElementById("appointmentTime");
-                                                    appointmentTimeInput.value = time;
+                                                function handleTimeClick(row) {
+                                                    const time = row.getAttribute('data-time');
+                                                    document.getElementById('appointmentTime').value = time;  // set the input value to the clicked time
+                                                    const rows = document.querySelectorAll('.t-time');
+                                                    rows.forEach((r) => r.classList.remove('selected'));  // remove the 'selected' class from all rows
+                                                    row.classList.add('selected');  // add the 'selected' class to the clicked row
                                                 }
-
-
                                                 function showAM() {
                                                     document.querySelectorAll("#time-slots tr").forEach(function(e) {
                                                         e.style.display = "none";
@@ -201,6 +244,9 @@
                                                     document.querySelectorAll("#time-slots .am").forEach(function(e) {
                                                         e.style.display = "";
                                                     });
+
+                                                    document.getElementById('ambtn').disabled = true;
+                                                    document.getElementById('pmbtn').disabled = false;
                                                 }
 
                                                 function showPM() {
@@ -210,91 +256,111 @@
                                                     document.querySelectorAll("#time-slots .pm").forEach(function(e) {
                                                         e.style.display = "";
                                                     });
+
+                                                    document.getElementById('ambtn').disabled = false;
+                                                    document.getElementById('pmbtn').disabled = true;
                                                 }
                                             </script>
                                     </tbody>
                                   </table>
                                 </div>
-                            <div class="col-md">
+
+                            <!-- APPOINTMENT DETAILS -->
+                            <div class="col-lg-9 col-md-12">
                                 <form>
                                     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
-                                        <div class="col-lg-7 col-md-12 p-2 border-lg-end-0">
-                                            <h5>Complaints/Reason for Appointments</h5>
-                                            <div class="d-flex flex-row checkboxes">
-                                                <div class="col-md-4 p-2">
-                                                    <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_Headache">
-                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                            <label class="form-check-label" for="FH_Headache">
-                                                                Headache
-                                                            </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                    <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_Dizziness">
-                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                            <label class="form-check-label" for="FH_Dizziness">
-                                                                Dizziness
-                                                            </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                    <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_Stomachache">
-                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
-                                                            <label class="form-check-label" for="FH_Stomachache">
-                                                                Stomachache
-                                                            </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                </div>
-                                                <div class="col-md-4 p-2">
-                                                    <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_Nausea">
-                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                            <label class="form-check-label" for="FH_Nausea">
-                                                                Nausea
-                                                            </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                    <div class="form-check">
-                                                        <input type="hidden" value="0" name="FH_Consiousness">
-                                                        <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                            <label class="form-check-label" for="FH_Consiousness">
-                                                                Loss of Consiousness
-                                                            </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                </div>
-                                            </div>
-                                            <div class="form-check">
-                                                <div class="col-sm" style="margin-left: 8px; margin-top: -7px;">
-                                                <input type="hidden" value="0" name="FH_Others">
-                                                <input class="form-check-input" type="checkbox" value="1" name="FH_Others">
-                                                    <label for="FH_Others" class="form-check-label">
-                                                        Others 
-                                                        <input type="text" class="form-control" id="appointmentTitle">
-                                                    </label>    
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
+                                        <div class="form-group col-lg-6 col-md-12">
+                                            <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
+                                            <input type="text" class="form-control fw-bold" id="appointmentDate" readonly>
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-12">
+                                            <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
+                                            <input type="text" class="form-control fw-bold" id="appointmentTime" placeholder="Select Time" readonly>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="appointmentDate" class="col-form-label">Date:</label>
-                                        <input type="text" class="form-control" id="appointmentDate" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="appointmentTime" class="col-form-label">Time:</label>
-                                        <input type="text" class="form-control" id="appointmentTime" placeholder="Select Time" readonly>
-                                    </div>
+                                    <div class="col-lg-12 p-2 border-lg-end-0">
+                                        <h5>Complaints/Reason for Appointments</h5>
+                                        <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
+                                            <div class="col-lg-6 col-md-12 p-2">
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Headache">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
+                                                        <label class="form-check-label" for="FH_Headache">
+                                                            Headache
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Dizziness">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                                        <label class="form-check-label" for="FH_Dizziness">
+                                                            Dizziness
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Stomachache">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
+                                                        <label class="form-check-label" for="FH_Stomachache">
+                                                            Stomachache
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 p-2">
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Nausea">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
+                                                        <label class="form-check-label" for="FH_Nausea">
+                                                            Nausea
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Consiousness">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                                        <label class="form-check-label" for="FH_Consiousness">
+                                                            Loss of Consiousness
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="form-check">
+                                                    <input type="hidden" value="0" name="FH_Consiousness">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                                        <label class="form-check-label" for="FH_Consiousness">
+                                                            Medical Certificate
+                                                        </label>
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="hidden" value="0" name="FH_Others">
+                                                <label for="FH_Others" class="form-check-label">
+                                                    Others 
+                                                    <input type="text" class="form-control" id="appointmentTitle">
+                                                </label>
+                                            </div>
+                                        </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" id="appointmentDescription"></textarea>
+                                        <textarea class="form-control" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
                                     </div>
+                                    <script>
+                                        var textarea = document.getElementById('appointmentDescription');
+
+                                        textarea.addEventListener('input', function() {
+                                        this.style.height = 'auto';
+                                        this.style.height = this.scrollHeight + 'px';
+                                        });
+                                    </script>
                                     <div class="form-group">
                                         <label for="password" class="col-form-label">Password:</label>
                                         <input type="password" class="form-control" id="password">
                                     </div>
+                                    <div class="modal-footer mt-4 align-items-end">
+                                        <button type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
                                 </form>
                             </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
+                                
                         </div>
                     </div>
                 </div>
