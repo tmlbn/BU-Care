@@ -18,19 +18,17 @@
                     </header>    
                 </div>
             </div>
-<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-2">
-    @csrf
-
-        <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
-            <div class="col-sm col-lg-4">
+            <form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-2">
+            @csrf
+            <div class="col-md-3">
                 <p class="h6">Course/Grade/Year</p>
                 <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div>
-            <div class="col-sm col-lg-4">
+            <div class="col-md-3">
                 <p class="h6">Unit</p>
                 <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div> 
-        </div>   
+        
             <div class="d-flex flex-row">
             </div>
             <div class="col-md-3">
@@ -72,8 +70,8 @@
             <div class="col-md-3">
                 <label for="validationDefault07" class="form-label">Age</label>
                 <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->age }}" readonly>
-             </div>
-        <h5>Parents</h5>
+            </div>
+                <span class="h5 mt-4" style="margin-bottom: -1%;">Parents</span>
             <div class="col-md-4">
                 <label for="validationDefault07" class="form-label">Father's Name</label>
                 <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
@@ -98,64 +96,61 @@
                 <label for="validationDefault07" class="form-label">Contact Number</label>
                 <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
-                <h5>Incase of Emergency please notify</h5>
-                <div class="col-md-6">
-                    <label for="validationDefault15" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="validationDefault15" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="validationDefault16" class="form-label">Contact Number</label>
-                    <input type="text" class="form-control" id="validationDefault16" required>
-                </div>
-                
-            <h5>Illness</h5>    
-
-                <!--Illness-->
-            <div class="mx-auto row row-cols-lg-2 row-cols-md-1 align-items-center"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
-                <div class="col-lg-12 p-2 border border-dark"> 
+                <span class="h5 mt-4" style="margin-bottom: -1%;">Incase of Emergency please notify</span>
+            <div class="col-md-6">
+                <label for="validationDefault15" class="form-label">Name</label>
+                <input type="text" class="form-control" id="validationDefault15" required>
+            </div>
+            <div class="col-md-6">
+                <label for="validationDefault16" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="validationDefault16" required>
+            </div>
+        </div>
+        <!--Illness-->
+        <div class="mt-3 row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
+            <div class="col-lg-12 p-2 border border-dark"> 
+                <span class="fs-4">Illness</span> 
                 <!--Column 1-->    
-                    <div class="d-flex flex-row">
-                        <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Hypertension
-                                    </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Diabetes
-                                    </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Kidney Disease
-                                    </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Measles
-                                    </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Diphteria
-                                    </label>
-                            </div>
-                        </div>    
-                    
-                        <!--Column 2-->
-                    
+                <div class="d-flex flex-row">
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    Asthma
+                                    Hypertension
                                 </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Diabetes
+                                </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Kidney Disease
+                                </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Measles
+                                </label>
+                        </div>
+                            <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                     Diphteria
+                                </label>
+                        </div>
+                    </div>    
+                    <!--Column 2-->
+                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Asthma
+                            </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
@@ -179,19 +174,19 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {{ $patient->medicalRecord->allergic == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    Allergy 
+                                       Allergy 
                                 </label>
                                 <input type="text" class="form-control form-control-sm" value="{{ $patient->medicalRecord->allergyDetails }}" readonly disabled>
                             </div>
                         </div>
-                    </div> 
+                     </div> 
                     <!--Column 3--> 
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                 <label class="form-check-label" for="flexCheckDefault">
                                     Mumps
-                                </label>
+                                   </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
@@ -202,11 +197,11 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    Chicken Pox
+                                        Chicken Pox
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Tuberculosis
                                 </label>
@@ -224,37 +219,50 @@
                 </div>
             </div>    
         </div>
-    </div>
 
-    <div class="col-md-12 border border-dark">
-        <header class="text-center">
-            <h3 class="pt-2">EXAMINATIONS</h3>
-        </header>    
-    </div>    
-    <div class="table">
-        <table id="data_table" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temperature/Blood Pressure</th>
-                    <th>Weight</th>
-                    <th>Height</th>
-                    <th>History and Physical Examination</th>
-                    <th>Physician Directions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                </tr>
-            </tbody>
+
+        <div class="d-flex justify-content-center">  
+            <div class="col border border-dark">
+                <header class="text-center">
+                    <h1 class="pt-1">EXAMINATIONS</h1>
+                </header>    
+            </div>
+        </div>
+        <div class="table">
+            <table id="data_table" class="table table-striped table-bordered border-dark table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temperature</th>
+                        <th>Blood Pressure</th>
+                        <th>Weight</th>
+                        <th>Height</th>
+                        <th>History and Physical Examination</th>
+                        <th>Physician Directions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td contenteditable="true">wew</td>
+                        <td contenteditable="true">wewew</td>
+                        <td contenteditable="true">wewewew</td>
+                        <td contenteditable="true">wewewewew</td>
+                        <td contenteditable="true">wewewewewew</td>
+                        <td contenteditable="true">wewewewewewew</td>
+                        <td contenteditable="true">wewewewewewewew</td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">wew</td>
+                        <td contenteditable="true">wewew</td>
+                        <td contenteditable="true">wewewew</td>
+                        <td contenteditable="true">wewewewew</td>
+                        <td contenteditable="true">wewewewewew</td>
+                        <td contenteditable="true">wewewewewewew</td>
+                        <td contenteditable="true">wewewewewewewew</td>
+                    </tr>
+                </tbody>
             </table>
-            <!-- NEED INPUT FOR ACTUAL CONSULTATION -->
-    </div>
+                <!-- NEED INPUT FOR ACTUAL CONSULTATION -->
+        </div>
 
 @endsection

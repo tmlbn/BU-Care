@@ -867,7 +867,6 @@
         
         <p class="text-center fw-bold pt-1" style="user-select:none;">---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------</p>
     <!-- START OF PHYSICIAN INPUT -->
-<<<<<<< HEAD
         <!-- VITAL SIGNS -->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
@@ -1253,7 +1252,6 @@
             </div>
         </div>
 
-=======
         <!-- VITAL SIGNS --> 
     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
         <div class="col-lg-7 col-md-12 p-2 border border-dark border-lg-end-0">
