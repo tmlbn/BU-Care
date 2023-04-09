@@ -871,70 +871,387 @@
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
                 <div class="container">
-                    <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
-                        <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
-                        <div class="col-xl-5 col-lg-6">
-                            <p class="h6">Campus</p>
-                            <select id="campusSelect" name="campusSelect" class="form-select" required>
-                                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                                <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
-                                <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
-                                <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
-                                <option value="College of Education" class="alternate">College of Education</option>
-                                <option value="College of Engineering">College of Engineering</option>
-                                <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
-                                <option value="College of Medicine">College of Medicine</option>
-                                <option value="College of Nursing" class="alternate">College of Nursing</option>
-                                <option value="College of Science">College of Science</option>
-                                <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
-                                <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
-                                <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
-                                <option value="Gubat Campus">Gubat Campus</option>
-                                <option value="Polangui Campus" class="alternate">Polangui Campus</option>
-                                <option value="Tabaco Campus">Tabaco Campus</option>
-                            </select>
-                            <span class="text-danger"> 
-                                @error('campusSelect') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>
-                        </div>
-                        <div class="col-xl-5 col-lg-6 col-md-6">
-                            <p class="h6">Course</p>
-                            <select id="courseSelect" name="courseSelect" class="form-select" required>
-                                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                                <option>Information Technology</option>
-                                <option></option>
-                                <option></option>
-                            </select>
-                            <span class="text-danger"> 
-                                @error('courseSelect') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>
-                        </div> 
-                        <div class="col-xl-2 col-lg-12 col-md-12">
-                            <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
+                    <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
+                    <div class="mx-auto p-3 row row-cols-lg-4 row-cols-md-2 mt-2 justify-content-center">
+                        <div class="col-xl-3 p-3 ">
+                            <div class="form-group row">
+                            <label for="bloodPressure" class="form-label h6" style="white-space: nowrap;">BP:</label>
                                 <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" placeholder="YYYY" maxlength="4" required>
+                                    <input type="text" class="form-control me-1" id="bloodPressure" name="bloodPressure"  maxlength="4" required>
                                         <span class="text-danger"> 
-                                            @error('schoolYearStart') 
+                                            @error('bloodPressure') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
-                                    <span class="fs-6">-</span>
-                                    <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" placeholder="YYYY" maxlength="4" required>
+                                    <span class="fs-6">/</span>
+                                    <input type="text" class="form-control ms-2" id="bloodPressure2" name="bloodPressure2" maxlength="4" required> 
+                                    <p class="pt-3" style="margin-left: 4px;">mmHg</p>
                                         <span class="text-danger"> 
-                                            @error('schoolYearEnd') 
+                                            @error('bloodPressure2') 
                                             {{ $message }} 
                                             @enderror
-                                        </span>
+                                        </span> 
                                 </div>
+                            </div>                   
+                            <div class="form-group row">
+                            <label for="pulseRate" class="form-label h6">PR:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" class="form-control me-1" id="pulseRate" name="pulseRate"  maxlength="4" required>
+                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                    <span class="text-danger"> 
+                                        @error('pulseRate') 
+                                        {{ $message }} 
+                                        @enderror
+                                    </span>
+                                </div>
+                            </div>                 
+                            <div class="form-group row">
+                            <label for="respirationRate" class="form-label h6">RR:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" class="form-control me-1" id="respirationRate" name="respirationRate"  maxlength="4" required>
+                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                    <span class="text-danger"> 
+                                        @error('respirationRate') 
+                                        {{ $message }} 
+                                        @enderror
+                                    </span>
+                                </div>
+                            </div>                       
+                            <div class="form-group row">
+                            <label for="temp" class="form-label h6">Temp:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" class="form-control me-1" id="temp" name="temp"  maxlength="4" required>
+                                <p class="pt-3" style="margin-left: 4px;">°C</p>
+                                    <span class="text-danger"> 
+                                        @error('temp') 
+                                        {{ $message }} 
+                                        @enderror
+                                    </span>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="col-xl-3 p-3 ">
+                            <div class="form-group row">
+                                <label for="height" class="form-label h6">Height</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="height" name="height"  maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">meters</p>
+                                        <span class="text-danger"> 
+                                            @error('height') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                    </div>
+                                </div>  
+                                <div class="form-group row">
+                                    <label for="weight" class="form-label h6">Weight</label>
+                                    <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                        <input type="text" class="form-control me-1" id="weight" name="weight"  maxlength="4" required>
+                                        <p class="pt-3" style="margin-left: 4px;">kgs</p>
+                                            <span class="text-danger"> 
+                                                @error('weight') 
+                                                {{ $message }} 
+                                                @enderror
+                                            </span>
+                                        </div>
+                                    </div>  
+                                    <div class="form-group row">
+                                        <label for="BMI" class="form-label h6">BMI</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="BMI" name="BMI"  maxlength="4" required>
+                                                <span class="text-danger"> 
+                                                    @error('BMI') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                            </div>
+                                        </div>                                 
                         </div>   
                     </div>   
                 </div>
             </div>
         </div>
+        <!-- FITNESS CERTIFICATION -->
+        <div class="mx-auto row row-cols-lg-1 mt-2">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4 p-3 border border-dark">
+                        <h5 class="text-center">CATEGORY</h5>
+                    </div>
+                    <div class="col-md-8 p-3 border border-dark">
+                        <h5 class="text-center">PHYSICAL EXAMINATION FINDINGS</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">1. General Appearance</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_GA">
+                            <label class="form-check-label" for="PhysicalExam_GA">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_GA2">
+                            <label class="form-check-label" for="PhysicalExam_GA2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_GA2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">2. HEENT</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_HEENT">
+                            <label class="form-check-label" for="PhysicalExam_HEENT">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_HEENT2">
+                            <label class="form-check-label" for="PhysicalExam_HEENT2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_HEENT2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">3. Chest & Lungs</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_C&L">
+                            <label class="form-check-label" for="PhysicalExam_C&L">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_C&L2">
+                            <label class="form-check-label" for="PhysicalExam_C&L2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_C&L2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">4. Cardiovascular</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_cardio">
+                            <label class="form-check-label" for="PhysicalExam_cardio">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_cardio2">
+                            <label class="form-check-label" for="PhysicalExam_cardio2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_cardio2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">5. Abdomen</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_abdomen">
+                            <label class="form-check-label" for="PhysicalExam_abdomen">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_abdomen2">
+                            <label class="form-check-label" for="PhysicalExam_abdomen2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_abdomen2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">6. Genito urinary</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_genito">
+                            <label class="form-check-label" for="PhysicalExam_genito">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_genito2">
+                            <label class="form-check-label" for="PhysicalExam_genito2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_genito2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">7. Musculoskeletal</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_musculoskeletal">
+                            <label class="form-check-label" for="PhysicalExam_musculoskeletal">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_musculoskeletal2">
+                            <label class="form-check-label" for="PhysicalExam_musculoskeletal2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_musculoskeletal2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">8. Nervous System</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_nervousSystem">
+                            <label class="form-check-label" for="PhysicalExam_nervousSystem">
+                                Normal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_nervousSystem2">
+                            <label class="form-check-label" for="PhysicalExam_nervousSystem2">
+                                Other findings
+                                <input type="text" class="form-control" id="PhysicalExam_nervousSystem2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 p-1 border border-dark">
+                        <p class="pt-3">9. Other Significant Findings:</p>
+                    </div>
+                    <div class="col-md-8 p-1 border border-dark">
+                        <div class="form-group">
+                            <textarea class="form-control" id="PhysicalExam_others" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="col-md-12 p-3 border border-dark">
+                    <h5 class="pl-6">FITNESS CERTIFICATION</h5>
+                        <div class="d-flex flex-row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="fitness" type="radio" id="fitness_Fit" value="fitness_Fit">
+                                <label class="form-check-label" for="fitness_Fit">
+                                    Fit for Enrollment
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="fitness_notFit">
+                                <label class="form-check-label" for="fitness_notFit">
+                                    Not Fit for Enrollment
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="fitness_Pending">
+                                <label class="form-check-label" for="fitness_Pending">
+                                    Pending
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group row pb-2" style="margin-top: -8px;">
+                                    <label for="fit_Reason" class="col-sm-2 col-form-label">Reason</label>
+                                    <div class="col-sm-10">
+                                      <input type="text" id="fit_Reason" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>                 
+            </div>
+            <!-- IMPRESSION -->
+                <div class="form-control pt-3 border border-dark">
+                    <h5>IMPRESSION</h5>
+                    <textarea class="form-control" id="Impression" rows="3"></textarea>
+                </div>
+            <!-- SIGNATURES -->
+                <div class="col-md-12 p-3 border border-dark">
+                    <div class="flex-row justify-content-center">
+                        <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                            <div class="mb-3 col-md-2">
+                                <label for="MR_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
+                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                            </div>
+                            <div class="col-md-3 pt-2">
+                                <label for="MR_licenseNumber">License Number</label>
+                                <input type="text" class="form-control" id="signatures">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="MR_PTRNumber">PTR Number</label>
+                                <input type="text" class="form-control" id="signatures">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="MR_DateofExam">Date of Examination</label>
+                                <input type="text" class="form-control" id="signatures">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+        
+        <p class="text-center fw-bold pt-1" style="user-select:none;"> FOR BICOL UNIVERSITY HEALTH SERVICE PHYSICIAN'S VALIDATION ONLY </p>
+
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+
+        <div class="col-md-12 p-3 border border-dark">
+            <div class="flex-row justify-content-center">
+                <p class="fs-5 fst-italic text-center">The above findings are certified correct and are based on the physical examination, diagnostic results available, and the disclosure of the student's/parent's pertinent medical history at the time and date of examination </p>
+                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                    <div class="mb-3 col-md-2">
+                        <label for="MR_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
+                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                    </div>
+                    <div class="col-md-3 pt-2">
+                        <label for="MR_licenseNumber">License Number</label>
+                        <input type="text" class="form-control" id="signatures">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="MR_PTRNumber">PTR Number</label>
+                        <input type="text" class="form-control" id="signatures">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="MR_DateofExam">Date of Examination</label>
+                        <input type="text" class="form-control" id="signatures">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
