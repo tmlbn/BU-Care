@@ -9,8 +9,14 @@
 </style>
 
 @section('content')
+
+<!-- Set timezone to Philippines -->
+<?php
+    date_default_timezone_set('Asia/Manila');
+?>
+
     <div class="container my-2 bg-light w-20 text-dark p-5 headMargin checkboxes">
-        <div class="row">
+        <div class="row g-3 pt-2">
             <div class="d-flex justify-content-center">  
                 <div class="col border border-dark">
                     <header class="text-center">
@@ -18,8 +24,6 @@
                     </header>    
                 </div>
             </div>
-            <form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-2">
-            @csrf
             <div class="col-md-3">
                 <p class="h6">Course/Grade/Year</p>
                 <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
@@ -32,78 +36,78 @@
             <div class="d-flex flex-row">
             </div>
             <div class="col-md-3">
-                <label for="MR_lastName" class="form-label h6">Last Name</label>
-                <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" value="{{ $patient->medicalRecord->lastName }}" readonly>
+                <label for="MPR_lastName" class="form-label h6">Last Name</label>
+                <input type="text" class="form-control" id="MPR_lastName" name="MPR_lastName" value="{{ $patient->medicalRecord->lastName }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="MR_firstName" class="form-label h6">First Name</label>
-                <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" value="{{ $patient->medicalRecord->firstName }}" readonly>
+                <label for="MPR_firstName" class="form-label h6">First Name</label>
+                <input type="text" class="form-control" id="MPR_firstName" name="MPR_firstName" value="{{ $patient->medicalRecord->firstName }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="MR_middleName" class="form-label h6">Middle Name</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->middleName }}" readonly>
+                <label for="MPR_middleName" class="form-label h6">Middle Name</label>
+                <input type="text" class="form-control" id="MPR_middleName" name="MPR_middleName" value="{{ $patient->medicalRecord->middleName }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="MR_middleName" class="form-label h6">Birthday</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->birth_month }}/{{ $patient->birth_date }}/{{ $patient->birth_year }}" readonly>
+                <label for="MPR_birthday" class="form-label h6">Birthday</label>
+                <input type="text" class="form-control" id="MPR_birthday" name="MPR_birthday" value="{{ $patient->birth_month }}/{{ $patient->birth_date }}/{{ $patient->birth_year }}" readonly>
             </div>
             <div class="col-md-9">
-                <label for="MR_middleName" class="form-label h6">Address</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
+                <label for="MPR_address" class="form-label h6">Address</label>
+                <input type="text" class="form-control" id="MPR_address" name="MPR_address" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="MR_middleName" class="form-label h6">Religion</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->religion }}" readonly>
+                <label for="MPR_religion" class="form-label h6">Religion</label>
+                <input type="text" class="form-control" id="MPR_religion" name="MPR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="validationDefault07" class="form-label">Contact Number(s)</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
+                <label for="MPR_contact" class="form-label">Contact Number(s)</label>
+                <input type="text" class="form-control" id="contact" name="contact" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="validationDefault07" class="form-label">Civil Status</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
+                <label for="MPR_civilStatus" class="form-label">Civil Status</label>
+                <input type="text" class="form-control" id="MPR_civilStatus" name="MPR_civilStatus" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="validationDefault07" class="form-label">Sex</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->sex }}" readonly>
+                <label for="MPR_sex" class="form-label">Sex</label>
+                <input type="text" class="form-control" id="MPR_sex" name="MPR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
             </div>
             <div class="col-md-3">
-                <label for="validationDefault07" class="form-label">Age</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->age }}" readonly>
+                <label for="MPR_age" class="form-label">Age</label>
+                <input type="text" class="form-control" id="MPR_age" name="MPR_age" value="{{ $patient->medicalRecord->age }}" readonly>
             </div>
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Parents</span>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Father's Name</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
+                <label for="MPR_fatherName" class="form-label">Father's Name</label>
+                <input type="text" class="form-control" id="MPR_fatherName" name="MPR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
             </div>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Office Address</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
+                <label for="MPR_fatherOffice" class="form-label">Office Address</label>
+                <input type="text" class="form-control" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
             </div>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+                <label for="MPR_fatherContact" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="MPR_fatherContact" name="MPR_fatherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Mother's Name</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->motherName }}" readonly>
+                <label for="MPR_motherName" class="form-label">Mother's Name</label>
+                <input type="text" class="form-control" id="MPR_motherName" name="MPR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
             </div>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Office Address</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
+                <label for="MPR_motherOffice" class="form-label">Office Address</label>
+                <input type="text" class="form-control" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
             </div>
             <div class="col-md-4">
-                <label for="validationDefault07" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+                <label for="MPR_motherContact" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="MPR_motherContact" name="MPR_motherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Incase of Emergency please notify</span>
             <div class="col-md-6">
-                <label for="validationDefault15" class="form-label">Name</label>
-                <input type="text" class="form-control" id="validationDefault15" required>
+                <label for="MPR_emergencyName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="MPR_emergencyName" name="MPR_emergencyName" readonly>
             </div>
             <div class="col-md-6">
-                <label for="validationDefault16" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="validationDefault16" required>
+                <label for="MPR_emergencyContact" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="MPR_emergencyContact" name="MPR_emergencyContact" readonly>
             </div>
         </div>
         <!--Illness-->
@@ -172,11 +176,11 @@
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {{ $patient->medicalRecord->allergic == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
                                 <label class="form-check-label" for="flexCheckDefault">
                                        Allergy 
                                 </label>
-                                <input type="text" class="form-control form-control-sm" value="{{ $patient->medicalRecord->allergyDetails }}" readonly disabled>
+                                <input type="text" class="form-control form-control-sm">
                             </div>
                         </div>
                      </div> 
@@ -208,11 +212,11 @@
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {{ $patient->medicalRecord->allergic == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Others 
                                 </label>
-                                <input type="text" class="form-control form-control-sm" value="{{ $patient->medicalRecord->allergyDetails }}" readonly disabled>
+                                <input type="text" class="form-control form-control-sm" value="">
                             </div>
                         </div>
                     </div>
@@ -220,16 +224,24 @@
             </div>    
         </div>
 
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
 
-        <div class="d-flex justify-content-center">  
+        <div class="d-flex justify-content-center pt-3">  
             <div class="col border border-dark">
                 <header class="text-center">
                     <h1 class="pt-1">EXAMINATIONS</h1>
                 </header>    
             </div>
         </div>
-        <div class="table">
-            <table id="data_table" class="table table-striped table-bordered border-dark table-responsive table-hover">
+        <div class="table-responsive">
+            <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
+                @csrf
+            <table id="data_table" name="data_table" class="table table-striped table-bordered border-dark table-hover">       
+                <caption>Medical Patient Record of {{ $patient->medicalRecord->firstName }} {{ $patient->medicalRecord->middleName }} {{ $patient->medicalRecord->lastName }}</caption>       
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -242,27 +254,198 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td contenteditable="true">wew</td>
-                        <td contenteditable="true">wewew</td>
-                        <td contenteditable="true">wewewew</td>
-                        <td contenteditable="true">wewewewew</td>
-                        <td contenteditable="true">wewewewewew</td>
-                        <td contenteditable="true">wewewewewewew</td>
-                        <td contenteditable="true">wewewewewewewew</td>
-                    </tr>
-                    <tr>
-                        <td contenteditable="true">wew</td>
-                        <td contenteditable="true">wewew</td>
-                        <td contenteditable="true">wewewew</td>
-                        <td contenteditable="true">wewewewew</td>
-                        <td contenteditable="true">wewewewewew</td>
-                        <td contenteditable="true">wewewewewewew</td>
-                        <td contenteditable="true">wewewewewewewew</td>
+                    <!-- Need loop to print every record of the patient -->
+                    @foreach($medicalPatientRecords as $record)
+                        <tr>
+                            <td contenteditable="false" >{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                            <td contenteditable="false">{{ $record->temperature }}</td>
+                            <td contenteditable="false">{{ $record->blood_pressure }}</td>
+                            <td contenteditable="false">{{ $record->weight }}</td>
+                            <td contenteditable="false">{{ $record->height }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ $record->historyPhysical_examinations }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ $record->physician_directions }}</td>
+                        </tr>
+                        @endforeach
+
+                    
+                    <tr id="newData" class="table-info border border-dark">
+                        <td contenteditable="true" id="table_date" name="table_date" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="{{ date("D, d F y") }}">{{ date('d-F-Y') }}</td>
+                        <td contenteditable="true" id="table_temperature" name="table_temperature"></td>
+                        <td contenteditable="true" id="table_bloodPressure" name="table_bloodPressure"></td>
+                        <td contenteditable="true" id="table_weight" name="table_weight"></td>
+                        <td contenteditable="true" id="table_height" name="table_height"></td>
+                        <td contenteditable="true" id="table_historyAndPhysicalExamination" name="table_historyAndPhysicalExamination" style="max-width: 100px;"></td>
+                        <td contenteditable="true" id="table_physicianDirections" name="table_physicianDirections" style="max-width: 100px;"></td>
                     </tr>
                 </tbody>
             </table>
-                <!-- NEED INPUT FOR ACTUAL CONSULTATION -->
+
+            <input type="hidden" id="studentID" name="studentID" value="{{ $patient->id }}">
+            <input type="hidden" id="date" name="date">
+            <input type="hidden" id="temperature" name="temperature">
+            <input type="hidden" id="bloodPressure" name="bloodPressure">
+            <input type="hidden" id="weight" name="weight">
+            <input type="hidden" id="height" name="height">
+            <input type="hidden" id="historyAndPhysicalExamination" name="historyAndPhysicalExamination">
+            <input type="hidden" id="physicianDirections" name="physicianDirections">
+        </div>
+        <span class="text-danger"> 
+            @error('studentID') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('date') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('temperature') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('bloodPressure') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('weight') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('height') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('historyAndPhysicalExamination')
+              {{ $message }}<br>
+            @enderror
+        </span>
+        <span class="text-danger"> 
+            @error('physicianDirections') 
+              {{ $message }}<br>
+            @enderror
+        </span>
+
+        <div class="row no-gutters justify-content-end pt-3 position-relative">
+            <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
+                <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#saveModal" onclick="confirmTable();">
+                    Submit
+                </button>
+            </div>
         </div>
 
+        <script>
+            function confirmTable() {
+                $('#data_table tbody tr').each(function(row, tr) {
+                    // Get the specific row by its id
+                    var row = $('#data_table tbody tr#newData');
+                    // Get the cells in the current row
+                    var cells = $(row).find('td');
+
+                    // Get the values in the cells of the current row
+                    var dateValue = cells.eq(0).text();
+                    var temperatureValue = cells.eq(1).text();
+                    var bloodPressureValue = cells.eq(2).text();
+                    var weightValue = cells.eq(3).text();
+                    var heightValue = cells.eq(4).text();
+                    var historyAndPhysicalExaminationValue = cells.eq(5).text();
+                    var physicianDirectionsValue = cells.eq(6).text();
+
+                    // Update the cells in the current row in the table you provided
+                    $('#confirm_date').text(dateValue);
+                    $('#confirm_temperature').text(temperatureValue);
+                    $('#confirm_bloodPressure').text(bloodPressureValue);
+                    $('#confirm_weight').text(weightValue);
+                    $('#confirm_height').text(heightValue);
+                    $('#confirm_historyAndPhysicalExamination').text(historyAndPhysicalExaminationValue);
+                    $('#confirm_physicianDirections').text(physicianDirectionsValue);
+
+                    // Update the value of hidden inputs to post
+                    $('#date').val(dateValue);
+                    $('#temperature').val(temperatureValue);
+                    $('#bloodPressure').val(bloodPressureValue);
+                    $('#weight').val(weightValue);
+                    $('#height').val(heightValue);
+                    $('#historyAndPhysicalExamination').val(historyAndPhysicalExaminationValue);
+                    $('#physicianDirections').val(physicianDirectionsValue);
+                });
+            }
+
+            $(document).ready(function() {
+                confirmTable();
+            });
+        </script>
+
+        <!-- Modal -->
+        <div class="modal fade modal-xl" id="saveModal" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" aria-labelledby="saveModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="saveModalLabel">Medical Patient Record</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                <div class="modal-body">
+                    <p class="fs-6 fw-bold">Please confirm if the data is correct.</p>
+                    
+                    <div class="table">
+                        <table id="confirm_data_table" class="table table-striped table-bordered border-dark table-responsive table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Temperature</th>
+                                    <th>Blood Pressure</th>
+                                    <th>Weight</th>
+                                    <th>Height</th>
+                                    <th>History and Physical Examination</th>
+                                    <th>Physician Directions</th>
+                                </tr>
+                            </thead>
+                            <tbody>                               
+                                <tr class="table-info border border-dark">
+                                    <td contenteditable="false" id="confirm_date" name="date" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="{{ date("D, M j Y") }}">{{ date('d-m-Y') }}</td>
+                                    <td contenteditable="false" id="confirm_temperature" name="temperature"></td>
+                                    <td contenteditable="false" id="confirm_bloodPressure" name="bloodPressure"></td>
+                                    <td contenteditable="false" id="confirm_weight" name="weight"></td>
+                                    <td contenteditable="false" id="confirm_height" name="height"></td>
+                                    <td contenteditable="false" id="confirm_historyAndPhysicalExamination" name="historyAndPhysicalExamination"></td>
+                                    <td contenteditable="false" id="confirm_physicianDirections" name="physicianDirections"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <div class="d-flex align-items-center my-auto mx-auto">
+                            <div class="input-group">
+                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                          <script>
+                            const passwordInput = document.getElementById('passwordInput');
+                            const togglePassword = document.getElementById('togglePassword');
+                            togglePassword.addEventListener('click', function() {
+                              const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                              passwordInput.setAttribute('type', type);
+                              togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                              togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                            });
+                          </script>
+                        <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
+                            <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Looks good!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 @endsection

@@ -54,6 +54,9 @@ class UserStudent extends Authenticatable
 
     public function medicalRecord(){
         return $this->hasOne(MedicalRecord::class, 'student_id');
-    }   
+    }
 
+    public function medicalPatientRecords(){
+        return $this->hasMany(MedicalPatientRecord::class, 'user_student_id');
+    }
 }
