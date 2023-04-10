@@ -877,17 +877,17 @@
                             <div class="form-group row">
                             <label for="bloodPressure" class="form-label h6" style="white-space: nowrap;">BP:</label>
                                 <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="bloodPressure" name="bloodPressure"  maxlength="4" required>
+                                    <input type="text" class="form-control me-1" id="VS_bp_systolic" name="VS_bp_systolic"  maxlength="4" required>
                                         <span class="text-danger"> 
-                                            @error('bloodPressure') 
+                                            @error('VS_bp_systolic') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
                                     <span class="fs-6">/</span>
-                                    <input type="text" class="form-control ms-2" id="bloodPressure2" name="bloodPressure2" maxlength="4" required> 
+                                    <input type="text" class="form-control ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" maxlength="4" required> 
                                     <p class="pt-3" style="margin-left: 4px;">mmHg</p>
                                         <span class="text-danger"> 
-                                            @error('bloodPressure2') 
+                                            @error('VS_bp_diastolic') 
                                             {{ $message }} 
                                             @enderror
                                         </span> 
@@ -896,10 +896,10 @@
                             <div class="form-group row">
                             <label for="pulseRate" class="form-label h6">PR:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="pulseRate" name="pulseRate"  maxlength="4" required>
+                                <input type="text" class="form-control me-1" id="VS_pulseRate" name="VS_pulseRate"  maxlength="4" required>
                                 <p class="pt-3" style="margin-left: 4px;">/minute</p>
                                     <span class="text-danger"> 
-                                        @error('pulseRate') 
+                                        @error('VS_pulseRate') 
                                         {{ $message }} 
                                         @enderror
                                     </span>
@@ -908,10 +908,10 @@
                             <div class="form-group row">
                             <label for="respirationRate" class="form-label h6">RR:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="respirationRate" name="respirationRate"  maxlength="4" required>
+                                <input type="text" class="form-control me-1" id="VS_respirationRate" name="VS_respirationRate"  maxlength="4" required>
                                 <p class="pt-3" style="margin-left: 4px;">/minute</p>
                                     <span class="text-danger"> 
-                                        @error('respirationRate') 
+                                        @error('VS_respirationRate') 
                                         {{ $message }} 
                                         @enderror
                                     </span>
@@ -920,10 +920,10 @@
                             <div class="form-group row">
                             <label for="temp" class="form-label h6">Temp:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="temp" name="temp"  maxlength="4" required>
+                                <input type="text" class="form-control me-1" id="VS_temp" name="VS_temp"  maxlength="4" required>
                                 <p class="pt-3" style="margin-left: 4px;">°C</p>
                                     <span class="text-danger"> 
-                                        @error('temp') 
+                                        @error('VS_temp') 
                                         {{ $message }} 
                                         @enderror
                                     </span>
@@ -934,10 +934,10 @@
                             <div class="form-group row">
                                 <label for="height" class="form-label h6">Height</label>
                                 <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="height" name="height"  maxlength="4" required>
+                                    <input type="text" class="form-control me-1" id="VS_height" name="VS_height"  maxlength="4" required>
                                     <p class="pt-3" style="margin-left: 4px;">meters</p>
                                         <span class="text-danger"> 
-                                            @error('height') 
+                                            @error('VS_height') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
@@ -946,10 +946,10 @@
                                 <div class="form-group row">
                                     <label for="weight" class="form-label h6">Weight</label>
                                     <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                        <input type="text" class="form-control me-1" id="weight" name="weight"  maxlength="4" required>
+                                        <input type="text" class="form-control me-1" id="VS_weight" name="VS_weight"  maxlength="4" required>
                                         <p class="pt-3" style="margin-left: 4px;">kgs</p>
                                             <span class="text-danger"> 
-                                                @error('weight') 
+                                                @error('VS_weight') 
                                                 {{ $message }} 
                                                 @enderror
                                             </span>
@@ -958,9 +958,9 @@
                                     <div class="form-group row">
                                         <label for="BMI" class="form-label h6">BMI</label>
                                         <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                            <input type="text" class="form-control me-1" id="BMI" name="BMI"  maxlength="4" required>
+                                            <input type="text" class="form-control me-1" id="VS_BMI" name="VS_BMI"  maxlength="4" required>
                                                 <span class="text-danger"> 
-                                                    @error('BMI') 
+                                                    @error('VS_BMI') 
                                                     {{ $message }} 
                                                     @enderror
                                                 </span>
@@ -988,16 +988,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_GA">
-                            <label class="form-check-label" for="PhysicalExam_GA">
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay">
+                            <label class="form-check-label" for="PE_GenAppearance_Okay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_GA2">
-                            <label class="form-check-label" for="PhysicalExam_GA2">
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others">
+                            <label class="form-check-label" for="PE_GenAppearance_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_GA2">
+                                <input type="text" class="form-control" id="PE_GenAppearance_othersComment">
                             </label>
                         </div>
                     </div>
@@ -1008,16 +1008,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_HEENT">
-                            <label class="form-check-label" for="PhysicalExam_HEENT">
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay">
+                            <label class="form-check-label" for="PE_HEENT_Okay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_HEENT2">
-                            <label class="form-check-label" for="PhysicalExam_HEENT2">
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others">
+                            <label class="form-check-label" for="PE_HEENT_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_HEENT2">
+                                <input type="text" class="form-control" id="PE_HEENT_othersComment">
                             </label>
                         </div>
                     </div>
@@ -1028,16 +1028,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_C&L">
-                            <label class="form-check-label" for="PhysicalExam_C&L">
+                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&LungsOkay">
+                            <label class="form-check-label" for="PE_Chest&LungsOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_C&L2">
-                            <label class="form-check-label" for="PhysicalExam_C&L2">
+                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&Lungsothers">
+                            <label class="form-check-label" for="PE_Chest&Lungsothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_C&L2">
+                                <input type="text" class="form-control" id="PE_Chest&LungsothersComment">
                             </label>
                         </div>
                     </div>
@@ -1048,16 +1048,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_cardio">
-                            <label class="form-check-label" for="PhysicalExam_cardio">
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay">
+                            <label class="form-check-label" for="PE_CardioOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_cardio2">
-                            <label class="form-check-label" for="PhysicalExam_cardio2">
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers">
+                            <label class="form-check-label" for="PhysicalExam_cardioothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_cardio2">
+                                <input type="text" class="form-control" id="PhysicalExam_CardioComment">
                             </label>
                         </div>
                     </div>
@@ -1068,14 +1068,14 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_abdomen">
-                            <label class="form-check-label" for="PhysicalExam_abdomen">
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay">
+                            <label class="form-check-label" for="PhysicalExam_AbdomenOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_abdomen2">
-                            <label class="form-check-label" for="PhysicalExam_abdomen2">
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers">
+                            <label class="form-check-label" for="PE_AbdomenComment">
                                 Other findings
                                 <input type="text" class="form-control" id="PhysicalExam_abdomen2">
                             </label>
@@ -1088,16 +1088,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_genito">
-                            <label class="form-check-label" for="PhysicalExam_genito">
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay">
+                            <label class="form-check-label" for="PE_GenitoOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_genito2">
-                            <label class="form-check-label" for="PhysicalExam_genito2">
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers">
+                            <label class="form-check-label" for="PE_Genitoothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_genito2">
+                                <input type="text" class="form-control" id="PE_GenitoComment">
                             </label>
                         </div>
                     </div>
@@ -1108,16 +1108,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_musculoskeletal">
-                            <label class="form-check-label" for="PhysicalExam_musculoskeletal">
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay">
+                            <label class="form-check-label" for="PE_MusculoskeletalOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_musculoskeletal2">
-                            <label class="form-check-label" for="PhysicalExam_musculoskeletal2">
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers">
+                            <label class="form-check-label" for="PE_Musculoskeletalothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_musculoskeletal2">
+                                <input type="text" class="form-control" id="PE_MusculoskeletalComment">
                             </label>
                         </div>
                     </div>
@@ -1128,16 +1128,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_nervousSystem">
-                            <label class="form-check-label" for="PhysicalExam_nervousSystem">
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay">
+                            <label class="form-check-label" for="PE_NervousSystem">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PhysicalExam" id="PhysicalExam_nervousSystem2">
-                            <label class="form-check-label" for="PhysicalExam_nervousSystem2">
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers">
+                            <label class="form-check-label" for="PE_NervousSystemothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_nervousSystem2">
+                                <input type="text" class="form-control" id="PE_NervousSystemComment">
                             </label>
                         </div>
                     </div>
@@ -1148,7 +1148,7 @@
                     </div>
                     <div class="col-md-8 p-1 border border-dark">
                         <div class="form-group">
-                            <textarea class="form-control" id="PhysicalExam_others" rows="2"></textarea>
+                            <textarea class="form-control" id="PE_Others" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
@@ -1252,124 +1252,7 @@
             </div>
         </div>
 
-        <!-- VITAL SIGNS --> 
-    <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
-        <div class="col-lg-7 col-md-12 p-2 border border-dark border-lg-end-0">
-            <p class="fs-5">VITAL SIGNS:ANTHROPOMETRICS</p>
-                    <div class="mx-auto row mt-2">
-                        <div class="col-lg-5 col-md-2 col-sm-1 col-xs-1">
-                            <!-- BP ROW/COL -->
-                            <div class="col input-group align-items-center my-2">
-                                <label for="systolicBP" class="me-1">BP:</label>
-                                <input type="text" class="form-control" id="systolicBP" name="systolicBP" required>
-                                <div class="input-group-append">
-                                    <span class="fs-6 mx-1">/</span>
-                                </div>
-                                <input type="text" class="form-control" id="diastolicBP" name="diastolicBP" required>
-                                <div class="input-group-append">
-                                    <span class="fs-6 ms-1">mmHg</span>
-                                </div>
-                            </div>
-                            <!-- END OF BP ROW/COL -->
-                            <!-- BP ROW/COL -->
-                            <div class="col-lg-12 col-md-6 col-sm-2 col-xs-2 input-group align-items-center my-2">
-                                <label for="systolicBP" class="me-1">PR:</label>
-                                <input type="text" class="form-control" id="systolicBP" name="systolicBP" required>
-                                <div class="input-group-append">
-                                    <span class="fs-6">/minute</span>
-                                </div>
-                            </div>
-                            <!-- END OF BP ROW/COL -->
-                </div><!-- END OF COL OTHERS DIV -->
-            </div><!-- END OF ROW OTHERS DIV -->
-        </div><!-- END OF COL FH -->
-
-        <!-- START OF PSH -->
-        <div class="col-lg-5 col-md-12 p-2 border border-dark">
-            <h6>Personal Social History</h6>
-                <div class="form-check">
-                <input type="hidden" name="PSH_smoking" value="0">
-                <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking">
-                    <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
-                        Smoking
-                        <br>
-                        ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" disabled> 
-                        <span class="text-danger"> 
-                            @error('PSH_smoking_amount') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                        sticks/day for 
-                        <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" disabled> year/s )
-                        <span class="text-danger"> 
-                            @error('PSH_smoking_freq') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                    </label>
-            </div><!-- END OF SMOKING FORM DIV -->
-
-            <div class="form-check" style="margin-top:5%;">
-                <input type="hidden" name="PSH_drinking" value="0">
-                <input class="form-check-input" type="checkbox" value="1" id="PSH_drinking" name="PSH_drinking">
-                    <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
-                        Drinking 
-                        <br>
-                        ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" disabled>
-                        <span class="text-danger"> 
-                            @error('PSH_drinking_amountOfBeer') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                         Beer per 
-                         <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" disabled> ) 
-                         <span class="text-danger"> 
-                            @error('PSH_drinking_freqOfBeer') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                        <br>
-                            or
-                        <br>
-                        ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" disabled>
-                        <span class="text-danger"> 
-                            @error('PSH_drinking_amountofShots') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                         Shots per 
-                         <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" disabled>)
-                         <span class="text-danger"> 
-                            @error('PSH_drinking_freqOfShots') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                    </label>
-            </div><!-- END OF DRINKING FORM DIV -->
-
-                <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
-            <script>
-               $(document).ready(function() {
-                    /* SMOKING */
-                    $('#PSH_smoking').change(function() {
-                        $('#PSH_smoking_amount').prop('disabled', !this.checked);
-                        $('#PSH_smoking_freq').prop('disabled', !this.checked);
-                    });
-                    
-                    /* DRINKING */
-                    $('#PSH_drinking').change(function() {
-                        $('#PSH_drinking_amountOfBeer').prop('disabled', !this.checked);
-                        $('#PSH_drinking_freqOfBeer').prop('disabled', !this.checked);
-                        $('#PSH_drinking_amountofShots').prop('disabled', !this.checked);
-                        $('#PSH_drinking_freqOfShots').prop('disabled', !this.checked);
-                    });
-                });
-
-            </script>
-
-        </div><!-- END OF PSH COL DIV -->
-    </div><!-- END OF ROW ENTIRE DIV -->
->>>>>>> 844c0d19cdb3b5819255033b6a893bae4903093a
+     
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>

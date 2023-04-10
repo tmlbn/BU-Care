@@ -55,6 +55,7 @@ class MedicalRecord extends Model
         'pastIllnessID',
         'presentIllnessID',
         'immunizationHistoryID',
+        
     ];
 
     public function familyHistory(){
@@ -76,4 +77,5 @@ class MedicalRecord extends Model
     public function usersStudent(){
         return $this->belongsTo(UserStudent::class, 'student_id');
     }
+   
 }
