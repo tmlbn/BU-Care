@@ -50,7 +50,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
     Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
 
     #------------MedicalRecordFormController------------#
-    Route::get('/medical-record-form-registration',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
+    Route::get('/medical-record-form',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
     Route::post('submit-medical-form', [MedicalRecordFormController::class, 'medFormSubmit'])->name('medicalForm.store');
 
     #--------------AppointmentsController---------------#
@@ -64,19 +64,23 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::get('/admin/home',function () {
         return view('admin.home');
     })->name('admin.home');
-    Route::post('admin-logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::post('admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
-    Route::post('admin-manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
+    Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
 
     // POST for Importing CSV File (users_students table) //
-    Route::post('/import', [ImportController::class, 'import'])->name('import.store');
+    Route::post('/admin/import-new-students', [ImportController::class, 'import'])->name('import.store');
 
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');
+    Route::get('/admin/medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editMedRecord'])->name('admin.medRecord.edit');
+    Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
+    Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
 
     Route::get('/admin/medical-patient-records', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
-
+    Route::post('admin/medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');
     Route::get('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('admin.medicalPatientRecord.show');
-    Route::post('admin-medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');
-
+    Route::get('/admin/medical-patient-record/{patientID}/edit', [MedicalPatientRecordsController::class, 'editMedicalPatientRecord'])->name('admin.medicalPatientRecord.edit');
+    Route::patch('admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'updateMedicalPatientRecord'])->name('admin.medicalPatientRecord.update');
+    Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
 });
