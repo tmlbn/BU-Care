@@ -865,109 +865,165 @@
             </header>
         </section>
         
-        <p class="text-center fw-bold pt-1" style="user-select:none;">---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------</p>
+        <p class="text-center fw-bold pt-1" style="user-select:none;">
+            ---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------
+        </p>
     <!-- START OF PHYSICIAN INPUT -->
         <!-- VITAL SIGNS -->
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
                 <div class="container">
                     <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
-                    <div class="mx-auto p-3 row row-cols-lg-4 row-cols-md-2 mt-2 justify-content-center">
-                        <div class="col-xl-3 p-3 ">
-                            <div class="form-group row">
-                            <label for="bloodPressure" class="form-label h6" style="white-space: nowrap;">BP:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_bp_systolic" name="VS_bp_systolic"  maxlength="4" required>
+                    <div class="row row-cols-xl-3 row-cols-sm-1 justify-content-center">
+                        <!-- Col 1 (BASELINE) -->
+                        <div class="col-xl-3">
+                            <div class="form-group d-flex">
+                                <label for="VS_bloodPressure" class="form-label h6 my-auto me-1" style="white-space: nowrap;">BP:&nbsp;</label>
+                                <div class="d-flex align-items-center ms-4"style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_bp_systolic" name="VS_bp_systolic"  maxlength="3" style="width:31.7%;" required>
                                         <span class="text-danger"> 
                                             @error('VS_bp_systolic') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
                                     <span class="fs-6">/</span>
-                                    <input type="text" class="form-control ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" maxlength="4" required> 
+                                    <input type="text" class="form-control ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" maxlength="3" style="width:31.7%;" required> 
                                     <p class="pt-3" style="margin-left: 4px;">mmHg</p>
                                         <span class="text-danger"> 
                                             @error('VS_bp_diastolic') 
                                             {{ $message }} 
                                             @enderror
-                                        </span> 
+                                        </span>
                                 </div>
                             </div>                   
-                            <div class="form-group row">
-                            <label for="pulseRate" class="form-label h6">PR:</label>
-                            <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="VS_pulseRate" name="VS_pulseRate"  maxlength="4" required>
-                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
-                                    <span class="text-danger"> 
-                                        @error('VS_pulseRate') 
-                                        {{ $message }} 
-                                        @enderror
-                                    </span>
+                            <div class="form-group d-flex">
+                                <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR:&nbsp;</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_pulseRate') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
                                 </div>
                             </div>                 
-                            <div class="form-group row">
-                            <label for="respirationRate" class="form-label h6">RR:</label>
-                            <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="VS_respirationRate" name="VS_respirationRate"  maxlength="4" required>
-                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
-                                    <span class="text-danger"> 
-                                        @error('VS_respirationRate') 
-                                        {{ $message }} 
-                                        @enderror
-                                    </span>
+                            <div class="form-group d-flex">
+                                <label for="VS_respirationRate" class="form-label h6 my-auto me-1">RR:&nbsp;</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_respirationRate') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
                                 </div>
-                            </div>                       
-                            <div class="form-group row">
-                            <label for="temp" class="form-label h6">Temp:</label>
-                            <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" class="form-control me-1" id="VS_temp" name="VS_temp"  maxlength="4" required>
-                                <p class="pt-3" style="margin-left: 4px;">°C</p>
-                                    <span class="text-danger"> 
-                                        @error('VS_temp') 
-                                        {{ $message }} 
-                                        @enderror
-                                    </span>
+                            </div>
+                            <div class="form-group d-flex">
+                                <label for="VS_temp" class="form-label h6 my-auto me-1">Temp:</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="text" class="form-control me-1" id="VS_temp" name="VS_temp" maxlength="4" style="margin-left: 1px; width:90%;" required>
+                                    <p class="pt-3" style="margin-left: 4px;">°C</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_temp') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
                                 </div>
                             </div>
                         </div> 
-                        <div class="col-xl-3 p-3 ">
-                            <div class="form-group row">
-                                <label for="height" class="form-label h6">Height</label>
+                        <!-- Col 2 (HEIGHT, WEIGHT, BMI) -->
+                        <div class="col-xl-3 mx-4">
+                            <div class="form-group d-flex">
+                                <label for="VS_height" class="form-label h6 my-auto me-1">Height:</label>
                                 <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_height" name="VS_height"  maxlength="4" required>
+                                    <input type="text" class="form-control me-1 ms-1" id="VS_height" name="VS_height" maxlength="4" required>
                                     <p class="pt-3" style="margin-left: 4px;">meters</p>
                                         <span class="text-danger"> 
                                             @error('VS_height') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
-                                    </div>
-                                </div>  
-                                <div class="form-group row">
-                                    <label for="weight" class="form-label h6">Weight</label>
-                                    <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                        <input type="text" class="form-control me-1" id="VS_weight" name="VS_weight"  maxlength="4" required>
-                                        <p class="pt-3" style="margin-left: 4px;">kgs</p>
-                                            <span class="text-danger"> 
-                                                @error('VS_weight') 
-                                                {{ $message }} 
-                                                @enderror
-                                            </span>
-                                        </div>
-                                    </div>  
-                                    <div class="form-group row">
-                                        <label for="BMI" class="form-label h6">BMI</label>
-                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                            <input type="text" class="form-control me-1" id="VS_BMI" name="VS_BMI"  maxlength="4" required>
-                                                <span class="text-danger"> 
-                                                    @error('VS_BMI') 
-                                                    {{ $message }} 
-                                                    @enderror
-                                                </span>
-                                            </div>
-                                        </div>                                 
+                                </div>
+                            </div>  
+                            <div class="form-group d-flex">
+                                <label for="VS_weight" class="form-label h6 my-auto me-1">Weight:</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_weight" name="VS_weight" maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">kgs</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_weight') 
+                                            {{ $message }} 
+                                             @enderror
+                                        </span>
+                                </div>
+                            </div>  
+                            <div class="form-group d-flex">
+                                <label for="VS_bmi" class="form-label h6 my-auto me-1">BMI:&nbsp;</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1 ms-4" id="VS_bmi" name="VS_bmi" maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                        <span class="text-danger">
+                                            @error('VS_bmi')
+                                            {{ $message }}
+                                            @enderror
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Col 3 (FINDINGS) -->
+                        <div class="col-xl-5">
+                            <div class="form-group d-flex">
+                                <label for="VS_xrayFindings" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CHEST X-RAY FINDINGS:</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_xrayFindings" name="VS_xrayFindings" maxlength="4" required>
+                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_xrayFindings') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                </div>
+                            </div>                   
+                            <div class="form-group d-flex">
+                                <label for="VS_cbcResults" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CBC Results:</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_cbcResults" name="VS_cbcResults" maxlength="4" style="margin-left: 85px;" required>
+                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_cbcResults') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                </div>
+                            </div>               
+                            <div class="form-group d-flex">
+                                <label for="VS_hepaBscreening" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Hepatitis B Screening:</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" maxlength="4" style="margin-left: 10px;" required>
+                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_hepaBscreening') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex">
+                                <label for="VS_bloodType" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Blood Type:</label>
+                                <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                    <input type="text" class="form-control me-1" id="VS_bloodType" name="VS_bloodType" maxlength="4" style="margin-left: 93px;" required>
+                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                        <span class="text-danger"> 
+                                            @error('VS_bloodType') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span>
+                                </div>
+                            </div>
                         </div>   
-                    </div>   
+                     </div>
                 </div>
             </div>
         </div>
@@ -975,7 +1031,7 @@
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-4 p-3 border border-dark">
+                    <div class="col-md-4 p-3 border border-end-0 border-dark">
                         <h5 class="text-center">CATEGORY</h5>
                     </div>
                     <div class="col-md-8 p-3 border border-dark">
@@ -983,10 +1039,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">1. General Appearance</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">1. General Appearance</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay">
                             <label class="form-check-label" for="PE_GenAppearance_Okay">
@@ -997,16 +1053,16 @@
                             <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others">
                             <label class="form-check-label" for="PE_GenAppearance_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_GenAppearance_othersComment">
+                                <input type="text" class="form-control" id="PE_GenAppearance_othersComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">2. HEENT</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">2. HEENT</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay">
                             <label class="form-check-label" for="PE_HEENT_Okay">
@@ -1017,16 +1073,16 @@
                             <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others">
                             <label class="form-check-label" for="PE_HEENT_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_HEENT_othersComment">
+                                <input type="text" class="form-control" id="PE_HEENT_othersComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">3. Chest & Lungs</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">3. Chest & Lungs</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&LungsOkay">
                             <label class="form-check-label" for="PE_Chest&LungsOkay">
@@ -1037,16 +1093,16 @@
                             <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&Lungsothers">
                             <label class="form-check-label" for="PE_Chest&Lungsothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Chest&LungsothersComment">
+                                <input type="text" class="form-control" id="PE_Chest&LungsothersComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">4. Cardiovascular</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">4. Cardiovascular</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay">
                             <label class="form-check-label" for="PE_CardioOkay">
@@ -1057,16 +1113,16 @@
                             <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers">
                             <label class="form-check-label" for="PhysicalExam_cardioothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_CardioComment">
+                                <input type="text" class="form-control" id="PhysicalExam_CardioComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">5. Abdomen</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">5. Abdomen</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay">
                             <label class="form-check-label" for="PhysicalExam_AbdomenOkay">
@@ -1077,16 +1133,16 @@
                             <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers">
                             <label class="form-check-label" for="PE_AbdomenComment">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_abdomen2">
+                                <input type="text" class="form-control" id="PhysicalExam_abdomen2" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">6. Genito urinary</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">6. Genito urinary</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay">
                             <label class="form-check-label" for="PE_GenitoOkay">
@@ -1097,16 +1153,16 @@
                             <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers">
                             <label class="form-check-label" for="PE_Genitoothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_GenitoComment">
+                                <input type="text" class="form-control" id="PE_GenitoComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">7. Musculoskeletal</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">7. Musculoskeletal</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay">
                             <label class="form-check-label" for="PE_MusculoskeletalOkay">
@@ -1117,16 +1173,16 @@
                             <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers">
                             <label class="form-check-label" for="PE_Musculoskeletalothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_MusculoskeletalComment">
+                                <input type="text" class="form-control" id="PE_MusculoskeletalComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">8. Nervous System</p>
+                    <div class="col-md-4 p-1 border-bottom border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">8. Nervous System</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay">
                             <label class="form-check-label" for="PE_NervousSystem">
@@ -1137,57 +1193,79 @@
                             <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers">
                             <label class="form-check-label" for="PE_NervousSystemothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_NervousSystemComment">
+                                <input type="text" class="form-control" id="PE_NervousSystemComment" size="90">
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 p-1 border border-dark">
-                        <p class="pt-3">9. Other Significant Findings:</p>
+                    <div class="col-md-4 p-1 border-start border-dark">
+                        <p class="pt-4 fs-5 mx-auto">9. Other Significant Findings:</p>
                     </div>
-                    <div class="col-md-8 p-1 border border-dark">
+                    <div class="col-md-8 p-1 border-start border-end border-dark">
                         <div class="form-group">
-                            <textarea class="form-control" id="PE_Others" rows="2"></textarea>
+                            <textarea class="form-control mt-1 mx-auto" id="PE_otherSignificantFindings" style="resize: none; overflow: hidden; width:95%;"></textarea>
+                        <script>
+                            var textarea = document.getElementById('PE_otherSignificantFindings');
+
+                            textarea.addEventListener('input', function() {
+                                this.style.height = 'auto';
+                                this.style.height = this.scrollHeight + 'px';
+                            });
+                        </script>
                         </div>
                     </div>
                 </div>
             </div>
-                <div class="col-md-12 p-3 border border-dark">
+                <div class="p-3 border border-dark">
                     <h5 class="pl-6">FITNESS CERTIFICATION</h5>
-                        <div class="d-flex flex-row">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" name="fitness" type="radio" id="fitness_Fit" value="fitness_Fit">
-                                <label class="form-check-label" for="fitness_Fit">
-                                    Fit for Enrollment
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="fitness_notFit">
-                                <label class="form-check-label" for="fitness_notFit">
-                                    Not Fit for Enrollment
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="fitness_Pending">
-                                <label class="form-check-label" for="fitness_Pending">
-                                    Pending
-                                </label>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group row pb-2" style="margin-top: -8px;">
-                                    <label for="fit_Reason" class="col-sm-2 col-form-label">Reason</label>
-                                    <div class="col-sm-10">
-                                      <input type="text" id="fit_Reason" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                    </div>                 
-            </div>
-            <!-- IMPRESSION -->
-                <div class="form-control pt-3 border border-dark">
+                    <div class="row row-cols-lg-4 rol-cols-md-2 row-cols-sm-1">
+                        <div class="col-lg-2 col-md-6 col-sm-12 form-check">
+                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="fitness_Fit" onclick="disableReasonInput()">
+                            <label class="form-check-label ms-1" for="fitness_Fit">
+                                Fit for Enrollment
+                            </label>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 form-check mx-4">
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="fitness_notFit" onclick="enableReasonInput()">
+                            <label class="form-check-label" for="fitness_notFit">
+                                Not Fit for Enrollment
+                            </label>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 form-check">
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="fitness_Pending" onclick="enableReasonInput()">
+                            <label class="form-check-label" for="fitness_Pending">
+                                Pending
+                            </label>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-md-5 d-flex">
+                            <label for="fit_Reason" class="form-label me-1">Reason:</label>
+                            <input type="text" id="fit_Reason" class="form-control" style="margin-top: -6px;" disabled>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        function disableReasonInput() {
+                            document.getElementById("fit_Reason").disabled = true;
+                        }
+                    
+                        function enableReasonInput() {
+                            document.getElementById("fit_Reason").disabled = false;
+                        }
+                    </script>
+                </div>
+                <!-- IMPRESSION -->
+                <div class="pt-3 border border-top-0 border-bottom-0 border-dark pb-2">
                     <h5>IMPRESSION</h5>
-                    <textarea class="form-control" id="Impression" rows="3"></textarea>
+                    <textarea class="form-control" id="MRP_impression" style="resize: none; overflow: hidden;"></textarea>
+                        <script>
+                            var textarea = document.getElementById('MRP_impression');
+
+                            textarea.addEventListener('input', function() {
+                                this.style.height = 'auto';
+                                this.style.height = this.scrollHeight + 'px';
+                            });
+                        </script>
                 </div>
             <!-- SIGNATURES -->
                 <div class="col-md-12 p-3 border border-dark">
