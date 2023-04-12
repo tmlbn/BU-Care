@@ -55,6 +55,7 @@ class MedicalRecord extends Model
         'pastIllnessID',
         'presentIllnessID',
         'immunizationHistoryID',
+        'MRP_id',
         
     ];
 
@@ -73,9 +74,11 @@ class MedicalRecord extends Model
     public function immunizationHistory(){
         return $this->belongsTo(ImmunizationHistory::class, 'immunizationHistoryID');
     }
-
+    
     public function usersStudent(){
         return $this->belongsTo(UserStudent::class, 'student_id');
     }
-   
+    public function medicalRecord_admin(){
+        return $this->belongsTo(MedicalRecord_Admin::Class, 'MRP_id');
+    }
 }

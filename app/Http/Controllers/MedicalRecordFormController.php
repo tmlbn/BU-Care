@@ -27,7 +27,7 @@ class MedicalRecordFormController extends Controller
                 if(Auth::user()->hasMedRecord == 0){
                     return view('medicalRecordForm');
                 }
-            return redirect()->back()->with('fail', 'You have already submitted your Medical Form!');
+            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
         }
         else{
             return redirect('login');
@@ -420,8 +420,7 @@ class MedicalRecordFormController extends Controller
             $user->hasMedRecord = intval('1');
             $user->MR_id =  $medRecord->MR_id;
             $user->save();
-            $tempID = Auth::user()->student_id_number ? Auth::user()->student_id_number : Auth::user()->applicant_id_number;
-            return redirect('/')->with('success', 'Student Health Record of '. $tempID . ' saved successfully');
+            return redirect('/')->with('success', 'Medical record saved successfully');
         }
     } // END OF medFormSubmit FUNCTION
 

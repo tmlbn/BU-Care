@@ -1044,16 +1044,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay">
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay" value="1">
                             <label class="form-check-label" for="PE_GenAppearance_Okay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others">
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others" value="0">
                             <label class="form-check-label" for="PE_GenAppearance_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_GenAppearance_othersComment" size="90">
+                                <input type="text" class="form-control" id="PE_GenAppearance_Comment" name="PE_GenAppearance_Comment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1064,16 +1064,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay">
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay" value="1">
                             <label class="form-check-label" for="PE_HEENT_Okay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others">
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others" value="0">
                             <label class="form-check-label" for="PE_HEENT_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_HEENT_othersComment" size="90">
+                                <input type="text" class="form-control" id="PE_HEENT_Comment" name="PE_HEENT_Comment"  size="90">
                             </label>
                         </div>
                     </div>
@@ -1084,16 +1084,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&LungsOkay">
+                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&LungsOkay" value="1">
                             <label class="form-check-label" for="PE_Chest&LungsOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&Lungsothers">
+                            <input class="form-check-input" type="radio" name="PE_Chest&Lungs" id="PE_Chest&Lungsothers" value="0">
                             <label class="form-check-label" for="PE_Chest&Lungsothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Chest&LungsothersComment" size="90">
+                                <input type="text" class="form-control" id="PE_Chest&LungsComment" name="PE_Chest&LungsComment"  size="90">
                             </label>
                         </div>
                     </div>
@@ -1104,16 +1104,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay">
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay" value="1">
                             <label class="form-check-label" for="PE_CardioOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers">
-                            <label class="form-check-label" for="PhysicalExam_cardioothers">
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers" value="0">
+                            <label class="form-check-label" for="PE_Cardioothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_CardioComment" size="90">
+                                <input type="text" class="form-control" id="PE_CardioComment" name="PE_CardioComment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1124,16 +1124,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay">
-                            <label class="form-check-label" for="PhysicalExam_AbdomenOkay">
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay" value="1">
+                            <label class="form-check-label" for="PE_AbdomenOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers">
-                            <label class="form-check-label" for="PE_AbdomenComment">
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers" value="0">
+                            <label class="form-check-label" for="PE_Abdomenothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PhysicalExam_abdomen2" size="90">
+                                <input type="text" class="form-control" id="PE_AbdomenComment" name="PE_AbdomenComment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1144,16 +1144,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay">
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay" value="1">
                             <label class="form-check-label" for="PE_GenitoOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers">
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers" value="0">
                             <label class="form-check-label" for="PE_Genitoothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_GenitoComment" size="90">
+                                <input type="text" class="form-control" id="PE_GenitoComment" name="PE_GenitoComment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1164,16 +1164,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay">
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay" value="1">
                             <label class="form-check-label" for="PE_MusculoskeletalOkay">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers">
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers" value="0">
                             <label class="form-check-label" for="PE_Musculoskeletalothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_MusculoskeletalComment" size="90">
+                                <input type="text" class="form-control" id="PE_MusculoskeletalComment" name="PE_MusculoskeletalComment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1184,16 +1184,16 @@
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay">
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay" value="1">
                             <label class="form-check-label" for="PE_NervousSystem">
                                 Normal
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers">
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers" value="0">
                             <label class="form-check-label" for="PE_NervousSystemothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_NervousSystemComment" size="90">
+                                <input type="text" class="form-control" id="PE_NervousSystemComment" name="PE_NervousSystemComment" size="90">
                             </label>
                         </div>
                     </div>
@@ -1204,7 +1204,7 @@
                     </div>
                     <div class="col-md-8 p-1 border-start border-end border-dark">
                         <div class="form-group">
-                            <textarea class="form-control mt-1 mx-auto" id="PE_otherSignificantFindings" style="resize: none; overflow: hidden; width:95%;"></textarea>
+                            <textarea class="form-control mt-1 mx-auto" id="PE_otherSignificantFindings" name="PE_otherSignificantFindings" style="resize: none; overflow: hidden; width:95%;"></textarea>
                         <script>
                             var textarea = document.getElementById('PE_otherSignificantFindings');
 
@@ -1221,26 +1221,26 @@
                     <h5 class="pl-6">FITNESS CERTIFICATION</h5>
                     <div class="row row-cols-lg-4 rol-cols-md-2 row-cols-sm-1">
                         <div class="col-lg-2 col-md-6 col-sm-12 form-check">
-                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="fitness_Fit" onclick="disableReasonInput()">
+                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="1" onclick="disableReasonInput()">
                             <label class="form-check-label ms-1" for="fitness_Fit">
                                 Fit for Enrollment
                             </label>
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12 form-check mx-4">
-                            <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="fitness_notFit" onclick="enableReasonInput()">
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="2" onclick="enableReasonInput()">
                             <label class="form-check-label" for="fitness_notFit">
                                 Not Fit for Enrollment
                             </label>
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12 form-check">
-                            <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="fitness_Pending" onclick="enableReasonInput()">
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="0" onclick="enableReasonInput()">
                             <label class="form-check-label" for="fitness_Pending">
                                 Pending
                             </label>
                         </div>
                         <div class="col-lg-5 col-md-6 col-sm-12 col-md-5 d-flex">
                             <label for="fit_Reason" class="form-label me-1">Reason:</label>
-                            <input type="text" id="fit_Reason" class="form-control" style="margin-top: -6px;" disabled>
+                            <input type="text" id="fit_Reason" name="fit_reason" class="form-control" style="margin-top: -6px;" disabled>
                         </div>
                     </div>
                     
@@ -1257,7 +1257,7 @@
                 <!-- IMPRESSION -->
                 <div class="pt-3 border border-top-0 border-bottom-0 border-dark pb-2">
                     <h5>IMPRESSION</h5>
-                    <textarea class="form-control" id="MRP_impression" style="resize: none; overflow: hidden;"></textarea>
+                    <textarea class="form-control" id="MRP_impression" name="MRP_impression" style="resize: none; overflow: hidden;"></textarea>
                         <script>
                             var textarea = document.getElementById('MRP_impression');
 
@@ -1273,19 +1273,19 @@
                         <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
                             <div class="mb-3 col-md-2">
                                 <label for="MR_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
-                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                                <input type="file" class="form-control" id="MR_physicianSignature" name="MR_physicianSignature" accept="image/jpeg, image/png" required>
                             </div>
                             <div class="col-md-3 pt-2">
                                 <label for="MR_licenseNumber">License Number</label>
-                                <input type="text" class="form-control" id="signatures">
+                                <input type="text" class="form-control" id="signatures" name="MR_LicenseNumber">
                             </div>
                             <div class="col-md-3">
                                 <label for="MR_PTRNumber">PTR Number</label>
-                                <input type="text" class="form-control" id="signatures">
+                                <input type="text" class="form-control" id="signatures" name="MR_PTRNumber">
                             </div>
                             <div class="col-md-3">
                                 <label for="MR_DateofExam">Date of Examination</label>
-                                <input type="text" class="form-control" id="signatures">
+                                <input type="text" class="form-control" id="signatures" name="MR_DateofExam">
                             </div>
                         </div>
                     </div>
@@ -1312,7 +1312,7 @@
                 <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
                     <div class="mb-3 col-md-2">
                         <label for="MR_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
-                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                        <input type="file" class="form-control" id="MR_physicianSignature" name="MR_physicianSignature" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="col-md-3 pt-2">
                         <label for="MR_licenseNumber">License Number</label>

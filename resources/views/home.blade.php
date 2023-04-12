@@ -94,7 +94,7 @@
         <div class="d-flex flex-column mb-10 align-items-start">
          <div class="flex-grow">
             <h2 class="text-gray-900 text-lg title-font font-medium mb-3 ms-5">Description</h2>
-            <p class="leading-relaxed ms-5">SOY BOY</p>
+            <p class="leading-relaxed ms-5"></p>
           </div>
         </div>
 
@@ -107,7 +107,7 @@
           </div>
           <div class="flex-grow">
             <h2 class="text-gray-900 text-lg title-font font-medium mb-3 ms-5">Description</h2>
-            <p class="leading-relaxed ms-5">SOY BOY</p>
+            <p class="leading-relaxed ms-5"></p>
           </div>
         </div>
 
@@ -120,7 +120,7 @@
           </div>
           <div class="flex-grow">
             <h2 class="text-gray-900 text-lg title-font font-medium mb-3 ms-5">Description</h2>
-            <p class="leading-relaxed ms-5">SOY BOY</p>
+            <p class="leading-relaxed ms-5"></p>
           </div>
         </div>
 
@@ -133,7 +133,7 @@
           </div>
           <div class="flex-grow">
             <h2 class="text-gray-900 text-lg title-font font-medium mb-3 ms-5">Description</h2>
-            <p class="leading-relaxed ms-5">SOY BOY</p>
+            <p class="leading-relaxed ms-5"></p>
           </div>
         </div>
       </div>
