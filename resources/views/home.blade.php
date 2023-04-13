@@ -1,4 +1,4 @@
-@extends(Auth::check() ? 'layouts.app' : 'layouts.appForUnAuth')
+@extends(Auth::check() ? 'layouts.app' : (Auth::guard('employee')->check() ? 'personnel.layouts.app' : 'layouts.appForUnAuth'))
 
 @section('content')
 <div class="d-flex bg-cover p-5 p-md-16 p-lg-28 pillars-bg">

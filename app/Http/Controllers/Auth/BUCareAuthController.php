@@ -48,58 +48,141 @@ class BUCareAuthController extends Controller
     public function login(){
         return view('auth.login');
     }
+    
+    public function personnelLogin(){
+        return view('personnel.login');
+    }
 
     public function BUCareLogin(Request $request){
         $this->validateLogin($request);
 
-        if ($request->applicantID != null) {
-            // Logging in with applicant ID number
-            $applicantID = $request->applicantID;
-            $user = UserStudent::where('applicant_id_number', $applicantID)->first();
-            if ($user) {
-                if (($user->birth_month == $request->applicantBirthMonth) && ($user->birth_date == $request->applicantBirthDate) && ($user->birth_year == $request->applicantBirthYear)) {
-                    Auth::login($user);
+        $loginType = null;
+
+            // Determine the login type
+        if($request->studentID != null){
+            $loginType = 'studentID';
+        } 
+        elseif($request->applicantID != null){
+            $loginType = 'applicantID';
+        } 
+        elseif($request->personnelID != null){
+            $loginType = 'personnelID';
+        }
+
+        switch ($loginType) {
+                // Login with Applicant ID
+            case 'studentID':
+                $credentials = $this->credentials($request);
+
+                if(Auth::guard('web')->attempt($credentials, $request->has('remember'))){
                     return redirect()->route('home');
-                } else {
-                    return back()->with('fail', 'No data found.');
                 }
-            } else {
-                return back()->with('fail', 'Applicant ID Number "' . $applicantID . '" is not registered.');
-            }
+
+                if($userNotFound = UserStudent::where('student_id_number', $request->studentID)->first()){
+                    return back()->with('fail', 'Wrong password.');
+                }
+
+                return back()->with('fail', 'Student ID Number ' . $request->studentID . ' is not registered.');
+                break;
+
+                // Login with Applicant ID
+            case 'applicantID':
+                $applicantID = $request->applicantID;
+                $user = UserStudent::where('applicant_id_number', $applicantID)->first();
+                if($user){
+                    if(($user->birth_month == $request->applicantBirthMonth) && ($user->birth_date == $request->applicantBirthDate) && ($user->birth_year == $request->applicantBirthYear)) {
+                        Auth::login($user);
+                        return redirect()->route('home');
+                    }
+                    else{
+                        return back()->with('fail', 'No data found.');
+                    }
+                } 
+                else{
+                    return back()->with('fail', 'Applicant ID Number "' . $applicantID . '" is not registered.');
+                }
+                break;
+
+                // Login with Personnel ID
+            case 'personnelID':
+                $credentials = [
+                    'personnel_id_number' => $request->personnelID,
+                    'password' => $request->password,
+                ];
+
+                if (Auth::guard('employee')->attempt($credentials, $request->has('remember'))) {
+                    return redirect()->route('home');
+                }
+
+                if($userNotFound = UserStudent::where('personnel_id_number', $request->staffID)->first()){
+                    return back()->with('fail', 'Wrong password.');
+                }
+
+                return back()->with('fail', 'Personnel ID Number ' . $request->staffID . ' is not registered.');
+                break;
+
+            default:
+                return back()->with('fail', 'Please enter your ID number.');
+                break;
         }
-
-        // Logging in with student ID number
-        $credentials = $this->credentials($request);
-
-        if (Auth::guard('web')->attempt($credentials, $request->has('remember'))) {
-            return redirect()->route('home');
-        }
-
-        if ($userNotFound = UserStudent::where('student_id_number', $request->studentID)->first()) {
-            return back()->with('fail', 'Wrong password.');
-        }
-
-        return back()->with('fail', 'Student ID Number ' . $request->studentID . ' is not registered.');
     }
 
     protected function validateLogin(Request $request){
-        // Login with Applicant ID Number
-        if ($request->applicantID != NULL) {
-            $request->validate([
-                'applicantID' => 'required',
-                'applicantBirthMonth' => 'required',
-                'applicantBirthDate' => 'required',
-                'applicantBirthYear' => 'required',
-            ]);
-		}else{
-            $request->validate([
-                'studentID' => 'required',
-                'password' => 'required',
-            ]);
+            // Determine the login type
+        if($request->studentID != null){
+            $loginType = 'studentID';
+        } 
+        elseif($request->applicantID != null){
+            $loginType = 'applicantID';
+        } 
+        elseif($request->personnelID != null){
+            $loginType = 'personnelID';
+        }
+
+        switch ($loginType) {
+                // Login with Applicant ID
+            case 'studentID':
+                $request->validate([
+                    'studentID' => 'required',
+                    'password' => 'required',
+                ]);
+                break;
+
+                // Login with Applicant ID
+            case 'applicantID':
+                $request->validate([
+                    'applicantID' => 'required',
+                    'applicantBirthMonth' => 'required',
+                    'applicantBirthDate' => 'required',
+                     'applicantBirthYear' => 'required',
+                ]);
+                
+                break;
+
+                // Login with Personnel ID
+            case 'personnelID':
+                $request->validate([
+                    'personnelID' => 'required',
+                    'password' => 'required',
+                ]);
+                break;
+    
+            default:
+                return back()->with('fail', 'An error occured. Please try again later.');
+                break;
         }
     }
 
     protected function credentials(Request $request){
+        if($request->personnelID){
+            $credentials = $request->only('personnelID', 'password');
+            // DB column 'student_id_number' = input name 'studentID'
+            $credentials['personnel_id_number'] = $credentials['personnelID'];
+            // Remove 'studentID' key from $credentials
+            unset($credentials['personnelID']);
+
+            return $credentials;
+        }
         $credentials = $request->only('studentID', 'password');
         // DB column 'student_id_number' = input name 'studentID'
         $credentials['student_id_number'] = $credentials['studentID'];

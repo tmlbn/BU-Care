@@ -17,6 +17,7 @@
     <!-- Bootstrap Icons --><link href="{{ asset('bootstrap-icons/font/bootstrap-icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-print.min.css') }}" media="print">
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
@@ -221,7 +222,7 @@
                         <li class="nav-item mr-4">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'active' : (Route::currentRouteName() === 'admin.medicalPatientRecord.show' ? 'active' : 'inactive') }}" href="{{ route('admin.medPatientRecordList.show') }}">DAILY CONSULTANTS</a>
                         </li>
-                        <li class="pt-2 mt">
+                        <li class="pt-2 mt-1">
                             <div class="vr pt-4"></div>
                         </li>
                         <li class="nav-item dropdown">

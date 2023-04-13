@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordFormController;
+use App\Http\Controllers\MedicalRecordsAdminController;
 use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\MedicalPatientRecordsController;
 
@@ -36,6 +37,7 @@ Route::get('/', function () {
  */
 Route::group(['middleware' => ['guest']], function() {
     Route::get('/login', [BUCareAuthController::class, 'login'])->name('login')->middleware('guest');
+    Route::get('/personnel-login', [BUCareAuthController::class, 'personnelLogin'])->name('personnel.login')->middleware('guest');
     Route::post('BUCare', [BUCareAuthController::class, 'BUCareLogin'])->name('BUCare.login')->middleware('guest');
     Route::get('/admin/login', [AdminAuthController::class, 'showAdminLogin'])->name('admin.login.show')->middleware('guest');
     Route::post('admin-login', [AdminAuthController::class, 'adminLogin'])->name('admin.login')->middleware('guest');
@@ -76,6 +78,8 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::get('/admin/medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editMedRecord'])->name('admin.medRecord.edit');
     Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
     Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
+
+    Route::post('submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
 
     Route::get('/admin/medical-patient-records', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
     Route::post('admin/medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');

@@ -17,7 +17,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://use.fontawesome.com/03f8a0ebd4.js"></script>
@@ -25,8 +25,10 @@
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
+            $('[data-bs-toggle="popover"]').popover()
         })
     </script>
+    
 
     <!--style-->
     @vite(['resources/sass/app.scss'])
@@ -94,7 +96,8 @@
             border: 2px solid white;
         }
 
-        .btn-orange:hover{
+        .btn-orange:hover,
+        .btn-orange.active {
             color: black;
             background: #f1731f;
             border: 2px solid #f1731f;
@@ -104,6 +107,26 @@
             background-repeat: no-repeat; 
             background-size:100%;
             background-image:url({{ asset('media/pillars.jpg') }}); 
+        }
+        a.loginButton {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            font-size: 1rem;
+            line-height: 1.5;
+            width: 115px;
+            text-align: center; /* center the text horizontally */
+        }
+        a.loginButton:hover,
+        a.loginButton.active{
+            background-color: #f1731f;
+            color: black;
+            text-decoration: none;
+            transition: 0.3s;
         }
     </style>
 
@@ -133,10 +156,33 @@
                         </nav>
                     </div>
                     <div class="col-md-4 d-flex justify-content-end my-auto">
-                        <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5">
-                            <a href="{{ route('login') }}">
-                                <button type="button" class="btn btn-orange rounded"><span class="login-reponsive">Login</span></button>
-                            </a>
+                        <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5"> 
+                            <button type="button" id="loginButton" class="btn btn-orange rounded d-inline-flex" data-toggle="popover" data-bs-html="true" title="Login as:">
+                                <span class="login-reponsive">
+                                    Login
+                                </span>
+                            </button>
+                            <script>
+                                $(document).ready(function(){
+                                    $('[data-toggle="popover"]').popover({
+                                        placement : 'top',
+                                        html : true,
+                                        content : '<a class="loginButton my-1" href="{{ route('login') }}">Student</a><br><a class="loginButton my-1" href="{{ route('personnel.login') }}">Personnel</a>'
+                                    });
+                                    $(document).on("click", ".popover .close" , function(){
+                                        $(this).parents(".popover").popover('hide');
+                                    });
+                                    $('#loginButton').on('click', function() {
+                                        if($(this).hasClass('active')){
+                                            $(this).removeClass('active');
+                                        }else{
+                                            $(this).addClass('active');
+                                        }
+                                    });
+                                });
+                                </script>
+
+
                         </nav>
                     </div>
                 </div>

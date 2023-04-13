@@ -73,7 +73,7 @@ class MedicalPatientRecordsController extends Controller
 
             try {
                 $new_mpr = new MedicalPatientRecord();
-                    $new_mpr->user_student_id = filter_var($request->studentID,  FILTER_SANITIZE_NUMBER_INT);
+                    $new_mpr->student_id = filter_var($request->studentID,  FILTER_SANITIZE_NUMBER_INT);
                     $new_mpr->date = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y-m-d');
                     $new_mpr->temperature = filter_var($request->temperature, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $new_mpr->blood_pressure = filter_var($request->bloodPressure, FILTER_SANITIZE_STRING);
