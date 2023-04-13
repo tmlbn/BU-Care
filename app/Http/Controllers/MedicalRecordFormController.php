@@ -248,7 +248,6 @@ class MedicalRecordFormController extends Controller
             return back()->withErrors($validator)->withInput();
         }
             /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
-            $user = Auth::user();
             ###----- FAMILY HISTORY TABLE -----###
             $familyHistory = new FamilyHistory();
                 $familyHistory->cancer = filter_var($request->FH_cancer, FILTER_SANITIZE_NUMBER_INT);
@@ -417,6 +416,7 @@ class MedicalRecordFormController extends Controller
             Log::error('Failed to register user.');
             return back()->with('fail','Failed to register. Please try again later.');
         }else{
+            $user = Auth::user();
             $user->hasMedRecord = intval('1');
             $user->MR_id =  $medRecord->MR_id;
             $user->save();

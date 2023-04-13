@@ -15,7 +15,8 @@ use Hash;
 class MedicalRecordsAdminController extends Controller
 {
 
-    public function medFormSubmit(Request $request){
+    public function medFormSubmitAdmin(Request $request){
+        dd($request->all());
 
         /* VALIDATE USER INPUT */
         $validator = Validator::make($request->all(), [
@@ -24,55 +25,48 @@ class MedicalRecordsAdminController extends Controller
         'VS_bp_diastolic' => 'required|integer',
         'VS_pulseRate' => 'required|integer',
         'VS_respirationRate' => 'required|integer',
-        'VS_temp' => 'required|float',
+        'VS_temp' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         'VS_height' => 'required|integer',
         'VS_weight' => 'required|integer',
-        'VS_bmi' => 'required|float',
+        'VS_bmi' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         'VS_xrayFindings' => 'required|string',
         'VS_cbcResults' => 'required|string',
         'VS_hepaBscreening' => 'required|string',
         'VS_bloodType' => 'required|string',
 
         /* PHYSICAL EXAMINATION */
-        'PE_GenAppearance' => 'required|in:0,1',
-        'PE_GenAppearance_Comment' => 'required_if:PE_GenAppearance,0|string',
-        'PE_HEENT' => 'required|in:0,1',
-        'PE_HEENT_Comment' => 'required_if:PE_HEENT,0|string',
-        'PE_Chest&Lungs' => 'required|in:0,1',
-        'PE_Chest&LungsComment' => 'required_if:PE_Chest&Lungs,0|string',
-        'PE_Cardio' => 'required|in:0,1',
-        'PE_CardioComment' => 'required_if:PE_Cardio,0|string',
-        'PE_Abdomen' => 'required|in:0,1',
-        'PE_AbdomenComment' => 'required_if:PE_Abdomen,0|string',
-        'PE_Genito' => 'required|in:0,1',
-        'PE_GenitoComment' => 'required_if:PE_Genito,0|string',
-        'PE_Musculoskeletal' => 'required|in:0,1',
-        'PE_MusculoskeletalComment' => 'required_if:PE_Musculoskeletal,0|string',
-        'PE_NervousSystem' => 'required|in:0,1',
-        'PE_NervousSystemComment' => 'required_if:PE_NervousSystem,0|string',
+        'PE_GenAppearance' => 'required|string',
+        'PE_HEENT' => 'required|string',
+        'PE_ChestLungs' => 'required|string',
+        'PE_Cardio' => 'required|string',
+        'PE_Abdomen' => 'required|string',
+        'PE_Genito' => 'required|string',
+        'PE_Musculoskeletal' => 'required|string',
+        'PE_NervousSystem' => 'required|string',
         'PE_otherSignificantFindings' => 'nullable|string',
 
         /* FITNESS CERTTIFICATION */
-        'fitness' => 'required|in:0,1,2',
-        'fit_reason' => 'required_if:fitness,0,2|string',
+        'fitness' => 'required',
 
         /* IMPRESSION */
         'MRP_impression' => 'required|string',
 
         /* SIGNATORIES */
-        'MR_DateofExam' => 'required|date_format:Y-m-d',
+        'MRA_LicenseNumber' => 'required',
+        'MRA_PTRNumber' => 'required',
+        'MRA_DateofExam' => 'required|date_format:Y-m-d',
 
         ],[ #-- CATCH SPECIFIC ERRRORS --#
-        'required' => 'The :attribute field is required.',
-        'PE_GenAppearance_Comment.required_if' => 'Please provide details',
-        'PE_HEENT_Comment.required_if' => 'Please provide details',
-        'PE_Chest&LungsComment.required_if' => 'Please provide details',
-        'PE_CardioComment.required_if' => 'Please provide details', 
-        'PE_AbdomenComment.required_if' => 'Please provide details',
-        'PE_GenitoComment.required_if' => 'Please provide details',
-        'PE_MusculoskeletalComment.required_if' => 'Please provide details',
-        'PE_NervousSystemComment.required_if' => 'Please provide details', 
+        'required' => 'The :attribute field is required.'
         ]);
+
+        /* FITNESS CERTTIFICATION REASON */
+        if ($request->input('fitness') == 'notFit' || $request->input('fitness') == 'pending') {
+            $request->validate([
+                'fit_reason' => 'required|string',
+            ]);
+        }
+        
 
          // Return error message if validation fails
          if ($validator->fails()) {
@@ -81,22 +75,56 @@ class MedicalRecordsAdminController extends Controller
          }
 
         /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
-        $user = Auth::user();
         
         $medRecordAdmin = new MedicalRecord_Admin();
-            $medRecordAdmin->diastolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordAdmin->systolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->MR_id = filter_var($request->input('studentID'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->student_id = filter_var($request->input('medRecID'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
             $medRecordAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
             $medRecordAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT);
-            $medRecordAdmin->height = filter_var($request->input(),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordAdmin->weight = filter_var($request->input(),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordAdmin->BMI = filter_var($request->input(),FILTER_SANITIZE_NUMBER_NUMBER_FLOAT);
-            $medRecordAdmin->xrayfindings = filter_var($request->input(),FILTER_SANITIZE_STRING);
-            $medRecordAdmin->cbcresults = filter_var($request->input(),FILTER_SANITIZE_STRING);
-            $medRecordAdmin->hepaB = filter_var($request->input(),FILTER_SANITIZE_STRING);
-            $medRecordAdmin->bloodType = filter_var($request->input(),FILTER_SANITIZE_STRING);
-           
+            $medRecordAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $medRecordAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $medRecordAdmin->xrayFindings = filter_var($request->input('VS_xrayFindings'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->cbcResults = filter_var($request->input('VS_cbcResults'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->hepaBscreening = filter_var($request->input('VS_hepaBscreening'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->bloodType = filter_var($request->input('VS_bloodType'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_genAppearance = filter_var($request->input('PE_GenAppearance'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_HEENT = filter_var($request->input('PE_HEENT'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_chestLungs = filter_var($request->input('PE_ChestLungs'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_cardio = filter_var($request->input('PE_Cardio'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_abdomen = filter_var($request->input('PE_Abdomen'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_genito = filter_var($request->input('PE_Genito'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_musculoskeletal = filter_var($request->input('PE_Musculoskeletal'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_nervousSystem = filter_var($request->input('PE_NervousSystem'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->PE_otherSignificantFindings = filter_var($request->input('PE_otherSignificantFindings'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->fitness = filter_var($request->input('fitness'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->notfitPendingReason = filter_var($request->input('fit_reason'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->MRA_impression = filter_var($request->input('MRP_impression'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->MRA_licenseNumber = filter_var($request->input('MRA_LicenseNumber'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->MRA_PTRnumber = filter_var($request->input('MRA_PTRNumber'),FILTER_SANITIZE_STRING);
+            $medRecordAdmin->MRA_dateOfExam = filter_var($request->input('MRA_DateofExam'),FILTER_SANITIZE_STRING);
+        $res = $medRecord->save();
+
+            //IF FALSE
+        if(!$res){
+            // Log error and display user-friendly message
+            Log::error('Failed to register user.');
+            return back()->with('fail','Failed to register. Please try again later.');
+        }else{
+            $patient = UserStudent::where('studentID', $studentID)->first();
+            $patient->hasValidatedRecord = intval('1');
+            $patient->MRA_id =  $medRecordAdmin->MRA_id;
+            $patient->save();
+            return redirect('/')->with('success', 'Medical record saved successfully');
+        }
+    } // END OF medFormSubmit FUNCTION
+
+    #NEW FUNCTION STARTS HERE
+    public function foo(){
+
     }
 
 }

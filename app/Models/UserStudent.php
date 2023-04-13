@@ -56,7 +56,11 @@ class UserStudent extends Authenticatable
         return $this->hasOne(MedicalRecord::class, 'student_id');
     }
 
+    public function medicalRecordAdmin(){
+        return $this->hasOne(MedicalRecord_Admin::class, 'student_id');
+    }
+
     public function medicalPatientRecords(){
-        return $this->hasMany(MedicalPatientRecord::class, 'user_student_id');
+        return $this->hasMany(MedicalPatientRecord::class, 'student_id');
     }
 }

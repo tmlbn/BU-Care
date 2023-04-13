@@ -14,7 +14,7 @@ class MedicalPatientRecord extends Model
     protected $primaryKey = 'MPR_id';
 
     protected $fillable = [
-        'user_student_id',
+        'student_id',
         'date',
         'temperature',
         'blood_pressure',
@@ -27,7 +27,7 @@ class MedicalPatientRecord extends Model
     ];
 
     public function MPRstudent(){
-        return $this->belongsTo(UserStudent::class, 'user_student_id');
+        return $this->belongsTo(UserStudent::class, 'student_id');
     }    
 
 }

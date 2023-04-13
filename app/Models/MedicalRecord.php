@@ -78,7 +78,7 @@ class MedicalRecord extends Model
     public function usersStudent(){
         return $this->belongsTo(UserStudent::class, 'student_id');
     }
-    public function medicalRecord_admin(){
+    public function medicalRecordAdmin(){
         return $this->belongsTo(MedicalRecord_Admin::Class, 'MRP_id');
     }
 }
