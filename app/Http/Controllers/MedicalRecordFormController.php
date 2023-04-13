@@ -215,6 +215,7 @@ class MedicalRecordFormController extends Controller
             /* SIGNATURES */
             'MR_studentSignature' => 'required|image|mimes:jpeg,jpg,png|max:5120', 
             'MR_parentGuardianSignature' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_certify' => 'required|in:1'
 
         ],[ #--- CATCH SPECIFIC ERRORS ---#
             'required' => 'The :attribute field is required.',
@@ -238,8 +239,7 @@ class MedicalRecordFormController extends Controller
             'allergyDetails.required_if' => 'Please specify your allergy details.',
             'FH_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
             'IH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
-            'MR_studentSignature.required_if' => 'Please provide an image of your signature.',
-            'MR_parentGuardianSignature.required_if' => "Please provide an image of your parent or guardian's signature",
+            'MR_certify.required' => 'Please certify that the foregoing answers are true and complete, and to the best of my knowledge by checking the checkbox.'
         ]); /* END OF VALIDATION */
 
         // Return error message if validation fails
