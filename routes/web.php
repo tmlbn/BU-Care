@@ -60,6 +60,13 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 });
 
 /**
+ *  PROTECTED ROUTES FOR PERSONNEL
+ */
+    Route::group(['middleware' => ['web', 'employee']], function() {
+    Route::get('/personnel/medical-record-form',[MedicalRecordFormController::class, 'personnelMedicalRecordFormReg'])->name('personnel.medicalForm.show');
+    Route::post('/personnel/submit-medical-form', [MedicalRecordFormController::class, 'personnelMedFormSubmit'])->name('personnel.medicalForm.store');
+});
+/**
  *  PROTECTED ROUTES FOR ADMINS
  */
 Route::group(['middleware' => ['web', 'admin']], function() {
@@ -79,7 +86,7 @@ Route::group(['middleware' => ['web', 'admin']], function() {
     Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
     Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
 
-    Route::post('submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
+    Route::post('admin/submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
 
     Route::get('/admin/medical-patient-records', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
     Route::post('admin/medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');

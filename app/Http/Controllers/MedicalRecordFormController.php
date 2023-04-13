@@ -424,8 +424,17 @@ class MedicalRecordFormController extends Controller
         }
     } // END OF medFormSubmit FUNCTION
 
-    #NEW FUNCTION STARTS HERE
-    public function foo(){
+    #--- FUNCTIONS FOR PERSONNEL MED RECORD---#
+    public function personnelMedicalRecordFormReg(){
+        if(Auth::guard('employee')->user()->hasMedRecord == 0){
+            return view('your-personnel-med-record-view');
+        }
+        else{
+            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
+        }
+    }
 
+    public function personnelMedFormSubmit(){
+     // code for validating user input and saving   
     }
 }
