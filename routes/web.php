@@ -62,7 +62,8 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 /**
  *  PROTECTED ROUTES FOR PERSONNEL
  */
-    Route::group(['middleware' => ['web', 'employee']], function() {
+Route::group(['middleware' => ['web', 'employee']], function() {
+    
     Route::get('/personnel/medical-record-form',[MedicalRecordFormController::class, 'personnelMedicalRecordFormReg'])->name('personnel.medicalForm.show');
     Route::post('/personnel/submit-medical-form', [MedicalRecordFormController::class, 'personnelMedFormSubmit'])->name('personnel.medicalForm.store');
 });

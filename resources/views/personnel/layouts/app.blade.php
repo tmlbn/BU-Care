@@ -241,7 +241,7 @@
                                         <a class="dropdown-item" href="#">Profile</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dropdown-item" style="{{ Auth::guard('employee')->user()->hasMedRecord ? 'display:none;' : '' }}" href="{{ route('medicalForm.show') }}">Submit My Medical Form</a>
+                                        <a class="dropdown-item" style="{{ Auth::guard('employee')->user()->hasMedRecord ? 'display:none;' : '' }}" href="{{ route('personnel.medicalForm.show') }}">Submit My Medical Form</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">My Appointments History</a>
