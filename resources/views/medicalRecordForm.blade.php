@@ -1113,19 +1113,76 @@
                         <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                        <label for="MR_cbcresults" class="form-label fw-bold">CBC Results</label>
+                        <input type="file" class="form-control" id="MR_cbcresults" name="MR_cbcresults" accept="image/jpeg, image/png" required>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                        <label for="MR_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <input type="file" class="form-control" id="MR_hepaBscreening" name="MR_hepaBscreening" accept="image/jpeg, image/png" required>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
-                    </div> 
+                        <label for="MR_bloodtype" class="form-label fw-bold">Blood Type</label>
+                        <input type="file" class="form-control" id="MR_bloodtype" name="MR_bloodtype" accept="image/jpeg, image/png" required>
+                    </div>
                 </div>
-            </div>
+                    <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
+                        <script>
+                            let maxResults = 8;
+                            let currentResults = 0;
+                            let nextResultId = 1;
+                            let lastRemovedResultId = null;
+                        
+                            const addResult = () => {
+                                if (currentResults < maxResults) {
+                                    if (lastRemovedResultId !== null) {
+                                        nextResultId = lastRemovedResultId;
+                                        lastRemovedResultId = null;
+                                    } else {
+                                        nextResultId = currentResults + 1;
+                                    }
+                        
+                                    let container = document.getElementById('resultsContainer');
+                                    let resultDiv = document.createElement('div');
+                                    resultDiv.id = `result${nextResultId}`;
+                                    resultDiv.classList.add('mb-3', 'col-3', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center');
+                                    resultDiv.innerHTML = `
+                                        <div class="align-items-center" style="display: flex; flex-direction: row;">
+                                            <label for="MR_additionalResult${nextResultId}" class="form-label fw-bold me-5" style="margin-right: 20px;">
+                                                Results for:
+                                            </label>
+                                            <button type="button" class="btn btn-sm btn-light ms-5" style="margin-bottom: 5px; "margin-left: 200px;" onclick="removeResult('${nextResultId}')">&times;</button>
+                                        </div>
+                                        <input type="text" class="form-control my-1" id="MR_additionalResult${nextResultId}" name="MR_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG">
+                                        <input type="file" class="form-control my-1" id="MR_additionalUpload${nextResultId}" name="MR_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
+                                    `;
+                                    container.appendChild(resultDiv);
+                                    currentResults++;
+                        
+                                    if (currentResults == maxResults) {
+                                        document.getElementById('addResultButton').disabled = true;
+                                    }
+                                }
+                            }
+                        
+                            const removeResult = (resultId) => {
+                                let resultDiv = document.getElementById(`result${resultId}`);
+                                resultDiv.remove();
+                                currentResults--;
+                                console.log(currentResults);
+                                console.log(maxResults);
+                        
+                                if (currentResults < maxResults) {
+                                    document.getElementById('addResultButton').disabled = false;
+                                }
+                        
+                                if (resultId < nextResultId) {
+                                    lastRemovedResultId = resultId;
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            <button type="button" id="addResultButton" class="btn btn-primary" onclick="addResult()">Add Result</button>
         </div>
     </div>
         <!--Signatures-->
@@ -1148,32 +1205,56 @@
         </div>
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-            <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
+            <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#submitModal">
+                Submit
+            </button>
         </div>
     </div>
-<!-- modal
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Launch static backdrop modal
-    </button>
     
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal modal-xl fade" id="submitModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel">
+                        Medical Form Submission
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <p class="fs-5 fw-bold text-center">Please review your responses carefully before submitting this medical form. </p>
+                        <hr>
+                        <p class="fs-5 text-center">By submitting this medical form, you are confirming that all the answers provided are true and correct to the best of your knowledge.</p>
+                    </div>
+                <div class="modal-footer row justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="input-group">
+                            <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                            <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            Understood
+                        </button>
+
+                        <script>
+                            const passwordInput = document.getElementById('passwordInput');
+                            const togglePassword = document.getElementById('togglePassword');
+                            togglePassword.addEventListener('click', function() {
+                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                passwordInput.setAttribute('type', type);
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                            });
+                        </script>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-            verify
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-            </div>
-        </div>
         </div>
     </div>
--->
+
     </form>    
 </div> 
 @endsection

@@ -20,10 +20,8 @@ class RedirectIfAuthenticated
             return redirect()->route('admin.home');
         }
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
-            }
+        if (Auth::check() || Auth::guard('employee')->check()) {
+            return redirect(RouteServiceProvider::HOME);
         }
 
         return $next($request);
