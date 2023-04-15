@@ -350,16 +350,24 @@
                                         this.style.height = this.scrollHeight + 'px';
                                         });
                                     </script>
-                                    <div class="form-group">
-                                        <label for="password" class="col-form-label">Password:</label>
-                                        <input type="password" class="form-control" id="password">
-                                    </div>
-                                    <div class="modal-footer mt-4 align-items-end">
-                                        <button type="button" class="btn btn-primary">Save</button>
+                                    <div class="modal-footer mt-4 justify-content-between">
+                                        <div class="d-flex my-auto mx-autop">
+                                            <div class="input-group">
+                                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-primary">Save</button>
+                                        </div>
                                     </div>
                                 </div>
-                                </form>
-                            </div>
+                            </form>
+                        </div>
                                 
                         </div>
                     </div>
