@@ -21,6 +21,7 @@ use DB;
 class AppointmentsController extends Controller
 {
     public function setAppointment(){
-        return view('appointments');
+            return view('appointments'); 
+        
     }
 }
