@@ -1109,8 +1109,8 @@
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
-                        <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                        <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <input type="file" class="form-control" id="MR_chestXray" name="MR_chestXray" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_cbcresults" class="form-label fw-bold">CBC Results</label>
@@ -1226,31 +1226,64 @@
                         <hr>
                         <p class="fs-5 text-center">By submitting this medical form, you are confirming that all the answers provided are true and correct to the best of your knowledge.</p>
                     </div>
-                <div class="modal-footer row justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="input-group">
-                            <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                            <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
-                            </button>
+                    <div class="modal-footer align-items-center mb-3">
+                        <div class="d-flex align-items-center my-auto mx-auto">
+                            <div class="input-group">
+                                @if(Auth::user()->student_id_number != NULL)
+                                    <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                                    <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                    </button>
+                                @else
+                                <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+                                    <div class="col-lg-3">
+                                        <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
+                                        <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput" required>
+                                    </div>  
+                                    <div class="col-lg-2">
+                                        <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:58px;">
+                                            <option selected="selected" disabled="disabled" value="">SELECT</option>
+                                            <option value="JANUARY" id="januaryMonth" class="align-baseline">JANUARY</option>
+                                            <option value="FEBRUARY" id="februaryMonth">FEBRUARY</option>
+                                            <option value="MARCH" id="marchMonth">MARCH</option>
+                                            <option value="APRIL" id="aprilMonth">APRIL</option>
+                                            <option value="MAY" id="mayMonth">MAY</option>
+                                            <option value="JUNE" id="juneMonth">JUNE</option>
+                                            <option value="JULY" id="julyMonth">JULY</option>
+                                            <option value="AUGUST" id="augustMonth">AUGUST</option>
+                                            <option value="SEPTEMBER" id="septemberMonth">SEPTEMBER</option>
+                                            <option value="OCTOBER" id="octoberMonth">OCTOBER</option>
+                                            <option value="NOVEMBER" id="novemberMonth">NOVEMBER</option>
+                                            <option value="DECEMBER" id="decemberMonth">DECEMBER</option>
+                                        </select>
+                                    </div>  
+                                    <div class="col-lg-2">
+                                        <label for="birthDate" class="form-label h6 mt-2 me-2">Birth Date:</label>
+                                        <input type="text" class="form-control" id="birthDate" name="birthDate" required>
+                                    </div>  
+                                    <div class="col-lg-2">
+                                        <label for="birthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
+                                        <input type="text" class="form-control" id="birthYear" name="birthYear" required>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-primary">
-                            Understood
-                        </button>
-
-                        <script>
+                        
+                          <script>
                             const passwordInput = document.getElementById('passwordInput');
                             const togglePassword = document.getElementById('togglePassword');
                             togglePassword.addEventListener('click', function() {
-                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                                passwordInput.setAttribute('type', type);
-                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                              const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                              passwordInput.setAttribute('type', type);
+                              togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                              togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
                             });
-                        </script>
+                          </script>
+                        <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
+                            <button class="btn btn-primary btn-login fw-bold" type="submit">Submit</button>
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
