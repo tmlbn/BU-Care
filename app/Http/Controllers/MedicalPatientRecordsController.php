@@ -49,7 +49,7 @@ class MedicalPatientRecordsController extends Controller
         }
         // Display the patient form with the found user data
         $studentID = $patient->id;
-        $medicalPatientRecords = MedicalPatientRecord::where('user_student_id', $studentID)->get();
+        $medicalPatientRecords = MedicalPatientRecord::where('student_id', $studentID)->get();
         return view('admin.medicalPatientRecord')
                 ->with('patient', $patient)
                 ->with('medicalPatientRecords', $medicalPatientRecords);

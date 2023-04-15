@@ -122,6 +122,7 @@ class MedicalRecordFormController extends Controller
             'MR_motherOffice' => 'nullable',
             'MR_guardian' => 'nullable|string',
             'MR_guardianAddress' => 'nullable|required_with:MR_guardian|string',
+            'passwordInput' => 'required|string',
 
             /* FAMILY HISTORY[FH_] */
             'FH_cancer' => 'required|in:0,1', 
@@ -212,10 +213,25 @@ class MedicalRecordFormController extends Controller
             'IH_others' => 'required|in:0,1', 
             'IH_othersDetails' => 'required_if:FH_others,1|string', 
 
-            /* SIGNATURES */
-            'MR_studentSignature' => 'required|image|mimes:jpeg,jpg,png|max:5120', 
-            'MR_parentGuardianSignature' => 'required|image|mimes:jpeg,jpg,png|max:5120',
-            'MR_certify' => 'required|in:1'
+            /* NAME OF UPLOADS */
+            'MR_additionalResult1' => 'nullable|string',
+            'MR_additionalResult2' => 'nullable|string',
+            'MR_additionalResult3' => 'nullable|string',
+            'MR_additionalResult4' => 'nullable|string',
+            'MR_additionalResult5' => 'nullable|string',
+            'MR_additionalResult6' => 'nullable|string',
+            'MR_additionalResult7' => 'nullable|string',
+            'MR_additionalResult8' => 'nullable|string',
+
+            /* UPLOADS */
+            'MR_additionalUpload1' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload2' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload3' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload4' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload5' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload6' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload7' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload8' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
 
         ],[ #--- CATCH SPECIFIC ERRORS ---#
             'required' => 'The :attribute field is required.',
@@ -394,16 +410,49 @@ class MedicalRecordFormController extends Controller
                 $medRecord->personalSocialHistoryID = $psHistory->personalSocialHistoryID;
                 $medRecord->presentIllnessID = $presentIllness->presentIllnessID;
 
-                # SIGNATURES
+                # UPLOADS
                     // Get the validated, uploaded file
-                $studentSignature = $request->file('MR_studentSignature');
-                $parentGuardianSignature = $request->file('MR_parentGuardianSignature');
-                    // Sanitize the file name to remove any special characters
-                $studentSignatureName = filter_var($studentSignature->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                $parentGuardianSignatureName = filter_var($parentGuardianSignature->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    // Store the file on the server
-                $medRecord->studentSignature = $studentSignature->storeAs('uploads', $studentSignatureName, 'public');
-                $medRecord->parentGuardianSignature = $parentGuardianSignature->storeAs('uploads', $parentGuardianSignatureName, 'public');
+                    $chestXray = $request->file('MR_chestXray');
+                    $cbcresults = $request->file('MR_cbcresults');
+                    $hepaBscreening = $request->file('MR_hepaBscreening');
+                    $bloodtype = $request->file('MR_bloodtype');
+                        // Other uploads
+                    $otherUpload1 = $request->file('MR_additionalUpload1');
+                    $otherUpload2 = $request->file('MR_additionalUpload2');
+                    $otherUpload3 = $request->file('MR_additionalUpload3');
+                    $otherUpload4 = $request->file('MR_additionalUpload4');
+                    $otherUpload5 = $request->file('MR_additionalUpload5');
+                    $otherUpload6 = $request->file('MR_additionalUpload6');
+                    $otherUpload7 = $request->file('MR_additionalUpload7');
+                    $otherUpload8 = $request->file('MR_additionalUpload8');
+    
+                        // Sanitize the file name to remove any special characters
+                    $chestXrayName = filter_var($chestXray->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $cbcresultsName = filter_var($cbcresults->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $hepaBscreeningName = filter_var($hepaBscreening->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $bloodtypeName = filter_var($bloodtype->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                        // Other uploads names
+                    $otherUpload1name = filter_var($request->input('MR_additionalResult1'), FILTER_SANITIZE_STRING);
+                    $otherUpload2name = filter_var($request->input('MR_additionalResult2'), FILTER_SANITIZE_STRING);
+                    $otherUpload3name = filter_var($request->input('MR_additionalResult3'), FILTER_SANITIZE_STRING);
+                    $otherUpload4name = filter_var($request->input('MR_additionalResult4'), FILTER_SANITIZE_STRING);
+                    $otherUpload5name = filter_var($request->input('MR_additionalResult5'), FILTER_SANITIZE_STRING);
+                    $otherUpload6name = filter_var($request->input('MR_additionalResult6'), FILTER_SANITIZE_STRING);
+                    $otherUpload7name = filter_var($request->input('MR_additionalResult7'), FILTER_SANITIZE_STRING);
+                    $otherUpload8name = filter_var($request->input('MR_additionalResult8'), FILTER_SANITIZE_STRING);
+                        // Store the file on the server
+                    $medRecord->chestXray = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecord->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecord->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecord->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+    
+                        // check if the given password matches the patient's actual password
+                    if (!Hash::check($request->passwordInput, $user->password)) {
+                        return back()->withErrors(['password' => 'The provided password does not match your current password.']);
+                    }
+                    else{
+                        $medRecord->signed = intval('1');
+                    }
 
                 /**
                  * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE

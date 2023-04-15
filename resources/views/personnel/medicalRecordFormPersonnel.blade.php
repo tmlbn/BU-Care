@@ -71,10 +71,30 @@
             padding-left: 0;
         }
     }
-
+    .ui-state-default:hover{
+        background-color: #009edf !important;
+    }
+    .form-floating>.form-control,
+    .form-floating>.form-control-plaintext {
+      padding: 0rem 0.75rem;
+    }
+    .form-floating>.form-control,
+    .form-floating>.form-control-plaintext,
+    .form-floating>.form-select {
+      height: calc(2.5rem + 2px);
+      line-height: 1rem;
+    }
+    .form-floating>label {
+      padding: 0.5rem 2.5rem;
+    }
+    @media (min-width: 1200px) {
+    .container{
+        max-width: 1500px;
+    }
+}
 </style>
 <!-- Header -->
-<div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes">
+<div class="container w-20 position-relative my-2 bg-light text-dark pt-5 px-3 headMargin checkboxes">
     <div class="d-flex flex-row">
         <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
@@ -99,15 +119,33 @@
             <header class="text-center px-auto py-auto">
               <h2 class="display-7 fs-3 pt-auto font-monospace">Personnel Health Record</h2>
             </header>
-          </div>          
+        </div>          
     </div>
 
     <!--Personal Basic Information-->
 <form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
-    <div class="container">
-        <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
-            <div class="col-xl-5 col-lg-6">
+
+        <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
+            <div class="col-xl-4 col-lg-12">
+                <label for="designation" class="form-label h6">Designation</label>
+                <input type="text" class="form-control" id="designation" name="designation" oninput="this.value = this.value.toUpperCase()" required>
+                <span class="text-danger"> 
+                    @error('designation') 
+                      {{ $message }} 
+                    @enderror
+                  </span>
+            </div>
+            <div class="col-xl-4 col-lg-12">
+                <p class="h6">Unit/Department</p>
+                <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" oninput="this.value = this.value.toUpperCase()" required>
+                <span class="text-danger"> 
+                    @error('unitDepartment') 
+                      {{ $message }} 
+                    @enderror
+                  </span>
+            </div> 
+            <div class="col-xl-4 col-lg-12">
                 <p class="h6">Campus</p>
                 <select id="campusSelect" name="campusSelect" class="form-select" required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
@@ -132,45 +170,12 @@
                       {{ $message }} 
                     @enderror
                   </span>
-            </div>
-            <div class="col-xl-5 col-lg-6 col-md-6">
-                <p class="h6">Unit/Department</p>
-                <select id="courseSelect" name="courseSelect" class="form-select" required>
-                    <option selected="selected" disabled="disabled" value="">SELECT</option>
-                    <option>Information Technology</option>
-                    <option></option>
-                    <option></option>
-                </select>
-                <span class="text-danger"> 
-                    @error('courseSelect') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
-            </div> 
-            <div class="col-xl-2 col-lg-12 col-md-12">
-                <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
-                    <div class="d-flex align-items-center" style="margin-top:-1%;">
-                        <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" placeholder="YYYY" maxlength="4" required>
-                        <span class="fs-6">-</span>
-                        <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" placeholder="YYYY" maxlength="4" required>
-                    </div>
-                    <span class="text-danger"> 
-                        @error('schoolYearStart') 
-                        {{ $message }} 
-                        @enderror
-                    </span>
-                    <span class="text-danger"> 
-                        @error('schoolYearEnd') 
-                        {{ $message }} 
-                        @enderror
-                    </span>
             </div>   
         </div>   
-    </div>
     <div class="d-flex flex-row">
         <h4 class="pb-3"></h4>
     </div>   
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="MR_lastName" class="form-label h6">Last Name</label>
             <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
@@ -179,7 +184,7 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="MR_firstName" class="form-label h6">First Name</label>
             <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
@@ -188,7 +193,7 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="MR_middleName" class="form-label h6">Middle Name</label>
             <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
@@ -220,42 +225,47 @@
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_sex" class="form-label h6">Gender</label>
-            <select id="MR_sex" class="form-select" name="MR_sex" required>
-                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                <option value="MALE">MALE</option>
-                <option value="FEMALE">FEMALE</option>
-            </select>
+            <label for="MR_gender" class="form-label h6">Gender</label>
+            <input type="text" class="form-control" id="MR_gender" name="MR_gender" required>
             <span class="text-danger"> 
-                @error('MR_sex') 
+                @error('MR_gender') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <label for="radio-yes-no">PWD: </label>
-                <div class="p-1">
-                  <div class="form-check-inline">
-                   (<input class="form-check-input" type="radio" name="agree" id="yes" value="yes">
-                    <label class="form-check-label" for="yes">Yes</label>
-                  </div>
-                  <div class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="agree" id="no" value="no">
-                    <label class="form-check-label" for="no">No</label>)
-                  </div>
-                </div>
+                <input type="hidden" name="pwd" id="pwd" value="0">
+                <input class="form-check-input" type="checkbox" value="1" name="pwd" id="pwd">
+                <label for="pwd" class="form-check-label mt-1 ms-1">PWD</label>
               </div>
         </div>
         <div class="col-md-2">
             <label for="MR_placeOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" required>
             <span class="text-danger"> 
                 @error('MR_placeOfBirth') 
-                  {{ $message }} 
+                    {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
+
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+        
+        <script>
+        $(document).ready(function() {
+            $("#MR_placeOfBirth").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'MM/d/yy',
+                showButtonPanel: true,
+                yearRange: "1900:c",
+                showAnim: 'slideDown',
+            });
+        });
+        </script>
+
         <div class="col-md-4">
             <label for="MR_placeOfBirth" class="form-label h6">Place of Birth</label>
             <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
@@ -281,7 +291,7 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="MR_nationality" class="form-label h6">Nationality</label>
             <input type="text" class="form-control" id="MR_nationality" name="MR_nationality" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
@@ -299,11 +309,20 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-10">
             <label for="MR_address" class="form-label h6">Home Address</label>
             <input type="text" class="form-control" id="MR_address" name="MR_address" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
                 @error('MR_address') 
+                  {{ $message }} 
+                @enderror
+              </span>
+        </div>
+        <div class="col-md-2">
+            <label for="MR_personnelContactNumber" class="form-label h6">Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" id="MR_personnelContactNumber" name="MR_personnelContactNumber" required>
+            <span class="text-danger"> 
+                @error('MR_personnelContactNumber') 
                   {{ $message }} 
                 @enderror
               </span>
@@ -345,7 +364,7 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label for="MR_fatherOffice" class="form-label h6">Work/Home Address</label>
             <input type="text" class="form-control" id="MR_fatherOffice" name="MR_fatherOffice" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
@@ -488,7 +507,7 @@
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FH_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_gastroDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_gastroDisease"   >
                                 <label class="form-check-label" for="FH_gastroDisease">
                                     Hepatitis
                                 </label>
@@ -618,221 +637,208 @@
         <h5 class="ms-1">Personal Medical Condition</h5>
             <div class="mx-auto row row-cols-lg-1 mt-2">
                 <div class="col-md-12 p-2 border border-dark">
-                    <div class="align-items-center">
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row ">
-                                <div class="col-md-4">
+                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 align-items-center">
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                            <label class="form-check-label" for="pi_primaryComplex">
+                                Hypertension
+                            </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Pneumonia
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Asthma
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                       Diabetes
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                Covid-19
+                                    </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Arthritis
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Chicken Pox
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Dengue
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                    Tuberculosis
+                                </label>
+                        </div><!-- END OF CHECKBOX DIV -->
+                    </div>
+                    <!-- START OF CHECKBOXES WITH INPUT -->
+                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+                        <div class="col-md-4 form-floating d-flex">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input mt-3" type="checkbox" value="1" name="pi_primaryComplex">
+                            <input type="text" class="form-control ms-2" id="PMC_hepatitis" name="PMC_hepatitis" placeholder="Student ID Number">
+                            <label for="floatingInput">Hepatitis</label>
+                                <span class="text-danger"> 
+                                  @error('PMC_hepatitis') 
+                                    {{  $message }} 
+                                  @enderror
+                                </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4 form-floating d-flex">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Hypertension
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Pneumonia
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Asthma
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="pi_primaryComplex" style="margin-right: -20px;">
                             </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row ">
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Diabetes
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Covid-19
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Arthritis
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
+
+                                <span class="input-group-text bg-light border-0">Hepatitis</span>
+                                <input type="text" class="form-control" id="PMC_hepatitis" name="PMC_hepatitis">
+                              </div>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                <div class="d-flex align-items-center" style="margin-top: -50px;">
+                                    Thyroid Disorder
+                                </label>
+                                    <input type="text" class="form-control">
+                                </div>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-4">
+                            <input type="hidden" name="pi_primaryComplex" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
+                                <label class="form-check-label" for="pi_primaryComplex">
+                                <div class="d-flex align-items-center" style="margin-top: -50px;">
+                                    Eye Disorder
+                                </label>
+                                    <input type="text" class="form-control">
                             </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row ">
+                        </div><!-- END OF CHECKBOX DIV -->
                                 <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
-                                            Chicken Pox
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Dengue
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Tuberculosis
-                                        </label>
-                                </div><!-- END OF CHECKBOX DIV -->
-                            </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row">
-                                <div class="col-md-4 form-check">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Hepatitis:
-                                        </label>
-                                        <div class="col-sm-4 inline">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Thyroid Disorder
-                                        </label>
-                                        <div class="col-sm-4 inline">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                            Eye Disorder
-                                        </label>
-                                        <div class="col-sm-4 inline">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                            </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row">
-                                <div class="col-md-4 form-check">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Mental Disorder:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             HIV/AIDS
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Gastrointestinal Disease
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                            </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row">
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Kidney Disease:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Heart Disease:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Skin Disease:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                            </div>
-                        </div><!-- END OF ROW -->
-                        <div class="col-md-12 p-2">
-                            <div class="d-flex flex-row">
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Ear Disease:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="pi_primaryComplex" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Cancer:
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control" name="" id="">
                                         </div>
                                 </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4 form-check">
+                                <div class="col-md-4">
                                     <input type="hidden" name="PMC_Others" value="0">
                                     <input class="form-check-input" type="checkbox" value="1" name="PMC_Others">
                                         <label class="form-check-label" for="pi_primaryComplex">
+                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
                                             Others
                                         </label>
-                                        <div class="col-sm-4 inline">
                                             <input type="text" class="form-control" name="PMC_Others" id="PMC_OthersComment">
                                         </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                            </div>
+                                    </div>
                         </div><!-- END OF ROW -->
                     </div>
                 </div>
-            </div>
                   
         <!--Medical Status
                     HOSPITALIZATION-->
