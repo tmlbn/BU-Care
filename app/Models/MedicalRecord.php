@@ -56,6 +56,8 @@ class MedicalRecord extends Model
         'presentIllnessID',
         'immunizationHistoryID',
         'MRP_id',
+        'MFP',
+        'MFP_id',
         
     ];
 
@@ -80,5 +82,11 @@ class MedicalRecord extends Model
     }
     public function medicalRecordAdmin(){
         return $this->belongsTo(MedicalRecord_Admin::Class, 'MRP_id');
+    }
+    public function medicalFormPersonnel(){
+        return $this->belongsTo(MedicalForm_Personnel::Class, 'MFP');
+    }
+    public function medicalRecordPersonnelAdmin(){
+        return $this->belongsTo(MedicalRecordPersonnel_Admin::Class, 'MFP_id');
     }
 }
