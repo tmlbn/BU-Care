@@ -630,37 +630,27 @@
                     <div class="col-sm">
                      Do you have history of hospitalization for serious illness, operation, fracture or injury?
                         (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_YES" value="1" required/>
+                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_YES" onclick="return false;/>
                             <label class="form-check-label" for="P_hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
                             yes
                             </label>
                         </div><!-- END OF YES DIV -->
                         &nbsp;
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_NO" value="0"/>
+                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_NO" onclick="return false;"/>
                             <label class="form-check-label" for="P_hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
                             no
                             </label>
+                            <script>
+                                if ({{ $patient->medicalRecord->hospitalization }} == 1) {
+                                    document.getElementById("hospitalization_YES").checked = true;
+                                } else {
+                                    document.getElementById("hospitalization_NO").checked = true;
+                                }
+                            </script>
                         </div>)<!-- END OF NO DIV -->
                         If yes, please give details:
-                        <input type="text" class="col-sm-10" id="P_hospitalizationDetails" name="P_hospitalizationDetails" disabled/>
-                        <span class="text-danger"> 
-                            @error('P_hospitalizationDetails') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                            <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
-                            <script>
-                                $(document).ready(function() {
-                                    $('#P_hospitalization_YES, #P_hospitalization_NO').change(function() {
-                                        if ($('#P_hospitalization_YES').is(':checked')) {
-                                            $('#P_hospitalizationDetails').prop('disabled', false);
-                                        } else if ($('#P_hospitalization_NO').is(':checked')) {
-                                            $('#P_hospitalizationDetails').prop('disabled', true);
-                                        }
-                                    });
-                                });
-                            </script>
+                        <input type="text" class="col-sm-10" id="P_hospitalizationDetails" name="P_hospitalizationDetails" value="{{  }}" {{  }}>
                             <!-- END OF SCRIPT --> 
                     </div><!-- END OF COL DIV -->
                 </div><!-- END OF ROW DIV -->
@@ -670,37 +660,27 @@
                     <div class="col-sm">
                         Are you taking any medicine regularly?
                            (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_YES" value="1" required/>
+                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_YES" onclick="return false;"/>
                                <label class="form-check-label" for="P_regMeds_YES" style="margin-right: -15px; margin-left:-5px">
                                yes
                                </label>
                            </div><!-- END OF YES DIV -->
                            &nbsp;
                            <div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_NO" value="0"/>
+                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_NO" onclick="return false;"/>
                                <label class="form-check-label" for="P_regMeds_NO" style="margin-right: -15px; margin-left:-5px">
                                no
                                </label>
+                               <script>
+                                if ({{ $patient->medicalRecord->hospitalization }} == 1) {
+                                    document.getElementById("hospitalization_YES").checked = true;
+                                } else {
+                                    document.getElementById("hospitalization_NO").checked = true;
+                                }
+                            </script>
                            </div>)<!-- END OF NO DIV -->
                            If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="P_regMedsDetails" name="P_regMedsDetails" disabled/>
-                           <span class="text-danger"> 
-                            @error('P_regMedsDetails') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
-                               <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
-                               <script>
-                                   $(document).ready(function() {
-                                       $('#P_regMeds_YES, #P_regMeds_NO').change(function() {
-                                           if ($('#P_regMeds_YES').is(':checked')) {
-                                               $('#P_regMedsDetails').prop('disabled', false);
-                                           } else if ($('#P_regMeds_NO').is(':checked')) {
-                                               $('#P_regMedsDetails').prop('disabled', true);
-                                           }
-                                       });
-                                   });
-                               </script>
+                           <input type="text" class="col-sm-10" id="P_regMedsDetails" name="P_regMedsDetails" value="{{  }}" {{  }}>
                                <!-- END OF SCRIPT --> 
                        </div><!-- END OF COL DIV -->
                    </div><!-- END OF ROW DIV -->
@@ -709,37 +689,27 @@
                    <div class="col-sm" required>
                     Are you allergic to any food or medicine?
                        (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_YES" value="1" required/>
+                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_YES" onclick="return false;"/>
                            <label class="form-check-label" for="P_allergy_YES" style="margin-right: -15px; margin-left:-5px">
                            yes
                            </label>
                        </div><!-- END OF YES DIV -->
                        &nbsp;
                        <div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_NO" value="0"/>
+                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_NO" onclick="return false;"/>
                            <label class="form-check-label" for="P_allergy_NO" style="margin-right: -15px; margin-left:-5px">
                            no
                            </label>
+                           <script>
+                            if ({{ ->hospitalization }} == 1) {
+                                document.getElementById("hospitalization_YES").checked = true;
+                            } else {
+                                document.getElementById("hospitalization_NO").checked = true;
+                            }
+                        </script>
                        </div>)<!-- END OF NO DIV -->
                        If yes, specify:
-                       <input type="text" class="col-sm-10" id="P_allergyDetails" name="P_allergyDetails" disabled/>
-                       <span class="text-danger"> 
-                        @error('P_allergyDetails') 
-                          {{ $message }} 
-                        @enderror
-                      </span> 
-                           <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
-                           <script>
-                               $(document).ready(function() {
-                                   $('#P_allergy_YES, #P_allergy_NO').change(function() {
-                                       if ($('#P_allergy_YES').is(':checked')) {
-                                           $('#P_allergyDetails').prop('disabled', false);
-                                       } else if ($('#P_allergy_NO').is(':checked')) {
-                                           $('#P_allergyDetails').prop('disabled', true);
-                                       }
-                                   });
-                               });
-                           </script>
+                       <input type="text" class="col-sm-10" id="P_allergyDetails" name="P_allergyDetails" value="{{  }}" {{  }}>
                            <!-- END OF SCRIPT --> 
                    </div><!-- END OF COL DIV -->
                </div><!-- END OF ROW DIV -->    
@@ -754,29 +724,25 @@
                     <div class="col-6">
                         <div class="row row-cols-2 row-cols-sm-1 align-items-center">
                             <div class="col-sm-4 p-2">
-                                <input type="hidden" name="PIH_bcg" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_bcg">
+                                <input class="form-check-input" type="checkbox" name="PIH_bcg" {{  }} onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
                                         BCG
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
-                                <input type="hidden" name="PIH_polio" value="0">
-                                <input class="form-check-input" type="checkbox" value="1"name="PIH_polio">
+                                <input class="form-check-input" type="checkbox" name="PIH_polio" onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_polio">
                                         Polio I, II, II, Booster Dose
                                     </label>
                             </div>
                             <div class="col-sm-4 p-2">
-                                <input type="hidden" name="PIH_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_chickenPox">
+                                <input class="form-check-input" type="checkbox" name="PIH_chickenPox" onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
-                                <input type="hidden" name="IH_dpt" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_dpt">
+                                <input class="form-check-input" type="checkbox" name="PIH_dpt" onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_dpt">
                                         DPT I, II, III, Booster Dose
                                     </label>
@@ -784,26 +750,15 @@
                         </div>
                         <div class="row row-cols-1 row-cols-sm-1 align-items-center">
                             <div class="col-sm-12 p-2">
-                                <input type="hidden" name="PIH_covidVacc" value="0">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_covidVacc" name="IH_covidVacc">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_covidVacc" name="IH_covidVacc" onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_covidVacc">
                                         Covid-19 Vaccine I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidVaccName" name="PIH_covidVaccName" disabled>
-                                    <span class="text-danger"> 
-                                        @error('PIH_covidVaccName') 
-                                        {{  $message }} 
-                                        @enderror
-                                    </span>
+                                    <input type="text" class="col-sm-2" id="PIH_covidVaccName" name="PIH_covidVaccName" value="{{  }}">
                                     <label class="form-check-label" for="IH_dpt">
                                         Booster I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidBooster" name="PIH_covidBooster" disabled>
-                                        <span class="text-danger"> 
-                                            @error('PIH_covidBoosterName') 
-                                            {{  $message }} 
-                                            @enderror
-                                        </span>
+                                    <input type="text" class="col-sm-2" id="PIH_covidBooster" name="PIH_covidBooster" value="{{  }}">
                                         <script>
                                             $(document).ready(function() {
                                                 $('#PIH_covidVacc').change(function() {
@@ -815,17 +770,11 @@
 
                             </div>
                             <div class="col-sm-12 p-2">
-                                <input type="hidden" name="PIH_others" value="0">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_others" name="IH_others">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_others" name="IH_others" onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_others">
                                         Others
                                     </label>
-                                <input type="text" class="col-sm-8" id="PIH_othersDetails" name="PIH_othersDetails" disabled>
-                                <span class="text-danger"> 
-                                    @error('PIH_othersDetails') 
-                                      {{ $message }} 
-                                    @enderror
-                                 </span> 
+                                <input type="text" class="col-sm-8" id="PIH_othersDetails" name="PIH_othersDetails" value="{{  }}">
                             </div>
                             <script>
                                 document.getElementById('PIH_others').onchange = function() {
@@ -837,64 +786,55 @@
                     <div class="col-6">
                         <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-sm-3 align-items-center">
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_typhoid" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_typhoid">
+                                    <input class="form-check-input" type="checkbox" name="PIH_typhoid" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_typhoid">
                                             Typhoid
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_mumps" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_mumps">
+                                    <input class="form-check-input" type="checkbox" name="PIH_mumps" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_mumps">
                                             Mumps
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_hepatitisA" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisA">
+                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisA" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_hepatitisA">
                                             Hepatitis A
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_measles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles">
+                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_measles">
                                             Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_germanMeasles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_germanMeasles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_germanMeasles">
                                             German Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_hepatitisB" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisB">
+                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_hepatitisB">
                                             Hepatitis B
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_measles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_measles" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_measles">
                                             Pneumoccal
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_germanMeasles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_germanMeasles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_germanMeasles">
                                             Influenza
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="IH_hepatitisB" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisB">
+                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_hepatitisB">
                                             HPV
                                         </label>
@@ -902,8 +842,7 @@
                             </div>
                             <div class="row row-cols-1 row-cols-sm-1 align-items-center">
                                 <div class="col-sm-12 p-2">
-                                    <input type="hidden" name="PIH_others" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" id="PIH_others" name="IH_others">
+                                    <input class="form-check-input" type="checkbox" id="PIH_others" name="IH_others" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_others">
                                             Others
                                         </label>
