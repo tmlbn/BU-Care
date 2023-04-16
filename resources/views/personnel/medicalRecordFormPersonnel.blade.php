@@ -176,75 +176,75 @@
         <h4 class="pb-3"></h4>
     </div>   
         <div class="col-md-2">
-            <label for="MR_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_lastName" class="form-label h6">Last Name</label>
+            <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_lastName') 
+                @error('MRP_lastName') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_firstName" class="form-label h6">First Name</label>
+            <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_firstName') 
+                @error('MRP_firstName') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_middleName" class="form-label h6">Middle Name</label>
+            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_middleName') 
+                @error('MRP_middleName') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-1">
-            <label for="MR_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MR_age" name="MR_age" required>
+            <label for="MRP_age" class="form-label h6">Age</label>
+            <input type="text" class="form-control" id="MRP_age" name="MRP_age" required>
             <span class="text-danger"> 
-                @error('MR_age') 
+                @error('MRP_age') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_sex" class="form-label h6">Sex</label>
-            <select id="MR_sex" class="form-select" name="MR_sex" required>
+            <label for="MRP_sex" class="form-label h6">Sex</label>
+            <select id="MRP_sex" class="form-select" name="MRP_sex" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 <option value="MALE">MALE</option>
                 <option value="FEMALE">FEMALE</option>
             </select>
             <span class="text-danger"> 
-                @error('MR_sex') 
+                @error('MRP_sex') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_gender" class="form-label h6">Gender</label>
-            <input type="text" class="form-control" id="MR_gender" name="MR_gender" required>
+            <label for="MRP_gender" class="form-label h6">Gender</label>
+            <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" required>
             <span class="text-danger"> 
-                @error('MR_gender') 
+                @error('MRP_gender') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-1">
             <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <input type="hidden" name="pwd" id="pwd" value="0">
-                <input class="form-check-input" type="checkbox" value="1" name="pwd" id="pwd">
-                <label for="pwd" class="form-check-label mt-1 ms-1">PWD</label>
+                <input type="hidden" name="MRP_pwd" id="MRP_pwd" value="0">
+                <input class="form-check-input" type="checkbox" value="1" name="MRP_pwd" id="MRP_pwd">
+                <label for="MRP_pwd" class="form-check-label mt-1 ms-1">PWD</label>
               </div>
         </div>
         <div class="col-md-2">
-            <label for="MR_placeOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" required>
+            <label for="MRP_placeOfBirth" class="form-label h6">Date of Birth</label>
+            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" required>
             <span class="text-danger"> 
-                @error('MR_placeOfBirth') 
+                @error('MRP_placeOfBirth') 
                     {{ $message }} 
                 @enderror
             </span>
@@ -255,7 +255,7 @@
         
         <script>
         $(document).ready(function() {
-            $("#MR_placeOfBirth").datepicker({
+            $("#MRP_placeOfBirth").datepicker({
                 changeMonth: true,
                 changeYear: true,
                 dateFormat: 'MM/d/yy',
@@ -267,17 +267,17 @@
         </script>
 
         <div class="col-md-4">
-            <label for="MR_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_placeOfBirth" class="form-label h6">Place of Birth</label>
+            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_placeOfBirth') 
+                @error('MRP_placeOfBirth') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_civilStatus" class="form-label h6">Civil Status</label>
-            <select id="MR_civilStatus" name="MR_civilStatus" class="form-select" required>
+            <label for="MRP_civilStatus" class="form-label h6">Civil Status</label>
+            <select id="MRP_civilStatus" name="MRP_civilStatus" class="form-select" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 <option value="SINGLE">SINGLE</option>
                 <option value="MARRIED" class="alternate">MARRIED</option>
@@ -286,89 +286,89 @@
                 <option value="WIDOWED">WIDOWED</option>
             </select>
             <span class="text-danger"> 
-                @error('MR_civilStatus') 
+                @error('MRP_civilStatus') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_nationality" class="form-label h6">Nationality</label>
-            <input type="text" class="form-control" id="MR_nationality" name="MR_nationality" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_nationality" class="form-label h6">Nationality</label>
+            <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_nationality') 
+                @error('MRP_nationality') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_religion" class="form-label h6">Religion</label>
-            <input type="text" class="form-control" id="MR_religion" name="MR_religion" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_religion" class="form-label h6">Religion</label>
+            <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_religion') 
+                @error('MRP_religion') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-10">
-            <label for="MR_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control" id="MR_address" name="MR_address" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_address" class="form-label h6">Home Address</label>
+            <input type="text" class="form-control" id="MRP_address" name="MRP_address" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_address') 
+                @error('MRP_address') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MR_personnelContactNumber" name="MR_personnelContactNumber" required>
+            <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" required>
             <span class="text-danger"> 
-                @error('MR_personnelContactNumber') 
+                @error('MRP_personnelContactNumber') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
-            <label for="MR_fatherName" class="form-label h6">Name</label>
-            <input type="text" class="form-control" id="MR_fatherName" name="MR_fatherName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_fatherName" class="form-label h6">Name</label>
+            <input type="text" class="form-control" id="MRP_fatherName" name="MRP_fatherName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MR_fatherName') 
+                @error('MRP_fatherName') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_parentGuardianContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" required>
+            <label for="MRP_parentGuardianContactNumber" class="form-label h6">Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" id="MRP_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" required>
             <span class="text-danger"> 
-                @error('MR_parentGuardianContactNumber') 
+                @error('MRP_parentGuardianContactNumber') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOccupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MR_fatherOccupation" name="MR_fatherOccupation" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_fatherOccupation" class="form-label h6">Occupation</label>
+            <input type="text" class="form-control" id="MRP_fatherOccupation" name="MRP_fatherOccupation" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MR_fatherOccupation') 
+                @error('MRP_fatherOccupation') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherOccupation" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MR_motherOccupation" name="MR_motherOccupation" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_motherOccupation" class="form-label h6">Relationship</label>
+            <input type="text" class="form-control" id="MRP_motherOccupation" name="MRP_motherOccupation" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MR_motherOccupation') 
+                @error('MRP_motherOccupation') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-12">
-            <label for="MR_fatherOffice" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MR_fatherOffice" name="MR_fatherOffice" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_fatherOffice" class="form-label h6">Work/Home Address</label>
+            <input type="text" class="form-control" id="MRP_fatherOffice" name="MRP_fatherOffice" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MR_fatherOffice') 
+                @error('MRP_fatherOffice') 
                   {{ $message }} 
                 @enderror
               </span>

@@ -64,6 +64,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
  */
 Route::group(['middleware' => ['web', 'employee']], function() {
     
+    Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
     Route::get('/personnel/medical-record-form',[MedicalRecordFormController::class, 'personnelMedicalRecordFormReg'])->name('personnel.medicalForm.show');
     Route::post('/personnel/submit-medical-form', [MedicalRecordFormController::class, 'personnelMedFormSubmit'])->name('personnel.medicalForm.store');
 });
