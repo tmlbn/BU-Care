@@ -94,7 +94,7 @@
 }
 </style>
 <!-- Header -->
-<div class="container w-20 position-relative my-2 bg-light text-dark pt-5 px-3 headMargin checkboxes">
+<div class="container-lg w-20 position-relative my-2 bg-light text-dark pt-5 px-3 headMargin checkboxes">
     <div class="d-flex flex-row">
         <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
@@ -123,7 +123,7 @@
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
+<form method="POST" action="{{ route('medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
 
         <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
@@ -634,214 +634,260 @@
         </div><!-- END OF ROW ENTIRE DIV -->
 
         <!--Personal History-->
+        
         <h5 class="ms-1">Personal Medical Condition</h5>
-            <div class="mx-auto row row-cols-lg-1 mt-2">
-                <div class="col-md-12 p-2 border border-dark">
-                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 align-items-center">
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                            <label class="form-check-label" for="pi_primaryComplex">
-                                Hypertension
-                            </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Pneumonia
+        <div class="mx-auto row row-cols-lg-1 mt-2">
+            <div class="col-md-12 p-2 border border-dark">  
+                <div class="d-flex row row-cols-xl-3 row-cols-md-1 justify-content-between">
+                    <div class="col-xl-2 p-2">
+                        <div class="mx-auto row row-cols-xl-1 row-cols-md-2 row-cols-sm-2 mt-2 ">
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_hypertension" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hypertension">
+                                <label class="form-check-label" for="PMC_hypertension">
+                                    Hypertension
                                 </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Asthma
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                       Diabetes
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                Covid-19
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_asthma" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_asthma">
+                                    <label class="form-check-label" for="PMC_asthma">
+                                        Asthma
                                     </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Arthritis
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Chicken Pox
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Dengue
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                    Tuberculosis
-                                </label>
-                        </div><!-- END OF CHECKBOX DIV -->
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_diabetes" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_diabetes">
+                                    <label class="form-check-label" for="PMC_diabetes">
+                                        Diabetes
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_arthritis" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_arthritis">
+                                    <label class="form-check-label" for="PMC_arthritis">
+                                        Arthritis
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_chickenPox" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_chickenPox">
+                                    <label class="form-check-label" for="PMC_chickenPox">
+                                        Chicken Pox
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_dengue" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_dengue">
+                                    <label class="form-check-label" for="PMC_dengue">
+                                        Dengue
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_tuberculosis" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_tuberculosis">
+                                    <label class="form-check-label" for="PMC_tuberculosis">
+                                        Tuberculosis
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_pneumonia" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_pneumonia">
+                                    <label class="form-check-label" for="PMC_pneumonia">
+                                        Pneumonia
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="PMC_covid19" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_covid19">
+                                    <label class="form-check-label" for="PMC_covid19">
+                                        Covid-19
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                            <div class="col mb-2">
+                                <input type="hidden" name="hivAIDS" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="hivAIDS">
+                                    <label class="form-check-label" for="hivAIDS">
+                                        HIV/AIDS
+                                    </label>
+                            </div><!-- END OF CHECKBOX DIV -->
+                        </div>
                     </div>
-                    <!-- START OF CHECKBOXES WITH INPUT -->
-                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-                        <div class="col-md-4 form-floating d-flex">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input mt-3" type="checkbox" value="1" name="pi_primaryComplex">
-                            <input type="text" class="form-control ms-2" id="PMC_hepatitis" name="PMC_hepatitis" placeholder="Student ID Number">
-                            <label for="floatingInput">Hepatitis</label>
-                                <span class="text-danger"> 
-                                  @error('PMC_hepatitis') 
-                                    {{  $message }} 
-                                  @enderror
-                                </span>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4 form-floating d-flex">
+                <!-- START OF CHECKBOXES WITH INPUT -->
+                    <div class="col-xl-5 p-2">
+                        <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="pi_primaryComplex" style="margin-right: -20px;">
-                            </div>
-
-                                <span class="input-group-text bg-light border-0">Hepatitis</span>
-                                <input type="text" class="form-control" id="PMC_hepatitis" name="PMC_hepatitis">
-                              </div>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                    Thyroid Disorder
-                                </label>
-                                    <input type="text" class="form-control">
+                                    <input type="hidden" name="PMC_hepatitis" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_hepatitis" style="margin-right: -10px;">
                                 </div>
-                        </div><!-- END OF CHECKBOX DIV -->
-                        <div class="col-md-4">
-                            <input type="hidden" name="pi_primaryComplex" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                <label class="form-check-label" for="pi_primaryComplex">
-                                <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                    Eye Disorder
-                                </label>
-                                    <input type="text" class="form-control">
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
+                                <input type="text" class="form-control" id="PMC_hepatitisDetails" name="PMC_hepatitisDetails" disabled>
                             </div>
+                            <span class="text-danger"> 
+                                @error('PMC_hepatitisDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Mental Disorder:
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            HIV/AIDS
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Gastrointestinal Disease
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Kidney Disease:
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Heart Disease:
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Skin Disease:
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Ear Disease:
-                                        </label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="pi_primaryComplex" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="pi_primaryComplex">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Cancer:
-                                        </label>
-                                            <input type="text" class="form-control" name="" id="">
-                                        </div>
-                                </div><!-- END OF CHECKBOX DIV -->
-                                <div class="col-md-4">
-                                    <input type="hidden" name="PMC_Others" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PMC_Others">
-                                        <label class="form-check-label" for="pi_primaryComplex">
-                                        <div class="d-flex align-items-center" style="margin-top: -50px;">
-                                            Others
-                                        </label>
-                                            <input type="text" class="form-control" name="PMC_Others" id="PMC_OthersComment">
-                                        </div>
-                                    </div>
-                        </div><!-- END OF ROW -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_thyroidDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_thyroidDisorder" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Thyroid Disorder: </span>
+                                <input type="text" class="form-control" id="PMC_thyroidDisorderDetails" name="PMC_thyroidDisorderDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_thyroidDisorderDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_eyeDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_eyeDisorder" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Eye Disorder: </span>
+                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PMC_eyeDisorderDetails" disabled>                                </div>
+                            <span class="text-danger"> 
+                                @error('PMC_eyeDisorderDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_mentalDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_mentalDisorder" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Mental Disorder: </span>
+                                <input type="text" class="form-control" id="PMC_mentalDisorderDetails" name="PMC_mentalDisorderDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_mentalDisorderDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_gastroDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_gastroDisease" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Gastrointestinal Disease: </span>
+                                <input type="text" class="form-control" id="PMC_gastroDiseaseDetails" name="PMC_gastroDiseaseDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_gastroDiseaseDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_kidneyDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_kidneyDisease" style="margin-right: -10px;">
+                                </div>
+                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Kidney Disease: </span>
+                                 <input type="text" class="form-control" id="PMC_kidneyDiseaseDetails" name="PMC_kidneyDiseaseDetails" disabled>
+                             </div>
+                             <span class="text-danger"> 
+                                @error('PMC_kidneyDiseaseDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                    </div>
+                    <div class="col-xl-5 p-2">
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_heartDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_heartDisease" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Heart Disease: </span>
+                                <input type="text" class="form-control" id="PMC_heartDiseaseDetails" name="PMC_heartDiseaseDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_heartDiseaseDetails') 
+                                {{ $message }} 
+                                @enderror
+                                </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_skinDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_skinDisease" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Skin Disease: </span>
+                                <input type="text" class="form-control" id="PMC_skinDiseaseDetails" name="PMC_skinDiseaseDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_skinDiseaseDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_earDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_earDisease" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Ear Disease: </span>
+                                <input type="text" class="form-control" id="PMC_earDiseaseDetails" name="PMC_earDiseaseDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_earDiseaseDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_cancer" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_cancer" style="margin-right: -10px;">
+                                </div>
+                                <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Cancer: </span>
+                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PMC_cancerDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_cancerDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
+                        <div class="col-md-11">
+                            <div class="input-group mb-3">
+                            <div class="input-group-text bg-light border-0">
+                                    <input type="hidden" name="PMC_others" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_others" style="margin-right: -10px;">
+                                </div>
+                            <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Others: </span>
+                                <input type="text" class="form-control" id="PMC_othersDetails" name="PMC_othersDetails" disabled>
+                            </div>
+                            <span class="text-danger"> 
+                                @error('PMC_othersDetails') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                        </div><!-- END OF CHECKBOX DIV -->
                     </div>
                 </div>
-                  
+            </div>
+        </div>
         <!--Medical Status
                     HOSPITALIZATION-->
+                    
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
@@ -968,214 +1014,352 @@
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">
                 <h6>Immunization History</h6>
-                <div class="my-auto row row-cols-xl-5 row-cols-lg-4 row-cols-md-2 align-items-center" style="margin-left: 5%;">
-                    <div class="col-sm-1 p-2">
-                        <input type="hidden" name="IH_bcg" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_bcg">
-                            <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
-                                BCG
-                            </label>
+                <div class="my-auto row row-cols-xl-2 row-cols-sm-1 align-items-center" style="margin-left: 5%;">
+                    <div class="col-6">
+                        <div class="row row-cols-2 row-cols-sm-1 align-items-center">
+                            <div class="col-sm-4 p-2">
+                                <input type="hidden" name="IH_bcg" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_bcg">
+                                    <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
+                                        BCG
+                                    </label>
+                            </div>
+                            <div class="col-sm-8 p-2">
+                                <input type="hidden" name="IH_polio" value="0">
+                                <input class="form-check-input" type="checkbox" value="1"name="IH_polio">
+                                    <label class="form-check-label" for="IH_polio">
+                                        Polio I, II, II, Booster Dose
+                                    </label>
+                            </div>
+                            <div class="col-sm-4 p-2">
+                                <input type="hidden" name="IH_chickenPox" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox">
+                                    <label class="form-check-label" for="IH_chickenPox">
+                                        Chicken Pox
+                                    </label>
+                            </div>
+                            <div class="col-sm-8 p-2">
+                                <input type="hidden" name="IH_dpt" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_dpt">
+                                    <label class="form-check-label" for="IH_dpt">
+                                        DPT I, II, III, Booster Dose
+                                    </label>
+                            </div>
+                        </div>
+                        <div class="row row-cols-1 row-cols-sm-1 align-items-center">
+                            <div class="col-sm-12 p-2">
+                                <input type="hidden" name="IH_covidVacc" value="0">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_covidVacc" name="IH_covidVacc">
+                                    <label class="form-check-label" for="IH_covidVacc">
+                                        Covid-19 Vaccine I, II
+                                    </label>
+                                    <input type="text" class="col-sm-2" id="IH_covidVaccName" name="IH_covidVaccName" disabled>
+                                    <span class="text-danger"> 
+                                        @error('IH_covidVaccName') 
+                                        {{  $message }} 
+                                        @enderror
+                                    </span>
+                                    <label class="form-check-label" for="IH_dpt">
+                                        Booster I, II
+                                    </label>
+                                    <input type="text" class="col-sm-2" id="IH_covidBooster" name="IH_covidBooster" disabled>
+                                        <span class="text-danger"> 
+                                            @error('IH_covidBoosterName') 
+                                            {{  $message }} 
+                                            @enderror
+                                        </span>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('#IH_covidVacc').change(function() {
+                                                    $('#IH_covidVaccName').prop('disabled', !this.checked);
+                                                    $('#IH_covidBooster').prop('disabled', !this.checked);
+                                                });
+                                            });
+                                        </script>
+
+                            </div>
+                            <div class="col-sm-12 p-2">
+                                <input type="hidden" name="IH_others" value="0">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_others" name="IH_others">
+                                    <label class="form-check-label" for="IH_others">
+                                        Others
+                                    </label>
+                                <input type="text" class="col-sm-8" id="IH_othersDetails" name="IH_othersDetails" disabled>
+                                <span class="text-danger"> 
+                                    @error('IH_othersDetails') 
+                                      {{ $message }} 
+                                    @enderror
+                                 </span> 
+                            </div>
+                            <script>
+                                document.getElementById('IH_others').onchange = function() {
+                                document.getElementById('IH_othersDetails').disabled = !this.checked;
+                                };
+                            </script>
+                        </div>
                     </div>
-                    <div class="col-sm-3 p-2">
-                        <input type="hidden" name="IH_polio" value="0">
-                        <input class="form-check-input" type="checkbox" value="1"name="IH_polio">
-                            <label class="form-check-label" for="IH_polio">
-                                Polio I, II, II, Booster Dose
-                            </label>
-                    </div>
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_mumps" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_mumps">
-                            <label class="form-check-label" for="IH_mumps">
-                                Mumps
-                            </label>
-                    </div>
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_typhoid" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_typhoid">
-                            <label class="form-check-label" for="IH_typhoid">
-                                Typhoid
-                            </label>
-                    </div>
-                    <div class="col-sm-3 p-2">
-                        <input type="hidden" name="IH_hepatitisA" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisA">
-                            <label class="form-check-label" for="IH_hepatitisA">
-                                Hepatitis A
-                            </label>
-                    </div>
-                    <div class="w-100"></div>
-                    <!-- NEW LINE -->
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_chickenPox" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox">
-                            <label class="form-check-label" for="IH_chickenPox">
-                                Chicken Pox
-                            </label>
-                    </div>
-                    <div class="col-sm-3 p-2">
-                        <input type="hidden" name="IH_dpt" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_dpt">
-                            <label class="form-check-label" for="IH_dpt">
-                                DPT I, II, III, Booster Dose
-                            </label>
-                    </div>
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_measles" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
-                            <label class="form-check-label" for="IH_measles">
-                                Measles
-                            </label>
-                    </div>
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_germanMeasles" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
-                            <label class="form-check-label" for="IH_germanMeasles">
-                                German Measles
-                            </label>
-                    </div>
-                    <div class="col-sm-3 p-2">
-                        <input type="hidden" name="IH_hepatitisB" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
-                            <label class="form-check-label" for="IH_hepatitisB">
-                                Hepatitis B
-                            </label>
-                    </div>
-                    <div class="w-100"></div>
-                    <!-- NEW LINE -->
-                    <div class="col-sm-6 p-2 d-flex flex-row">
-                        <input type="hidden" name="IH_chickenPox" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox">
-                            <label class="form-check-label" for="IH_chickenPox">
-                                Covid-19 Vaccine I, II 
-                            </label> 
-                         <div class="col-sm-2" style="margin-left: 1px;">
-                            <input type="text" class="col-sm-12" >
-                         </div>      
-                       
-                    </div>
-               
-                    <div class="col-sm-2 p-3">
-                        <input type="hidden" name="IH_measles" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
-                            <label class="form-check-label" for="IH_measles">
-                                Pneumoccal
-                            </label>
-                    </div>
-                    <div class="col-sm-2 p-2">
-                        <input type="hidden" name="IH_germanMeasles" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
-                            <label class="form-check-label" for="IH_germanMeasles">
-                                Influenza
-                            </label>
-                    </div>
-                    <div class="col-sm-3 p-2">
-                        <input type="hidden" name="IH_hepatitisB" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
-                            <label class="form-check-label" for="IH_hepatitisB">
-                                HPV
-                            </label>
-                    </div>
-                    <div class="w-100"></div>
-                    <!-- NEW LINE -->
-                    <div class="col-sm-1 p-2">
-                        <input type="hidden" name="IH_others" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" id="IH_others" name="IH_others">
-                            <label class="form-check-label" for="IH_others">
-                                Others
-                            </label>
-                    </div>
-                    <div class="col-sm-9 p-2">
-                            <input type="text" class="col-sm-12" id="IH_othersDetails" name="IH_othersDetails" disabled>
-                            <span class="text-danger"> 
-                                @error('IH_othersDetails') 
-                                  {{ $message }} 
-                                @enderror
-                              </span> 
-                    </div>
-                    <script>
-                        document.getElementById('IH_others').onchange = function() {
-                        document.getElementById('IH_othersDetails').disabled = !this.checked;
-                        };
-                    </script>
+                    <div class="col-6">
+                        <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-sm-3 align-items-center">
+                                <div class="col-4 p-2">
+                                    <input type="hidden" name="IH_typhoid" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_typhoid">
+                                        <label class="form-check-label" for="IH_typhoid">
+                                            Typhoid
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_mumps" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_mumps">
+                                        <label class="form-check-label" for="IH_mumps">
+                                            Mumps
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_hepatitisA" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisA">
+                                        <label class="form-check-label" for="IH_hepatitisA">
+                                            Hepatitis A
+                                        </label>
+                                </div>
+                                <div class="col-4 p-2">
+                                    <input type="hidden" name="IH_measles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
+                                        <label class="form-check-label" for="IH_measles">
+                                            Measles
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_germanMeasles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
+                                        <label class="form-check-label" for="IH_germanMeasles">
+                                            German Measles
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_hepatitisB" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
+                                        <label class="form-check-label" for="IH_hepatitisB">
+                                            Hepatitis B
+                                        </label>
+                                </div>
+                                <div class="col-4 p-2">
+                                    <input type="hidden" name="IH_measles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
+                                        <label class="form-check-label" for="IH_measles">
+                                            Pneumoccal
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_germanMeasles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
+                                        <label class="form-check-label" for="IH_germanMeasles">
+                                            Influenza
+                                        </label>
+                                </div>
+                                <div class="col-4 ps-lg-3 p-2">
+                                    <input type="hidden" name="IH_hepatitisB" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
+                                        <label class="form-check-label" for="IH_hepatitisB">
+                                            HPV
+                                        </label>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-sm-1 align-items-center">
+                                <div class="col-sm-12 p-2">
+                                    <input type="hidden" name="IH_others" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" id="IH_others" name="IH_others">
+                                        <label class="form-check-label" for="IH_others">
+                                            Others
+                                        </label>
+                                <input type="text" class="col-sm-9" id="IH_othersDetails" name="IH_othersDetails" disabled>
+                                        <span class="text-danger"> 
+                                            @error('IH_othersDetails') 
+                                            {{ $message }} 
+                                            @enderror
+                                        </span> 
+                                </div>
+                            <script>
+                                document.getElementById('IH_others').onchange = function() {
+                                document.getElementById('IH_othersDetails').disabled = !this.checked;
+                                };
+                            </script>
+                        </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ATTACHMENTS -->
-    <div class="d-flex flex-row">
-        <div class="col-md-12 p-1 border border-dark">
+    <div class="mx-auto row row-cols-lg-1 mt-2">
+        <div class="col-md-12 p-2 border border-dark">
             <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
-                        <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
+                        <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <input type="file" class="form-control" id="MRP_chestXray" name="MRP_chestXray" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                        <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
+                        <input type="file" class="form-control" id="MRP_cbcresults" name="MRP_cbcresults" accept="image/jpeg, image/png" required>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
+                        <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <input type="file" class="form-control" id="MRP_hepaBscreening" name="MRP_hepaBscreening" accept="image/jpeg, image/png" required>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
-                        <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
-                    </div> 
-                </div>
-            </div>
-        </div>
-    </div>
-        <!--Signatures-->
-        <div class="d-flex flex-row">
-            <div class="col-md-12 p-1 border border-dark">
-                <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
-                    <div class="flex-row justify-content-center">
-                        <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5 align-items-center">
-                            <div class="mb-3 col-md-6">
-                                <label for="MR_studentSignature" class="form-label">Student's Signature over printed name</label>
-                                <input type="file" class="form-control" id="MR_studentSignature" name="MR_studentSignature" accept="image/jpeg, image/png" required>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                                <input type="file" class="form-control" id="MR_parentGuardianSignature" name="MR_parentGuardianSignature" accept="image/jpeg, image/png" required>
-                            </div>
-                        </div>
+                        <label for="MRP_bloodtype" class="form-label fw-bold">Blood Type</label>
+                        <input type="file" class="form-control" id="MRP_bloodtype" name="MRP_bloodtype" accept="image/jpeg, image/png" required>
                     </div>
                 </div>
+                    <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
+                        <script>
+                            let maxResults = 8;
+                            let currentResults = 0;
+                            let nextResultId = 1;
+                            let lastRemovedResultId = null;
+                        
+                            const addResult = () => {
+                                if (currentResults < maxResults) {
+                                    if (lastRemovedResultId !== null) {
+                                        nextResultId = lastRemovedResultId;
+                                        lastRemovedResultId = null;
+                                    } else {
+                                        nextResultId = currentResults + 1;
+                                    }
+                        
+                                    let container = document.getElementById('resultsContainer');
+                                    let resultDiv = document.createElement('div');
+                                    resultDiv.id = `result${nextResultId}`;
+                                    resultDiv.classList.add('mb-3', 'col-3', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center');
+                                    resultDiv.innerHTML = `
+                                        <div class="align-items-center" style="display: flex; flex-direction: row;">
+                                            <label for="MRP_additionalResult${nextResultId}" class="form-label fw-bold me-5" style="margin-right: 20px;">
+                                                Results for:
+                                            </label>
+                                            <button type="button" class="btn btn-sm btn-light ms-5" style="margin-bottom: 5px; "margin-left: 200px;" onclick="removeResult('${nextResultId}')">&times;</button>
+                                        </div>
+                                        <input type="text" class="form-control my-1" id="MRP_additionalResult${nextResultId}" name="MRP_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG">
+                                        <input type="file" class="form-control my-1" id="MRP_additionalUpload${nextResultId}" name="MRP_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
+                                    `;
+                                    container.appendChild(resultDiv);
+                                    currentResults++;
+                        
+                                    if (currentResults == maxResults) {
+                                        document.getElementById('addResultButton').disabled = true;
+                                    }
+                                }
+                            }
+                        
+                            const removeResult = (resultId) => {
+                                let resultDiv = document.getElementById(`result${resultId}`);
+                                resultDiv.remove();
+                                currentResults--;
+                                console.log(currentResults);
+                                console.log(maxResults);
+                        
+                                if (currentResults < maxResults) {
+                                    document.getElementById('addResultButton').disabled = false;
+                                }
+                        
+                                if (resultId < nextResultId) {
+                                    lastRemovedResultId = resultId;
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            <button type="button" id="addResultButton" class="btn btn-primary" onclick="addResult()">Add Result</button>
         </div>
+    </div>
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-            <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
+            <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#submitModal">
+                Submit
+            </button>
         </div>
     </div>
-<!-- modal
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Launch static backdrop modal
-    </button>
-    
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal modal-xl fade" id="submitModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel">
+                        Medical Form Submission
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <p class="fs-5 fw-bold text-center">Please review your responses carefully before submitting this medical form. </p>
+                        <hr>
+                        <p class="fs-5 text-center">By submitting this medical form, you are confirming that all the answers provided are true and correct to the best of your knowledge.</p>
+                    </div>
+                    <div class="modal-footer align-items-center mb-3">
+                        <div class="d-flex align-items-center my-auto mx-auto">
+                            <div class="input-group">
+                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <div style="margin-top: -5px;">
+                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            const passwordInput = document.getElementById('passwordInput');
+                            const togglePassword = document.getElementById('togglePassword');
+                            togglePassword.addEventListener('click', function() {
+                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                passwordInput.setAttribute('type', type);
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                togglePassword.classList.toggle('active');
+                            });
+                        </script>
+                        <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
+                            <button class="btn btn-primary btn-login fw-bold" type="submit">Submit</button>
+                        </div>
+                    </div>
             </div>
-            <div class="modal-body">
-            verify
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-            </div>
-        </div>
         </div>
     </div>
--->
-    </form>    
-</div> 
+        
+    </div> 
+    <script>
+        $(document).ready(function() {
+            $('input[type=checkbox]').change(function() {
+                var input = $(this).closest('.input-group').find('input[type=text]');
+                input.prop('disabled', !this.checked);
+            });
+        });
+    </script>
+    <!-- AJAX to prevent refresh -->
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // prevent default form submission behavior
+            const password = document.getElementById('passwordInput').value;
+            const url = '/check-password'; // replace with the URL that checks the password
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        // password is correct, submit the form
+                        document.getElementById('myForm').submit();
+                    } else {
+                        // password is incorrect, display an error message
+                        alert('Incorrect password');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ password }));
+        });
 
-
+    </script>
+    
+</form>
 @endsection

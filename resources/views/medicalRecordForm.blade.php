@@ -1233,7 +1233,9 @@
                                     <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
                                     <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
                                     <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                        <div style="margin-top: -5px;">
+                                            <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                        </div>
                                     </button>
                                 @else
                                 <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
@@ -1270,16 +1272,17 @@
                             </div>
                         </div>
                         
-                          <script>
+                        <script>
                             const passwordInput = document.getElementById('passwordInput');
                             const togglePassword = document.getElementById('togglePassword');
                             togglePassword.addEventListener('click', function() {
-                              const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                              passwordInput.setAttribute('type', type);
-                              togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                              togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                passwordInput.setAttribute('type', type);
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                togglePassword.classList.toggle('active');
                             });
-                          </script>
+                        </script>
                         <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
                             <button class="btn btn-primary btn-login fw-bold" type="submit">Submit</button>
                         </div>
