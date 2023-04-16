@@ -1,4 +1,4 @@
-@extends('personnel.layouts.app')
+@extends('')
 
 @section('content')
 
@@ -95,6 +95,13 @@
 </style>
 <!-- Header -->
 <div class="container-lg w-20 position-relative my-2 bg-light text-dark pt-5 px-3 headMargin checkboxes">
+    @if($patient->hasValidatedRecord)
+    <!-- HAS VALIDATED MEDICAL RECORD -->
+    <i class="bi bi-person-check icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+  @else
+    <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
+    <i class="bi bi-file-earmark-medical icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Record not Validated"></i>
+  @endif
     <div class="d-flex flex-row">
         <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
@@ -123,53 +130,34 @@
     </div>
 
     <!--Personal Basic Information-->
+
+    @if(session('fail'))
+    <div class="alert alert-danger">
+        {{ session('fail') }}
+    </div>
+    @endif
+    @if(session('alreadySubmitted'))
+    <div class="alert alert-danger">
+        {{ session('alreadySubmitted') }}
+    </div>
+    @endif
+
+
 <form method="POST" action="{{ route('medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
 
         <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
             <div class="col-xl-4 col-lg-12">
                 <label for="designation" class="form-label h6">Designation</label>
-                <input type="text" class="form-control" id="designation" name="designation" oninput="this.value = this.value.toUpperCase()" required>
-                <span class="text-danger"> 
-                    @error('designation') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
+                <input type="text" class="form-control" id="designation" name="designation" value="{{  }}" readonly>               
             </div>
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Unit/Department</p>
-                <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" oninput="this.value = this.value.toUpperCase()" required>
-                <span class="text-danger"> 
-                    @error('unitDepartment') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
+                <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" value="{{  }}" readonly>
             </div> 
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Campus</p>
-                <select id="campusSelect" name="campusSelect" class="form-select" required>
-                    <option selected="selected" disabled="disabled" value="">SELECT</option>
-                    <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
-                    <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
-                    <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
-                    <option value="College of Education" class="alternate">College of Education</option>
-                    <option value="College of Engineering">College of Engineering</option>
-                    <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
-                    <option value="College of Medicine">College of Medicine</option>
-                    <option value="College of Nursing" class="alternate">College of Nursing</option>
-                    <option value="College of Science">College of Science</option>
-                    <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
-                    <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
-                    <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
-                    <option value="Gubat Campus">Gubat Campus</option>
-                    <option value="Polangui Campus" class="alternate">Polangui Campus</option>
-                    <option value="Tabaco Campus">Tabaco Campus</option>
-                </select>
-                <span class="text-danger"> 
-                    @error('campusSelect') 
-                      {{ $message }} 
-                    @enderror
-                  </span>
+                <input type="text" class="form-control" id="P_campusSelect" name="P_campusSelect" value="{{  }}" readonly>
             </div>   
         </div>   
     <div class="d-flex flex-row">
@@ -177,77 +165,37 @@
     </div>   
         <div class="col-md-2">
             <label for="MRP_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_lastName') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_firstName') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_middleName') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" value="{{  }}" readonly>
         </div>
         <div class="col-md-1">
             <label for="MRP_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MRP_age" name="MRP_age" required>
-            <span class="text-danger"> 
-                @error('MRP_age') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_age" name="MRP_age" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_sex" class="form-label h6">Sex</label>
-            <select id="MRP_sex" class="form-select" name="MRP_sex" required>
-                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                <option value="MALE">MALE</option>
-                <option value="FEMALE">FEMALE</option>
-            </select>
-            <span class="text-danger"> 
-                @error('MRP_sex') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_sex" name="MRP_sex" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_gender" class="form-label h6">Gender</label>
-            <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" required>
-            <span class="text-danger"> 
-                @error('MRP_gender') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" value="{{  }}" readonly>
         </div>
         <div class="col-md-1">
             <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <input type="hidden" name="MRP_pwd" id="MRP_pwd" value="0">
-                <input class="form-check-input" type="checkbox" value="1" name="MRP_pwd" id="MRP_pwd">
+                <input class="form-check-input" type="checkbox" name="MRP_pwd" id="MRP_pwd" {{  }} onclick="this.checked=!this.checked;"/>
                 <label for="MRP_pwd" class="form-check-label mt-1 ms-1">PWD</label>
               </div>
         </div>
         <div class="col-md-2">
             <label for="MRP_placeOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" required>
-            <span class="text-danger"> 
-                @error('MRP_placeOfBirth') 
-                    {{ $message }} 
-                @enderror
-            </span>
+            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" value="{{  }}" readonly>
         </div>
 
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
@@ -268,110 +216,48 @@
 
         <div class="col-md-4">
             <label for="MRP_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_placeOfBirth') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_civilStatus" class="form-label h6">Civil Status</label>
-            <select id="MRP_civilStatus" name="MRP_civilStatus" class="form-select" required>
-                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                <option value="SINGLE">SINGLE</option>
-                <option value="MARRIED" class="alternate">MARRIED</option>
-                <option value="DIVORCED">DIVORCED</option>
-                <option value="SEPARATED" class="alternate">SEPARATED</option>
-                <option value="WIDOWED">WIDOWED</option>
-            </select>
-            <span class="text-danger"> 
-                @error('MRP_civilStatus') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_civilStatus" name="MRP_civilStatus" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_nationality" class="form-label h6">Nationality</label>
-            <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_nationality') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_religion" class="form-label h6">Religion</label>
-            <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_religion') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" value="{{  }}" readonly>
         </div>
         <div class="col-md-10">
             <label for="MRP_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control" id="MRP_address" name="MRP_address" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_address') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_address" name="MRP_address" value="{{  }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" required>
-            <span class="text-danger"> 
-                @error('MRP_personnelContactNumber') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" value="{{  }}" readonly>
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
             <label for="MRP_contactName" class="form-label h6">Name</label>
-            <input type="text" class="form-control" id="MRP_contactName" name="MRP_contactName" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_contactName') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_contactName" name="MRP_contactName" value="{{  }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_ContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_ContactNumber" name="MR_ContactNumber" required>
-            <span class="text-danger"> 
-                @error('MRP_ContactNumber') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_ContactNumber" name="MR_ContactNumber" value="{{  }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_Occupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MRP_Occupation" name="MRP_Occupation" oninput="this.value = this.value.toUpperCase()">
-            <span class="text-danger"> 
-                @error('MRP_Occupation') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_Occupation" name="MRP_Occupation" value="{{  }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_relationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MRP_relationship" name="MRP_relationship" oninput="this.value = this.value.toUpperCase()">
-            <span class="text-danger"> 
-                @error('MRP_relationship') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_relationship" name="MRP_relationship" value="{{  }}" readonly>
         </div>
         <div class="col-md-12">
             <label for="MRP_OfficeAdd" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MRP_OfficeAdd" name="MRP_OfficeAdd" oninput="this.value = this.value.toUpperCase()">
-            <span class="text-danger"> 
-                @error('MRP_OfficeAdd') 
-                  {{ $message }} 
-                @enderror
-              </span>
+            <input type="text" class="form-control" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{  }}" readonly>
         </div>
         
         
@@ -390,43 +276,37 @@
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_cancer">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_cancer">
+                            <input class="form-check-input" type="checkbox" name="FHP_cancer" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_cancer">
                                     Cancer
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_heartDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_heartDisease">
+                            <input class="form-check-input" type="checkbox" name="FHP_heartDisease" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_heartDisease">
                                     Heart Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_hypertension">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hypertension">
+                            <input class="form-check-input" type="checkbox" name="FHP_hypertension" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_hypertension">
                                     Hypertension
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_thyroidDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_thyroidDisease">
+                            <input class="form-check-input" type="checkbox" name="FHP_thyroidDisease" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_thyroidDisease">
                                     Thyroid Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_tuberculosis">
+                            <input class="form-check-input" type="checkbox" name="FHP_tuberculosis" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_HIV/AIDS">
+                            <input class="form-check-input" type="checkbox" name="FHP_HIV/AIDS" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_tuberculosis">
                                     HIV/AIDS
                                 </label>
@@ -434,43 +314,37 @@
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_diabetesMelittus">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_diabetesMelittus">
+                            <input class="form-check-input" type="checkbox" name="FHP_diabetesMelittus" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_diabetesMelittus">
                                     Diabetes Melittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_mentalDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_mentalDisorder">
+                            <input class="form-check-input" type="checkbox" name="FHP_mentalDisorder" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_mentalDisorder">
                                     Mental Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_asthma" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_asthma">
+                            <input class="form-check-input" type="checkbox" name="FHP_asthma" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_asthma">
                                     Asthma
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_convulsions" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_convulsions">
+                            <input class="form-check-input" type="checkbox" name="FHP_convulsions" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_convulsions">
                                     Convulsions
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
+                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Bleeding Dyscrasia
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
+                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Arthritis
                                 </label>
@@ -478,36 +352,31 @@
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" name="FHP_eyeDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_eyeDisorder">
+                            <input class="form-check-input" type="checkbox" name="FHP_eyeDisorder" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_eyeDisorder">
                                     Eye Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_skinProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_skinProblems">
+                            <input class="form-check-input" type="checkbox" name="FHP_skinProblems" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_skinProblems">
                                     Skin Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_kidneyProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_kidneyProblems">
+                            <input class="form-check-input" type="checkbox" name="FHP_kidneyProblems" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_kidneyProblems">
                                     Kidney Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease">
+                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_gastroDisease">
                                     Gastrointestinal Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease"   >
+                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_gastroDisease">
                                     Hepatitis
                                 </label>
@@ -516,42 +385,13 @@
                 </div><!-- END OF ROW of CHECKBOXES DIV -->
             <div class="form-row align-items-center">
                 <div class="col p-2">
-                    <input type="hidden" name="FHP_others" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="FHP_others" name="FHP_others">
+                    <input class="form-check-input" type="checkbox" id="FHP_others" name="FHP_others" {{  }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="FHP_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="hidden" name="FHP_othersDetails" value="N/A">
-                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
-                            <span class="text-danger"> 
-                                @error('FHP_othersDetails') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>    
-                            <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
-                                <script>
-                                    const fhOthers = document.getElementById('FHP_others');
-                                    const fhOthersDetails = document.getElementById('FHP_othersDetails');
-                                    
-                                    fhOthers.onchange = function() {
-                                        if (this.checked) {
-                                            fhOthersDetails.disabled = false;
-                                            fhOthersDetails.required = true;
-                                        } else {
-                                            fhOthersDetails.disabled = true;
-                                            fhOthersDetails.required = false;
-                                        }
-                                    };
+                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" value="{{  }}" {{  }}>
 
-                                    // Initialize the form state on page load
-                                    if (fhOthers.checked) {
-                                        fhOthersDetails.disabled = false;
-                                        fhOthersDetails.required = true;
-                                    } else {
-                                        fhOthersDetails.disabled = true;
-                                        fhOthersDetails.required = false;
-                                    }
-                                </script>
+                            <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                     </div><!-- END OF COL OTHERS DIV -->
                 </div><!-- END OF ROW OTHERS DIV -->
             </div><!-- END OF COL FH -->
@@ -560,30 +400,19 @@
             <div class="col-lg-5 col-md-12 p-2 border border-dark">
                 <h6>Personal Social History</h6>
                     <div class="form-check">
-                    <input type="hidden" name="PPSH_smoking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_smoking" name="PPSH_smoking">
+                    <input class="form-check-input" type="checkbox" id="PPSH_smoking" name="PPSH_smoking" {{  }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="PPSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2" id="PPSH_smoking_amount" name="PPSH_smoking_amount" disabled> 
-                            <span class="text-danger"> 
-                                @error('PPSH_smoking_amount') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>  
+                            ( <input type="text" class="col-md-2" id="PPSH_smoking_amount" name="PPSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
                             sticks/day for 
-                            <input type="text" class="col-md-2"  id="PPSH_smoking_freq" name="PPSH_smoking_freq" disabled> year/s )
-                            <span class="text-danger"> 
-                                @error('PPSH_smoking_freq') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>  
+                            <input type="text" class="col-md-2"  id="PPSH_smoking_freq" name="PPSH_smoking_freq" value="{{ $patient->medicalRecord->personalSocialHistory->years }}" {{ $patient->medicalRecord->personalSocialHistory->years == 0 ? 'disabled' : 'readonly' }}> 
+                            year/s ) 
                         </label>
                 </div><!-- END OF SMOKING FORM DIV -->
 
                 <div class="form-check" style="margin-top:5%;">
-                    <input type="hidden" name="PPSH_drinking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_drinking" name="PPSH_drinking">
+                    <input class="form-check-input" type="checkbox" id="PPSH_drinking" name="PPSH_drinking" {{  }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="PPSH_drinking" style="display: contents!important;">
                             Liquor Consumption:
                             <div class="form-check form-check-inline">
@@ -611,24 +440,6 @@
                 </div><!-- END OF DRINKING FORM DIV -->
 
                     <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
-                <script>
-                   $(document).ready(function() {
-                        /* SMOKING */
-                        $('#PPSH_smoking').change(function() {
-                            $('#PPSH_smoking_amount').prop('disabled', !this.checked);
-                            $('#PPSH_smoking_freq').prop('disabled', !this.checked);
-                        });
-                        
-                        /* DRINKING */
-                        $('#PPSH_drinking').change(function() {
-                            $('#PPSH_drinking_amountOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_amountofShots').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfShots').prop('disabled', !this.checked);
-                        });
-                    });
-
-                </script>
 
             </div><!-- END OF PSH COL DIV -->
         </div><!-- END OF ROW ENTIRE DIV -->
@@ -642,71 +453,61 @@
                     <div class="col-xl-2 p-2">
                         <div class="mx-auto row row-cols-xl-1 row-cols-md-2 row-cols-sm-2 mt-2 ">
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_hypertension" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_hypertension">
+                                <input class="form-check-input" type="checkbox" name="PPMC_hypertension" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="PPMC_hypertension">
                                     Hypertension
                                 </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_asthma" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_asthma">
+                                <input class="form-check-input" type="checkbox" name="PPMC_asthma" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_asthma">
                                         Asthma
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_diabetes" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_diabetes">
+                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_diabetes" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_diabetes">
                                         Diabetes
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_arthritis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_arthritis">
+                                <input class="form-check-input" type="checkbox" name="PPMC_arthritis" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_arthritis">
                                         Arthritis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
-                            <div class="col mb-2">
-                                <input type="hidden" name="PPMC_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_chickenPox">
+                            <div class="col mb-2">                    
+                                <input class="form-check-input" type="checkbox" name="PPMC_chickenPox" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_dengue" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_dengue">
+                                <input class="form-check-input" type="checkbox" name="PPMC_dengue" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_dengue">
                                         Dengue
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_tuberculosis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_tuberculosis">
+                                <input class="form-check-input" type="checkbox" name="PPMC_tuberculosis" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_tuberculosis">
                                         Tuberculosis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_pneumonia" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_pneumonia">
+                                <input class="form-check-input" type="checkbox" name="PPMC_pneumonia" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_pneumonia">
                                         Pneumonia
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_covid19" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_covid19">
+                                <input class="form-check-input" type="checkbox" name="PPMC_covid19" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_covid19">
                                         Covid-19
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_hivAIDS" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_hivAIDS">
+                                <input class="form-check-input" type="checkbox" name="PPMC_hivAIDS" {{  }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_hivAIDS">
                                         HIV/AIDS
                                     </label>
@@ -718,17 +519,11 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_hepatitis" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_hepatitis" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_hepatitis" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
                                 <input type="text" class="form-control" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" disabled>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_hepatitisDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
