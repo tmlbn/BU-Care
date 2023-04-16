@@ -57,6 +57,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 
     #--------------AppointmentsController---------------#
     Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
+    route::post('appointmentStore', [AppointmentsController::class, 'appointmentStore'])->name('appointmentDetails.store');
 });
 
 /**

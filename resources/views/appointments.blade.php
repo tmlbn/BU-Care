@@ -43,7 +43,9 @@
     
 </style>
     <div class="container pt-3">
+        
       <div class="" id="calendar"></div>
+      
     </div>
 
     <script class="pt-2">
@@ -266,77 +268,82 @@
                                 </div>
 
                             <!-- APPOINTMENT DETAILS -->
-                            <div class="col-lg-9 col-md-12">
-                                <form>
+                            <div class="col-lg-9 col-md-12" id="services">
+                                <form method="post" action="{{ route('appointmentDetails.store') }}">
+                                    @csrf
                                     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                     </div>
                                     <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
-                                            <input type="text" class="form-control fw-bold" id="appointmentDate" readonly>
+                                            <input type="text" class="form-control fw-bold" name="appointmentDate" id="appointmentDate" readonly>
                                         </div>
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
-                                            <input type="text" class="form-control fw-bold" id="appointmentTime" placeholder="Select Time" readonly>
+                                            <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-2 border-lg-end-0">
-                                        <h5>Complaints/Reason for Appointments</h5>
+                                        <h5>Services Availed</h5>
                                         <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
                                             <div class="col-lg-6 col-md-12 p-2">
                                                 <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Headache">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                        <label class="form-check-label" for="FH_Headache">
-                                                            Headache
+                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services">
+                                                        <label class="form-check-label" for="services">
+                                                            Medical Certificate
+                                                        </label>    
+                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" value="OPD Consultant" name="services">
+                                                        <label class="form-check-label" for="services">
+                                                            OPD Consultant
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Dizziness">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                        <label class="form-check-label" for="FH_Dizziness">
-                                                            Dizziness
+                                                    <input class="form-check-input" type="radio" value="Others" id="Others" name="services">
+                                                        <label class="form-check-label" for="Others">
+                                                            Others
                                                         </label>
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                                <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Stomachache">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
-                                                        <label class="form-check-label" for="FH_Stomachache">
-                                                            Stomachache
-                                                        </label>
+                                                        <div class="form-check">
+                                                            <label for="OthersInput" class="form-check-label">
+                                                                <input type="text" class="form-control" name="OthersInput" id="OthersInput">
+                                                            </label>
+                                                        </div>
+                                                       
                                                 </div><!-- END OF CHECKBOX DIV -->
                                             </div>
                                             <div class="col-lg-6 col-md-12 p-2">
                                                 <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Nausea">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                                        <label class="form-check-label" for="FH_Nausea">
-                                                            Nausea
+                                                    <input class="form-check-input" type="radio" value="Reinstatement" name="services">
+                                                        <label class="form-check-label" for="Reinstatement">
+                                                            Reinstatement
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Consiousness">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                        <label class="form-check-label" for="FH_Consiousness">
-                                                            Loss of Consiousness
+                                                    <input class="form-check-input" type="radio" value="Sick Leave" name="services">
+                                                        <label class="form-check-label" for="Sick Leave">
+                                                            Sick Leave
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <div class="form-check">
-                                                    <input type="hidden" value="0" name="FH_Consiousness">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                                        <label class="form-check-label" for="FH_Consiousness">
-                                                            Medical Certificate
+                                                    <input class="form-check-input" type="radio" value="Unkown" name="services">
+                                                        <label class="form-check-label" for="Unkown">
+                                                            Unkown
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
+                                                <script>
+                                                    document.getElementById("services").addEventListener("change", function (event) {
+                                                        if (event.target.value === "Others") {
+                                                            document.getElementById("OthersInput").disabled = false;
+                                                        } 
+                                                        else {
+                                                            document.getElementById("OthersInput").disabled = true;
+                                                        }
+                                                        });
+                                                </script>
                                             </div>
                                         </div>
-                                        <div class="form-check">
-                                            <input type="hidden" value="0" name="FH_Others">
-                                                <label for="FH_Others" class="form-check-label">
-                                                    Others 
-                                                    <input type="text" class="form-control" id="appointmentTitle">
-                                                </label>
-                                            </div>
+                                        
                                         </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
@@ -354,7 +361,7 @@
                                         <div class="d-flex my-auto mx-autop">
                                             <div class="input-group">
                                                 <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                                 <span class="bi bi-eye-fill" aria-hidden="true"></span>
                                                 </button>
@@ -362,11 +369,11 @@
                                         </div>
 
                                         <div class="d-flex">
-                                            <button type="button" class="btn btn-primary">Save</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            
                         </div>
                                 
                         </div>
@@ -375,5 +382,5 @@
             </div>
         </div>
     </div>
-
+</form>
 @endsection
