@@ -522,159 +522,100 @@
                                     <input class="form-check-input mt-0" type="checkbox" name="PPMC_hepatitis" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
-                                <input type="text" class="form-control" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" value="{{  }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_thyroidDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_thyroidDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_thyroidDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Thyroid Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_thyroidDisorderDetails" name="PPMC_thyroidDisorderDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_thyroidDisorderDetails" name="PPMC_thyroidDisorderDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_thyroidDisorderDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_eyeDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_eyeDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_eyeDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Eye Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PPMC_eyeDisorderDetails" disabled>                                </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_eyeDisorderDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
+                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PPMC_eyeDisorderDetails" value="{{  }}" readonly>                                
+                            </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_mentalDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_mentalDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_mentalDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Mental Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_mentalDisorderDetails" name="PPMC_mentalDisorderDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_mentalDisorderDetails" name="PPMC_mentalDisorderDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_mentalDisorderDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_gastroDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_gastroDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_gastroDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Gastrointestinal Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_gastroDiseaseDetails" name="PPMC_gastroDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_gastroDiseaseDetails" name="PPMC_gastroDiseaseDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_gastroDiseaseDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_kidneyDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_kidneyDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_kidneyDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                  <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Kidney Disease: </span>
-                                 <input type="text" class="form-control" id="PPMC_kidneyDiseaseDetails" name="PPMC_kidneyDiseaseDetails" disabled>
+                                 <input type="text" class="form-control" id="PPMC_kidneyDiseaseDetails" name="PPMC_kidneyDiseaseDetails" value="{{  }}" readonly>
                              </div>
-                             <span class="text-danger"> 
-                                @error('PPMC_kidneyDiseaseDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div>
                     <div class="col-xl-5 p-2">
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_heartDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_heartDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_heartDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Heart Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_heartDiseaseDetails" name="PPMC_heartDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_heartDiseaseDetails" name="PPMC_heartDiseaseDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_heartDiseaseDetails') 
-                                {{ $message }} 
-                                @enderror
-                                </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_skinDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_skinDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_skinDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Skin Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_skinDiseaseDetails" name="PPMC_skinDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_skinDiseaseDetails" name="PPMC_skinDiseaseDetails" value="" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_skinDiseaseDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_earDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_earDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_earDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Ear Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_earDiseaseDetails" name="PPMC_earDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_earDiseaseDetails" name="PPMC_earDiseaseDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PMC_earDiseaseDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_cancer" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_cancer" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_cancer" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Cancer: </span>
-                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PPMC_cancerDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PPMC_cancerDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_cancerDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                             <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_others" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_others" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_others" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
                                 </div>
                             <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Others: </span>
-                                <input type="text" class="form-control" id="PPMC_othersDetails" name="PPMC_othersDetails" disabled>
+                                <input type="text" class="form-control" id="PPMC_othersDetails" name="PPMC_othersDetails" value="{{  }}" readonly>
                             </div>
-                            <span class="text-danger"> 
-                                @error('PPMC_othersDetails') 
-                                {{  $message }} 
-                                @enderror
-                            </span>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div>
                 </div>
