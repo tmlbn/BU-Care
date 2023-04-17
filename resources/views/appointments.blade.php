@@ -347,7 +347,7 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
+                                        <textarea name="appointmentDescription" class="form-control" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
                                     </div>
                                     <script>
                                         var textarea = document.getElementById('appointmentDescription');
