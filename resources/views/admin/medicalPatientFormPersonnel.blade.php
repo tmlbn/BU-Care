@@ -872,169 +872,198 @@
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
                         <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <input type="file" class="form-control" id="PMRP_chestXray" name="PMRP_chestXray" accept="image/jpeg, image/png" required>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings">
+                        </div>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="PMRP_cbcresults" name="PMRP_cbcresults" accept="image/jpeg, image/png" required>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.->medicalRecord->CBCResults) }}" alt="CBC Results">
+                        </div>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <input type="file" class="form-control" id="PMRP_hepaBscreening" name="PMRP_hepaBscreening" accept="image/jpeg, image/png" required>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
+                        </div>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_bloodtype" class="form-label fw-bold">Blood Type</label>
-                        <input type="file" class="form-control" id="PMRP_bloodtype" name="PMRP_bloodtype" accept="image/jpeg, image/png" required>
-                    </div>
-                </div>
-                    <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
-                        <script>
-                            let maxResults = 8;
-                            let currentResults = 0;
-                            let nextResultId = 1;
-                            let lastRemovedResultId = null;
-                        
-                            const addResult = () => {
-                                if (currentResults < maxResults) {
-                                    if (lastRemovedResultId !== null) {
-                                        nextResultId = lastRemovedResultId;
-                                        lastRemovedResultId = null;
-                                    } else {
-                                        nextResultId = currentResults + 1;
-                                    }
-                        
-                                    let container = document.getElementById('resultsContainer');
-                                    let resultDiv = document.createElement('div');
-                                    resultDiv.id = `result${nextResultId}`;
-                                    resultDiv.classList.add('mb-3', 'col-3', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center');
-                                    resultDiv.innerHTML = `
-                                        <div class="align-items-center" style="display: flex; flex-direction: row;">
-                                            <label for="MRP_additionalResult${nextResultId}" class="form-label fw-bold me-5" style="margin-right: 20px;">
-                                                Results for:
-                                            </label>
-                                            <button type="button" class="btn btn-sm btn-light ms-5" style="margin-bottom: 5px; "margin-left: 200px;" onclick="removeResult('${nextResultId}')">&times;</button>
-                                        </div>
-                                        <input type="text" class="form-control my-1" id="MRP_additionalResult${nextResultId}" name="MRP_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG">
-                                        <input type="file" class="form-control my-1" id="MRP_additionalUpload${nextResultId}" name="MRP_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
-                                    `;
-                                    container.appendChild(resultDiv);
-                                    currentResults++;
-                        
-                                    if (currentResults == maxResults) {
-                                        document.getElementById('addResultButton').disabled = true;
-                                    }
-                                }
-                            }
-                        
-                            const removeResult = (resultId) => {
-                                let resultDiv = document.getElementById(`result${resultId}`);
-                                resultDiv.remove();
-                                currentResults--;
-                                console.log(currentResults);
-                                console.log(maxResults);
-                        
-                                if (currentResults < maxResults) {
-                                    document.getElementById('addResultButton').disabled = false;
-                                }
-                        
-                                if (resultId < nextResultId) {
-                                    lastRemovedResultId = resultId;
-                                }
-                            }
-                        </script>
-                    </div>
-                </div>
-            <button type="button" id="addResultButton" class="btn btn-primary" onclick="addResult()">Add Result</button>
-        </div>
-    </div>
-    <div class="row no-gutters justify-content-end pt-3 position-relative">
-        <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-            <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#submitModal">
-                Submit
-            </button>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal modal-xl fade" id="submitModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="submitModalLabel">
-                        Medical Form Submission
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                    <div class="modal-body">
-                        <p class="fs-5 fw-bold text-center">Please review your responses carefully before submitting this medical form. </p>
-                        <hr>
-                        <p class="fs-5 text-center">By submitting this medical form, you are confirming that all the answers provided are true and correct to the best of your knowledge.</p>
-                    </div>
-                    <div class="modal-footer align-items-center mb-3">
-                        <div class="d-flex align-items-center my-auto mx-auto">
-                            <div class="input-group">
-                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                    <div style="margin-top: -5px;">
-                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <script>
-                            const passwordInput = document.getElementById('passwordInput');
-                            const togglePassword = document.getElementById('togglePassword');
-                            togglePassword.addEventListener('click', function() {
-                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                                passwordInput.setAttribute('type', type);
-                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
-                                togglePassword.classList.toggle('active');
-                            });
-                        </script>
-                        <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
-                            <button class="btn btn-primary btn-login fw-bold" type="submit">Submit</button>
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
+                            <img src="{{ asset('storage/app/'.->medicalRecord->bloodType) }}" alt="Blood Type">
                         </div>
                     </div>
-            </div>
-        </div>
-    </div>
-        
-    </div> 
-    <script>
-        $(document).ready(function() {
-            $('input[type=checkbox]').change(function() {
-                var input = $(this).closest('.input-group').find('input[type=text]');
-                input.prop('disabled', !this.checked);
-            });
-        });
-    </script>
-    <!-- AJAX to prevent refresh -->
-    <script>
-        document.getElementById('myForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // prevent default form submission behavior
-            const password = document.getElementById('passwordInput').value;
-            const url = '/check-password'; // replace with the URL that checks the password
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        // password is correct, submit the form
-                        document.getElementById('myForm').submit();
-                    } else {
-                        // password is incorrect, display an error message
-                        alert('Incorrect password');
-                    }
-                }
-            };
-            xhr.send(JSON.stringify({ password }));
-        });
+                </div>
 
-    </script>
-    
+                <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                    <header class="text-center">
+                        <!-- LINE BREAK -->
+                    </header>
+                </section>
+                
+                <p class="text-center fw-bold pt-1" style="user-select:none;">
+                    ---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------
+                </p>
+                    
+                <!-- START OF PHYSICIAN INPUT -->
+                <!-- VITAL SIGNS -->
+                <div class="mx-auto row row-cols-lg-1 mt-2">
+                    <div class="col-md-12 p-1 border border-dark">
+                        <div class="container">
+                            <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
+                            <div class="row row-cols-xl-3 row-cols-sm-1 justify-content-center">
+                                <!-- Col 1 (BASELINE) -->
+                                <div class="col-xl-3">
+                                    <div class="form-group d-flex">
+                                        <label for="VS_bloodPressure" class="form-label h6 my-auto me-1" style="white-space: nowrap;">BP:&nbsp;</label>
+                                        <div class="d-flex align-items-center ms-4"style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_bp_systolic" name="VS_bp_systolic"  maxlength="3" style="width:31.7%;" required>
+                                                <span class="text-danger"> 
+                                                    @error('VS_bp_systolic') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                            <span class="fs-6">/</span>
+                                            <input type="text" class="form-control ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" maxlength="3" style="width:31.7%;" required> 
+                                            <p class="pt-3" style="margin-left: 4px;">mmHg</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_bp_diastolic') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>                   
+                                    <div class="form-group d-flex">
+                                        <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR:&nbsp;</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" maxlength="4" required>
+                                            <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_pulseRate') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>                 
+                                    <div class="form-group d-flex">
+                                        <label for="VS_respirationRate" class="form-label h6 my-auto me-1">RR:&nbsp;</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" maxlength="4" required>
+                                            <p class="pt-3" style="margin-left: 4px;">/minute</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_respirationRate') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label for="VS_temp" class="form-label h6 my-auto me-1">Temp:</label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="text" class="form-control me-1" id="VS_temp" name="VS_temp" maxlength="4" style="margin-left: 1px; width:90%;" required>
+                                            <p class="pt-3" style="margin-left: 4px;">°C</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_temp') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!-- Col 2 (HEIGHT, WEIGHT, BMI) -->
+                                <div class="col-xl-3 mx-4">
+                                    <div class="form-group d-flex">
+                                        <label for="VS_height" class="form-label h6 my-auto me-1">Height:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1 ms-1" id="VS_height" name="VS_height" maxlength="4" required>
+                                            <p class="pt-3" style="margin-left: 4px;">meters</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_height') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>  
+                                    <div class="form-group d-flex">
+                                        <label for="VS_weight" class="form-label h6 my-auto me-1">Weight:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_weight" name="VS_weight" maxlength="4" required>
+                                            <p class="pt-3" style="margin-left: 4px;">kgs</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_weight') 
+                                                    {{ $message }} 
+                                                     @enderror
+                                                </span>
+                                        </div>
+                                    </div>  
+                                    <div class="form-group d-flex">
+                                        <label for="VS_bmi" class="form-label h6 my-auto me-1">BMI:&nbsp;</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1 ms-4" id="VS_bmi" name="VS_bmi" maxlength="4" required>
+                                            <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                                <span class="text-danger">
+                                                    @error('VS_bmi')
+                                                    {{ $message }}
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Col 3 (FINDINGS) -->
+                                <div class="col-xl-5">
+                                    <div class="form-group d-flex">
+                                        <label for="VS_xrayFindings" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CHEST X-RAY FINDINGS:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_xrayFindings" name="VS_xrayFindings" maxlength="4" style="width:310px;" required>
+                                            <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_xrayFindings') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>                   
+                                    <div class="form-group d-flex">
+                                        <label for="VS_cbcResults" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CBC Results:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_cbcResults" name="VS_cbcResults" maxlength="4" style="width:310px; margin-left: 86px;" required>
+                                            <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_cbcResults') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>               
+                                    <div class="form-group d-flex">
+                                        <label for="VS_hepaBscreening" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Hepatitis B Screening:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" maxlength="4" style="margin-left: 12px; width:310px;" required>
+                                            <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_hepaBscreening') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label for="VS_bloodType" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Blood Type:</label>
+                                        <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                            <input type="text" class="form-control me-1" id="VS_bloodType" name="VS_bloodType" maxlength="4" style="margin-left: 94px; width:310px;" required>
+                                            <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                                <span class="text-danger"> 
+                                                    @error('VS_bloodType') 
+                                                    {{ $message }} 
+                                                    @enderror
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>   
+                             </div>
+                        </div>
+                    </div>
+                </div>
 </form>
 @endsection
