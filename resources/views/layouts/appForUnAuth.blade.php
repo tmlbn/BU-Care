@@ -184,9 +184,7 @@
                                         }
                                     });
                                 });
-                                </script>
-
-
+                            </script>
                         </nav>
                     </div>
                 </div>

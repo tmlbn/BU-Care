@@ -248,13 +248,13 @@
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                        <a class="dropdown-item" href="{{ route('personnel.logout') }}"
                                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
         
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('personnel.logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>
                                     </li>
@@ -278,36 +278,38 @@
           </svg>
 
         @if(session('fail'))
-        <div class="alert alert-danger text-center d-flex align-items-center justify-content-center">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            <div>
-                <h4 class="alert-heading">Error!</h4>
-                <br>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div class="text-center mt-3">
+                    <p class="alert-heading fs-4 fw-bold p-2">Error!</p>
+                </div>
+                <div class="vr"></div>
+                <div class="text-center mt-3 p-2">
+                    <p class="fs-5">{{ session('fail') }}</p>
+                </div>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <hr>
-            {{ session('fail') }}
-        </div>
         @endif
         @if(session('success'))
-            <div class="alert alert-success text-center d-flex align-items-center justify-content-center">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div>
-                    <h4 class="alert-heading">Success!</h4>
-                    <br>
+            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
+                <div class="text-center mt-3">
+                    <p class="alert-heading fs-4 fw-bold p-2">Success!</p>
                 </div>
-                <hr>
-                {{ session('success') }}
+                <div class="vr"></div>
+                <div class="text-center mt-3 p-2">
+                    <p class="fs-5">{{ session('success') }}</p>
+                </div>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        @if(session('alreadySubmitted'))
-            <div class="alert alert-danger text-center d-flex align-items-center justify-content-center">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            <div>
-                <h4 class="alert-heading">Error!</h4>
-                <br>
-            </div>
-            <hr>
-                {{ session('alreadySubmitted') }}
+        @if(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
+                <div class="text-center mt-3 p-2">
+                    <p class="fs-5">{{ session('warning') }}</p>
+                </div>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 

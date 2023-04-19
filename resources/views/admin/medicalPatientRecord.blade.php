@@ -419,29 +419,10 @@
                     </div>
                 
                     <div class="modal-footer">
-                        <div class="d-flex align-items-center my-auto mx-auto">
-                            <div class="input-group">
-                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
-                                <button class="btn btn-outline" type="button" id="togglePassword">
-                                    <span class="bi bi-eye-fill" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </div>
                     </div>
                     <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
                         <button class="btn btn-primary btn-login fw-bold" type="submit">Looks good!</button>
                     </div>
-                        <script>
-                            const passwordInput = document.getElementById('passwordInput');
-                            const togglePassword = document.getElementById('togglePassword');
-                            togglePassword.addEventListener('click', function() {
-                              const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                              passwordInput.setAttribute('type', type);
-                              togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                              togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
-                            });
-                        </script>
                 </div>
             </div>
         </div>

@@ -303,6 +303,15 @@
             <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
+        @if(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
+                <div class="text-center mt-3 p-2">
+                    <p class="fs-5">{{ session('warning') }}</p>
+                </div>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <main class="py">
             @yield('content')
