@@ -307,7 +307,7 @@
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="FHP_HIV/AIDS" {{  }} onclick="this.checked=!this.checked;"/>
-                                <label class="form-check-label" for="FHP_tuberculosis">
+                                <label class="form-check-label" for="FHP_HIV/AIDS">
                                     HIV/AIDS
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -344,8 +344,8 @@
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{  }} onclick="this.checked=!this.checked;"/>
-                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
+                            <input class="form-check-input" type="checkbox" name="FHP_Arthritis" {{  }} onclick="this.checked=!this.checked;"/>
+                                <label class="form-check-label" for="FHP_Arthritis">
                                     Arthritis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -376,8 +376,8 @@
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{  }} onclick="this.checked=!this.checked;"/>
-                                <label class="form-check-label" for="FHP_gastroDisease">
+                            <input class="form-check-input" type="checkbox" name="FHP_Hepatitis" {{  }} onclick="this.checked=!this.checked;"/>
+                                <label class="form-check-label" for="FHP_Hepatitis">
                                     Hepatitis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -387,7 +387,7 @@
                 <div class="col p-2">
                     <input class="form-check-input" type="checkbox" id="FHP_others" name="FHP_others" {{  }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="FHP_others" style="display: contents!important;">
-                            Others
+                            OthersFHP_othersDetails
                         </label>
                             <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" value="{{  }}" {{  }}>
 
@@ -770,15 +770,15 @@
 
                             </div>
                             <div class="col-sm-12 p-2">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_others" name="IH_others" onclick="this.checked=!this.checked;">
-                                    <label class="form-check-label" for="PIH_others">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="PPIH_others" name="PPIH_others" onclick="this.checked=!this.checked;">
+                                    <label class="form-check-label" for="PPIH_others">
                                         Others
                                     </label>
-                                <input type="text" class="col-sm-8" id="PIH_othersDetails" name="PIH_othersDetails" value="{{  }}">
+                                <input type="text" class="col-sm-8" id="PPIH_othersDetails" name="PPIH_othersDetails" value="{{  }}">
                             </div>
                             <script>
-                                document.getElementById('PIH_others').onchange = function() {
-                                document.getElementById('PIH_othersDetails').disabled = !this.checked;
+                                document.getElementById('PPIH_others').onchange = function() {
+                                document.getElementById('PPIH_othersDetails').disabled = !this.checked;
                                 };
                             </script>
                         </div>
@@ -822,27 +822,27 @@
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_measles" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_measles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_Pneumoccal" onclick="this.checked=!this.checked;">
+                                        <label class="form-check-label" for="PIH_Pneumoccal">
                                             Pneumoccal
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_germanMeasles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_Influenza" onclick="this.checked=!this.checked;">
+                                        <label class="form-check-label" for="PIH_Influenza">
                                             Influenza
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_hepatitisB">
+                                    <input class="form-check-input" type="checkbox" name="PIH_HPV" onclick="this.checked=!this.checked;">
+                                        <label class="form-check-label" for="PIH_HPV">
                                             HPV
                                         </label>
                                 </div>
                             </div>
                             <div class="row row-cols-1 row-cols-sm-1 align-items-center">
                                 <div class="col-sm-12 p-2">
-                                    <input class="form-check-input" type="checkbox" id="PIH_others" name="IH_others" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" id="PIH_others" name="PIH_others" onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_others">
                                             Others
                                         </label>
