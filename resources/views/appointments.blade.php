@@ -276,11 +276,11 @@
                                     <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
-                                            <input type="text" class="form-control fw-bold" name="appointmentDate" id="appointmentDate" readonly>
+                                            <input type="text" class="form-control fw-bold" name="appointmentDate" id="appointmentDate" required readonly>
                                         </div>
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
-                                            <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" readonly>
+                                            <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required   readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-2 border-lg-end-0">
@@ -306,7 +306,7 @@
                                                         </label>
                                                         <div class="form-check">
                                                             <label for="OthersInput" class="form-check-label">
-                                                                <input type="text" class="form-control" name="OthersInput" id="OthersInput">
+                                                                <input type ="text" class="form-control" name="OthersInput" id="OthersInput" disabled>
                                                             </label>
                                                         </div>
                                                        
@@ -332,14 +332,15 @@
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <script>
-                                                    document.getElementById("services").addEventListener("change", function (event) {
-                                                        if (event.target.value === "Others") {
-                                                            document.getElementById("OthersInput").disabled = false;
-                                                        } 
-                                                        else {
-                                                            document.getElementById("OthersInput").disabled = true;
-                                                        }
+                                                    $(document).ready(function(){
+                                                        $('input[name="services"]').change(function(){
+                                                            if($('#Others').is(':checked')){
+                                                                $('#OthersInput').prop('disabled', false);
+                                                            }else{
+                                                                $('#OthersInput').prop('disabled', true);    
+                                                            }
                                                         });
+                                                    });
                                                 </script>
                                             </div>
                                         </div>
@@ -347,8 +348,8 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
-                                    </div>
+                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
+                                    </div>  
                                     <script>
                                         var textarea = document.getElementById('appointmentDescription');
 
