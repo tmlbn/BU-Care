@@ -26,9 +26,11 @@ class AppointmentsController extends Controller
 
     }
 
-   public function appointmentStore(Request $request) {
-    dd($request->all());
-    $res = $request->validate([
+    public function appointmentStore(Request $request) {
+    
+        # dd($request->all());
+    
+        $res = $request->validate([
         'appointmentDate' => 'required',
         'appointmentTime' => 'required',
         'services' => 'required_if:OthersInput,null',
@@ -42,24 +44,27 @@ class AppointmentsController extends Controller
             'OthersInput.required_if' => 'Other is required ',
             'appointmentDescription.required' => 'appointmentDescription is required',
         ]);
-dd($res);
 
             $appointment = new appointment();
 
-            $appointment->appointmentDate = filter_var($request->appointmentDate, FILTER_SANITIZE_STRING);
-            $appointment->appointmentTime = filter_var($request->appointmentTime, FILTER_SANITIZE_STRING);
+            $appointment->appointmentDate = filter_var(date('Y-m-d', strtotime($request->appointmentDate, FILTER_SANITIZE_STRING)));
+            $appointment->appointmentTime = filter_var(date('H:i:s', strtotime($request->appointmentTime, FILTER_SANITIZE_STRING)));
             $appointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
             
-                    if ($request->services == 'Others') {
-                        $appointment->Others = filter_var($request->Others, FILTER_SANITIZE_STRING);
-                    } else {
-                        $appointment->services = filter_var($request->services, FILTER_SANITIZE_STRING);
-                    }
+            if ($request->services == 'Others') {
+                $appointment->Others = filter_var($request->Others, FILTER_SANITIZE_STRING);
+            } else {
+                $appointment->services = filter_var($request->services, FILTER_SANITIZE_STRING);
+            }
                     
-            $appointment->password = hash::make($request->passwordInput);
-            $appointment->save();
+            $res = $appointment->save();
 
-            return redirect()->route('setAppointment.show')->with('success', 'Appointment Saved'); 
+            if($res){
+                return redirect()->route('setAppointment.show')->with('success', 'Appointment Saved'); 
+            }
+    
+        
     }
+    
 
 }

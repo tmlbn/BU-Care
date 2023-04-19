@@ -33,6 +33,7 @@
     </script>
 
     <!--style-->
+    @viteReactRefresh
     @vite(['resources/sass/app.scss'])
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design.css') }}">
