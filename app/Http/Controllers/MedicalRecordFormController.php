@@ -27,7 +27,7 @@ class MedicalRecordFormController extends Controller
                 if(Auth::user()->hasMedRecord == 0){
                     return view('medicalRecordForm');
                 }
-            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
+            return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');
         }
         else{
             return redirect('login');
@@ -81,7 +81,7 @@ class MedicalRecordFormController extends Controller
         }
     
         // Display the patient form with the found user data
-        return view('admin.medicalRecordFormClinicSide')->with('patient', $patient);
+        return view('admin.ClinicSideMedicalRecordForm')->with('patient', $patient);
     }
 
         #####---MEDICAL RECORD FORM SUBMISSION---#####
@@ -377,9 +377,9 @@ class MedicalRecordFormController extends Controller
                 $medRecord->course = filter_var($request->input('courseSelect'), FILTER_SANITIZE_STRING);
                 $medRecord->SYstart = filter_var($request->input('schoolYearStart'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->SYend = filter_var($request->input('schoolYearEnd'), FILTER_SANITIZE_NUMBER_INT);
-                $medRecord->lastName = filter_var($request->input('MR_lastName'), FILTER_SANITIZE_STRING);
-                $medRecord->firstName = filter_var($request->input('MR_firstName'), FILTER_SANITIZE_STRING);
-                $medRecord->middleName = filter_var($request->input('MR_middleName'), FILTER_SANITIZE_STRING);
+                $medRecord->last_name = filter_var($request->input('MR_lastName'), FILTER_SANITIZE_STRING);
+                $medRecord->first_name = filter_var($request->input('MR_firstName'), FILTER_SANITIZE_STRING);
+                $medRecord->middle_name = filter_var($request->input('MR_middleName'), FILTER_SANITIZE_STRING);
                 $medRecord->age = filter_var($request->input('MR_age'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->sex = filter_var($request->input('MR_sex'), FILTER_SANITIZE_STRING);
                 $medRecord->placeOfBirth = filter_var($request->input('MR_placeOfBirth'), FILTER_SANITIZE_STRING);
@@ -397,6 +397,27 @@ class MedicalRecordFormController extends Controller
                 $medRecord->guardianAddress = $request->filled('MR_guardianAddress') ? filter_var($request->input('MR_guardianAddress'), FILTER_SANITIZE_STRING) : 'N/A';    
                 $medRecord->parentGuardianContactNumber = filter_var(ltrim($request->input('MR_parentGuardianContactNumber'), '0'), FILTER_VALIDATE_INT);
                 $medRecord->studentContactNumber = filter_var(ltrim($request->input('MR_studentContactNumber'), '0'), FILTER_VALIDATE_INT);
+                
+                if($request->input('MR_emergencyContactPerson') == 'FATHER'){
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_fatherName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_fatherOccupation'), FILTER_SANITIZE_STRING);
+                        $emergencyContactRelationship = 'FATHER'; 
+                    $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
+                }
+                elseif($request->input('MR_emergencyContactPerson') == 'MOTHER'){
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_motherName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_motherOccupation'), FILTER_SANITIZE_STRING);
+                        $emergencyContactRelationship = 'MOTHER'; 
+                    $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
+                }
+                else{
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_emergencyContactName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
+                }
+                $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+                $medRecord->emergencyContactNumber = filter_var($request->input('MR_emergencyContactNumber'), FILTER_SANITIZE_STRING);
+
                 $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->hospDetails = $request->filled('hospitalizationDetails') ? filter_var($request->input('hospitalizationDetails'), FILTER_SANITIZE_STRING) : 'N/A';   
                 $medRecord->takingMedsRegularly = filter_var($request->input('regMeds'), FILTER_SANITIZE_NUMBER_INT);
@@ -445,6 +466,15 @@ class MedicalRecordFormController extends Controller
                     $medRecord->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
                     $medRecord->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecord->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+
+                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
     
                         // check if the given password matches the patient's actual password
                     if (!Hash::check($request->passwordInput, $user->password)) {
@@ -479,11 +509,19 @@ class MedicalRecordFormController extends Controller
             return view('personnel.medicalRecordFormPersonnel');
         }
         else{
-            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
+            return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');
         }
     }
 
-    public function personnelMedFormSubmit(){
-     // code for validating user input and saving   
+    public function personnelMedFormSubmit(Request $request){
+        $password = $request->input('passwordInput');
+        $user = Auth::guard('employee')->user();
+
+        // Check if the entered password matches with the authenticated user's password
+        if (!Hash::check($password, $user->password)) {
+            return redirect()->back()->with('fail', 'Invalid password.');
+        }
+
+        return redirect()->route('home')->with('success', 'weirdChamp');
     }
 }
