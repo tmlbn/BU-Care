@@ -154,7 +154,7 @@ class BUCareAuthController extends Controller
                     'applicantID' => 'required',
                     'applicantBirthMonth' => 'required',
                     'applicantBirthDate' => 'required',
-                     'applicantBirthYear' => 'required',
+                    'applicantBirthYear' => 'required',
                 ]);
                 
                 break;
@@ -194,13 +194,38 @@ class BUCareAuthController extends Controller
     
     public function logout(Request $request){
         Session::flush();
-        if(!Auth::guard('employee')){
-        Auth::logout();
+        if(Auth::guard('employee')->check()){
+            Auth::guard('employee')->logout();
+        }else{
+            Auth::logout();
         }
-        else{
-        Auth::guard('employee')->logout();
-        }
-        return redirect('login');
+
+        return redirect()->route('home');
+    }
+
+    public function personnelValidatePassword(Request $request){
+        $password = $request->input('password');
+        $user = Auth::guard('employee')->user();
+        //dd(Hash::check($password, $user->password));
+
+        // Check if the entered password matches with the authenticated user's password
+        if (Hash::check($password, $user->password)) {
+           $response = ['success' => true];
+           return response()->json([
+            'success' => true
+            ]);
+
+          } else {
+            $response = ['success' => false,
+            'message' => 'Invalid password',
+            ];
+            die();
+
+           return response()->json([
+            'success' => false,
+            'message' => 'Invalid password',
+           ]);
+           die();
+          }
     }
 }
-
