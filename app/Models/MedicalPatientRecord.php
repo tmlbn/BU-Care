@@ -15,13 +15,15 @@ class MedicalPatientRecord extends Model
 
     protected $fillable = [
         'student_id',
+        'personnel_id',
+        'MPR_illnessID',
         'date',
         'temperature',
-        'blood_pressure',
+        'bloodPressure',
         'weight',
         'height',
-        'historyPhysical_examinations',
-        'physician_directions',
+        'historyAndPhysicalExamination',
+        'physicianDirections',
         'created_at',
         'updated_at'
     ];
@@ -30,4 +32,7 @@ class MedicalPatientRecord extends Model
         return $this->belongsTo(UserStudent::class, 'student_id');
     }    
 
+    public function MPRpersonnel(){
+        return $this->belongsTo(UserStudent::class, 'personnel_id');
+    } 
 }

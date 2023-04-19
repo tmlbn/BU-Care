@@ -204,7 +204,7 @@
                                         <a class="dropdown-item" href="#">Profile</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dropdown-item" style="{{ Auth::user()->hasMedRecord ? 'display:none;' : '' }}" href="#">Submit MyMedical Form</a>
+                                        <a class="dropdown-item" style="{{ Auth::user()->hasMedRecord ? 'display:none;' : '' }}" href="#">Submit Medical Record</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">My Appointments History</a>

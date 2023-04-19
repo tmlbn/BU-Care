@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\UserClinic;
 use App\Models\UserStudent;
 use App\Models\MedicalRecord;
+use DateTime;
 use Session;
 use Hash;
 use DB;
@@ -74,14 +75,15 @@ class AdminAuthController extends Controller
             $request->validate([
                 'staffID' => 'required|unique:users_clinic,staff_id_number',
                 'email' => 'required|unique:users_clinic,email',
-                'password' => 'required|min:5',
+                'password' => 'required|min:8',
                 'lastName' => 'required|string',
                 'firstName' => 'required|string',
                 'middleName' => 'nullable',
+                'dateOfBirth' => 'required'
             ],[
                 'staffID.unique' => 'This Staff ID Number is already registered!',
                 'email.unique' => 'This Email Address is already registered!',
-                'password.min' => 'Password should be greater than 5 characters long.',
+                'password.min' => 'Password should be greater than 8 characters long.',
                 'required' => 'This field is required.'
             ]);
                 // sanitize email address
@@ -90,6 +92,14 @@ class AdminAuthController extends Controller
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     // invalid email address
                     return back()->with('fail','Invalid Email Address.');
+                }
+                $dateString = $request->dateOfBirth;
+                $date = DateTime::createFromFormat('Y-m-d', $dateString);
+                if ($date !== false) {
+                    $sanitizedDate = $date->format('Y-m-d');
+                    $user->date_of_birth = $sanitizedDate;
+                } else {
+                    return back()->with('fail','Invalid date format.');
                 }
                 // Sanitize inputs to prevent SQL injection and cross-site scripting (XSS) attacks then save user to database
                 try {
@@ -100,6 +110,7 @@ class AdminAuthController extends Controller
                         $user->last_name = filter_var($request->lastName, FILTER_SANITIZE_STRING);
                         $user->first_name = filter_var($request->firstName, FILTER_SANITIZE_STRING);
                         $user->middle_name = filter_var($request->middleName, FILTER_SANITIZE_STRING);
+                        $user->date_of_birth = $user->date_of_birth = $sanitizedDate;
                     $res = $user->save();
                     
                     if($res){

@@ -6,6 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ICON -->
+    <link rel="icon" type="image/png" href="{{ asset('media/BUHS-icon.ico') }}">
 
     <title>{{ config('app.name', 'BU-Care') }}</title>
 

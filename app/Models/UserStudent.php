@@ -30,16 +30,18 @@ class UserStudent extends Authenticatable
         'middle_name',
         'birth_month',
         'birth_date',
-        'birth_year'
+        'birth_year',
     ];
-    protected $guarded = ['id',
+
+    protected $guarded = [
         'student_id_number',
-        'created_at',
-        'updated_at',
         'MR_id',
+        'MRA_id',
         'hasMedRecord',
         'hasValidatedRecord',
-        'user_type'
+        'user_type',
+        'created_at',
+        'updated_at',
     ];
 
     /**

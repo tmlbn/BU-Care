@@ -123,7 +123,7 @@
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
+<form method="POST" action="{{ route('personnel.medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
 
         <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
@@ -235,16 +235,16 @@
         </div>
         <div class="col-md-1">
             <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <input type="hidden" name="MRP_pwd" id="MRP_pwd" value="0">
-                <input class="form-check-input" type="checkbox" value="1" name="MRP_pwd" id="MRP_pwd">
-                <label for="MRP_pwd" class="form-check-label mt-1 ms-1">PWD</label>
+                <input type="hidden" name="pwd" id="pwd" value="0">
+                <input class="form-check-input" type="checkbox" value="1" name="pwd" id="pwd">
+                <label for="pwd" class="form-check-label mt-1 ms-1">PWD</label>
               </div>
         </div>
         <div class="col-md-2">
-            <label for="MRP_placeOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" required>
+            <label for="MRP_dateOfBirth" class="form-label h6">Date of Birth</label>
+            <input type="text" class="form-control" id="MRP_dateOfBirth" name="MRP_dateOfBirth" required>
             <span class="text-danger"> 
-                @error('MRP_placeOfBirth') 
+                @error('MRP_dateOfBirth') 
                     {{ $message }} 
                 @enderror
             </span>
@@ -255,7 +255,7 @@
         
         <script>
         $(document).ready(function() {
-            $("#MRP_placeOfBirth").datepicker({
+            $("#MRP_dateOfBirth").datepicker({
                 changeMonth: true,
                 changeYear: true,
                 dateFormat: 'MM/d/yy',
@@ -320,7 +320,7 @@
         </div>
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" required>
+            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MRP_personnelContactNumber" required>
             <span class="text-danger"> 
                 @error('MRP_personnelContactNumber') 
                   {{ $message }} 
@@ -329,46 +329,46 @@
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
-            <label for="MRP_contactName" class="form-label h6">Name</label>
-            <input type="text" class="form-control" id="MRP_contactName" name="MRP_contactName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_emergencyContactName" class="form-label h6">Name</label>
+            <input type="text" class="form-control" id="MRP_emergencyContactName" name="MRP_emergencyContactName" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
-                @error('MRP_contactName') 
+                @error('MRP_emergencyContactName') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_ContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_ContactNumber" name="MR_ContactNumber" required>
+            <label for="MRP_emergencyContactNumber" class="form-label h6">Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" id="MRP_emergencyContactNumber" name="MRP_emergencyContactNumber" required>
             <span class="text-danger"> 
-                @error('MRP_ContactNumber') 
+                @error('MRP_emergencyContactNumber') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_Occupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MRP_Occupation" name="MRP_Occupation" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_emergencyContactOccupation" class="form-label h6">Occupation</label>
+            <input type="text" class="form-control" id="MRP_emergencyContactOccupation" name="MRP_emergencyContactOccupation" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MRP_Occupation') 
+                @error('MRP_emergencyContactOccupation') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_relationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MRP_relationship" name="MRP_relationship" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_emergencyContactRelationship" class="form-label h6">Relationship</label>
+            <input type="text" class="form-control" id="MRP_emergencyContactRelationship" name="MRP_emergencyContactRelationship" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MRP_relationship') 
+                @error('MRP_emergencyContactRelationship') 
                   {{ $message }} 
                 @enderror
               </span>
         </div>
         <div class="col-md-12">
-            <label for="MRP_OfficeAdd" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MRP_OfficeAdd" name="MRP_OfficeAdd" oninput="this.value = this.value.toUpperCase()">
+            <label for="MRP_emergencyContactAddress" class="form-label h6">Work/Home Address</label>
+            <input type="text" class="form-control" id="MRP_emergencyContactAddress" name="MRP_emergencyContactAddress" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
-                @error('MRP_OfficeAdd') 
+                @error('MRP_emergencyContactAddress') 
                   {{ $message }} 
                 @enderror
               </span>
@@ -390,125 +390,125 @@
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_cancer">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_cancer">
-                                <label class="form-check-label" for="FHP_cancer">
+                            <input type="hidden" value="0" name="FH_cancer">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
+                                <label class="form-check-label" for="FH_cancer">
                                     Cancer
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_heartDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_heartDisease">
-                                <label class="form-check-label" for="FHP_heartDisease">
+                            <input type="hidden" value="0" name="FH_heartDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
+                                <label class="form-check-label" for="FH_heartDisease">
                                     Heart Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_hypertension">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hypertension">
-                                <label class="form-check-label" for="FHP_hypertension">
+                            <input type="hidden" value="0" name="FH_hypertension">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
+                                <label class="form-check-label" for="FH_hypertension">
                                     Hypertension
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_thyroidDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_thyroidDisease">
-                                <label class="form-check-label" for="FHP_thyroidDisease">
+                            <input type="hidden" value="0" name="FH_thyroidDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_thyroidDisease">
+                                <label class="form-check-label" for="FH_thyroidDisease">
                                     Thyroid Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_tuberculosis">
-                                <label class="form-check-label" for="FHP_tuberculosis">
+                            <input type="hidden" name="FH_tuberculosis" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_tuberculosis">
+                                <label class="form-check-label" for="FH_tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_HIV/AIDS">
-                                <label class="form-check-label" for="FHP_tuberculosis">
+                            <input type="hidden" name="FH_hivAids" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_hivAids">
+                                <label class="form-check-label" for="FH_hivAids">
                                     HIV/AIDS
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FHP_diabetesMelittus">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_diabetesMelittus">
-                                <label class="form-check-label" for="FHP_diabetesMelittus">
+                            <input type="hidden" value="0" name="FH_diabetesMelittus">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_diabetesMelittus">
+                                <label class="form-check-label" for="FH_diabetesMelittus">
                                     Diabetes Melittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_mentalDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_mentalDisorder">
-                                <label class="form-check-label" for="FHP_mentalDisorder">
+                            <input type="hidden" name="FH_mentalDisorder" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_mentalDisorder">
+                                <label class="form-check-label" for="FH_mentalDisorder">
                                     Mental Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_asthma" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_asthma">
-                                <label class="form-check-label" for="FHP_asthma">
+                            <input type="hidden" name="FH_asthma" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_asthma">
+                                <label class="form-check-label" for="FH_asthma">
                                     Asthma
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_convulsions" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_convulsions">
-                                <label class="form-check-label" for="FHP_convulsions">
+                            <input type="hidden" name="FH_convulsions" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_convulsions">
+                                <label class="form-check-label" for="FH_convulsions">
                                     Convulsions
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
-                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
+                            <input type="hidden" name="FH_bleedingDyscrasia" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_bleedingDyscrasia">
+                                <label class="form-check-label" for="FH_bleedingDyscrasia">
                                     Bleeding Dyscrasia
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
-                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
+                            <input type="hidden" name="FH_bleedingDyscrasia" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_bleedingDyscrasia">
+                                <label class="form-check-label" for="FH_bleedingDyscrasia">
                                     Arthritis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" name="FHP_eyeDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_eyeDisorder">
-                                <label class="form-check-label" for="FHP_eyeDisorder">
+                            <input type="hidden" name="FH_eyeDisorder" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_eyeDisorder">
+                                <label class="form-check-label" for="FH_eyeDisorder">
                                     Eye Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_skinProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_skinProblems">
-                                <label class="form-check-label" for="FHP_skinProblems">
+                            <input type="hidden" name="FH_skinProblems" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_skinProblems">
+                                <label class="form-check-label" for="FH_skinProblems">
                                     Skin Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_kidneyProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_kidneyProblems">
-                                <label class="form-check-label" for="FHP_kidneyProblems">
+                            <input type="hidden" name="FH_kidneyProblems" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_kidneyProblems">
+                                <label class="form-check-label" for="FH_kidneyProblems">
                                     Kidney Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease">
-                                <label class="form-check-label" for="FHP_gastroDisease">
+                            <input type="hidden" name="FH_gastroDisease" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_gastroDisease">
+                                <label class="form-check-label" for="FH_gastroDisease">
                                     Gastrointestinal Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease"   >
-                                <label class="form-check-label" for="FHP_gastroDisease">
+                            <input type="hidden" name="FH_hepatitis" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FH_hepatitis"   >
+                                <label class="form-check-label" for="FH_hepatitis">
                                     Hepatitis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -516,22 +516,22 @@
                 </div><!-- END OF ROW of CHECKBOXES DIV -->
             <div class="form-row align-items-center">
                 <div class="col p-2">
-                    <input type="hidden" name="FHP_others" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="FHP_others" name="FHP_others">
-                        <label class="form-check-label" for="FHP_others" style="display: contents!important;">
+                    <input type="hidden" name="FH_others" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="FH_others" name="FH_others">
+                        <label class="form-check-label" for="FH_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="hidden" name="FHP_othersDetails" value="N/A">
-                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
+                            <input type="hidden" name="FH_othersDetails" value="N/A">
+                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
                             <span class="text-danger"> 
-                                @error('FHP_othersDetails') 
+                                @error('FH_othersDetails') 
                                   {{ $message }} 
                                 @enderror
                               </span>    
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                                 <script>
-                                    const fhOthers = document.getElementById('FHP_others');
-                                    const fhOthersDetails = document.getElementById('FHP_othersDetails');
+                                    const fhOthers = document.getElementById('FH_others');
+                                    const fhOthersDetails = document.getElementById('FH_othersDetails');
                                     
                                     fhOthers.onchange = function() {
                                         if (this.checked) {
@@ -560,21 +560,21 @@
             <div class="col-lg-5 col-md-12 p-2 border border-dark">
                 <h6>Personal Social History</h6>
                     <div class="form-check">
-                    <input type="hidden" name="PPSH_smoking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_smoking" name="PPSH_smoking">
-                        <label class="form-check-label" for="PPSH_smoking" style="display: contents!important;">
+                    <input type="hidden" name="PSH_smoking" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking">
+                        <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2" id="PPSH_smoking_amount" name="PPSH_smoking_amount" disabled> 
+                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" disabled> 
                             <span class="text-danger"> 
-                                @error('PPSH_smoking_amount') 
+                                @error('PSH_smoking_amount') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
                             sticks/day for 
-                            <input type="text" class="col-md-2"  id="PPSH_smoking_freq" name="PPSH_smoking_freq" disabled> year/s )
+                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" disabled> year/s )
                             <span class="text-danger"> 
-                                @error('PPSH_smoking_freq') 
+                                @error('PSH_smoking_freq') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
@@ -582,28 +582,15 @@
                 </div><!-- END OF SMOKING FORM DIV -->
 
                 <div class="form-check" style="margin-top:5%;">
-                    <input type="hidden" name="PPSH_drinking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_drinking" name="PPSH_drinking">
-                        <label class="form-check-label" for="PPSH_drinking" style="display: contents!important;">
+                    <input type="hidden" name="PSH_drinking" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="PSH_drinking" name="PSH_drinking">
+                        <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
                             Liquor Consumption:
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hospitalization" id="_hospitalization_YES" value="1" required/>
-                                <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                                yes
-                                </label>
-                            </div><!-- END OF YES DIV -->
-                            &nbsp;
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_NO" value="0"/>
-                                <label class="form-check-label" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                                no
-                                </label>
-                            </div><!-- END OF NO DIV -->
                             <br>
-                           How often?
-                            <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" disabled/>
+                            How often?
+                            <input type="text" class="col-sm-10" id="PSH_drinkingDetails" name="PSH_drinkingDetails" disabled/>
                             <span class="text-danger"> 
-                                @error('hospitalizationDetails') 
+                                @error('PSH_drinkingDetails') 
                                   {{ $message }} 
                                 @enderror
                               </span>                   
@@ -614,17 +601,17 @@
                 <script>
                    $(document).ready(function() {
                         /* SMOKING */
-                        $('#PPSH_smoking').change(function() {
-                            $('#PPSH_smoking_amount').prop('disabled', !this.checked);
-                            $('#PPSH_smoking_freq').prop('disabled', !this.checked);
+                        $('#PSH_smoking').change(function() {
+                            $('#PSH_smoking_amount').prop('disabled', !this.checked);
+                            $('#PSH_smoking_freq').prop('disabled', !this.checked);
                         });
                         
                         /* DRINKING */
-                        $('#PPSH_drinking').change(function() {
-                            $('#PPSH_drinking_amountOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_amountofShots').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfShots').prop('disabled', !this.checked);
+                        $('#PSH_drinking').change(function() {
+                            $('#PSH_drinking_amountOfBeer').prop('disabled', !this.checked);
+                            $('#PSH_drinking_freqOfBeer').prop('disabled', !this.checked);
+                            $('#PSH_drinking_amountofShots').prop('disabled', !this.checked);
+                            $('#PSH_drinking_freqOfShots').prop('disabled', !this.checked);
                         });
                     });
 
@@ -642,72 +629,72 @@
                     <div class="col-xl-2 p-2">
                         <div class="mx-auto row row-cols-xl-1 row-cols-md-2 row-cols-sm-2 mt-2 ">
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_hypertension" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_hypertension">
-                                <label class="form-check-label" for="PPMC_hypertension">
+                                <input type="hidden" name="PMC_hypertension" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hypertension">
+                                <label class="form-check-label" for="PMC_hypertension">
                                     Hypertension
                                 </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_asthma" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_asthma">
-                                    <label class="form-check-label" for="PPMC_asthma">
+                                <input type="hidden" name="PMC_asthma" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_asthma">
+                                    <label class="form-check-label" for="PMC_asthma">
                                         Asthma
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_diabetes" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_diabetes">
-                                    <label class="form-check-label" for="PPMC_diabetes">
+                                <input type="hidden" name="PMC_diabetes" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_diabetes">
+                                    <label class="form-check-label" for="PMC_diabetes">
                                         Diabetes
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_arthritis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_arthritis">
-                                    <label class="form-check-label" for="PPMC_arthritis">
+                                <input type="hidden" name="PMC_arthritis" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_arthritis">
+                                    <label class="form-check-label" for="PMC_arthritis">
                                         Arthritis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_chickenPox">
-                                    <label class="form-check-label" for="PPMC_chickenPox">
+                                <input type="hidden" name="PMC_chickenPox" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_chickenPox">
+                                    <label class="form-check-label" for="PMC_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_dengue" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_dengue">
-                                    <label class="form-check-label" for="PPMC_dengue">
+                                <input type="hidden" name="PMC_dengue" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_dengue">
+                                    <label class="form-check-label" for="PMC_dengue">
                                         Dengue
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_tuberculosis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_tuberculosis">
-                                    <label class="form-check-label" for="PPMC_tuberculosis">
+                                <input type="hidden" name="PMC_tuberculosis" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_tuberculosis">
+                                    <label class="form-check-label" for="PMC_tuberculosis">
                                         Tuberculosis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_pneumonia" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_pneumonia">
-                                    <label class="form-check-label" for="PPMC_pneumonia">
+                                <input type="hidden" name="PMC_pneumonia" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_pneumonia">
+                                    <label class="form-check-label" for="PMC_pneumonia">
                                         Pneumonia
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_covid19" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_covid19">
-                                    <label class="form-check-label" for="PPMC_covid19">
+                                <input type="hidden" name="PMC_covid19" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_covid19">
+                                    <label class="form-check-label" for="PMC_covid19">
                                         Covid-19
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="PPMC_hivAIDS" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_hivAIDS">
-                                    <label class="form-check-label" for="PPMC_hivAIDS">
+                                <input type="hidden" name="hivAids" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="hivAids">
+                                    <label class="form-check-label" for="hivAids">
                                         HIV/AIDS
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
@@ -718,14 +705,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_hepatitis" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_hepatitis" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_hepatitis" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_hepatitis" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
-                                <input type="text" class="form-control" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_hepatitisDetails" name="PMC_hepatitisDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_hepatitisDetails') 
+                                @error('PMC_hepatitisDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -733,14 +720,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_thyroidDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_thyroidDisorder" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_thyroidDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_thyroidDisorder" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Thyroid Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_thyroidDisorderDetails" name="PPMC_thyroidDisorderDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_thyroidDisorderDetails" name="PMC_thyroidDisorderDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_thyroidDisorderDetails') 
+                                @error('PMC_thyroidDisorderDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -748,13 +735,13 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_eyeDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_eyeDisorder" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_eyeDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_eyeDisorder" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Eye Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PPMC_eyeDisorderDetails" disabled>                                </div>
+                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PMC_eyeDisorderDetails" disabled>                                </div>
                             <span class="text-danger"> 
-                                @error('PPMC_eyeDisorderDetails') 
+                                @error('PMC_eyeDisorderDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -762,14 +749,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_mentalDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_mentalDisorder" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_mentalDisorder" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_mentalDisorder" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Mental Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_mentalDisorderDetails" name="PPMC_mentalDisorderDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_mentalDisorderDetails" name="PMC_mentalDisorderDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_mentalDisorderDetails') 
+                                @error('PMC_mentalDisorderDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -777,14 +764,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_gastroDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_gastroDisease" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_gastroDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_gastroDisease" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Gastrointestinal Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_gastroDiseaseDetails" name="PPMC_gastroDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_gastroDiseaseDetails" name="PMC_gastroDiseaseDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_gastroDiseaseDetails') 
+                                @error('PMC_gastroDiseaseDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -792,14 +779,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_kidneyDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_kidneyDisease" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_kidneyDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_kidneyDisease" style="margin-right: -10px;">
                                 </div>
                                  <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Kidney Disease: </span>
-                                 <input type="text" class="form-control" id="PPMC_kidneyDiseaseDetails" name="PPMC_kidneyDiseaseDetails" disabled>
+                                 <input type="text" class="form-control" id="PMC_kidneyDiseaseDetails" name="PMC_kidneyDiseaseDetails" disabled>
                              </div>
                              <span class="text-danger"> 
-                                @error('PPMC_kidneyDiseaseDetails') 
+                                @error('PMC_kidneyDiseaseDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -809,14 +796,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_heartDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_heartDisease" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_heartDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_heartDisease" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Heart Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_heartDiseaseDetails" name="PPMC_heartDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_heartDiseaseDetails" name="PMC_heartDiseaseDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_heartDiseaseDetails') 
+                                @error('PMC_heartDiseaseDetails') 
                                 {{ $message }} 
                                 @enderror
                                 </span>
@@ -824,14 +811,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_skinDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_skinDisease" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_skinDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_skinDisease" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Skin Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_skinDiseaseDetails" name="PPMC_skinDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_skinDiseaseDetails" name="PMC_skinDiseaseDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_skinDiseaseDetails') 
+                                @error('PMC_skinDiseaseDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -839,11 +826,11 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_earDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_earDisease" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_earDisease" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_earDisease" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Ear Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_earDiseaseDetails" name="PPMC_earDiseaseDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_earDiseaseDetails" name="PMC_earDiseaseDetails" disabled>
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_earDiseaseDetails') 
@@ -854,14 +841,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_cancer" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_cancer" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_cancer" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_cancer" style="margin-right: -10px;">
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Cancer: </span>
-                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PPMC_cancerDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PMC_cancerDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_cancerDetails') 
+                                @error('PMC_cancerDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -869,14 +856,14 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                             <div class="input-group-text bg-light border-0">
-                                    <input type="hidden" name="PPMC_others" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_others" style="margin-right: -10px;">
+                                    <input type="hidden" name="PMC_others" value="0">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_others" style="margin-right: -10px;">
                                 </div>
                             <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Others: </span>
-                                <input type="text" class="form-control" id="PPMC_othersDetails" name="PPMC_othersDetails" disabled>
+                                <input type="text" class="form-control" id="PMC_othersDetails" name="PMC_othersDetails" disabled>
                             </div>
                             <span class="text-danger"> 
-                                @error('PPMC_othersDetails') 
+                                @error('PMC_othersDetails') 
                                 {{  $message }} 
                                 @enderror
                             </span>
@@ -894,33 +881,33 @@
                     <div class="col-sm">
                      Do you have history of hospitalization for serious illness, operation, fracture or injury?
                         (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_YES" value="1" required/>
-                            <label class="form-check-label" for="P_hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
+                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_YES" value="1" required/>
+                            <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
                             yes
                             </label>
                         </div><!-- END OF YES DIV -->
                         &nbsp;
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_NO" value="0"/>
-                            <label class="form-check-label" for="P_hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
+                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_NO" value="0"/>
+                            <label class="form-check-label" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
                             no
                             </label>
                         </div>)<!-- END OF NO DIV -->
                         If yes, please give details:
-                        <input type="text" class="col-sm-10" id="P_hospitalizationDetails" name="P_hospitalizationDetails" disabled/>
+                        <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" disabled/>
                         <span class="text-danger"> 
-                            @error('P_hospitalizationDetails') 
+                            @error('hospitalizationDetails') 
                               {{ $message }} 
                             @enderror
                           </span>  
                             <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                             <script>
                                 $(document).ready(function() {
-                                    $('#P_hospitalization_YES, #P_hospitalization_NO').change(function() {
-                                        if ($('#P_hospitalization_YES').is(':checked')) {
-                                            $('#P_hospitalizationDetails').prop('disabled', false);
-                                        } else if ($('#P_hospitalization_NO').is(':checked')) {
-                                            $('#P_hospitalizationDetails').prop('disabled', true);
+                                    $('#hospitalization_YES, #hospitalization_NO').change(function() {
+                                        if ($('#hospitalization_YES').is(':checked')) {
+                                            $('#hospitalizationDetails').prop('disabled', false);
+                                        } else if ($('#hospitalization_NO').is(':checked')) {
+                                            $('#hospitalizationDetails').prop('disabled', true);
                                         }
                                     });
                                 });
@@ -934,33 +921,33 @@
                     <div class="col-sm">
                         Are you taking any medicine regularly?
                            (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_YES" value="1" required/>
-                               <label class="form-check-label" for="P_regMeds_YES" style="margin-right: -15px; margin-left:-5px">
+                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_YES" value="1" required/>
+                               <label class="form-check-label" for="regMeds_YES" style="margin-right: -15px; margin-left:-5px">
                                yes
                                </label>
                            </div><!-- END OF YES DIV -->
                            &nbsp;
                            <div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_NO" value="0"/>
-                               <label class="form-check-label" for="P_regMeds_NO" style="margin-right: -15px; margin-left:-5px">
+                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_NO" value="0"/>
+                               <label class="form-check-label" for="regMeds_NO" style="margin-right: -15px; margin-left:-5px">
                                no
                                </label>
                            </div>)<!-- END OF NO DIV -->
                            If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="P_regMedsDetails" name="P_regMedsDetails" disabled/>
+                           <input type="text" class="col-sm-10" id="regMedsDetails" name="regMedsDetails" disabled/>
                            <span class="text-danger"> 
-                            @error('P_regMedsDetails') 
+                            @error('regMedsDetails') 
                               {{ $message }} 
                             @enderror
                           </span>  
                                <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                                <script>
                                    $(document).ready(function() {
-                                       $('#P_regMeds_YES, #P_regMeds_NO').change(function() {
-                                           if ($('#P_regMeds_YES').is(':checked')) {
-                                               $('#P_regMedsDetails').prop('disabled', false);
-                                           } else if ($('#P_regMeds_NO').is(':checked')) {
-                                               $('#P_regMedsDetails').prop('disabled', true);
+                                       $('#regMeds_YES, #regMeds_NO').change(function() {
+                                           if ($('#regMeds_YES').is(':checked')) {
+                                               $('#regMedsDetails').prop('disabled', false);
+                                           } else if ($('#regMeds_NO').is(':checked')) {
+                                               $('#regMedsDetails').prop('disabled', true);
                                            }
                                        });
                                    });
@@ -973,33 +960,33 @@
                    <div class="col-sm" required>
                     Are you allergic to any food or medicine?
                        (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_YES" value="1" required/>
-                           <label class="form-check-label" for="P_allergy_YES" style="margin-right: -15px; margin-left:-5px">
+                           <input class="form-check-input" type="radio" name="allergy" id="allergy_YES" value="1" required/>
+                           <label class="form-check-label" for="allergy_YES" style="margin-right: -15px; margin-left:-5px">
                            yes
                            </label>
                        </div><!-- END OF YES DIV -->
                        &nbsp;
                        <div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_NO" value="0"/>
-                           <label class="form-check-label" for="P_allergy_NO" style="margin-right: -15px; margin-left:-5px">
+                           <input class="form-check-input" type="radio" name="allergy" id="allergy_NO" value="0"/>
+                           <label class="form-check-label" for="allergy_NO" style="margin-right: -15px; margin-left:-5px">
                            no
                            </label>
                        </div>)<!-- END OF NO DIV -->
                        If yes, specify:
-                       <input type="text" class="col-sm-10" id="P_allergyDetails" name="P_allergyDetails" disabled/>
+                       <input type="text" class="col-sm-10" id="allergyDetails" name="allergyDetails" disabled/>
                        <span class="text-danger"> 
-                        @error('P_allergyDetails') 
+                        @error('allergyDetails') 
                           {{ $message }} 
                         @enderror
                       </span> 
                            <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                            <script>
                                $(document).ready(function() {
-                                   $('#P_allergy_YES, #P_allergy_NO').change(function() {
-                                       if ($('#P_allergy_YES').is(':checked')) {
-                                           $('#P_allergyDetails').prop('disabled', false);
-                                       } else if ($('#P_allergy_NO').is(':checked')) {
-                                           $('#P_allergyDetails').prop('disabled', true);
+                                   $('#allergy_YES, #allergy_NO').change(function() {
+                                       if ($('#allergy_YES').is(':checked')) {
+                                           $('#allergyDetails').prop('disabled', false);
+                                       } else if ($('#allergy_NO').is(':checked')) {
+                                           $('#allergyDetails').prop('disabled', true);
                                        }
                                    });
                                });
@@ -1018,176 +1005,158 @@
                     <div class="col-6">
                         <div class="row row-cols-2 row-cols-sm-1 align-items-center">
                             <div class="col-sm-4 p-2">
-                                <input type="hidden" name="PIH_bcg" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_bcg">
-                                    <label class="form-check-label" for="PIH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
+                                <input type="hidden" name="IH_bcg" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_bcg">
+                                    <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
                                         BCG
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
-                                <input type="hidden" name="PIH_polio" value="0">
-                                <input class="form-check-input" type="checkbox" value="1"name="PIH_polio">
-                                    <label class="form-check-label" for="PIH_polio">
+                                <input type="hidden" name="IH_polio" value="0">
+                                <input class="form-check-input" type="checkbox" value="1"name="IH_polio">
+                                    <label class="form-check-label" for="IH_polio">
                                         Polio I, II, II, Booster Dose
                                     </label>
                             </div>
                             <div class="col-sm-4 p-2">
-                                <input type="hidden" name="PIH_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_chickenPox">
-                                    <label class="form-check-label" for="PIH_chickenPox">
+                                <input type="hidden" name="IH_chickenPox" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox">
+                                    <label class="form-check-label" for="IH_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
                                 <input type="hidden" name="IH_dpt" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PIH_dpt">
-                                    <label class="form-check-label" for="PIH_dpt">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_dpt">
+                                    <label class="form-check-label" for="IH_dpt">
                                         DPT I, II, III, Booster Dose
                                     </label>
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-sm-1 align-items-center">
                             <div class="col-sm-12 p-2">
-                                <input type="hidden" name="PIH_covidVacc" value="0">
+                                <input type="hidden" name="IH_covidVacc" value="0">
                                 <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_covidVacc" name="IH_covidVacc">
-                                    <label class="form-check-label" for="PIH_covidVacc">
+                                    <label class="form-check-label" for="IH_covidVacc">
                                         Covid-19 Vaccine I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidVaccName" name="PIH_covidVaccName" disabled>
+                                    <input type="text" class="col-sm-2" id="IH_covidVaccName" name="IH_covidVaccName" disabled>
                                     <span class="text-danger"> 
-                                        @error('PIH_covidVaccName') 
+                                        @error('IH_covidVaccName') 
                                         {{  $message }} 
                                         @enderror
                                     </span>
                                     <label class="form-check-label" for="IH_dpt">
                                         Booster I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidBooster" name="PIH_covidBooster" disabled>
+                                    <input type="text" class="col-sm-2" id="IH_covidBooster" name="IH_covidBooster" disabled>
                                         <span class="text-danger"> 
-                                            @error('PIH_covidBoosterName') 
+                                            @error('IH_covidBoosterName') 
                                             {{  $message }} 
                                             @enderror
                                         </span>
                                         <script>
                                             $(document).ready(function() {
-                                                $('#PIH_covidVacc').change(function() {
-                                                    $('#PIH_covidVaccName').prop('disabled', !this.checked);
-                                                    $('#PIH_covidBooster').prop('disabled', !this.checked);
+                                                $('#IH_covidVacc').change(function() {
+                                                    $('#IH_covidVaccName').prop('disabled', !this.checked);
+                                                    $('#IH_covidBooster').prop('disabled', !this.checked);
                                                 });
                                             });
                                         </script>
 
                             </div>
-                            <div class="col-sm-12 p-2">
-                                <input type="hidden" name="PIH_others" value="0">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_others" name="IH_others">
-                                    <label class="form-check-label" for="PIH_others">
-                                        Others
-                                    </label>
-                                <input type="text" class="col-sm-8" id="PIH_othersDetails" name="PIH_othersDetails" disabled>
-                                <span class="text-danger"> 
-                                    @error('PIH_othersDetails') 
-                                      {{ $message }} 
-                                    @enderror
-                                 </span> 
-                            </div>
-                            <script>
-                                document.getElementById('PIH_others').onchange = function() {
-                                document.getElementById('PIH_othersDetails').disabled = !this.checked;
-                                };
-                            </script>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-sm-3 align-items-center">
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_typhoid" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_typhoid">
-                                        <label class="form-check-label" for="PIH_typhoid">
+                                    <input type="hidden" name="IH_typhoid" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_typhoid">
+                                        <label class="form-check-label" for="IH_typhoid">
                                             Typhoid
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_mumps" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_mumps">
-                                        <label class="form-check-label" for="PIH_mumps">
+                                    <input type="hidden" name="IH_mumps" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_mumps">
+                                        <label class="form-check-label" for="IH_mumps">
                                             Mumps
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_hepatitisA" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisA">
-                                        <label class="form-check-label" for="PIH_hepatitisA">
+                                    <input type="hidden" name="IH_hepatitisA" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisA">
+                                        <label class="form-check-label" for="IH_hepatitisA">
                                             Hepatitis A
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_measles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles">
-                                        <label class="form-check-label" for="PIH_measles">
+                                    <input type="hidden" name="IH_measles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
+                                        <label class="form-check-label" for="IH_measles">
                                             Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_germanMeasles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_germanMeasles">
-                                        <label class="form-check-label" for="PIH_germanMeasles">
+                                    <input type="hidden" name="IH_germanMeasles" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
+                                        <label class="form-check-label" for="IH_germanMeasles">
                                             German Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_hepatitisB" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisB">
-                                        <label class="form-check-label" for="PIH_hepatitisB">
+                                    <input type="hidden" name="IH_hepatitisB" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
+                                        <label class="form-check-label" for="IH_hepatitisB">
                                             Hepatitis B
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input type="hidden" name="PIH_measles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles">
-                                        <label class="form-check-label" for="PIH_measles">
-                                            Pneumoccal
+                                    <input type="hidden" name="IH_pneumococcal" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_pneumococcal">
+                                        <label class="form-check-label" for="IH_pneumococcal">
+                                            Pneumococcal
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="PIH_germanMeasles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_germanMeasles">
-                                        <label class="form-check-label" for="PIH_germanMeasles">
+                                    <input type="hidden" name="IH_influenza" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_influenza">
+                                        <label class="form-check-label" for="IH_influenza">
                                             Influenza
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input type="hidden" name="IH_hepatitisB" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisB">
-                                        <label class="form-check-label" for="PIH_hepatitisB">
+                                    <input type="hidden" name="IH_hpv" value="0">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hpv">
+                                        <label class="form-check-label" for="IH_hpv">
                                             HPV
                                         </label>
                                 </div>
                             </div>
-                            <div class="row row-cols-1 row-cols-sm-1 align-items-center">
-                                <div class="col-sm-12 p-2">
-                                    <input type="hidden" name="PIH_others" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" id="PIH_others" name="IH_others">
-                                        <label class="form-check-label" for="PIH_others">
-                                            Others
-                                        </label>
-                                <input type="text" class="col-sm-9" id="PIH_othersDetails" name="PIH_othersDetails" disabled>
-                                        <span class="text-danger"> 
-                                            @error('PIH_othersDetails') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span> 
-                                </div>
-                            <script>
-                                document.getElementById('PIH_others').onchange = function() {
-                                document.getElementById('PIH_othersDetails').disabled = !this.checked;
-                                };
-                            </script>
-                        </div>
+                    </div>
+                </div>
+                <div class="my-auto pt-2 row row-cols-1 align-items-center" style="margin-left: 5%;">
+                    <div class="col-sm-12 p-2">
+                        <input type="hidden" name="IH_others" value="0">
+                        <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_others" name="IH_others">
+                            <label class="form-check-label" for="IH_others">
+                                Others
+                            </label>
+                        <input type="text" class="col-sm-10" id="IH_othersDetails" name="IH_othersDetails" disabled>
+                        <span class="text-danger"> 
+                            @error('IH_othersDetails') 
+                            {{ $message }} 
+                            @enderror
+                        </span> 
+                    </div>
+                    <script>
+                        document.getElementById('IH_others').onchange = function() {
+                        document.getElementById('IH_othersDetails').disabled = !this.checked;
+                        };
+                    </script>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- ATTACHMENTS -->
     <div class="mx-auto row row-cols-lg-1 mt-2">
@@ -1196,20 +1165,20 @@
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
-                        <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <input type="file" class="form-control" id="PMRP_chestXray" name="PMRP_chestXray" accept="image/jpeg, image/png" required>
+                        <label for="MRP_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <input type="file" class="form-control" id="MRP_chestXray" name="MRP_chestXray" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="PMRP_cbcresults" name="PMRP_cbcresults" accept="image/jpeg, image/png" required>
+                        <label for="MRP_cbcResults" class="form-label fw-bold">CBC Results</label>
+                        <input type="file" class="form-control" id="MRP_cbcResults" name="MRP_cbcResults" accept="image/jpeg, image/png" required>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <input type="file" class="form-control" id="PMRP_hepaBscreening" name="PMRP_hepaBscreening" accept="image/jpeg, image/png" required>
+                        <input type="file" class="form-control" id="MRP_hepaBscreening" name="MRP_hepaBscreening" accept="image/jpeg, image/png" required>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_bloodtype" class="form-label fw-bold">Blood Type</label>
-                        <input type="file" class="form-control" id="PMRP_bloodtype" name="PMRP_bloodtype" accept="image/jpeg, image/png" required>
+                        <input type="file" class="form-control" id="MRP_bloodtype" name="MRP_bloodtype" accept="image/jpeg, image/png" required>
                     </div>
                 </div>
                     <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
@@ -1244,24 +1213,24 @@
                                     `;
                                     container.appendChild(resultDiv);
                                     currentResults++;
-                        
+
                                     if (currentResults == maxResults) {
                                         document.getElementById('addResultButton').disabled = true;
                                     }
                                 }
                             }
-                        
+
                             const removeResult = (resultId) => {
                                 let resultDiv = document.getElementById(`result${resultId}`);
                                 resultDiv.remove();
                                 currentResults--;
                                 console.log(currentResults);
                                 console.log(maxResults);
-                        
+
                                 if (currentResults < maxResults) {
                                     document.getElementById('addResultButton').disabled = false;
                                 }
-                        
+
                                 if (resultId < nextResultId) {
                                     lastRemovedResultId = resultId;
                                 }
@@ -1319,7 +1288,7 @@
                             });
                         </script>
                         <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
-                            <button class="btn btn-primary btn-login fw-bold" type="submit">Submit</button>
+                            <button class="btn btn-primary btn-login fw-bold" type="submit" onclick="form_submit()">Submit</button>
                         </div>
                     </div>
             </div>
@@ -1335,7 +1304,12 @@
             });
         });
     </script>
-    <!-- AJAX to prevent refresh -->
+    <script>
+        function form_submit() {
+            document.getElementById("MRP_form").submit();
+        }    
+    </script>
+    <!-- AJAX to prevent refresh 
     <script>
         document.getElementById('myForm').addEventListener('submit', function(event) {
             event.preventDefault(); // prevent default form submission behavior
@@ -1359,7 +1333,7 @@
             xhr.send(JSON.stringify({ password }));
         });
 
-    </script>
+    </script>-->
     
 </form>
 @endsection

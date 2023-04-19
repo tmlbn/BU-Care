@@ -26,22 +26,23 @@ class UserPersonnel extends Authenticatable
     protected $fillable = [
         'personnel_id_number',
         'email',
+        'password',
         'last_name',
         'first_name',
         'middle_name',
-        'birth_month',
-        'birth_date',
-        'birth_year',
+        'date_of_birth',
     ];
+
     protected $guarded = [
         'id',
-        'password',
-        'created_at',
-        'updated_at',
-        'PMR_id',
+        'MRP_id',
+        'MRPA_id',
         'hasMedRecord',
         'hasValidatedRecord',
         'user_type',
+        'remember_token',
+        'created_at',
+        'updated_at',
     ];
 
     public function medicalRecord_admin(){

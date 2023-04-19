@@ -24,18 +24,4 @@ class UserClinic extends Authenticatable
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'staff_id',
-        'last_name',
-        'first_name',
-        'middle_name',
-        'email'
-    ];
-    protected $guarded = [
-        'id',
-        'password',
-        'created_at',
-        'updated_at',
-        'user_type'
-    ];
 }

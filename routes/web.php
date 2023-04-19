@@ -65,23 +65,26 @@ Route::group(['middleware' => ['web', 'auth']], function() {
  */
 Route::group(['middleware' => ['web', 'employee']], function() {
     
-    Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
+    Route::post('personnel/logout', [BUCareAuthController::class, 'logout'])->name('personnel.logout');
+    Route::post('personnel/validate-password', [BUCareAuthController::class, 'personnelValidatePassword'])->name('personnelPassword.validate');
     Route::get('/personnel/medical-record-form',[MedicalRecordFormController::class, 'personnelMedicalRecordFormReg'])->name('personnel.medicalForm.show');
     Route::post('/personnel/submit-medical-form', [MedicalRecordFormController::class, 'personnelMedFormSubmit'])->name('personnel.medicalForm.store');
 });
 /**
  *  PROTECTED ROUTES FOR ADMINS
  */
-Route::group(['middleware' => ['web', 'admin']], function() {
+Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/home',function () {
         return view('admin.home');
     })->name('admin.home');
     Route::post('admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+   
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
-
     // POST for Importing CSV File (users_students table) //
     Route::post('/admin/import-new-students', [ImportController::class, 'import'])->name('import.store');
+    // POST for Importing CSV File (users_personnel table) //
+    Route::post('/admin/import-new-personnel', [ImportController::class, 'import'])->name('import.store');
 
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');

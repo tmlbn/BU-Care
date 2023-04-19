@@ -152,7 +152,7 @@
     </div>   
         <div class="col-md-3 d-print-inline-block">
             <label for="MR_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" value="{{ $patient->medicalRecord->lastName }}" readonly>
+            <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" value="{{ $patient->medicalRecord->last_name }}" readonly>
         </div>
         <div class="col-md-3">
             <label for="MR_firstName" class="form-label h6">First Name</label>
