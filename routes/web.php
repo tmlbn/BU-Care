@@ -45,32 +45,38 @@ Route::group(['middleware' => ['guest']], function() {
 });
 
 /**
- *  PROTECTED ROUTES FOR PATIENTS
+ *  PROTECTED ROUTES FOR STUDENTS
  */
 Route::group(['middleware' => ['web', 'auth']], function() {
    
-    #---------------BUCareAuthController---------------#
-    Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
-
     #------------MedicalRecordFormController------------#
     Route::get('/medical-record-form',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
     Route::post('submit-medical-form', [MedicalRecordFormController::class, 'medFormSubmit'])->name('medicalForm.store');
 
-    #--------------AppointmentsController---------------#
-    Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
-    route::post('appointmentStore', [AppointmentsController::class, 'appointmentStore'])->name('appointmentDetails.store');
 });
 
 /**
  *  PROTECTED ROUTES FOR PERSONNEL
  */
 Route::group(['middleware' => ['web', 'employee']], function() {
-    
-    Route::post('personnel/logout', [BUCareAuthController::class, 'logout'])->name('personnel.logout');
+
     Route::post('personnel/validate-password', [BUCareAuthController::class, 'personnelValidatePassword'])->name('personnelPassword.validate');
     Route::get('/personnel/medical-record-form',[MedicalRecordFormController::class, 'personnelMedicalRecordFormReg'])->name('personnel.medicalForm.show');
     Route::post('/personnel/submit-medical-form', [MedicalRecordFormController::class, 'personnelMedFormSubmit'])->name('personnel.medicalForm.store');
 });
+/**
+ *  PROTECTED ROUTES FOR ANY(Personnel, Students, and Admin/Clinic)
+ */
+Route::group(['middleware' => ['web', 'auth.any']], function() {
+    #---------------BUCareAuthController---------------#
+    Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
+    #--------------AppointmentsController---------------#
+    Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
+    Route::get('/get-appointments', [AppointmentsController::class, 'getEntries'])->name('entries.get');
+    Route::post('appointmentStore', [AppointmentsController::class, 'appointmentStore'])->name('appointmentDetails.store');
+    Route::post('/check-availability', [AppointmentsController::class, 'checkAvailability'])->name('check.availability');
+});
+
 /**
  *  PROTECTED ROUTES FOR ADMINS
  */
@@ -78,10 +84,7 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/home',function () {
         return view('admin.home');
     })->name('admin.home');
-    Route::post('admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
    
-    Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
-
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
     // POST for Importing CSV File (users_students table) //
@@ -103,6 +106,6 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/medical-patient-record/{patientID}/edit', [MedicalPatientRecordsController::class, 'editMedicalPatientRecord'])->name('admin.medicalPatientRecord.edit');
     Route::patch('admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'updateMedicalPatientRecord'])->name('admin.medicalPatientRecord.update');
     Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
+	
+	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
 });
-
-

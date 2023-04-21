@@ -193,13 +193,17 @@ class BUCareAuthController extends Controller
     }    
     
     public function logout(Request $request){
-        Session::flush();
         if(Auth::guard('employee')->check()){
             Auth::guard('employee')->logout();
-        }else{
+        }
+        elseif(Auth::guard('admin')->check()){
+            Auth::guard('admin')->logout();
+        }
+        else{
             Auth::logout();
         }
 
+        Session::flush();
         return redirect()->route('home');
     }
 

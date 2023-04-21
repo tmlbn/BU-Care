@@ -220,7 +220,7 @@
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : (Route::currentRouteName() === 'admin.patientMedForm.show' ? 'active' : 'inactive') }}" href="{{ route('admin.patientMedFormList.show') }}">HEALTH RECORDS</a>
                         </li>
                         <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'active' : (Route::currentRouteName() === 'admin.medicalPatientRecord.show' ? 'active' : 'inactive') }}" href="{{ route('admin.medPatientRecordList.show') }}">DAILY CONSULTANTS</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'active' : (Route::currentRouteName() === 'admin.medicalPatientRecord.show' ? 'active' : 'inactive') }}" href="{{ route('admin.medPatientRecordList.show') }}">DAILY CONSULTATIONS</a>
                         </li>
                         <li class="pt-2 mt-1">
                             <div class="vr pt-4"></div>
@@ -246,7 +246,7 @@
                                             {{ __('Logout') }}
                                         </a>
         
-                                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>
                                     </li>
