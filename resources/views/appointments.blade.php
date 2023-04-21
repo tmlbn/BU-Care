@@ -5,17 +5,6 @@
         border-collapse: collapse;
         border-color: black;
     }
-    .am.selected, .pm.selected, .selected{
-        background-color: #009edf;
-        font-weight: bold;
-        color:white;
-        border: black 2px solid;
-    }
-    tr.am:hover, tr.pm:hover{
-        cursor: pointer;
-        background-color:#009edf;
-        transition-duration: 0.4s;
-    }
     .fc-day {
         border-color: #444444;
     }
@@ -40,142 +29,175 @@
         background-color:#009edf;
         transition-duration: 0.4s;
     }
+    /* For fully-booked */
+    td.pointer-events-none{
+        cursor: not-allowed !important;
+    }
+    tr.booked {
+        background-color: rgb(255, 95, 95) !important;
+        color: rgb(0, 0, 0);
+        pointer-events: none;
+        opacity: 50%;
+    }
+    /* For 1 slot remaining */
+    tr.lastOne {
+        background-color: rgb(250, 250, 119);
+    }
+    tr.lastOne:hover {
+        cursor: pointer;
+        background-color: rgb(216, 216, 45) !important;
+        transition: background-color 0.4s;
+    }
+    tr.lastOne.selected{
+        background-color: rgb(216, 216, 45) !important;
+        font-weight: bold;
+        color:black;
+        border: black 2px solid;
+    }
+
+    /* For 2 slots */
+    tr.am.selected, tr.pm.selected {
+        font-weight: bold;
+        color:black;
+        border: black 2px solid;
+    }
+    tr.am:hover, tr.pm:hover{
+        cursor: pointer;
+        background-color: rgb(243, 243, 193);
+        transition: background-color 0.4s;
+    }
     
 </style>
-    <div class="container pt-3">
-        
-      <div class="" id="calendar"></div>
-      
+    <div class="container pt-3" onload="checkAvailability()">
+        <div></div>
+        <div class="mx-auto align-items-center justify-content-center" style="width:80%;" id="calendar"></div>
+        <div></div>
     </div>
 
     <script class="pt-2">
         $(document).ready(function () {
     
-        $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    
-        var calendar = $('#calendar').fullCalendar({
-            themeSystem: 'bootstrap4',
-            editable:true,
-            header:{
-                left:'today',
-                center:'title',
-                right:'prev, next'
-            },
-            events:'/full-calender',
-            dayRender: function(date, cell) {
-                if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-                    cell.css('background-color', '#f1807d');
+            $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
                 }
-                cell.css('border-color', '#444444');
-
-                cell.on('click', function() {
-                // Remove the 'selected' class from all cells
-                $('td.fc-selected').removeClass('selected');
-                // Add the 'selected' class to the clicked cell
-                cell.addClass('selected');
             });
-            },
-            selectable:true,
-            selectHelper: true,
-            selectAllow: function(selectInfo) {
-                var today = moment();
-                // Only allow dates in the future
-                return selectInfo.start.isSameOrAfter(today);
-            },
-            selectConstraint: {
-                start: '00:00', // Start at midnight
-                end: '24:00', // End at midnight the next day
-                dow: [1,2,3,4,5] // Monday to Friday only
-            },
-            
-            select:function(start, end, allDay)
-            {
-                var modal = $('#appointmentModal');
-                $('body').append(modal);
-                modal.modal('show');
-
-                // set the appointmentDate input value to the selected date
-                var selectedDate = moment(start).format('YYYY-MMMM-DD');
-                $('#appointmentDate').val(selectedDate);
-
-                $('#appointmentModal .close').on('click', function() {
-                    $('#appointmentModal').modal('hide');
-                });
-            },
-            editable:true,
-            eventResize: function(event, delta)
-            {
-                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
-                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
-                var title = event.title;
-                var id = event.id;
-                $.ajax({
-                    url:"/full-calender/action",
-                    type:"POST",
-                    data:{
-                        title: title,
-                        start: start,
-                        end: end,
-                        id: id,
-                        type: 'update'
-                    },
-                    success:function(response)
-                    {
-                        calendar.fullCalendar('refetchEvents');
-                        alert("Event Updated Successfully");
+        
+            var calendar = $('#calendar').fullCalendar({
+                themeSystem: 'bootstrap4',
+                editable:true,
+                header:{
+                    left:'today',
+                    center:'title',
+                    right:'prev, next'
+                },
+                dayRender: function(date, cell) {
+                    if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+                        cell.css('background-color', '#f1807d');
                     }
-                })
-            },
-            eventDrop: function(event, delta)
-            {
-                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
-                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
-                var title = event.title;
-                var id = event.id;
-                $.ajax({
-                    url:"/full-calender/action",
-                    type:"POST",
-                    data:{
-                        title: title,
-                        start: start,
-                        end: end,
-                        id: id,
-                        type: 'update'
-                    },
-                    success:function(response)
-                    {
-                        calendar.fullCalendar('refetchEvents');
-                        alert("Event Updated Successfully");
+                    cell.css('border-color', '#444444');
+
+                    cell.on('click', function() {
+                        // Remove the 'selected' class from all cells
+                        $('td.fc-selected').removeClass('selected');
+                        // Add the 'selected' class to the clicked cell
+                        cell.addClass('selected');
+                    });
+                },
+                selectable:true,
+                selectHelper: true,
+                selectAllow: function(selectInfo) {
+                    var today = moment();
+                    var currentHour = moment().hour();
+                    var selectedDate = moment(selectInfo.start.format('YYYY-MM-DD'));
+                    console.log(selectedDate);
+                    console.log(today);
+
+                    // Only allow dates in the future
+                    if (selectedDate.isBefore(today, 'day')) {
+                        return false;
                     }
-                })
-            },
-    
-            eventClick:function(event)
-            {
-                if(confirm("Are you sure you want to remove it?"))
+                    
+                    // Only allow selecting today if current time is before 4pm
+                    if (selectedDate.isSame(today, 'day') && currentHour >= 16) {
+                        return false;
+                    }
+
+                    // Only return true if selected date is a future date and if today, time must be before 4pm
+                    return true;
+                },
+                selectConstraint: {
+                    start: '00:00', // Start at midnight
+                    end: '24:00', // End at midnight the next day
+                    dow: [1,2,3,4,5] // Monday to Friday only
+                },
+                
+                select:function(start, end, allDay)
                 {
-                    var id = event.id;
+                    // set the appointmentDate input value to the selected date
+                    var selectedDate = moment(start).format('YYYY-MMMM-DD');
+                    $('#appointmentDate').val(selectedDate);
+                    
+                    // make an AJAX request to fetch appointments for the selected date
                     $.ajax({
-                        url:"/full-calender/action",
-                        type:"POST",
-                        data:{
-                            id:id,
-                            type:"delete"
+                        url: '/get-appointments',
+                        method: 'GET',
+                        data: {
+                            date: selectedDate
                         },
-                        success:function(response)
-                        {
-                            calendar.fullCalendar('refetchEvents');
-                            alert("Event Deleted Successfully");
+                        success: function(entries) {
+                            console.log(entries);
+                            // remove classes before looping through the data
+                            $('#time-slots tr').removeClass('booked lastOne selected');
+                            $('#time-slots tr #timeSlot, #time-slots tr #numberOfSlots').removeClass('pointer-events-none');
+                            $('#time-slots tr #numberOfSlots').text('2');
+                            $('#appointmentTime').val('');
+                            //loop through the data
+                            $.each(entries, function(index, appointment) {
+                                //console.log(appointment.appointmentTime);
+                            //get the time of appointments
+                                var appt_time = appointment.appointmentTime;
+                                var formatted_time = moment(appt_time, 'HH:mm:ss').format('h:mm A');
+                                //console.log(formatted_time);
+                                //console.log(appt_time);
+                                //loop through each table cell and check if it matches the appointment date and time
+                                $('#time-slots tr').each(function() {
+                                    var cell_time = $(this).find('#timeSlot').text();
+                                    //console.log(cell_time);
+                                    if (formatted_time == cell_time) {
+                                    //if there is a match, add a class to the table cell that corresponds to the appointment status
+                                        if (appointment.booked_slots == 2) {
+                                            $(this).addClass('booked');
+                                            $(this).find('#timeSlot').addClass('pointer-events-none');
+                                            $(this).find('#numberOfSlots').addClass('pointer-events-none').text('FULL');
+                                        } else if (appointment.booked_slots == 1) {
+                                            $(this).addClass('lastOne');
+                                            $(this).find('#numberOfSlots').text('1');
+                                        }
+                                    }
+                                });
+                            });
+                        },
+                        error: function(entries) {
+                            console.log(entries.entriesJSON.error);
                         }
-                    })
+                    });
+
+                    /*
+                     *  Need to convert the loop of time and slots here
+                     */
+
+                    // Show modal
+                    var modal = $('#appointmentModal');
+                    $('body').append(modal);
+                    modal.modal('show');
+                    // Close modal
+                    $('#appointmentModal .close').on('click', function() {
+                        $('#appointmentModal').modal('hide');
+                    });
                 }
-            }
+            });
         });
-    });
     </script>
     <!-- Modal for Time -->
     <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
@@ -194,17 +216,20 @@
                                 <!-- APPOINTMENT TIME SELECT -->
                                 <div class="row row-cols-lg-2 justify-content-center">
                                     <div class="col-lg-6 col-md-3 pb-2">
+                                        <?php
+                                            echo "Current date and time: " . date("Y-m-d H:i:s");
+                                            ?>
                                         <button type="button" class="btn btn-primary float-lg-end float-md-start" id="ambtn" onclick="showAM()" disabled>AM</button>
                                     </div>
                                     <div class="col-lg-6 col-md-3 pb-2">
                                          <button type="button" class="btn btn-primary float-lg-start float-md-end" id="pmbtn" onclick="showPM()">PM</button>
                                     </div>
                                   </div>
-                                  <table class="table table-bordered">
+                                  <table class="table table-bordered border-dark">
                                     <thead>
                                         <tr>
                                             <th>Time</th>
-                                            <th>Slot</th>
+                                            <th>Slots</th>
                                         </tr>
                                     </thead>
                                     <tbody id="time-slots">
@@ -213,57 +238,53 @@
                                             $end_am = strtotime('11:45 AM');
                                             while ($start_am <= $end_am) {
                                                 $time = date('g:i A', $start_am);
-                                                echo "<tr class='am t-time' data-time='$time' onClick='handleTimeClick(this);'>";
-                                                echo "<td>$time</td>";
-                                                echo "<td>" .date('g:i', $start_am) . " - " . date('g:i A', strtotime('+15 minutes', $start_am)) . "</td>";
+                                                echo "<tr id='timeAndSlots' class='am t-time' data-time='$time' onClick='handleTimeClick(this);'>";
+                                                echo "<td id='timeSlot'>$time</td>";
+                                                echo "<td id='numberOfSlots'> 2 </td>";
                                                 echo "</tr>";
                                                 $start_am = strtotime('+15 minutes', $start_am);
                                             }
-
                                             $start_pm = strtotime('1:00 PM');
                                             $end_pm = strtotime('4:45 PM');
                                             while ($start_pm <= $end_pm) {
                                                 $time = date('g:i A', $start_pm);
-                                                echo "<tr class='pm t-time' data-time='$time' onClick='handleTimeClick(this);' style='display:none;'>";
-                                                echo "<td>$time</td>";
-                                                echo "<td>" .date('g:i', $start_pm) . " - " . date('g:i A', strtotime('+15 minutes', $start_pm)) . "</td>";
+                                                echo "<tr id='timeAndSlots' class='pm t-time' data-time='$time' onClick='handleTimeClick(this);' style='display:none;'>";
+                                                echo "<td id='timeSlot'>$time</td>";
+                                                echo "<td id='numberOfSlots'> 2 </td>";
                                                 echo "</tr>";
                                                 $start_pm = strtotime('+15 minutes', $start_pm);
                                             }
                                         ?>
-                                            <script>
-                                                function handleTimeClick(row) {
-                                                    const time = row.getAttribute('data-time');
-                                                    document.getElementById('appointmentTime').value = time;  // set the input value to the clicked time
-                                                    const rows = document.querySelectorAll('.t-time');
-                                                    rows.forEach((r) => r.classList.remove('selected'));  // remove the 'selected' class from all rows
-                                                    row.classList.add('selected');  // add the 'selected' class to the clicked row
-                                                }
-                                                function showAM() {
-                                                    document.querySelectorAll("#time-slots tr").forEach(function(e) {
-                                                        e.style.display = "none";
-                                                    });
-                                                    document.querySelectorAll("#time-slots .am").forEach(function(e) {
-                                                        e.style.display = "";
-                                                    });
-
-                                                    document.getElementById('ambtn').disabled = true;
-                                                    document.getElementById('pmbtn').disabled = false;
-                                                }
-
-                                                function showPM() {
-                                                    document.querySelectorAll("#time-slots tr").forEach(function(e) {
-                                                        e.style.display = "none";
-                                                    });
-                                                    document.querySelectorAll("#time-slots .pm").forEach(function(e) {
-                                                        e.style.display = "";
-                                                    });
-
-                                                    document.getElementById('ambtn').disabled = false;
-                                                    document.getElementById('pmbtn').disabled = true;
-                                                }
-                                            </script>
                                     </tbody>
+                                    <script>
+                                        function handleTimeClick(row) {
+                                            const time = row.getAttribute('data-time');
+                                            document.getElementById('appointmentTime').value = time;  // set the input value to the clicked time
+                                            const rows = document.querySelectorAll('.t-time');
+                                            rows.forEach((r) => r.classList.remove('selected'));  // remove the 'selected' class from all rows
+                                            row.classList.add('selected');  // add the 'selected' class to the clicked row
+                                        }
+                                        function showAM() {
+                                            document.querySelectorAll("#time-slots tr").forEach(function(e) {
+                                                e.style.display = "none";
+                                            });
+                                            document.querySelectorAll("#time-slots .am").forEach(function(e) {
+                                                e.style.display = "";
+                                            });
+                                            document.getElementById('ambtn').disabled = true;
+                                            document.getElementById('pmbtn').disabled = false;
+                                        }
+                                        function showPM() {
+                                            document.querySelectorAll("#time-slots tr").forEach(function(e) {
+                                                e.style.display = "none";
+                                            });
+                                            document.querySelectorAll("#time-slots .pm").forEach(function(e) {
+                                                e.style.display = "";
+                                            });
+                                            document.getElementById('ambtn').disabled = false;
+                                            document.getElementById('pmbtn').disabled = true;
+                                        }
+                                    </script>
                                   </table>
                                 </div>
 
@@ -273,6 +294,8 @@
                                     @csrf
                                     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                     </div>
+                                    <input type="hidden" name="patientID" value={{ Auth::user()->id ?: Auth::guard('employee')->user()->id }}>
+                                    <input type="hidden" name="patientType" value={{ Auth::user()->user_type ?: Auth::guard('employee')->user()->user_type }}>
                                     <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
@@ -300,13 +323,13 @@
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Others" id="Others" name="services">
-                                                        <label class="form-check-label" for="Others">
+                                                    <input class="form-check-input" type="radio" value="others" id="others" name="services">
+                                                        <label class="form-check-label" for="others">
                                                             Others
                                                         </label>
                                                         <div class="form-check">
-                                                            <label for="OthersInput" class="form-check-label">
-                                                                <input type ="text" class="form-control" name="OthersInput" id="OthersInput" disabled>
+                                                            <label for="othersInput" class="form-check-label">
+                                                                <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled>
                                                             </label>
                                                         </div>
                                                        
@@ -334,10 +357,10 @@
                                                 <script>
                                                     $(document).ready(function(){
                                                         $('input[name="services"]').change(function(){
-                                                            if($('#Others').is(':checked')){
-                                                                $('#OthersInput').prop('disabled', false);
+                                                            if($('#others').is(':checked')){
+                                                                $('#othersInput').prop('disabled', false);
                                                             }else{
-                                                                $('#OthersInput').prop('disabled', true);    
+                                                                $('#othersInput').prop('disabled', true);    
                                                             }
                                                         });
                                                     });

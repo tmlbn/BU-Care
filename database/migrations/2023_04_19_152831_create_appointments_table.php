@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointmenttry', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('patientID');
+            $table->string('patient_type');
             $table->date('appointmentDate');
             $table->time('appointmentTime');
-            $table->string('services')->nullable()->default(null);
-            $table->string('Others')->nullable()->default(null);
+            $table->dateTime('appointmentDateTime');
+            $table->string('services')->nullable();
+            $table->string('others')->nullable();
             $table->text('appointmentDescription');
+            $table->integer('booked_slots')->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointmenttry');
+        Schema::dropIfExists('appointments');
     }
 };
