@@ -102,7 +102,7 @@
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('medicalForm.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
+<form method="POST" action="{{ route('medicalForm.store') }}" id="MR_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
     <div class="container">
         <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
@@ -1290,6 +1290,34 @@
             </div>
         </div>
     </div>
+     <!-- AJAX to prevent refresh
+     <script>
+        $(document).ready(function() {
+            $('#MR_form').on('submit', function(event) {
+                event.preventDefault(); // prevent default form submission behavior
+                const password = $('#passwordInput').val();
+                const url = '/check-password'; // replace with the URL that checks the password
+                $.ajax({
+                    url : url,
+                    type : 'POST',
+                    data : {password: password},
+                    dataType:'json',
+                    success: function(data) {
+                        if (data.success) {
+                            // password is correct, submit the form
+                            $('#MR_form').submit();
+                        } else {
+                            // password is incorrect, display an error message
+                            alert('Incorrect password');
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script> -->
 
     </form>    
 </div> 

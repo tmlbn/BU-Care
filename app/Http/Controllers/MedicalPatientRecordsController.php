@@ -29,35 +29,48 @@ class MedicalPatientRecordsController extends Controller
 
     public function showMedicalPatientRecord($patientID){
         try {
-            // Try to find a patient with the specified applicant ID
+            // Try to find a patient with the specified ID as applicantID
             $patient = UserStudent::with('medicalRecord')
                 ->where('applicant_id_number', $patientID)
                 ->where('hasMedRecord', 1)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             try {
-                // If it fails or a student ID number is used, try to find a patient with the specified student ID
+                // If it fails or a student ID number is used, try to find a patient with the specified ID as studentID
                 $patient = UserStudent::with('medicalRecord')
                 ->where('student_id_number', $patientID)
                 ->where('hasMedRecord', 1)
                 ->firstOrFail();
             } catch (ModelNotFoundException $e) {
-                // Neither applicant ID nor student ID found
-                $message = 'Medical Patient Record of '.$patientID.' not found.';
-                return redirect()->route('admin.patientMedFormList.show')->with('fail', $message);
+                try {
+                    // If it still fails, try to find a patient with the specified ID as peronnelID
+                    $patient = UserPersonnel::with('medicalRecord')
+                    ->where('personnel_id_number', $patientID)
+                    ->where('hasMedRecord', 1)
+                    ->firstOrFail();
+                } catch (ModelNotFoundException $e) {
+                    // Neither applicant ID nor student ID found
+                    $message = 'Patient '.$patientID.' not found.';
+                    return redirect()->route('admin.medPatientRecordList.show')->with('fail', $message);
+                }
             }
+            // Display the patient form with the found user data
+            $patientID = $patient->id;
+            if($patient->user_type == 'PATIENT/STUDENT'){
+                $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)->get();
+            }elseif($patient->user_type == 'PATIENT/PERSONNEL'){
+                $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
+            }
+            
+            return view('admin.medicalPatientRecord')
+                    ->with('patient', $patient)
+                    ->with('medicalPatientRecords', $medicalPatientRecords);
         }
-        // Display the patient form with the found user data
-        $studentID = $patient->id;
-        $medicalPatientRecords = MedicalPatientRecord::where('student_id', $studentID)->get();
-        return view('admin.medicalPatientRecord')
-                ->with('patient', $patient)
-                ->with('medicalPatientRecords', $medicalPatientRecords);
     }
 
     public function storeMedicalPatientRecord (Request $request){
             $request->validate([
-                'studentID' => 'required|int',
+                'patientID' => 'required|int',
                 'date' => 'required|date_format:d-F-Y',
                 'temperature' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
                 'bloodPressure' => 'required|regex:/^\d+\/\d+$/',
@@ -66,10 +79,6 @@ class MedicalPatientRecordsController extends Controller
                 'historyAndPhysicalExamination' => 'required|string',
                 'physicianDirections' => 'required|string',
             ]);
-
-            if (!Hash::check($request->passwordInput, Auth::guard('admin')->user()->password)) {
-                return back()->with('fail','Wrong password.');
-            }
 
             try {
                 $new_mpr = new MedicalPatientRecord();

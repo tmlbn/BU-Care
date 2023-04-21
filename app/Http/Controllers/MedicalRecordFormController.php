@@ -27,7 +27,7 @@ class MedicalRecordFormController extends Controller
                 if(Auth::user()->hasMedRecord == 0){
                     return view('medicalRecordForm');
                 }
-            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
+            return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');
         }
         else{
             return redirect('login');
@@ -81,7 +81,7 @@ class MedicalRecordFormController extends Controller
         }
     
         // Display the patient form with the found user data
-        return view('admin.medicalRecordFormClinicSide')->with('patient', $patient);
+        return view('admin.ClinicSideMedicalRecordForm')->with('patient', $patient);
     }
 
         #####---MEDICAL RECORD FORM SUBMISSION---#####
@@ -377,9 +377,9 @@ class MedicalRecordFormController extends Controller
                 $medRecord->course = filter_var($request->input('courseSelect'), FILTER_SANITIZE_STRING);
                 $medRecord->SYstart = filter_var($request->input('schoolYearStart'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->SYend = filter_var($request->input('schoolYearEnd'), FILTER_SANITIZE_NUMBER_INT);
-                $medRecord->lastName = filter_var($request->input('MR_lastName'), FILTER_SANITIZE_STRING);
-                $medRecord->firstName = filter_var($request->input('MR_firstName'), FILTER_SANITIZE_STRING);
-                $medRecord->middleName = filter_var($request->input('MR_middleName'), FILTER_SANITIZE_STRING);
+                $medRecord->last_name = filter_var($request->input('MR_lastName'), FILTER_SANITIZE_STRING);
+                $medRecord->first_name = filter_var($request->input('MR_firstName'), FILTER_SANITIZE_STRING);
+                $medRecord->middle_name = filter_var($request->input('MR_middleName'), FILTER_SANITIZE_STRING);
                 $medRecord->age = filter_var($request->input('MR_age'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->sex = filter_var($request->input('MR_sex'), FILTER_SANITIZE_STRING);
                 $medRecord->placeOfBirth = filter_var($request->input('MR_placeOfBirth'), FILTER_SANITIZE_STRING);
@@ -397,6 +397,27 @@ class MedicalRecordFormController extends Controller
                 $medRecord->guardianAddress = $request->filled('MR_guardianAddress') ? filter_var($request->input('MR_guardianAddress'), FILTER_SANITIZE_STRING) : 'N/A';    
                 $medRecord->parentGuardianContactNumber = filter_var(ltrim($request->input('MR_parentGuardianContactNumber'), '0'), FILTER_VALIDATE_INT);
                 $medRecord->studentContactNumber = filter_var(ltrim($request->input('MR_studentContactNumber'), '0'), FILTER_VALIDATE_INT);
+                
+                if($request->input('MR_emergencyContactPerson') == 'FATHER'){
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_fatherName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_fatherOccupation'), FILTER_SANITIZE_STRING);
+                        $emergencyContactRelationship = 'FATHER'; 
+                    $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
+                }
+                elseif($request->input('MR_emergencyContactPerson') == 'MOTHER'){
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_motherName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_motherOccupation'), FILTER_SANITIZE_STRING);
+                        $emergencyContactRelationship = 'MOTHER'; 
+                    $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
+                }
+                else{
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_emergencyContactName'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
+                }
+                $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+                $medRecord->emergencyContactNumber = filter_var($request->input('MR_emergencyContactNumber'), FILTER_SANITIZE_STRING);
+
                 $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->hospDetails = $request->filled('hospitalizationDetails') ? filter_var($request->input('hospitalizationDetails'), FILTER_SANITIZE_STRING) : 'N/A';   
                 $medRecord->takingMedsRegularly = filter_var($request->input('regMeds'), FILTER_SANITIZE_NUMBER_INT);
@@ -445,6 +466,15 @@ class MedicalRecordFormController extends Controller
                     $medRecord->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
                     $medRecord->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecord->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+
+                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
     
                         // check if the given password matches the patient's actual password
                     if (!Hash::check($request->passwordInput, $user->password)) {
@@ -479,11 +509,169 @@ class MedicalRecordFormController extends Controller
             return view('personnel.medicalRecordFormPersonnel');
         }
         else{
-            return redirect()->back()->with('alreadySubmitted', 'You have already submitted your Medical Form!');
+            return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');
         }
     }
 
-    public function personnelMedFormSubmit(){
-     // code for validating user input and saving   
+    public function personnelMedFormSubmit(Request $request){
+        $validator = Validator::make($request->all(), [
+            /* BASIC INFORMATION */
+            'designation' => 'required',
+            'unitDepartment' => 'required',
+            'P_campusSelect' => 'required',
+            'MRP_lastName' => 'required|string',
+            'MRP_firstName' => 'required|string',
+            'MRP_middleName' => 'required|string',
+            'MRP_age' => 'required|integer',
+            'MRP_sex' => 'required|string',
+            'MRP_gender' => 'required|string',
+            'MRP_pwd' => 'required|string',
+            'MRP_placeOfBirth' => 'required|string',
+            'MRP_civilStatus' => 'required|string',
+            'MRP_nationality' => 'required|string',
+            'MRP_religion' => 'required|string',
+            'MRP_address' => 'required|string',
+            'MRP_personnelContactNumber' => 'required|string',
+            'MRP_contactName' => 'required|string',
+            'MR_ContactNumber' => 'required|string',
+            'MRP_Occupation' => 'required|string',
+            'MRP_relationship' => 'nullable|string',
+            'MRP_OfficeAdd' => 'nullable|required_with:MRP_OfficeAdd|string',
+
+            /* FAMILY and SOCIAL HISTORY  PERSONNEL*/
+            'FHP_cancer' => 'required|in:0,1', 
+            'FHP_heartDisease' => 'required|in:0,1', 
+            'FHP_hypertension' => 'required|in:0,1', 
+            'FHP_thyroidDisease' => 'required|in:0,1', 
+            'FHP_tuberculosis' => 'required|in:0,1', 
+            'FHP_HIV/AIDS' => 'required|in:0,1', 
+            'FHP_diabetesMelittus' => 'required|in:0,1', 
+            'FHP_mentalDisorder' => 'required|in:0,1', 
+            'FHP_asthma' => 'required|in:0,1', 
+            'FHP_convulsions' => 'required|in:0,1', 
+            'FHP_bleedingDyscrasia' => 'required|in:0,1', 
+            'FHP_Arthritis' => 'required|in:0,1', 
+            'FHP_eyeDisorder' => 'required|in:0,1', 
+            'FHP_skinProblems' => 'required|in:0,1', 
+            'FHP_kidneyProblems' => 'required|in:0,1', 
+            'FHP_gastroDisease' => 'required|in:0,1', 
+            'FHP_Hepatitis' => 'required|in:0,1', 
+            'FHP_others' => 'required_if:FHP_others,1|string', 
+            'FHP_othersDetails' => 'required_if:FHP_othersDetails,1|string', 
+
+            /* PERSONAL SOCIAL HISTORY[PSH_] */
+            'PPSH_smoking' => 'required|in:0,1', 
+            'PPSH_smoking_amount' => 'required_if:PPSH_smoking,1|int', 
+            'PPSH_smoking_freq' => 'required_if:PPSH_smoking,1|int', 
+            'PPSH_drinking' => 'required|in:0,1',
+            'hospitalization' => 'required|in:0,1',
+            'hospitalizationDetails' => 'required_if:hospitalizationDetails,1|string', 
+            /*
+            'PSH_drinking_amountOfBeer' => 'nullable|required_if:PPSH_drinking,1|string',
+            'PSH_drinking_freqOfBeer' => 'nullable|required_with:PSH_drinking_amountOfBeer|string',
+            'PSH_drinking_amountofShots' => 'nullable|required_if:PPSH_drinking,1|string',
+            'PSH_drinking_freqOfShots' => 'nullable|required_with:PSH_drinking_amountofShots|string',
+            */
+            /* Personal History*/
+            'PPMC_hypertension' => 'required|in:0,1', 
+            'PPMC_asthma' => 'required|in:0,1', 
+            'PPMC_diabetes' => 'required|in:0,1', 
+            'PPMC_arthritis' => 'required|in:0,1', 
+            'PPMC_chickenPox' => 'required|in:0,1', 
+            'PPMC_dengue' => 'required|in:0,1', 
+            'PPMC_tuberculosis' => 'required|in:0,1', 
+            'PPMC_pneumonia' => 'required|in:0,1', 
+            'PPMC_covid19' => 'required|in:0,1', 
+            'PPMC_hivAIDS' => 'required|in:0,1', 
+
+            'PPMC_hepatitis' => 'required|in:0,1', 
+            'PPMC_hepatitisDetails' => 'required_if:PPMC_hepatitisDetails,1|string',
+            'PPMC_thyroidDisorder' => 'required|in:0,1', 
+            'PPMC_thyroidDisorderDetails' => 'required_if:PPMC_thyroidDisorderDetails,1|string', 
+            'PPMC_eyeDisorder' => 'required|in:0,1', 
+            'PPMC_eyeDisorderDetails' => 'required_if:PPMC_eyeDisorderDetails,1|string',
+            'PPMC_mentalDisorder' => 'required|in:0,1', 
+            'PPMC_mentalDisorderDetails' => 'required_if:PPMC_mentalDisorderDetails,1|string',
+            'PPMC_gastroDisease' => 'required|in:0,1', 
+            'PPMC_gastroDiseaseDetails' => 'required_if:PPMC_gastroDiseaseDetails,1|string',
+            'PPMC_kidneyDisease' => 'required|in:0,1',
+            'PPMC_kidneyDiseaseDetails' => 'required_if:PPMC_kidneyDiseaseDetails,1|string',
+            'PPMC_heartDisease' => 'required|in:0,1',
+            'PPMC_heartDiseaseDetails' => 'required_if:PPMC_heartDiseaseDetails,1|string',
+            'PPMC_skinDisease' => 'required|in:0,1',
+            'PPMC_skinDiseaseDetails' => 'required_if:PPMC_skinDiseaseDetails,1|string',
+            'PPMC_earDisease' => 'required|in:0,1',
+            'PPMC_earDiseaseDetails' => 'required_if:PPMC_earDiseaseDetails,1|string',
+            'PPMC_cancer' => 'required|in:0,1',
+            'PPMC_cancerDetails' => 'required_if:PPMC_cancerDetails,1|string',
+            'PPMC_others' => 'required|in:0,1',
+            'PPMC_othersDetails' => 'required_if:PPMC_othersDetails,1|string',
+
+            /* Hospitalization */
+            'P_hospitalization' => 'required|in:0,1', 
+            'P_hospitalizationDetails' => 'required_if:P_hospitalizationDetails,1|string',
+            'P_regMeds' => 'required|in:0,1', 
+            'P_regMedsDetails' => 'required_if:P_regMedsDetails,1|string', 
+            /* allergies */
+            'P_allergy' => 'required|in:0,1', 
+            'P_allergyDetails' => 'required_if:P_allergyDetails,1|string',  
+ 
+            /* IMMUNIZATION HISTORY[IH_] */
+            'PIH_bcg' => 'required|in:0,1', 
+            'PIH_polio' => 'required|in:0,1', 
+            'PIH_chickenPox' => 'required|in:0,1', 
+            'PIH_dpt' => 'required|in:0,1', 
+            'IH_covidVacc' => 'required|in:0,1', 
+            'PIH_covidVaccName' => 'required|in:0,1', 
+            'PIH_covidBooster' => 'required|in:0,1', 
+
+            'PPIH_others' => 'required_if:PPIH_othersDetails,1|string',  
+            'PPIH_othersDetails' => 'required|in:0,1', 
+            'PIH_typhoid' => 'required|in:0,1', 
+            'PIH_mumps' => 'required|in:0,1', 
+            'PIH_hepatitisA' => 'required|in:0,1',
+            'PIH_measles' => 'required|in:0,1',
+            'PIH_germanMeasles' => 'required|in:0,1',
+            'PIH_hepatitisB' => 'required|in:0,1', 
+            'PIH_Pneumoccal' => 'required|in:0,1',
+            'PIH_Influenza' => 'required|in:0,1',
+            'PIH_HPV' => 'required|in:0,1', 
+            'PIH_others' => 'required|in:0,1', 
+            'PIH_othersDetails' => 'required_if:PIH_othersDetails,1|string',  
+
+
+            /* NAME OF UPLOADS */
+            'MR_additionalResult1' => 'nullable|string',
+            'MR_additionalResult2' => 'nullable|string',
+            'MR_additionalResult3' => 'nullable|string',
+            'MR_additionalResult4' => 'nullable|string',
+            'MR_additionalResult5' => 'nullable|string',
+            'MR_additionalResult6' => 'nullable|string',
+            'MR_additionalResult7' => 'nullable|string',
+            'MR_additionalResult8' => 'nullable|string',
+
+            /* UPLOADS */
+            'MR_additionalUpload1' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload2' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload3' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload4' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload5' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload6' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_additionalUpload7' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', 
+            'MR_additionalUpload8' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+
+        ],[ #--- CATCH SPECIFIC ERRORS ---#
+            'required' => 'The :attribute field is required.',
+            'designation.required' => 'Please select a designation.',
+            'unitDepartment.required' => 'Please select a Unit Department.',
+            'P_campusSelect.required_with' => 'Please Select a your present Campus.',
+            'PPSH_smoking_amount.required_if' => 'Please provide the amount of cigarettes.',
+            'PPSH_smoking_freq.required_if' => 'Please provide the frequency of cigarette consumption.',
+            'hospitalizationDetails.required_if' => 'Please provide the details of your hospitalization for serious illness, operation, fracture or injury.',
+            'P_regMedsDetails.required_if' => 'Please provide the name/s of your regular drug/s.',
+            'P_allergyDetails.required_if' => 'Please specify your allergy details.',
+            'FHP_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
+            'PIH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
+        ]); /* END OF VALIDATION */
     }
 }
