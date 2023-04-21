@@ -41,7 +41,7 @@
                     <img src="{{ asset('media/png/medical.png') }}" alt="Medical Icon" style="height:50px;">
                 </div>
                     <h2 class="h5 text-gray-900 font-weight-medium mb-2">Medical</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+                    <p class="mb-0 text-base"> we are committed to providing our patients with comprehensive medical services. Our team of highly qualified medical professionals utilizes the latest medical technologies and techniques to offer a range of diagnostic testing, medical evaluations, and treatments for various illnesses and conditions. Whether you require routine medical care or specialized treatment, we are here to provide you with the highest level of care and attention.</p>
               </div>
             </div>
         
@@ -51,7 +51,7 @@
                     <img src="{{ asset('media/png/doctor.png') }}" alt="Doctor Icon" style="height:50px;">
                 </div>
                     <h2 class="h5 text-gray-900 font-weight-medium mb-2">Qualified Doctors</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+                    <p class="mb-0 text-base">Our team of qualified doctors is composed of highly experienced medical professionals who are committed to providing you with the best possible care. With years of training and experience in their respective fields, our doctors are equipped to handle a wide range of medical conditions and illnesses. They are dedicated to staying up-to-date with the latest medical advancements and technologies to ensure that you receive the most effective treatments available.</p>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
                     <img src="{{ asset('media/png/emergency.png') }}" alt="Emergency Icon" style="height:50px;">
                 </div>
                     <h2 class="h5 text-gray-900 font-weight-medium mb-2">Emergency Care</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+                    <p class="mb-0 text-base">Our emergency care services are available 8 hours a day to provide immediate medical attention to patients who require urgent care. Our team of emergency medical professionals is highly trained to handle a wide range of medical emergencies, from minor injuries to life-threatening conditions. Our state-of-the-art emergency department is equipped with the latest medical equipment and technology to provide the best possible care to our patients in their time of need.</p>
               </div>
             </div>
         
@@ -73,7 +73,7 @@
                     <img src="{{ asset('media/png/checkup.png') }}" alt="Checkup Icon" style="height:50px;">
                 </div>
                     <h2 class="h5 text-gray-900 font-weight-medium mb-2">Checkup</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+                    <p class="mb-0 text-base">Our check-up services are designed to help you maintain good health and prevent potential health problems. We offer comprehensive health screenings and evaluations to detect any potential health issues early on, when they are easier to treat. Our team of medical professionals will work with you to develop a personalized health plan that fits your unique needs and goals. We believe that regular check-ups are essential for maintaining optimal health and well-being.</p>
               </div>
             </div>
           </div>

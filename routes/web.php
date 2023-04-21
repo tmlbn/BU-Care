@@ -9,6 +9,7 @@ use App\Http\Controllers\MedicalRecordFormController;
 use App\Http\Controllers\MedicalRecordsAdminController;
 use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\MedicalPatientRecordsController;
+use App\Http\Controllers\AdminReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,8 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     })->name('admin.home');
     Route::post('admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
    
+    Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
+
     Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
     // POST for Importing CSV File (users_students table) //
@@ -101,3 +104,5 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::patch('admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'updateMedicalPatientRecord'])->name('admin.medicalPatientRecord.update');
     Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
 });
+
+
