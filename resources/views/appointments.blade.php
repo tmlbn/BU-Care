@@ -103,6 +103,57 @@
                         // Add the 'selected' class to the clicked cell
                         cell.addClass('selected');
                     });
+
+                    var startDate = moment().format('YYYY-MM-DD');
+                    var endDate = moment().add(1, 'month').endOf('month').format('YYYY-MM-DD');
+
+                    $.ajax({
+                        url: '/get-entries',
+                        method: 'GET',
+                        data: {
+                            start: startDate,
+                            end: endDate
+                        },
+                        success: function(appointments) {
+                            // Get all appointments for the future
+                            var appointmentsArray = Object.values(appointments);
+                            var filteredAppointments = appointmentsArray.filter(function(appointment) {
+                                return moment(appointment.appointmentDate) > moment().subtract(1, 'day');
+                            });
+
+                            // Count appointment entries for each day
+                            var appointmentCount = {};
+                            let futureAppointments = [];
+                            futureAppointments.forEach(function(appointment) {
+                                var appointmentDate = moment(appointment.appointmentDate).format('YYYY-MM-DD');
+                                if (!appointmentCount[appointmentDate]) {
+                                    appointmentCount[appointmentDate] = 0;
+                                }
+                                appointmentCount[appointmentDate] += 1;
+                            });
+                            
+                            // Apply background color based on appointment count for each day
+                            Object.keys(appointmentCount).forEach(function(date) {
+                                var count = appointmentCount[date];
+                                var dayCell = $('.fc-day[data-date="' + date + '"]');
+                                if (count >= 25 && count <= 50) {
+                                    dayCell.css('background-color', 'yellow');
+                                } else if (count >= 51 && count <= 63) {
+                                    dayCell.css('background-color', 'orange');
+                                } else if (count == 64) {
+                                    dayCell.css('background-color', 'red');
+                                    dayCell.off('click');
+                                    dayCell.css('cursor', 'default');
+                                }
+                                dayCell.append('<div class="appointment-count">' + count + '</div>');
+                            });
+                            console.log(futureAppointments);
+                        },
+                        error: function(appointments) {
+                            
+                            console.log(appointments);
+                        }
+                    });
                 },
                 selectable:true,
                 selectHelper: true,
@@ -126,6 +177,7 @@
                     // Only return true if selected date is a future date and if today, time must be before 4pm
                     return true;
                 },
+                
                 selectConstraint: {
                     start: '00:00', // Start at midnight
                     end: '24:00', // End at midnight the next day
@@ -140,7 +192,7 @@
                     
                     // make an AJAX request to fetch appointments for the selected date
                     $.ajax({
-                        url: '/get-appointments',
+                        url: '/check-availability',
                         method: 'GET',
                         data: {
                             date: selectedDate
@@ -216,9 +268,6 @@
                                 <!-- APPOINTMENT TIME SELECT -->
                                 <div class="row row-cols-lg-2 justify-content-center">
                                     <div class="col-lg-6 col-md-3 pb-2">
-                                        <?php
-                                            echo "Current date and time: " . date("Y-m-d H:i:s");
-                                            ?>
                                         <button type="button" class="btn btn-primary float-lg-end float-md-start" id="ambtn" onclick="showAM()" disabled>AM</button>
                                     </div>
                                     <div class="col-lg-6 col-md-3 pb-2">

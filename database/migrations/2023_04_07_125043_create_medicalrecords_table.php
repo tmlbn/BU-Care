@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('campus');
             $table->string('course');
             $table->unsignedSmallInteger('SYstart');
-            $table->unsignedSmallInteger('SYends');
+            $table->unsignedSmallInteger('SYend');
             $table->string('last_name', 50);
             $table->string('first_name', 50);
             $table->string('middle_name', 50)->nullable();

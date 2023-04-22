@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('users_students', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('applicant_id_number', 20)->unique();
-            $table->string('student_id_number', 20)->unique();
-            $table->string('email', 50);
-            $table->string('password');
+            $table->string('student_id_number', 20)->unique()->nullable()->default(null);
+            $table->string('email', 50)->nullable()->default(null);
+            $table->string('password')->nullable()->default(null);
             $table->string('last_name', 50);
             $table->string('first_name', 50);
-            $table->string('middle_name', 50)->nullable();
+            $table->string('middle_name', 50)->nullable()->default(null);
             $table->string('birth_month', 9);
             $table->unsignedTinyInteger('birth_date');
             $table->unsignedSmallInteger('birth_year');

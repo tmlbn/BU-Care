@@ -72,9 +72,9 @@ Route::group(['middleware' => ['web', 'auth.any']], function() {
     Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
     #--------------AppointmentsController---------------#
     Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
-    Route::get('/get-appointments', [AppointmentsController::class, 'getEntries'])->name('entries.get');
+    Route::get('/check-availability', [AppointmentsController::class, 'checkAvailability'])->name('availability.check');
     Route::post('appointmentStore', [AppointmentsController::class, 'appointmentStore'])->name('appointmentDetails.store');
-    Route::post('/check-availability', [AppointmentsController::class, 'checkAvailability'])->name('check.availability');
+    Route::get('/get-entries', [AppointmentsController::class, 'getEntries'])->name('entries.fetch');
 });
 
 /**

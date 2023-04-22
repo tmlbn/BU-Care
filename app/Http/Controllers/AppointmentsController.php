@@ -15,6 +15,7 @@ use App\Models\ImmunizationHistory;
 use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
+use Carbon\Carbon;
 use Session;
 use DateTime;
 use Hash;
@@ -27,7 +28,7 @@ class AppointmentsController extends Controller
 
     }
 
-    public function getEntries(Request $request){
+    public function checkAvailability(Request $request){
         // Extract date
         $requestDate = $request->input('date');
         // Convert to DateTime
@@ -39,9 +40,32 @@ class AppointmentsController extends Controller
         return response()->json($appointments);
     }
 
-    public function checkAvailability(Request $request){
+    public function getEntries(Request $request){
+        // Retrieve the date range from the AJAX request
+        $start = $request->input('start');
+        $end = $request->input('end');
         
+        // Query the database to retrieve the appointment entries for the future
+        $entries = Appointment::where('appointmentDate', '>=', $start)->where('appointmentDate', '<=', $end)->get();
+        
+        // Count the appointment entries for each day
+        $counts = [];
+        foreach ($entries as $entry) {
+            $date = $entry->date;
+            if (isset($counts[$date])) {
+                $counts[$date]++;
+            } else {
+                $counts[$date] = 1;
+            }
+        }
+        
+        // Return the data as a JSON response
+        return response()->json([
+            'entries' => $entries,
+            'counts' => $counts,
+        ]);
     }
+
 
     public function appointmentStore(Request $request) {
         $request->validate([
