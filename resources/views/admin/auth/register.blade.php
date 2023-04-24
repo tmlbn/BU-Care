@@ -314,7 +314,7 @@
                                   </div>
                                 <!-- PW INPUT -->
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" name="student_password" id="student_password" placeholder="student_Password">
+                                        <input type="text" class="form-control" name="student_password" id="student_password" placeholder="Student Password">
                                         <label for="floatingInput" class="fst-italic">Password</label>
                                         <span class="text-danger" id="studentPWErrormsg"> 
                                           @error('student_password') 
@@ -454,6 +454,7 @@
 
                             <!-- PERSONNEL FORM -->
                             <form method="POST" action="{{ route('manualRegister.store') }}" class="rounded bg-light p-4 fluid" id="personnelRegister" style="display:none;">
+                              @csrf
                               @if (Session::has('fail'))
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                       {{ Session::get('fail') }} 
@@ -639,13 +640,13 @@
                                         $('#switchForms3').removeClass('active');
                                       });
                           
-                          /* SWITCH TO STAFF FORM */
+                          /* SWITCH TO PERSONNEL FORM */
                                     $(document).on('click', '#switchForms3', function() {
                                       // remove required attributes from other forms
                                         $('#applicantID').removeAttr('required');
-                                        $('#lastName').removeAttr('required');
-                                        $('#firstName').removeAttr('required');
-                                        $('#middleName').removeAttr('required');
+                                        $('#student_lastName').removeAttr('required');
+                                        $('#student_firstName').removeAttr('required');
+                                        $('#student_middleName').removeAttr('required');
                                         $('#applicantBirthMonth').removeAttr('required');
                                         $('#applicantBirthDate').removeAttr('required');
                                         $('#applicantBirthYear').removeAttr('required');

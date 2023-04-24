@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\UserStudent;
+use App\Models\UserPersonnel;
 use Session;
 use Hash;
 use DB;
@@ -56,7 +57,7 @@ class BUCareAuthController extends Controller
     public function BUCareLogin(Request $request){
         $this->validateLogin($request);
 
-        $loginType = null;
+        $loginType = '';
 
             // Determine the login type
         if($request->studentID != null){
@@ -114,11 +115,11 @@ class BUCareAuthController extends Controller
                     return redirect()->route('home');
                 }
 
-                if($userNotFound = UserStudent::where('personnel_id_number', $request->staffID)->first()){
+                if($userNotFound = UserPersonnel::where('personnel_id_number', $request->personnelID)->first()){
                     return back()->with('fail', 'Wrong password.');
                 }
 
-                return back()->with('fail', 'Personnel ID Number ' . $request->staffID . ' is not registered.');
+                return back()->with('fail', 'Personnel ID Number ' . $request->personnelID . ' is not registered.');
                 break;
 
             default:
@@ -206,7 +207,7 @@ class BUCareAuthController extends Controller
         Session::flush();
         return redirect()->route('home');
     }
-
+/*
     public function personnelValidatePassword(Request $request){
         $password = $request->input('password');
         $user = Auth::guard('employee')->user();
@@ -214,22 +215,31 @@ class BUCareAuthController extends Controller
 
         // Check if the entered password matches with the authenticated user's password
         if (Hash::check($password, $user->password)) {
-           $response = ['success' => true];
-           return response()->json([
-            'success' => true
-            ]);
+            $response = array('success' => 'true');
+        } 
+        else {
+            $response = array('error' => 'true');
+        }
+        $responseJSON = json_encode($response);
+        return response()->json($responseJSON);
+    }
 
-          } else {
-            $response = ['success' => false,
-            'message' => 'Invalid password',
-            ];
-            die();
+    public function checkPassword(Request $request){
+        $password = $request->input('passwordInput');
+        $user = Auth::guard('employee')->user() ?: Auth::user();
+        $response = NULL;
+        if (Hash::check($password, $user->password)) {
+            $response = array('success' => 'true');
+        } 
+        else {
+            $response = array('error' => 'true');
+        }
+        $responseJSON = json_encode($response);
+        return response()->json($responseJSON);
 
-           return response()->json([
-            'success' => false,
-            'message' => 'Invalid password',
-           ]);
-           die();
-          }
+    }*/
+
+    public function foo(){
+        //bar
     }
 }

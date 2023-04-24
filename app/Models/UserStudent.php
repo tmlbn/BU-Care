@@ -65,4 +65,8 @@ class UserStudent extends Authenticatable
     public function medicalPatientRecords(){
         return $this->hasMany(MedicalPatientRecord::class, 'student_id');
     }
+
+    public function myAppointments(){
+        return $this->hasMany(Appointment::class, 'patient_id');
+    }
 }
