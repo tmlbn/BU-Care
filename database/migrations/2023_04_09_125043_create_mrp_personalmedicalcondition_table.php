@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mrp_personalmedicalcondition', function (Blueprint $table) {
-            $table->bigIncrements('MRP_immunizationHistoryID')->unique();
-            $table->unsignedBigInteger('MRP_id')->unique();
+            $table->bigIncrements('MRP_PMC_ID')->unique();
             $table->boolean('hypertension');
             $table->boolean('asthma');
-            $table->boolean('diabetges');
+            $table->boolean('diabetes');
             $table->boolean('arthritis');
             $table->boolean('chickenPox');
             $table->boolean('dengue');

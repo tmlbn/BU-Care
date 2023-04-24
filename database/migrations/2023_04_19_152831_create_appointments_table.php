@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('patientID');
+            $table->string('ticket_id')->unique()->default(0);
+            $table->unsignedBigInteger('student_id')->nullable()->default(null);
+            $table->unsignedBigInteger('personnel_id')->nullable()->default(null);
             $table->string('patient_type');
             $table->date('appointmentDate');
             $table->time('appointmentTime');
@@ -22,6 +24,7 @@ return new class extends Migration
             $table->string('others')->nullable();
             $table->text('appointmentDescription');
             $table->integer('booked_slots')->default(0);
+            $table->string('status')->default('ACTIVE');
             $table->timestamps();
         });
     }

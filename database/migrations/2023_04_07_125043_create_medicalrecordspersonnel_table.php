@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('medicalrecordspersonnel', function (Blueprint $table) {
             $table->bigIncrements('MRP_id')->unique();
-            $table->unsignedBigInteger('MRPA_id')->unique()->nullable();
+            $table->unsignedBigInteger('MRPA_id')->unique()->nullable()->default(null);
             $table->unsignedBigInteger('personnel_id')->unique();
             $table->string('designation');
             $table->unsignedSmallInteger('unitDepartment');
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('emergencyContactAddress', 100);
             $table->unsignedBigInteger('MRP_familyHistoryID')->unique();
             $table->unsignedBigInteger('MRP_personalSocialHistoryID')->unique();
-            $table->unsignedBigInteger('MRP_personalMedicalConditionID')->unique();
+            $table->unsignedBigInteger('MRP_PMC_ID')->unique();
             $table->unsignedBigInteger('MRP_immunizationHistoryID')->unique();
             $table->boolean('hospitalization');
             $table->string('hospDetails', 100);
