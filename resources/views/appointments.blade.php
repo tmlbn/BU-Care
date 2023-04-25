@@ -22,11 +22,11 @@
         background-color: rgb(240, 240, 190) !important;
     }
     .fc-past{
-        background-color: rgb(202, 202, 202);
+        background-color: rgb(230, 230, 230);
     }
     .fc-today:hover, .fc-future:hover{
         cursor: pointer;
-        background-color:#009edf;
+        background-color:#deecf1;
         transition-duration: 0.4s;
     }
     /* For fully-booked */
@@ -60,21 +60,339 @@
         font-weight: bold;
         color:black;
         border: black 2px solid;
+        background-color: rgb(243, 243, 193);
     }
     tr.am:hover, tr.pm:hover{
         cursor: pointer;
         background-color: rgb(243, 243, 193);
         transition: background-color 0.4s;
     }
-    
+    .appointment-count {
+        color: black;
+        border-radius: 50px;
+        margin-left: 25%;
+        margin-right: 25%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .fc-future:hover .appointment-count{
+        margin-left: 24%;
+        margin-right: 24%;
+        transition: all 0.4s;
+    }
+    .legend-box {
+        color: black;
+        border-radius: 0;
+        margin-left: 25%;
+        margin-right: 25%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 2px 4px 2px -2px gray;
+        user-select: none;
+    }
+    .legend-pill {
+        color: black;
+        border-radius: 50px;
+        margin-left: 30%;
+        margin-right: 30%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 2px 4px 2px -2px gray;
+        user-select: none;
+    }
+    .legend-pill.available {
+        animation: color-animation 8s infinite;
+    }
+    @keyframes color-animation {
+        0% {
+            background-color: #8deb8d;
+        }
+        60% {
+            background-color: #fceaa2;
+        }
+        90% {
+            background-color: #eb7c7c;
+        }
+        100% {
+            background-color: #8deb8d;
+        }
+    }
+    .hoverTicket:hover{
+        cursor: pointer;
+    }
+
 </style>
-    <div class="container pt-3" onload="checkAvailability()">
-        <div></div>
-        <div class="mx-auto align-items-center justify-content-center" style="width:80%;" id="calendar"></div>
-        <div></div>
+    <div class="container-flui  d pt-3">
+        <div class="d-flex row-flex">
+            <div class="col-sm text-center mt-5">
+                <span class="text-center fw-bold" style="user-select: none;"> 
+                    Legend:
+                </span>
+                <span class="text-center my-3 fw-light legend-pill available">
+                    <!-- Green - Yellow - Red -->
+                    Available Slots
+                </span>
+                <span class="text-center my-3 fw-light legend-box" style="background-color: #f0f0be;">
+                    <!-- Yellow -->
+                    Today
+                </span>
+                <span class="text-center my-3 fw-light legend-box" style="background-color: rgb(230, 230, 230);">
+                    <!-- RED -->
+                    Past
+                </span>
+                <span class="text-center my-3 fw-light legend-box" style="background-color: #cf908f;">
+                    <!-- RED -->
+                    Weekend
+                </span>
+            </div>
+            <div class="align-items-center justify-content-center col-6 mb-5" style="width:55%; padding-right: 0; padding-left: 0;" id="calendar">
+                <!-- CALENDAR HERE -->
+            </div>
+            <div class="col-sm">
+                <div class="text-center mt-5">
+                    <span class="text-center fw-bold"> 
+                        My Appointments:
+                        <br style="user-select: none;"><br style="user-select: none;">
+                    </span>
+                    <?php
+                    $counter = 0;
+                        foreach ($myAppointments as $appointment) {
+                            // Create DateTime objects
+                            $counter++;
+                            $date = new DateTime($appointment->appointmentDate);
+                            $time = DateTime::createFromFormat('H:i:s', $appointment->appointmentTime);
+
+                            // Format date as "Y F d" (e.g. "2023 April 24")
+                            $formattedDate = $date->format('Y F d');
+                            // Format time as "g:i A" (e.g. "8:00 AM")
+                            $formattedTime = $time->format('g:i A');
+
+                            echo '<p class="m-0 fw-bold">';
+                            echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
+                            echo '</p>';
+                            echo '<p class="m-0">';
+                            echo 'Ticket# '. $appointment->ticket_id;
+                            echo '</p>';
+                            echo '<p class="m-0">';
+                            echo 'Service: ' . ($appointment->services ?: $appointment->others);
+                            echo '<br style="user-select: none;">';
+                            echo 'Description: ' . $appointment->appointmentDescription;
+                            echo '</p>';
+                            echo '<hr class="mx-auto " style="width:300px;">';
+                        }
+                    ?>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-4">
+                      <button type="button" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">Edit</button>
+                    </div>
+                    <div class="col-4">
+                      <button type="button" class="btn btn-danger float-start" data-bs-toggle="modal" data-bs-target="#deleteAppointmentModal">Delete</button>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAppointmentModalLabel">Edit Appointment Reservation</h5>
+                                <button type="button" class="btn-close close" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php
+                                    $counter = 0;
+                                    foreach ($myAppointments as $appointment) {
+                                        // Create DateTime objects
+                                        $counter++;
+                                        $date = new DateTime($appointment->appointmentDate);
+                                        $time = DateTime::createFromFormat('H:i:s', $appointment->appointmentTime);
+
+                                        // Format date as "Y F d" (e.g. "2023 April 24")
+                                        $formattedDate = $date->format('Y F d');
+                                        // Format time as "g:i A" (e.g. "8:00 AM")
+                                        $formattedTime = $time->format('g:i A');
+
+                                        echo '<p class="m-0 fw-bold text-center">';
+                                        echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
+                                        echo '</p>';
+                                        echo '<p class="m-0 text-center" onclick="copyTicket(this);">';
+                                        echo 'Ticket# <u class="hoverTicket" id="ticketToEdit'.$counter.'">'. $appointment->ticket_id;
+                                        echo '</u></p>';
+                                        echo '<p class="m-0 text-center">';
+                                        echo 'Service: ' . ($appointment->services ?: $appointment->others);
+                                        echo '<br style="user-select: none;">';
+                                        echo 'Description: ' . $appointment->appointmentDescription;
+                                        echo '</p>';
+                                        echo '<hr class="mx-auto" style="width:300px;">';
+                                    }
+                                ?>
+                                <p class="text-center">
+                                    Which Appointment Reservation would you like to edit?
+                                </p>
+                                    <div class="d-flex my-auto mx-autop">
+                                        <label for="ticketInputEdit" class="form-label h6 mt-2 me-2">Ticket#</label>
+                                        <input type="text" class="form-control" id="ticketInputEdit" name="ticketInputEdit" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="align-items-center">
+                                        <span class="text-center text-danger" id="invalidTicket"></span>
+                                    </div>
+                                    <button type="submit" id="editButton" class="btn btn-danger">Edit</button>
+                                <!-- AJAX request to fetch the entry that the user wants to edit -->
+                                    <script>
+                                        $(document).ready(function() {
+                                            $.ajaxSetup({
+                                                headers:{
+                                                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $('#editButton').on('click', function(event) {
+                                                $('#invalidTicket').text('');
+                                                var ticketID = $('#ticketInputEdit').val();
+                                                if (ticketID == ""){
+                                                    $('#invalidTicket').text('Please input your ticket number!');
+                                                    return false;
+                                                }
+                                                //console.log(ticketID);
+                                                $.ajax({
+                                                    url: '/get-appointment/update',
+                                                    method: 'GET',
+                                                     dataType: 'json',
+                                                     data: {
+                                                        ticketID: ticketID
+                                                    },
+                                                    success: function(response) {
+                                                        if(response.fail){
+                                                            $('#invalidTicket').text('Appointment #'+ ticketID +' not found!');
+                                                        }
+                                                        else{
+                                                            var appointment = response.appointment;
+                                                            var appointmentsForTheDay = response.appointmentsForTheDay;
+                                                            $('#editAppointmentModal').modal('hide');
+                                                            $('#appointmentModal_ticketID').text('#'+ appointment.ticketID);
+
+                                                            var AformattedDate = moment(response.appointmentDate).format('YYYY-MMMM-DD');
+                                                            var AformattedTime = moment(response.appointmentTime, 'HH:mm:ss').format('h:mm A');
+                                                            $('#appointmentDate').val(AformattedDate);
+                                                            $('#appointmentTime').val(AformattedTime);
+
+                                                            $('tr[data-time="'+AformattedTime+'"]').addClass('selected');
+                                                            $('#saveButton').prop('hidden', true);
+                                                            $('#editButtonSubmit').prop('hidden', false);
+                                                            
+                                                            var modal = $('#appointmentModal');
+                                                            $('body').append(modal);
+                                                            modal.modal('show');
+                                                            // Close modal
+                                                            $('#appointmentModal .close').on('click', function() {
+                                                                $('#appointmentModal').modal('hide');
+                                                            });
+                                                        }
+                                                    },
+                                                });
+                                            });
+                                            $(document).ready(function() {
+                                                $('#editAppointmentModal .close').on('click', function() {
+                                                    $('#editAppointmentModal').modal('hide');
+                                                    $('#invalidTicket').text('');
+                                                    $('#ticketInputEdit').val('');
+                                                });
+                                            });
+                                        });
+                                    </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteAppointmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteAppointmentModalLabel">Delete Appointment Reservation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php
+                                    $counter = 0;
+                                    foreach ($myAppointments as $appointment) {
+                                        // Create DateTime objects
+                                        $counter++;
+                                        $date = new DateTime($appointment->appointmentDate);
+                                        $time = DateTime::createFromFormat('H:i:s', $appointment->appointmentTime);
+
+                                        // Format date as "Y F d" (e.g. "2023 April 24")
+                                        $formattedDate = $date->format('Y F d');
+                                        // Format time as "g:i A" (e.g. "8:00 AM")
+                                        $formattedTime = $time->format('g:i A');
+
+                                        echo '<p class="m-0 fw-bold text-center">';
+                                        echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
+                                        echo '</p>';
+                                        echo '<p class="m-0 text-center" onclick="copyTicketToDelete(this);">';
+                                        echo 'Ticket# <u class="hoverTicket" id="ticketToDelete'.$counter.'">'. $appointment->ticket_id;
+                                        echo '</u></p>';
+                                        echo '<p class="m-0 text-center">';
+                                        echo 'Service: ' . ($appointment->services ?: $appointment->others);
+                                        echo '<br style="user-select: none;">';
+                                        echo 'Description: ' . $appointment->appointmentDescription;
+                                        echo '</p>';
+                                        echo '<hr class="mx-auto" style="width:300px;">';
+                                    }
+                                ?>
+                                <p class="text-center">
+                                    Which Appointment Reservation would you like to delete?
+                                </p>
+                            <form method="post" id="appointmentDelete" action="{{ route('appointment.destroy') }}">
+                                @csrf
+                                @method('DELETE')
+                                    <div class="d-flex my-auto mx-autop">
+                                        <label for="ticketInputDelete" class="form-label h6 mt-2 me-2">Ticket#</label>
+                                        <input type="text" class="form-control" id="ticketInputDelete" name="ticketInputDelete" required>
+                                    </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="d-flex my-auto">
+                                            <div class="input-group">
+                                                <label for="passwordInputDelete" class="form-label h6 mt-2 me-2">Password:</label>
+                                                <input type="password" class="form-control" id="passwordInputDelete" name="passwordInputDelete" required>
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordDelete">
+                                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                </button>
+                                                <script>
+                                                    var passwordInputDelete = document.getElementById('passwordInputDelete');
+                                                    var togglePasswordDelete = document.getElementById('togglePasswordDelete');
+                                                    togglePasswordDelete.addEventListener('click', function() {
+                                                        const type = passwordInputDelete.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                        passwordInputDelete.setAttribute('type', type);
+                                                        togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-fill');
+                                                        togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                                        togglePasswordDelete.classList.toggle('active');
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script class="pt-2">
+        const maxAppointment = 64;
         $(document).ready(function () {
     
             $.ajaxSetup({
@@ -82,6 +400,9 @@
                     'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            // All Appointment Entries starting today's date
+            let appointmentEntry = @json($entries);
+            let now = moment().format('YYYY-MM-DD');
         
             var calendar = $('#calendar').fullCalendar({
                 themeSystem: 'bootstrap4',
@@ -93,7 +414,7 @@
                 },
                 dayRender: function(date, cell) {
                     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-                        cell.css('background-color', '#f1807d');
+                        cell.css('background-color', '#cf908f');
                     }
                     cell.css('border-color', '#444444');
 
@@ -103,57 +424,35 @@
                         // Add the 'selected' class to the clicked cell
                         cell.addClass('selected');
                     });
-
-                    var startDate = moment().format('YYYY-MM-DD');
-                    var endDate = moment().add(1, 'month').endOf('month').format('YYYY-MM-DD');
-
-                    $.ajax({
-                        url: '/get-entries',
-                        method: 'GET',
-                        data: {
-                            start: startDate,
-                            end: endDate
-                        },
-                        success: function(appointments) {
-                            // Get all appointments for the future
-                            var appointmentsArray = Object.values(appointments);
-                            var filteredAppointments = appointmentsArray.filter(function(appointment) {
-                                return moment(appointment.appointmentDate) > moment().subtract(1, 'day');
-                            });
-
-                            // Count appointment entries for each day
-                            var appointmentCount = {};
-                            let futureAppointments = [];
-                            futureAppointments.forEach(function(appointment) {
-                                var appointmentDate = moment(appointment.appointmentDate).format('YYYY-MM-DD');
-                                if (!appointmentCount[appointmentDate]) {
-                                    appointmentCount[appointmentDate] = 0;
+                    // Loop through the entries and count the number of appointments for the day.
+                    var countValue = 0;
+                    if(appointmentEntry[0]){
+                        let currentLoopedAppointmentDate = appointmentEntry[0].appointmentDate;
+                        $.each(appointmentEntry, function(i){
+                            $.each(appointmentEntry[i], function (key, loopedAppointmentDate) {
+                                if(loopedAppointmentDate == date.format('YYYY-MM-DD')){
+                                    countValue++;
+                                    
                                 }
-                                appointmentCount[appointmentDate] += 1;
                             });
-                            
-                            // Apply background color based on appointment count for each day
-                            Object.keys(appointmentCount).forEach(function(date) {
-                                var count = appointmentCount[date];
-                                var dayCell = $('.fc-day[data-date="' + date + '"]');
-                                if (count >= 25 && count <= 50) {
-                                    dayCell.css('background-color', 'yellow');
-                                } else if (count >= 51 && count <= 63) {
-                                    dayCell.css('background-color', 'orange');
-                                } else if (count == 64) {
-                                    dayCell.css('background-color', 'red');
-                                    dayCell.off('click');
-                                    dayCell.css('cursor', 'default');
-                                }
-                                dayCell.append('<div class="appointment-count">' + count + '</div>');
-                            });
-                            console.log(futureAppointments);
-                        },
-                        error: function(appointments) {
-                            
-                            console.log(appointments);
+                        });
+                        if(date.format('YYYY-MM-DD') >= (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
+                            if(countValue > 0 && countValue < 25){
+                                cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #8deb8d;">' + (maxAppointment - countValue) + '</p>');
+                            }
+                            else if (countValue >= 25 && countValue <= 55) {
+                                cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #fceaa2;">' + (maxAppointment - countValue) + '</p>');
+                            }
+                            else if (countValue >= 56 && countValue <= 63) {
+                                cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #eb7c7c;">' + (maxAppointment - countValue) + '</p>');
+                            }
+                            else if (countValue == 64){
+                                cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #eb7c7c;"> FULL </p>');
+                                cell.off('click');
+                                cell.css('cursor', 'default');
+                            }
                         }
-                    });
+                    }
                 },
                 selectable:true,
                 selectHelper: true,
@@ -161,9 +460,6 @@
                     var today = moment();
                     var currentHour = moment().hour();
                     var selectedDate = moment(selectInfo.start.format('YYYY-MM-DD'));
-                    console.log(selectedDate);
-                    console.log(today);
-
                     // Only allow dates in the future
                     if (selectedDate.isBefore(today, 'day')) {
                         return false;
@@ -189,7 +485,7 @@
                     // set the appointmentDate input value to the selected date
                     var selectedDate = moment(start).format('YYYY-MMMM-DD');
                     $('#appointmentDate').val(selectedDate);
-                    
+
                     // make an AJAX request to fetch appointments for the selected date
                     $.ajax({
                         url: '/check-availability',
@@ -198,7 +494,7 @@
                             date: selectedDate
                         },
                         success: function(entries) {
-                            console.log(entries);
+                            //console.log(entries);
                             // remove classes before looping through the data
                             $('#time-slots tr').removeClass('booked lastOne selected');
                             $('#time-slots tr #timeSlot, #time-slots tr #numberOfSlots').removeClass('pointer-events-none');
@@ -235,10 +531,6 @@
                         }
                     });
 
-                    /*
-                     *  Need to convert the loop of time and slots here
-                     */
-
                     // Show modal
                     var modal = $('#appointmentModal');
                     $('body').append(modal);
@@ -256,7 +548,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointment</p>
+                    <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointment <span id="appointmentModal_ticketID"></span></p>
                     <button type="butto" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -309,6 +601,7 @@
                                         function handleTimeClick(row) {
                                             const time = row.getAttribute('data-time');
                                             document.getElementById('appointmentTime').value = time;  // set the input value to the clicked time
+                                            document.getElementById('saveButton').disabled = false;
                                             const rows = document.querySelectorAll('.t-time');
                                             rows.forEach((r) => r.classList.remove('selected'));  // remove the 'selected' class from all rows
                                             row.classList.add('selected');  // add the 'selected' class to the clicked row
@@ -333,13 +626,25 @@
                                             document.getElementById('ambtn').disabled = false;
                                             document.getElementById('pmbtn').disabled = true;
                                         }
+                                        
+                                        // Get the text inside the clicked u element
+                                        function copyTicket(element) {
+                                            var ticketID = $(element).find('u').text().trim();
+                                            $('#ticketInputEdit').val(ticketID);
+                                            //console.log(ticketID);
+                                        }
+                                        function copyTicketToDelete(element){
+                                            var ticketID = $(element).find('u').text().trim();
+                                            $('#ticketInputDelete').val(ticketID);
+                                            //console.log(ticketID);
+                                        }
                                     </script>
                                   </table>
                                 </div>
 
                             <!-- APPOINTMENT DETAILS -->
                             <div class="col-lg-9 col-md-12" id="services">
-                                <form method="post" action="{{ route('appointmentDetails.store') }}">
+                                <form method="post" id="appointmentForm" action="{{ route('appointmentDetails.store') }}">
                                     @csrf
                                     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                     </div>
@@ -352,7 +657,7 @@
                                         </div>
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
-                                            <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required   readonly>
+                                            <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-2 border-lg-end-0">
@@ -360,7 +665,7 @@
                                         <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
                                             <div class="col-lg-6 col-md-12 p-2">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services">
+                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services" required>
                                                         <label class="form-check-label" for="services">
                                                             Medical Certificate
                                                         </label>    
@@ -408,8 +713,10 @@
                                                         $('input[name="services"]').change(function(){
                                                             if($('#others').is(':checked')){
                                                                 $('#othersInput').prop('disabled', false);
+                                                                $('#othersInput').attr('required', true);
                                                             }else{
-                                                                $('#othersInput').prop('disabled', true);    
+                                                                $('#othersInput').prop('disabled', true);
+                                                                $('#othersInput').attr('required', true);
                                                             }
                                                         });
                                                     });
@@ -420,35 +727,138 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
+                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;" required></textarea>
                                     </div>  
                                     <script>
                                         var textarea = document.getElementById('appointmentDescription');
 
                                         textarea.addEventListener('input', function() {
-                                        this.style.height = 'auto';
-                                        this.style.height = this.scrollHeight + 'px';
+                                            this.style.height = 'auto';
+                                            this.style.height = this.scrollHeight + 'px';
                                         });
                                     </script>
                                     <div class="modal-footer mt-4 justify-content-between">
-                                        <div class="d-flex my-auto mx-autop">
+                                        <div class="d-flex my-auto">
                                             <div class="input-group">
                                                 <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
                                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                    <span class="bi bi-eye-fill" aria-hidden="true"></span>
                                                 </button>
                                             </div>
                                         </div>
+                                        <script>
+                                            var passwordInput = document.getElementById('passwordInput');
+                                            var togglePassword = document.getElementById('togglePassword');
+                                            togglePassword.addEventListener('click', function() {
+                                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                passwordInput.setAttribute('type', type);
+                                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                                togglePassword.classList.toggle('active');
+                                            });
+                                        </script>
 
                                         <div class="d-flex">
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
+                                            <button type="submit" id="editButtonSubmit" class="btn btn-info" hidden>Update</button>
+                                        </div>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $.ajaxSetup({
+                                                    headers:{
+                                                        'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                                                    }
+                                                });
+                                                $('#editButtonSubmit').on('click', function(event) {
+                                                    event.preventDefault(); // prevent default form submission behavior
+                                                    let patientID = $('#patientID').val();
+                                                    let patientType = $('#patientType').val();
+                                                    let appointmentDate = $('#appointmentDate').val();
+                                                    let appointmentTime = $('#appointmentTime').val();
+                                                    let appointmentDescription = $('#appointmentDescription').val();
+                                                    let services = $('input[name="services"]:checked').val();
+                                                    let othersInput = $('#othersInput').val();
+                                                    let password = $('#passwordInput').val();
+                                                    let ticketID = $('#ticketInputEdit').val();
+                                                    
+                                                    $.ajax({
+                                                        url: '/update-appointment/'+ticketID+'/edit',
+                                                        method: 'POST',
+                                                        dataType: 'json',
+                                                        data: {
+                                                            '_method': 'PATCH',
+                                                            patientID: patientID,
+                                                            patientType: patientType,
+                                                            appointmentDate: appointmentDate,
+                                                            appointmentTime: appointmentTime,
+                                                            appointmentDescription: appointmentDescription,
+                                                            services: services,
+                                                            othersInput: othersInput,
+                                                            password: password,
+                                                            ticketID: ticketID
+                                                        },
+                                                        success: function(response) {
+                                                            //console.log(othersInput);
+                                                            $('#appointmentModal').modal('hide');
+
+                                                            $('#successDateTime').text(appointmentDate+' @ '+appointmentTime);
+                                                            $('#successTicketID').text('Ticket# '+ticketID);
+                                                            if(!services){
+                                                                $('#successService').text('Service: '+othersInput);
+                                                            }
+                                                            else{
+                                                                $('#successService').text('Service: '+services);
+                                                            }
+                                                            $('#successDescription').text('Description: '+appointmentDescription);
+
+                                                            var modal = $('#editSuccessModal');
+                                                            $('body').append(modal);
+                                                            modal.modal('show');
+                                                            // Close modal
+                                                            $('#editSuccessModal .close').on('click', function() {
+                                                                $('#editSuccessModal').modal('hide');
+                                                                $("#appointmentForm")[0].reset();
+                                                                location.reload();
+                                                            });
+                                                            
+                                                        },
+                                                        error: function(jqXHR, textStatus, errorThrown) {
+                                                            console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
+                                                            // handle error
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                        <!-- Edit Success Modal -->
+                                        <div class="modal fade" id="editSuccessModal" tabindex="-1" aria-labelledby="editSuccessModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editSuccessModalLabel">Appointment successfully updated!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="m-0 fw-bold text-center" id="successDateTime">
+                                                        </p>
+                                                        <p class="m-0 text-center" id="successTicketID">
+                                                        </p>
+                                                        <p class="m-0 text-center" id="successService">
+                                                        </p>
+                                                        <p class="m-0 text-center" id="successDescription">
+                                                        </p>
+                                                        <hr class="mx-auto" style="width:300px;">
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-success close">Okay!</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            
-                        </div>
-                                
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -52,6 +52,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
     #------------MedicalRecordFormController------------#
     Route::get('/medical-record-form',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
     Route::post('submit-medical-form', [MedicalRecordFormController::class, 'medFormSubmit'])->name('medicalForm.store');
+    Route::post('/medical-record-check-auth', [MedicalRecordFormController::class, 'checkAuthentication'])->name('medicalForm.checkAuth');
 
 });
 
@@ -70,11 +71,16 @@ Route::group(['middleware' => ['web', 'employee']], function() {
 Route::group(['middleware' => ['web', 'auth.any']], function() {
     #---------------BUCareAuthController---------------#
     Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
+    Route::get('/check-password', [BUCareAuthController::class, 'checkPassword'])->name('password.check');
     #--------------AppointmentsController---------------#
     Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
     Route::get('/check-availability', [AppointmentsController::class, 'checkAvailability'])->name('availability.check');
     Route::post('appointmentStore', [AppointmentsController::class, 'appointmentStore'])->name('appointmentDetails.store');
+    
     Route::get('/get-entries', [AppointmentsController::class, 'getEntries'])->name('entries.fetch');
+    Route::delete('/appointment-delete', [AppointmentsController::class, 'appointmentDelete'])->name('appointment.destroy');
+    Route::get('/get-appointment/update', [AppointmentsController::class, 'getAppointmentToUpdate'])->name('get.appointment.update');
+    Route::patch('/update-appointment/{ticketID}/edit', [AppointmentsController::class, 'updateAppointment'])->name('appointment.update');
 });
 
 /**

@@ -24,8 +24,52 @@ use DB;
 class AppointmentsController extends Controller
 {
     public function setAppointment(){
-        return view('appointments');
+        $dateToday = date('Y-m-d');
 
+        $entries = Appointment::where('appointmentDate', '>=', $dateToday)->get(); //CHANGED = TO >=
+        if(!$entries){
+            // if the entries is empty, don't pass any data 
+            return response()->json([]);
+        }
+        // Count the appointment entries for each day
+        $counts = [];
+        foreach ($entries as $entry) {
+            $entryDate = $entry->appointmentDate;
+            if (isset($counts[$entryDate])) {
+                $counts[$entryDate]++;
+            } else {
+                $counts[$entryDate] = 1;
+            }
+        }
+        if(Auth::user()){
+            $user = Auth::user();
+            $user_type = 'student_id';
+        }
+        elseif(Auth::guard('employee')->user()){
+            $user = Auth::guard('employee')->user();
+            $user_type = 'personnel_id';
+        }
+        else{
+            return redirect()->route('home')->with('fail','Please login to continue.'); // If somehow authentication fails e.g. session ended or interrupted.
+        }
+
+        if(!$user->hasMedRecord){
+            return redirect()->route('home')->with('fail','Please submit your medical record form before setting an appointment.'); // If user haven't submitted their medical record.
+        }
+        $userID = $user->id;
+        // Get current user's appointment entries
+        $myAppointments = Appointment::where('status', '=', 'Active')
+                                    ->where(function($query) use ($userID, $user_type){
+                                        $query->where($user_type, '=', $userID);
+                                    })
+                                    ->where('appointmentDate', '>=', $dateToday)
+                                    ->orderBy('appointmentDateTime', 'asc')
+                                    ->get();
+
+        return view('appointments')->with([
+            'entries' => $entries,
+            'myAppointments' => $myAppointments
+        ]);
     }
 
     public function checkAvailability(Request $request){
@@ -39,33 +83,36 @@ class AppointmentsController extends Controller
 
         return response()->json($appointments);
     }
-
+/*
     public function getEntries(Request $request){
         // Retrieve the date range from the AJAX request
-        $start = $request->input('start');
-        $end = $request->input('end');
+        $date = $request->input('date');
         
         // Query the database to retrieve the appointment entries for the future
-        $entries = Appointment::where('appointmentDate', '>=', $start)->where('appointmentDate', '<=', $end)->get();
+        $entries = Appointment::where('appointmentDate', '>=', $date)->get(); //CHANGED = TO >=
+        if(!$entries){
+            // if the entries is empty, don't pass any data 
+            return response()->json([]);
+        }
         
         // Count the appointment entries for each day
         $counts = [];
         foreach ($entries as $entry) {
-            $date = $entry->date;
-            if (isset($counts[$date])) {
-                $counts[$date]++;
+            $entryDate = $entry->appointmentDate;
+            if (isset($counts[$entryDate])) {
+                $counts[$entryDate]++;
             } else {
-                $counts[$date] = 1;
+                $counts[$entryDate] = 1;
             }
         }
         
         // Return the data as a JSON response
         return response()->json([
             'entries' => $entries,
-            'counts' => $counts,
+            //'counts' => $counts,
         ]);
     }
-
+*/
 
     public function appointmentStore(Request $request) {
         $request->validate([
@@ -74,13 +121,22 @@ class AppointmentsController extends Controller
             'services' => 'required_if:othersInput,null',
             'othersInput' => 'required_if:services,null',
             'appointmentDescription' => 'required',
+            'passwordInput' => 'required'
         ],[
             'appointmentDate.required' => 'Appointment Date is required',
             'appointmentTime.required' => 'Appointment Time is required',
             'services.required_if' => 'Services is required',
             'othersInput.required_if' => 'Please input details.',
             'appointmentDescription.required' => 'appointmentDescription is required',
+            'passwordInput.required' => 'Please input your password.'
         ]);
+        // Confirm if password is a match
+        $password = $request->input('passwordInput');
+        $user = Auth::guard('employee')->user() ?: Auth::user();
+        if (!Hash::check($password, $user->password)) {
+            return back()->with('fail','Invalid password.');
+        }
+
         // Format Date
             $dateString = $request->appointmentDate;
             $date = DateTime::createFromFormat('Y-F-d', $dateString);
@@ -105,7 +161,16 @@ class AppointmentsController extends Controller
         /* If things are good, start saving the new entry */
         $appointment = new appointment();
 
-            $appointment->patientID = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+            if(Auth::guard('employee')->check()){
+                $appointment->personnel_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+            }
+            elseif(Auth::check()){
+                $appointment->student_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+            }
+            else{
+                return back()->with('fail', 'Please login to continue.'); // If somehow authentication fails e.g. session ended or interrupted.
+            }
+
             $appointment->patient_type = filter_var($request->patientType, FILTER_SANITIZE_STRING);
             $appointment->appointmentDate = $formattedDate;
             $appointment->appointmentTime = $formattedTime;
@@ -120,9 +185,11 @@ class AppointmentsController extends Controller
             if($appointmentLatestEntry == NULL){
                 // If there are no entries
                 $appointment->booked_slots = 1;
+                $temp = 1;
             }elseif($appointmentLatestEntry->booked_slots == 1){
                 $appointment->booked_slots = 2;
                 $appointmentLatestEntry->booked_slots = 2;
+                $temp = 2;
                 $resLatest = $appointmentLatestEntry->save();
                 if(!$resLatest){
                     return back()->with('fail','Failed to save appointment reservation. Please try again later');
@@ -131,16 +198,29 @@ class AppointmentsController extends Controller
             else{
                 return back()->with('fail','No available slots for '. $request->appointmentDate .' @ '. $request->appointmentTime);
             }
-
+            
+            $tDate = $date->format('Ymd');
+            $time = DateTime::createFromFormat('g:i A', $timeString)->format('Gi');
+            $tTime = sprintf("%04d", $time);
+            
+            $tPID = filter_var($request->patientID, FILTER_SANITIZE_STRING);  
+ 
         $res = $appointment->save();
 
         if(!$res){
             return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
         }
-        /**
-         * NEED TO ADD E-TICKETS!!!
-         */
-        return redirect()->route('setAppointment.show')->with('success', 'Appointment saved'); 
+        $tAPID = $appointment->id;
+        // E-Ticket
+        $e_ticket = $tDate . '-' . $tTime . '-'. $tAPID . $tPID . $temp;
+        $appointment->ticket_id = $e_ticket;
+        $res = $appointment->save();
+
+        if(!$res){
+            return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+        }
+        
+        return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket); 
         /**
          * DECREMENT WHEN DELETING AN APPOINTMENT ENTRY
          * 
@@ -150,6 +230,118 @@ class AppointmentsController extends Controller
          */
     
         
+    }
+    public function getAppointmentToUpdate(Request $request){
+        $ticketID = $request->input('ticketID');
+        
+        // Confirm password is a match
+        if(Auth::guard('employee')->check()){
+            $user = Auth::guard('employee')->user();
+            $type = 'personnel_id';
+        }
+        elseif(Auth::check()){
+            $user = Auth::user();
+            $type = 'student_id';
+        }
+        else{
+            return redirect()->route('setAppointment.show')->with('fail', 'An error occured. Please try again later.');
+        }
+        
+        $appointment = Appointment::where('ticket_id', $ticketID)
+                    ->where($type, $user->id)
+                    ->first();
+
+        if (!$appointment) {
+            return response()->json(['fail' => 'Appointment not found. Please enter the correct Ticket Number.']);
+        }
+
+        $appointmentsForTheDay = Appointment::where('appointmentDate', $appointment->appointmentDate)
+                                ->get();
+        
+        return response()->json([
+            'appointment' => $appointment,
+            'appointmentsForTheDay' => $appointmentsForTheDay
+        ]);
+    }
+
+    public function updateAppointment(Request $request, $ticketID){
+        if(Auth::guard('employee')->check()){
+            $user = Auth::guard('employee')->user();
+            $type = 'personnel_id';
+        }
+        elseif(Auth::check()){
+            $user = Auth::user();
+            $type = 'student_id';
+        }
+        else{
+            return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
+        }
+        
+        $password = $request->input('password');
+        if (!Hash::check($password, $user->password)) {
+            $response = 'Invalid Password';
+            return response()->json(['error' => $response]);
+        }
+        
+        $appointment = Appointment::where('ticket_id', $ticketID)
+                    ->where($type, $user->id)
+                    ->first();
+
+        // Format Date
+        $dateString = $request->appointmentDate;
+        $date = DateTime::createFromFormat('Y-F-d', $dateString);
+        $formattedDate = $date->format('Y-m-d');
+        // Format Time
+        $timeString = $request->appointmentTime;
+        $formattedTime = DateTime::createFromFormat('g:i A', $timeString)->format('H:i:s');
+
+        // Merge as Datetime
+        $formattedDateTime = $formattedDate . ' ' . $formattedTime;
+
+        $appointment->appointmentDate = $formattedDate;
+        $appointment->appointmentTime = $formattedTime;
+        $appointment->appointmentDatetime = $formattedDateTime;
+        $request->services == 'others'
+                                ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
+                                : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+        $appointment->appointmentDescription = filter_var($request->input('appointmentDescription'), FILTER_SANITIZE_STRING);
+
+        $res = $appointment->save();
+        if(!$res){
+            return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
+        }
+
+        return response()->json([
+            'success' => 'Appointment with Ticket#'.$ticketID.' updated successfully.',
+            'ticketID' => $ticketID
+        ], 200);
+    }
+
+    public function appointmentDelete(Request $request){
+        $request->validate([
+            'ticketInputDelete' => 'required',
+            'passwordInputDelete' => 'required',
+        ],[
+            'ticketInputDelete.required' => 'Please input the ticket number.',
+            'passwordInputDelete.required' => 'Please input your password.'
+        ]);
+        // Confirm password is a match
+        $password = $request->input('passwordInputDelete');
+        $user = Auth::guard('employee')->user() ?: Auth::user();
+        if (!Hash::check($password, $user->password)) {
+            return back()->with('fail','Invalid password.');
+        }
+
+        // Delete appointment entry
+        $ticketID = $request->input('ticketInputDelete');
+        $appointment = Appointment::where('ticket_id', $ticketID)->first();
+        if (!$appointment) {
+            return back()->with('fail','Appointment not found. Please enter the correct Ticket Number.');
+        }
+        $appointment->delete();
+
+        return back()->with('success','Appointment deleted successfully.');
+
     }
     
 }
