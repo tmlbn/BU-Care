@@ -10,5 +10,9 @@ class AdminReportsController extends Controller
     public function reports()
    {
         return view('admin.reports');
+
+       
     }
+
+    
 }

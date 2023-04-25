@@ -13,6 +13,54 @@ class MedicalRecord extends Model
     protected $table = 'medicalrecords';
     protected $primaryKey = 'MR_id';
 
+    protected $fillable = [
+        'campus',
+        'course',
+        'SYstart',
+        'SYend',
+        'age',
+        'sex',
+        'placeOfBirth',
+        'civilStatus',
+        'homeAddress',
+        'nationality',
+        'religion',
+        'fatherName',
+        'fatherOccupation',
+        'fatherOfficeAddress',
+        'motherName',
+        'motherOccupation',
+        'motherOfficeAddress',
+        'guardianName',
+        'guardianAddress',
+        'parentGuardianContactNumber',
+        'studentContactNumber',
+        'hospitalization',
+        'hospDetails',
+        'takingMedsRegularly',
+        'medsDetails',
+        'allergic',
+        'allergyDetails',
+        'chestXray',
+        'CBCResults',
+        'hepaBscreening',
+        'bloodType',
+        'studentSignature',
+        'parentGuardianSignature',
+    ];
+    protected $guarded = [
+        'student_id',
+        'familyHistoryID',
+        'personalSocialHistoryID',
+        'pastIllnessID',
+        'presentIllnessID',
+        'immunizationHistoryID',
+        'MRP_id',
+        'MFP',
+        'MFP_id',
+        
+    ];
+
     public function familyHistory(){
         return $this->belongsTo(FamilyHistory::class, 'familyHistoryID');
     }
@@ -33,14 +81,13 @@ class MedicalRecord extends Model
         return $this->belongsTo(UserStudent::class, 'student_id');
     }
     public function medicalRecordAdmin(){
-        return $this->belongsTo(MedicalRecord_Admin::Class, 'MRA_id');
+        return $this->belongsTo(MedicalRecord_Admin::Class, 'MRP_id');
     }
-
-    /* Move this to another model */
-    public function medicalRecordPersonnel(){
-        return $this->belongsTo(MedicalForm_Personnel::Class, 'MRP_id');
+    public function medicalFormPersonnel(){
+        return $this->belongsTo(MedicalForm_Personnel::Class, 'MFP');
     }
     public function medicalRecordPersonnelAdmin(){
-        return $this->belongsTo(MedicalRecordPersonnel_Admin::Class, 'MRPA_id');
+        return $this->belongsTo(MedicalRecordPersonnel_Admin::Class, 'MFP_id');
     }
 }
+ 

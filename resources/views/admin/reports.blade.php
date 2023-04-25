@@ -2,9 +2,13 @@
 
 @section('content')
 
+
+  
+
 <div class="col-md-12 p-3">    
     <div class="col-md-12 p-1">
         
+        <button onclick="toggleView()" class="btn btn-primary">Toggle View</button>
             
     <!-- Search function -->
         <form method="GET" action="{{ route('admin.patientMedFormList.show') }}" id="searchForm">
@@ -49,10 +53,14 @@
 
                         <div class="col-sm-3">
                             <select id="reportsTable" name="reportsTable" class="form-select">
-                              <option value="Select">Select table</option>
-                              <option value="Morbidities">Morbidities</option>
-                              <option value="Appointments">Appointments</option>
-                              <option value="Patients">Patients</option>
+                                    <option value="Table-Select">Select table</option>
+                                    <option value="Table-Morbidities">Morbidities</option>
+                                    <option value="Table-Appointments">Appointments</option>
+                                    <option value="Table-Patients">Patients</option>
+                                    <option value="Graph-Select">Select table</option>
+                                    <option value="Graph-Morbidities">Morbidities</option>
+                                    <option value="Graph-Appointments">Appointments</option>
+                                    <option value="Graph-Patients">Patients</option>
                             </select>
                           </div>
                     </div>
@@ -69,9 +77,9 @@
     </div>
 </div>
 
-<div class="table-container p-3 ">
+<div class="table-container p-3" id="table-container">
     <div class="table col-md-12 p-0 m-0">
-      <table id="Morbidities" name="Morbidities" class="table table-bordered">
+      <table id="Table-Morbidities" name="Morbidities" class="table table-bordered">
         <thead class="text-center">
           <th>Rank</th>
           <th>Morbidity</th>
@@ -82,7 +90,7 @@
       </table>
     </div>
     <div class="table col-md-12 p-0 m-0">
-      <table id="Appointments" name="Appointments" class="table table-bordered">
+      <table id="Table-Appointments" name="Appointments" class="table table-bordered">
         <thead class="text-center">
           <th>Month</th>
           <th>Number of Appointments</th>
@@ -93,7 +101,7 @@
       </table>
     </div>
     <div class="table col-md-12 p-0 m-0">
-        <table id="Patients" name="Patients" class="table table-bordered">
+        <table id="Table-Patients" name="Patients" class="table table-bordered">
           <thead class="text-center">
             <th>Patient ID</th>
             <th>Number of Appointments made</th>
@@ -106,15 +114,22 @@
   </div>
 
   
+    <div id="graph" style="display:none;">
+        <canvas id="Graph-Morbidities"></canvas>
+    </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <script>
-    
+
+     
     // Get the dropdown element
     const tableSelector = document.getElementById("reportsTable");
   
     // Get the tables
-    const table1 = document.getElementById("Morbidities");
-    const table2 = document.getElementById("Appointments");
-    const table3 = document.getElementById("Patients");
+    const table1 = document.getElementById("Table-Morbidities");
+    const table2 = document.getElementById("Table-Appointments");
+    const table3 = document.getElementById("Table-Patients");
   
     // Hide the tables initially
     table1.style.display = "none";
@@ -133,8 +148,76 @@
   
       // Show the selected table
       document.getElementById(selectedTable).style.display = "table";
-    }); 
-  
+    });   
+    
+
+    // Toggle Graph
+        function toggleView() {
+          var table = document.getElementById("table-container");
+          var graph = document.getElementById("graph");
+          var options = document.getElementById("reportsTable");
+
+
+          
+          if (table.style.display === "none") {
+            // Switch to table view
+            table.style.display = "";
+            graph.style.display = "none";
+
+             // Show table options and hide graph options in dropdown
+            for (var i = 0; i < options.options.length; i++) {
+                var option = options.options[i];
+                if (option.value.indexOf("Table-") === 0) {
+                option.style.display = "";
+                } else if (option.value.indexOf("Graph-") === 0) {
+                option.style.display = "none";
+                }
+            }
+
+          } else {
+            // Switch to graph view
+            table.style.display = "none";
+            graph.style.display = "";
+            options.disabled = false;
+
+             // Show graph options and hide table options in dropdown
+            for (var i = 0; i < options.options.length; i++) {
+                var option = options.options[i];
+                if (option.value.indexOf("Table-") === 0) {
+                option.style.display = "none";
+                } else if (option.value.indexOf("Graph-") === 0) {
+                option.style.display = "";
+                }
+            }
+        
+
+     
+    // Generate graph data
+     var ctx = document.getElementById('Graph-Morbidities').getContext('2d');
+     var chart = new Chart(ctx, {
+       type: 'bar',
+       data: {
+         labels: ['John', 'Jane', 'Bob'],
+         datasets: [{
+           label: 'Age',
+           backgroundColor: 'rgba(54, 162, 235, 0.5)',
+           borderColor: 'rgba(54, 162, 235, 1)',
+           borderWidth: 1,
+           data: [25, 30, 40]
+         }]
+       },
+       options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+               beginAtZero: true
+             }
+           }]
+         }
+       }
+     });
+   }
+ } 
   
     </script> 
   
