@@ -144,22 +144,7 @@
                             <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height: 60px;">
                         </a>
                     </div>
-                    <div class="col-md-4 text-center my-auto">
-                        <nav class="my-auto">
-                            <div class="row row-cols-xl-4 row-cols-lg-1 my-auto">
-                                <div class="col-xl-3 col-lg-6 col-md-6 mx-auto">
-                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : '' }} text-decoration-none" href="{{ route('home') }}">Home</a>
-                                </div>
-                                <div class="col-xl-5 col-lg-12 col-md-12 mx-auto order-xl-1 order-lg-2">
-                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'appointments' ? 'active' : '' }} text-decoration-none" href="#">Set Appointment</a>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-md-6 mx-auto order-xl-2 order-lg-1">
-                                    <a class="nav-link fs-5 {{ Route::currentRouteName() === 'about' ? 'active' : '' }} text-decoration-none" href="#">About</a>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-md-4 d-flex justify-content-end my-auto">
+                    <div class="col-md-8 d-flex justify-content-end my-auto">
                         <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5"> 
                             <button type="button" id="loginButton" class="btn btn-orange rounded d-inline-flex" data-toggle="popover" data-bs-html="true" title="Login as:">
                                 <span class="login-reponsive">

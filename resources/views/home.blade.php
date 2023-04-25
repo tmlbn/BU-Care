@@ -1,6 +1,39 @@
 @extends(Auth::check() ? 'layouts.app' : (Auth::guard('employee')->check() ? 'personnel.layouts.app' : 'layouts.appForUnAuth'))
 
 @section('content')
+@if(session('MedicalRecordSuccess'))
+        <script>
+          $(document).ready(function(){
+              if('{{ session('MedicalRecordSuccess') }}') {
+                  $('#successModal').modal("show");
+              }
+          });          
+        </script>
+            <div class="modal modal-lg" id="successModal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title fw-bold">BU-Care</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                          <svg class="bi flex-shrink-0 me-2" fill="#61ff61" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
+                          <div class="text-center mt-3">
+                            <p class="alert-heading fs-5 p-2">Your medical record was successfully submitted!</p>
+                          </div>
+                        </div>
+                          
+                        <p class="fs-5">Would you like to set an appointment now?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('setAppointment.show') }}'">Yes</button>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        @endif
 <div class="d-flex bg-cover p-5 p-md-16 p-lg-28 pillars-bg">
     <div class="d-flex flex-column text-white mx-auto" style="max-width: 100rem;">
         <img class="" src="{{ asset('media/BU-CareText.png') }}" style="width: 20%;"></h1>

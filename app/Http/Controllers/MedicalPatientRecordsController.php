@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\UserStudent;
+use App\Models\UserPersonnel;
 use App\Models\MedicalRecord;
 use App\Models\FamilyHistory;
 use App\Models\ImmunizationHistory;

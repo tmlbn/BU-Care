@@ -84,8 +84,22 @@ class MedicalRecordFormController extends Controller
         return view('admin.ClinicSideMedicalRecordForm')->with('patient', $patient);
     }
 
+    public function checkAuthentication(Request $request){
+        $password = $request->input('password');
+        $user = Auth::user() ?: Auth::guard('employee')->user();
+        
+        if (!Hash::check($password, $user->password)) {
+            $response = 'Invalid Password';
+            return response()->json(['error' => $response]);
+        }
+
+        $response = 'Password match';
+        return response()->json(['success' => $response]);
+    }
+
         #####---MEDICAL RECORD FORM SUBMISSION---#####
     public function medFormSubmit(Request $request){
+        //dd($request);
                 /* PHONE NUMBER */
         $rules = [
             'MR_parentGuardianContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
@@ -122,7 +136,6 @@ class MedicalRecordFormController extends Controller
             'MR_motherOffice' => 'nullable',
             'MR_guardian' => 'nullable|string',
             'MR_guardianAddress' => 'nullable|required_with:MR_guardian|string',
-            'passwordInput' => 'required|string',
 
             /* FAMILY HISTORY[FH_] */
             'FH_cancer' => 'required|in:0,1', 
@@ -211,7 +224,13 @@ class MedicalRecordFormController extends Controller
             'IH_germanMeasles' => 'required|in:0,1', 
             'IH_hepatitisB' => 'required|in:0,1', 
             'IH_others' => 'required|in:0,1', 
-            'IH_othersDetails' => 'required_if:FH_others,1|string', 
+            'IH_othersDetails' => 'required_if:FH_others,1|string',
+            
+            'MR_chestXray' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_cbcresults' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_hepaBscreening' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'MR_bloodtype' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'certify' => 'required|in:1',
 
             /* NAME OF UPLOADS */
             'MR_additionalResult1' => 'nullable|string',
@@ -255,13 +274,13 @@ class MedicalRecordFormController extends Controller
             'allergyDetails.required_if' => 'Please specify your allergy details.',
             'FH_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
             'IH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
-            'MR_certify.required' => 'Please certify that the foregoing answers are true and complete, and to the best of my knowledge by checking the checkbox.'
+            'certify.required' => 'Please certify that the foregoing answers are true and complete, and to the best of my knowledge by checking the checkbox.'
         ]); /* END OF VALIDATION */
 
         // Return error message if validation fails
         if ($validator->fails()) {
             #dd($validator);
-            return back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
             /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
             ###----- FAMILY HISTORY TABLE -----###
@@ -287,7 +306,7 @@ class MedicalRecordFormController extends Controller
                 dd($res);
             }
 
-            ###----- FAMILY HISTORY TABLE -----###
+            ###----- PERSONAL SOCIAL HISTORY TABLE -----###
             $psHistory = new PersonalSocialHistory();
                 $psHistory->smoking = filter_var($request->input('PSH_smoking'), FILTER_SANITIZE_NUMBER_INT);
                 $psHistory->sticksPerDay = $request->filled('PSH_smoking_amount') ? filter_var($request->input('PSH_smoking_amount'), FILTER_SANITIZE_NUMBER_INT) : intval('0');
@@ -368,8 +387,9 @@ class MedicalRecordFormController extends Controller
             $res = $immunizationHistory->save();
                 if(!$res){
                     dd($res);
-                }     
-            
+                }
+                
+                $user = Auth::user();
         ###----- MEDICAL RECORD TABLE -----###
             $medRecord = new MedicalRecord();
                 $medRecord->student_id = $user->id;
@@ -408,6 +428,12 @@ class MedicalRecordFormController extends Controller
                     $medRecord->emergencyContactName = filter_var($request->input('MR_motherName'), FILTER_SANITIZE_STRING);
                     $medRecord->emergencyContactOccupation = filter_var($request->input('MR_motherOccupation'), FILTER_SANITIZE_STRING);
                         $emergencyContactRelationship = 'MOTHER'; 
+                    $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
+                }
+                elseif($request->input('MR_emergencyContactPerson') == 'GUARDIAN'){
+                    $medRecord->emergencyContactName = filter_var($request->input('MR_guardian'), FILTER_SANITIZE_STRING);
+                    $medRecord->emergencyContactOccupation = filter_var($request->input('MR_guardianOccupation'), FILTER_SANITIZE_STRING);
+                        $emergencyContactRelationship = 'GUARDIAN'; 
                     $medRecord->emergencyContactRelationship = $emergencyContactRelationship;
                 }
                 else{
@@ -476,14 +502,14 @@ class MedicalRecordFormController extends Controller
                     $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
     
-                        // check if the given password matches the patient's actual password
+                     /*   // check if the given password matches the patient's actual password
                     if (!Hash::check($request->passwordInput, $user->password)) {
                         return back()->withErrors(['password' => 'The provided password does not match your current password.']);
                     }
                     else{
                         $medRecord->signed = intval('1');
-                    }
-
+                    }*/
+                    $medRecord->signed = intval('1');
                 /**
                  * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE
                  */
@@ -495,11 +521,10 @@ class MedicalRecordFormController extends Controller
             Log::error('Failed to register user.');
             return back()->with('fail','Failed to register. Please try again later.');
         }else{
-            $user = Auth::user();
             $user->hasMedRecord = intval('1');
             $user->MR_id =  $medRecord->MR_id;
             $user->save();
-            return redirect('/')->with('success', 'Medical record saved successfully');
+            return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
         }
     } // END OF medFormSubmit FUNCTION
 

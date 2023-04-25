@@ -93,7 +93,7 @@
         .main-navbar .top-navbar .dropdown-menu .dropdown-item i{
             width: 20px;
             text-align: center;
-            color: #2874f0;
+            color: #009edf;
             font-size: 14px;
         }
         .main-navbar .navbar{
@@ -104,6 +104,9 @@
             padding: 8px 20px;
             color: #000;
             font-size: 15px;
+        }
+        .dropdown-toggle{
+            color: #f1731f !important;
         }
 
         .text-responsive{
@@ -215,7 +218,12 @@
                         <li class="nav-item mr-4">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="{{ route('setAppointment.show') }}">SET APPOINTMENT</a>
                         </li>
+                        <li class="nav-item mr-4">
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'medicalForm.show' ? 'active' : 'inactive' }}" style="{{ Auth::user()->hasMedRecord ? 'display:none;' : '' }}" href="{{ route('medicalForm.show') }}">SUBMIT MEDICAL RECORD</a>
+                        </li>
                         <li class="pt-2 mt-1">
+                            <div class="vr pt-4"></div>
+                            <div class="vr pt-4"></div>
                             <div class="vr pt-4"></div>
                         </li>
                         <li class="nav-item dropdown">
@@ -226,24 +234,18 @@
                                         @if(Auth::user()->hasMedRecord)
                                             @if(Auth::user()->hasValidatedRecord)
                                                 <!-- HAS VALIDATED MEDICAL RECORD -->
-                                                <i class="bi bi-person-check icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+                                                <i class="bi bi-person-check icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
                                             @else
                                                 <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
-                                                <i class="bi bi-file-earmark-medical icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
+                                                <i class="bi bi-file-earmark-medical icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
                                             @endif
                                         @else
                                             <!-- NO MEDICAL RECORD -->
-                                            <i class="bi bi-person-x icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="No Medical Record"></i>
+                                            <i class="bi bi-person-x icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="No Medical Record"></i>
                                         @endif
                                     </a>
                                     
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="#">Profile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" style="{{ Auth::user()->hasMedRecord ? 'display:none;' : '' }}" href="{{ route('medicalForm.show') }}">Submit My Medical Form</a>
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="#">My Appointments History</a>
                                     </li>
@@ -313,7 +315,6 @@
                 <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         <main class="py">
             @yield('content')
         </main>
