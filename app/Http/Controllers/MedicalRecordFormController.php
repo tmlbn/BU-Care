@@ -14,6 +14,7 @@ use App\Models\ImmunizationHistory;
 use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
+use DateTime;
 use Session;
 use Hash;
 use DB;
@@ -85,16 +86,37 @@ class MedicalRecordFormController extends Controller
     }
 
     public function checkAuthentication(Request $request){
-        $password = $request->input('password');
-        $user = Auth::user() ?: Auth::guard('employee')->user();
-        
-        if (!Hash::check($password, $user->password)) {
-            $response = 'Invalid Password';
-            return response()->json(['error' => $response]);
-        }
+        if($request->input('password')){
+            $password = $request->input('password');
+            $user = Auth::user() ?: Auth::guard('employee')->user();
+            
+            if (!Hash::check($password, $user->password)) {
+                $response = 'Invalid Password';
+                return response()->json(['error' => $response]);
+            }
 
-        $response = 'Password match';
-        return response()->json(['success' => $response]);
+            $response = 'Password match';
+            return response()->json(['success' => $response]);
+        }
+        else{
+            $applicantID = $request->input('applicantID');
+            $birthYear = $request->input('birthYear');
+            $birthMonth = $request->input('birthMonth');
+            $birthDate = $request->input('birthDate');
+            $user = Auth::user();
+
+            if($user->applicant_id_number == $applicantID && 
+            $user->birth_year == $birthYear && 
+            $user->birth_month == $birthMonth && 
+            $user->birth_date == $birthDate){
+                $response = 'Authentican passed';
+                return response()->json(['success' => $response]);
+            }
+            else{
+                $response = 'Invalid Authentication';
+                return response()->json(['error' => $response]);
+            }
+        }
     }
 
         #####---MEDICAL RECORD FORM SUBMISSION---#####
@@ -123,7 +145,7 @@ class MedicalRecordFormController extends Controller
             'MR_middleName' => 'nullable',
             'MR_age' => 'required|integer',
             'MR_sex' => 'required|string',
-            'MR_placeOfBirth' => 'required|string',
+            'MR_dateOfBirth' => 'required',
             'MR_civilStatus' => 'required|string',
             'MR_nationality' => 'required|string',
             'MR_religion' => 'required|string',
@@ -160,9 +182,9 @@ class MedicalRecordFormController extends Controller
             'PSH_smoking_amount' => 'required_if:PSH_smoking,1|int', 
             'PSH_smoking_freq' => 'required_if:PSH_smoking,1|int', 
             'PSH_drinking' => 'required|in:0,1',
-            'PSH_drinking_amountOfBeer' => 'nullable|required_if:PSH_drinking,1|string',
+            'PSH_drinking_amountOfBeer' => 'nullable|string',
             'PSH_drinking_freqOfBeer' => 'nullable|required_with:PSH_drinking_amountOfBeer|string',
-            'PSH_drinking_amountofShots' => 'nullable|required_if:PSH_drinking,1|string',
+            'PSH_drinking_amountofShots' => 'nullable|string',
             'PSH_drinking_freqOfShots' => 'nullable|required_with:PSH_drinking_amountofShots|string',
 
             /* PAST ILLNESS[pi_] */
@@ -402,7 +424,12 @@ class MedicalRecordFormController extends Controller
                 $medRecord->middle_name = filter_var($request->input('MR_middleName'), FILTER_SANITIZE_STRING);
                 $medRecord->age = filter_var($request->input('MR_age'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->sex = filter_var($request->input('MR_sex'), FILTER_SANITIZE_STRING);
-                $medRecord->placeOfBirth = filter_var($request->input('MR_placeOfBirth'), FILTER_SANITIZE_STRING);
+
+                $dateString = $request->input('MR_dateOfBirth');
+                $date = DateTime::createFromFormat('Y F d', $dateString);
+                $formattedDate = $date->format('Y-m-d');
+
+                $medRecord->dateOfBirth = $formattedDate;
                 $medRecord->civilStatus = filter_var($request->input('MR_civilStatus'), FILTER_SANITIZE_STRING);
                 $medRecord->homeAddress = filter_var($request->input('MR_address'), FILTER_SANITIZE_STRING);
                 $medRecord->nationality = filter_var($request->input('MR_nationality'), FILTER_SANITIZE_STRING);
@@ -492,23 +519,39 @@ class MedicalRecordFormController extends Controller
                     $medRecord->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
                     $medRecord->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecord->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
-
-                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
-                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
-                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
-                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
-                    $medRecord->resultName1 = $chestXray->storeAs('uploads', $chestXrayName, 'public');
-                    $medRecord->resultImage1 = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
-                    $medRecord->resultName1 = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
-                    $medRecord->resultImage1 = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
-    
-                     /*   // check if the given password matches the patient's actual password
-                    if (!Hash::check($request->passwordInput, $user->password)) {
-                        return back()->withErrors(['password' => 'The provided password does not match your current password.']);
+                    
+                    if($otherUpload1name){
+                        $medRecord->resultName1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
+                        $medRecord->resultImage1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
                     }
-                    else{
-                        $medRecord->signed = intval('1');
-                    }*/
+                    if($otherUpload2name){
+                        $medRecord->resultName2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
+                        $medRecord->resultImage2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
+                    }
+                    if($otherUpload3name){
+                        $medRecord->resultName3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
+                        $medRecord->resultImage3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
+                    }
+                    if($otherUpload4name){
+                        $medRecord->resultName4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
+                        $medRecord->resultImage4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
+                    }
+                    if($otherUpload5name){
+                        $medRecord->resultName5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
+                        $medRecord->resultImage5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
+                    }
+                    if($otherUpload6name){
+                        $medRecord->resultName6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
+                        $medRecord->resultImage6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
+                    }
+                    if($otherUpload7name){
+                        $medRecord->resultName7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
+                        $medRecord->resultImage7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
+                    }
+                    if($otherUpload8name){
+                        $medRecord->resultName8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
+                        $medRecord->resultImage8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
+                    }
                     $medRecord->signed = intval('1');
                 /**
                  * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE
@@ -520,12 +563,24 @@ class MedicalRecordFormController extends Controller
             // Log error and display user-friendly message
             Log::error('Failed to register user.');
             return back()->with('fail','Failed to register. Please try again later.');
-        }else{
-            $user->hasMedRecord = intval('1');
-            $user->MR_id =  $medRecord->MR_id;
-            $user->save();
-            return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
         }
+        $familyHistory->MR_id =  $medRecord->MR_id;
+        $psHistory->MR_id =  $medRecord->MR_id;
+        $pastIllness->MR_id =  $medRecord->MR_id;
+        $presentIllness->MR_id =  $medRecord->MR_id;
+        $immunizationHistory->MR_id =  $medRecord->MR_id;
+
+        $familyHistory->save();
+        $psHistory->save();
+        $pastIllness->save();
+        $presentIllness->save();
+        $immunizationHistory->save();
+
+        $user->hasMedRecord = intval('1');
+        $user->MR_id =  $medRecord->MR_id;
+        $user->save();
+        return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
+        
     } // END OF medFormSubmit FUNCTION
 
     #--- FUNCTIONS FOR PERSONNEL MED RECORD---#
@@ -551,7 +606,7 @@ class MedicalRecordFormController extends Controller
             'MRP_sex' => 'required|string',
             'MRP_gender' => 'required|string',
             'MRP_pwd' => 'required|string',
-            'MRP_placeOfBirth' => 'required|string',
+            'MRP_dateOfBirth' => 'required|string',
             'MRP_civilStatus' => 'required|string',
             'MRP_nationality' => 'required|string',
             'MRP_religion' => 'required|string',
@@ -698,5 +753,14 @@ class MedicalRecordFormController extends Controller
             'FHP_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
             'PIH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
         ]); /* END OF VALIDATION */
+    
+        $user = Auth::guard('employee')->user();
+        $medRecordPersonnel = new MedicalRecordPersonnel();
+            $medRecordPersonnel->personnel_id = $user->id;
+            $medRecordPersonnel->designation = 
+            $medRecordPersonnel->unitDepartment = 
+            $medRecordPersonnel->campus = 
+            $medRecordPersonnel->
+            $medRecordPersonnel->
     }
 }
