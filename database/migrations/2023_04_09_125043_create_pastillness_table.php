@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pastillness', function (Blueprint $table) {
             $table->bigIncrements('pastIllnessID')->unique();
+            $table->unsignedBigInteger('MR_id')->unique()->nullable()->default(null);
             $table->boolean('primaryComplex');
             $table->boolean('chickenPox');
             $table->boolean('kidneyDisease');

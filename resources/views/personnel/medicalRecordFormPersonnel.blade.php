@@ -248,11 +248,7 @@
                     {{ $message }} 
                 @enderror
             </span>
-        </div>
-
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-        
+        </div>      
         <script>
         $(document).ready(function() {
             $("#MRP_dateOfBirth").datepicker({

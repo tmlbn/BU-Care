@@ -753,7 +753,7 @@ class MedicalRecordFormController extends Controller
             'FHP_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
             'PIH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
         ]); /* END OF VALIDATION */
-    
+    /*
         $user = Auth::guard('employee')->user();
         $medRecordPersonnel = new MedicalRecordPersonnel();
             $medRecordPersonnel->personnel_id = $user->id;
@@ -762,5 +762,6 @@ class MedicalRecordFormController extends Controller
             $medRecordPersonnel->campus = 
             $medRecordPersonnel->
             $medRecordPersonnel->
+    */
     }
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('personalsocialhistory', function (Blueprint $table) {
             $table->bigIncrements('personalSocialHistoryID')->unique();
+            $table->unsignedBigInteger('MR_id')->unique()->nullable()->default(null);
             $table->boolean('smoking');
             $table->string('sticksPerDay', 100);
             $table->string('years', 100);

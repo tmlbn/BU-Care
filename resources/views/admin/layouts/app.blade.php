@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap-print.min.css') }}" media="print">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
@@ -29,6 +30,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     
     <!--style-->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -109,10 +111,12 @@
 
         .text-responsive{
             color:black;
+            user-select: none;
         }
         @media (max-width: 650px) {
             .text-responsive{
                 color: white;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
             }
         }
     

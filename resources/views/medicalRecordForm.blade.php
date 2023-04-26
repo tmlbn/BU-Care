@@ -15,7 +15,6 @@
     :-ms-input-placeholder {  
     font-style: italic; 
     }
-
     body{
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
         background-repeat: no-repeat;
@@ -152,28 +151,52 @@
                             "Gubat Campus": ["B Elementary Education","B Secondary Education (Filipino & Social Studies)","BS Agricultural Technology (Ladderized)","BS Entrepreneurship","BSBA Major in Microfinance"],
                             "Polangui Campus": ["B Elementary Education","B Secondary Education Major in English","B Secondary Education Major in Math","BS Automotive Technology","BS Computer Engineering","BS Computer Science","BS Electronics Engineering","BS Electronics Technology","BS Entrepreneurship","BS Food Technology","BS Information System","BS Information Technology","BS Information Technology (Animation)","BS Nursing","B Technology and Livelihood Education (BTLed-ICT)"]
                         };
-                        // listen for changes in the campusSelect element
-                        $('#campusSelect').on('change', function() {
+  
+                        $(document).ready(function() {
                             // get the selected campus
-                            var selectedCampus = $(this).val();
+                            var selectedCampus = $('#campusSelect').val();
                             // get the corresponding courses from the JSON object
                             var selectedCampusCourses = courses[selectedCampus];
                             // counter for class alternate
                             var counter = 0;
+                            console.log(selectedCampus);
                             // clear the current options in the courseSelect element
-                            $('#courseSelect').empty();
-                            // add the new options based on the selected campus
-                            $.each(selectedCampusCourses, function(index, value) {
-                                counter++;
-                                var option = $('<option>').text(value).attr('value', value);
-                                if (value == "{{ old('courseSelect') }}") {
-                                    option.attr('selected', 'selected');
-                                }
-                                if(counter % 2 == 1){
-                                    $('#courseSelect').append(option.addClass('alternate'));
-                                }else{
-                                    $('#courseSelect').append(option);
-                                }
+                            if(selectedCampus != null){
+                                $('#courseSelect').empty();
+                                // add the new options based on the selected campus
+                                $.each(selectedCampusCourses, function(index, value) {
+                                    counter++;
+                                    var option = $('<option>').text(value).attr('value', value);
+                                    if (value == "{{ old('courseSelect') }}") {
+                                        option.attr('selected', 'selected');
+                                    }
+                                    if(counter % 2 == 1){
+                                        $('#courseSelect').append(option.addClass('alternate'));
+                                    }else{
+                                        $('#courseSelect').append(option);
+                                    }
+                                });
+                            }
+                            
+                            $('#campusSelect').on('change', function() {
+                                // get the selected campus
+                                var selectedCampus = $(this).val();
+                                // get the corresponding courses from the JSON object
+                                var selectedCampusCourses = courses[selectedCampus];
+                                // counter for class alternate
+                                var counter = 0;
+                                // clear the current options in the courseSelect element
+                                $('#courseSelect').empty();
+                                // add the new options based on the selected campus
+                                $.each(selectedCampusCourses, function(index, value) {
+                                    counter++;
+                                    var option = $('<option>').text(value).attr('value', value);
+                                    if(counter % 2 == 1){
+                                        $('#courseSelect').append(option.addClass('alternate'));
+                                    }else{
+                                        $('#courseSelect').append(option);
+                                    }
+                                });
                             });
                         });
                     </script>
@@ -257,14 +280,26 @@
               </span>
         </div>
         <div class="col-md-4">
-            <label for="MR_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" oninput="this.value = this.value.toUpperCase()" value="{{ old('MR_placeOfBirth') }}" required>
+            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth</label>
+            <input type="text" class="form-control" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" required>
             <span class="text-danger"> 
-                @error('MR_placeOfBirth') 
-                  {{ $message }} 
+                @error('MR_dateOfBirth') 
+                    {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
+        <script>
+       $(document).ready(function() {
+            $("#MR_dateOfBirth").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy MM d',
+                showButtonPanel: true,
+                yearRange: "1900:c",
+                showAnim: 'slideDown',
+            });
+        });
+        </script>
         <div class="col-md-2">
             <label for="MR_civilStatus" class="form-label h6">Civil Status</label>
             <select id="MR_civilStatus" name="MR_civilStatus" class="form-select" required>
@@ -635,8 +670,7 @@
                         <label class="form-check-label" for="FH_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="hidden" name="FH_othersDetails" value="N/A">
-                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" placeholder="separate with comma(,) if multiple" disabled>
+                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('FH_others') == '1' ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('FH_othersDetails') 
                                   {{ $message }} 
@@ -679,14 +713,14 @@
                         <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ old('PSH_smoking_amount') }}" disabled> 
+                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ old('PSH_smoking_amount') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> 
                             <span class="text-danger"> 
                                 @error('PSH_smoking_amount') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
                             sticks/day for 
-                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ old('PSH_smoking_freq') }}" disabled> year/s )
+                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ old('PSH_smoking_freq') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> year/s )
                             <span class="text-danger"> 
                                 @error('PSH_smoking_freq') 
                                   {{ $message }} 
@@ -701,14 +735,14 @@
                         <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
                             Drinking 
                             <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ old('PSH_drinking_amountOfBeer') }}" disabled>
+                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ old('PSH_drinking_amountOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('PSH_drinking_amountOfBeer') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
                              Beer per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ old('PSH_drinking_freqOfBeer') }}" disabled> ) 
+                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ old('PSH_drinking_freqOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}> ) 
                              <span class="text-danger"> 
                                 @error('PSH_drinking_freqOfBeer') 
                                   {{ $message }} 
@@ -717,14 +751,14 @@
                             <br>
                                 or
                             <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ old('PSH_drinking_amountofShots') }}" disabled>
+                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ old('PSH_drinking_amountofShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('PSH_drinking_amountofShots') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
                              Shots per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ old('PSH_drinking_freqOfShots') }}" disabled>)
+                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ old('PSH_drinking_freqOfShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>)
                              <span class="text-danger"> 
                                 @error('PSH_drinking_freqOfShots') 
                                   {{ $message }} 
@@ -1072,7 +1106,7 @@
                         <label class="form-check-label" for="PI_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" placeholder="separate with comma(,) if multiple" disabled>
+                        <input type="text" class="form-control input-sm" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('PI_others') == '1' ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('PI_othersDetails') 
                                     {{ $message }} 
@@ -1317,7 +1351,7 @@
                         <label class="form-check-label" for="IH_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" placeholder="separate with comma(,) if multiple" disabled>
+                        <input type="text" class="form-control input-sm" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('IH_others') == '1' ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('IH_othersDetails') 
                                     {{ $message }} 
@@ -1336,7 +1370,7 @@
     <!-- ATTACHMENTS -->
     <div class="row mx-auto my-auto mt-2">
         <div class="col-md-12 p-1 border border-dark">
-            <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
+            <p class="fs-5 my-4 fw-bold text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-1 my-auto px-5 py-4">
                     <div class="mb-3 col-xl-3 col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center" >
@@ -1458,6 +1492,10 @@
        $(document).ready(function() {
             $('#submitButton').on('click', function(event) {
                 // Check if all required fields are filled
+                $('#passwordSpan').text('');
+                $('#certifySpan').text('');
+                $('#passwordInput').removeClass('is-invalid');
+                $('#radioCertify').removeClass('is-invalid');
                 var a = '';
                 var b = $('#MR_form')[0].checkValidity();
                 if ($('#MR_form')[0].checkValidity()) {
@@ -1484,7 +1522,6 @@
                 }
                 console.log(a);
                 console.log(b);
-
             });
         });
     </script>
@@ -1509,7 +1546,7 @@
                             <label for="certify" class="fs-5 text-center mt-1">
                                 I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.
                             </label>
-                            <span class="text-danger"> 
+                            <span class="text-danger" id="certifySpan"> 
                                 @error('certify') 
                                   {{ $message }} 
                                 @enderror
@@ -1519,7 +1556,10 @@
                     <div class="modal-footer align-items-center mb-3">
                         <div class="d-flex align-items-center my-auto mx-auto">
                             <div class="input-group">
-                                @if(Auth::user()->student_id_number != NULL)
+                                @php
+                                    $student = Auth::user()->student_id_number;
+                                @endphp
+                                @if($student)
                                     <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
                                     <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                                     <button class="btn btn-outline-secondary" type="button" id="togglePassword">
@@ -1532,9 +1572,23 @@
                                     <div class="col-lg-3">
                                         <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
                                         <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput">
-                                    </div>  
+                                        <span class="text-danger" id="applicantIDSpan"> 
+                                            @error('applicantIDinput') 
+                                              {{ $message }} 
+                                            @enderror
+                                        </span>
+                                    </div>
                                     <div class="col-lg-2">
-                                        <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Birth  Month:</label>
+                                        <label for="applicantBirthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
+                                        <input type="text" class="form-control" id="applicantBirthYear" name="applicantBirthYear">
+                                        <span class="text-danger" id="birthYearSpan"> 
+                                            @error('applicantBirthYear') 
+                                              {{ $message }} 
+                                            @enderror
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="applicantBirthMonth" class="form-label h6 mt-2 me-2">Birth Month:</label>
                                         <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px">
                                             <option selected="selected" disabled="disabled" value="">SELECT</option>
                                             <option value="JANUARY" id="januaryMonth" class="align-baseline">JANUARY</option>
@@ -1550,15 +1604,21 @@
                                             <option value="NOVEMBER" id="novemberMonth">NOVEMBER</option>
                                             <option value="DECEMBER" id="decemberMonth">DECEMBER</option>
                                         </select>
+                                        <span class="text-danger" id="birthMonthSpan"> 
+                                            @error('applicantBirthMonth') 
+                                              {{ $message }} 
+                                            @enderror
+                                        </span>
                                     </div>  
                                     <div class="col-lg-2">
-                                        <label for="birthDate" class="form-label h6 mt-2 me-2">Birth Date:</label>
-                                        <input type="text" class="form-control" id="birthDate" name="birthDate">
+                                        <label for="applicantBirthDate" class="form-label h6 mt-2 me-2">Birth Date:</label>
+                                        <input type="text" class="form-control" id="applicantBirthDate" name="applicantBirthDate">
+                                        <span class="text-danger" id="birthDateSpan"> 
+                                            @error('applicantBirthDate') 
+                                              {{ $message }} 
+                                            @enderror
+                                        </span>
                                     </div>  
-                                    <div class="col-lg-2">
-                                        <label for="birthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
-                                        <input type="text" class="form-control" id="birthYear" name="birthYear">
-                                    </div>
                                 @endif
                             </div>
                             
@@ -1584,9 +1644,9 @@
                             <button class="btn btn-primary btn-login fw-bold" type="button" id="medFormSubmitButton">Submit</button>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
     <script>
         document.getElementById("radioCertify").addEventListener("change", function() {
             if (this.checked) {
@@ -1602,44 +1662,113 @@
             });
             $('#medFormSubmitButton').on('click', function(event) {
                 event.preventDefault(); // prevent default form submission behavior
-                let password = $('#passwordInput').val();
+                var student = "<?php echo $student;?>";
                 let certify = $('#radioCertify').val();
-                $('#passwordSpan').text('');
-                $('#passwordInput').removeClass('is-invalid');
+                
+                $('#certifySpan').text('');
                 $('#radioCertify').removeClass('is-invalid');
+
                 if(certify != 1){
                     $('#radioCertify').addClass('is-invalid');
-                    $('#passwordSpan').text('Please certify that the foregoing answers are true and complete.');
+                    $('#certifySpan').text('Please certify that the foregoing answers are true and complete.');
                     return false;
                 }
-                if(password == ""){
-                    $('#passwordInput').addClass('is-invalid');
-                    $('#passwordSpan').text('Please provide your password');
-                    return false;
-                }
-                
-                $.ajax({
-                    url: '/medical-record-check-auth',
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        password: password
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        if (response.success) {
-                            // password is correct, submit the form
-                            $('#MR_form').submit();
-                        } else {
-                            // password is incorrect, display an error message
-                            $('#passwordInput').addClass('is-invalid');
-                            $('#passwordSpan').text('Incorrect password');
-                        }
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        console.log(xhr.responseText);
+                if(student){
+                    // If student is an old student (has student id number)
+                    let password = $('#passwordInput').val();
+                    $('#passwordSpan').text('');
+                    $('#passwordInput').removeClass('is-invalid');
+                    if(password == ""){
+                        $('#passwordInput').addClass('is-invalid');
+                        $('#passwordSpan').text('Please provide your password');
+                        return false;
                     }
-                });
+                    
+                    $.ajax({
+                        url: '/medical-record-check-auth',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            password: password
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                // password is correct, submit the form
+                                $('#MR_form').submit();
+                            } else {
+                                // password is incorrect, display an error message
+                                $('#passwordInput').addClass('is-invalid');
+                                $('#passwordSpan').text('Incorrect password');
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+                else{
+                    // If student is new student (only applicant id number)
+                    let applicantID = $('#applicantIDinput').val();
+                    let birthYear = $('#applicantBirthYear').val();
+                    let birthMonth = $('#applicantBirthMonth').val();
+                    let birthDate = $('#applicantBirthDate').val();
+                    $('#applicantIDSpan').text('');
+                    $('#birthYearSpan').text('');
+                    $('#birthMonthSpan').text('');
+                    $('#birthDateSpan').text('');
+                    $('#applicantIDinput').removeClass('is-invalid');
+                    $('#applicantBirthYear').removeClass('is-invalid');
+                    $('#applicantBirthMonth').removeClass('is-invalid');
+                    $('#applicantBirthDate').removeClass('is-invalid');
+
+                    if(applicantID == ""){
+                        $('#applicantIDinput').addClass('is-invalid');
+                        $('#applicantIDSpan').text('Please provide your Applicant ID Number');
+                        return false;
+                    }
+                    if(birthYear == ""){
+                        $('#applicantBirthYear').addClass('is-invalid');
+                        $('#birthYearSpan').text('Please provide your Birth Year');
+                        return false;
+                    }
+                    if(birthMonth == ""){
+                        $('#applicantBirthMonth').addClass('is-invalid');
+                        $('#birthMonthSpan').text('Please provide your Birth Month');
+                        return false;
+                    }
+                    if(birthDate == ""){
+                        $('#applicantBirthDate').addClass('is-invalid');
+                        $('#birthDateSpan').text('Please provide your Birth Date');
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: '/medical-record-check-auth',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            applicantID: applicantID,
+                            birthYear: birthYear,
+                            birthMonth: birthMonth,
+                            birthDate: birthDate,
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                // password is correct, submit the form
+                                $('#MR_form').submit();
+                            } else {
+                                // password is incorrect, display an error message for new students
+                                $('#passwordInput').addClass('is-invalid');
+                                $('#passwordSpan').text('Incorrect authentication.');
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
             });
         });
 

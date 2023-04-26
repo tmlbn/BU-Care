@@ -6,6 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ICON -->
+    <link rel="icon" type="image/png" href="{{ asset('media/BUHS-icon.ico') }}">
 
     <title>{{ config('app.name', 'BU-Care') }}</title>
 
@@ -39,8 +41,18 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     <style>
+        html{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
         body {
             font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         .bg-whitetoblue{
@@ -59,18 +71,28 @@
 
         .text-responsive{
             color:black;
+            user-select: none;
         }
         @media (max-width: 650px) {
             .text-responsive{
                 color: white;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
             }
         }
         .login-responsive{
             color:white;
         }
-        @media (max-width: 650px) {
-            .login-responsive{
+        @media screen and (max-width: 768px) {
+            /* Styles for screen width less than or equal to 768px */
+            .login-responsive {
                 color: black;
+            }
+            .btn-orange{
+                color: black;
+                border: 2px solid black !important;
+            }
+            #loginButton{
+                margin-top: -80px !important;
             }
         }
         .nav-link.dropdown-toggle::before {
@@ -147,7 +169,7 @@
                     <div class="col-md-8 d-flex justify-content-end my-auto">
                         <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5"> 
                             <button type="button" id="loginButton" class="btn btn-orange rounded d-inline-flex" data-toggle="popover" data-bs-html="true" title="Login as:">
-                                <span class="login-reponsive">
+                                <span class="login-responsive">
                                     Login
                                 </span>
                             </button>
