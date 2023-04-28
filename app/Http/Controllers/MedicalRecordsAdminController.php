@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\MedicalRecordsPersonnel_Admin;
 use App\Models\MedicalRecord_Admin;
 use App\Models\UserStudent;
 use DB;
@@ -106,7 +107,7 @@ class MedicalRecordsAdminController extends Controller
             $medRecordAdmin->MRA_licenseNumber = filter_var($request->input('MRA_LicenseNumber'),FILTER_SANITIZE_STRING);
             $medRecordAdmin->MRA_PTRnumber = filter_var($request->input('MRA_PTRNumber'),FILTER_SANITIZE_STRING);
             $medRecordAdmin->MRA_dateOfExam = filter_var($request->input('MRA_DateofExam'),FILTER_SANITIZE_STRING);
-        $res = $medRecord->save();
+        $res = $medRecordAdmin->save();
 
             //IF FALSE
         if(!$res){
@@ -123,8 +124,35 @@ class MedicalRecordsAdminController extends Controller
     } // END OF medFormSubmit FUNCTION
 
     #NEW FUNCTION STARTS HERE
-    public function foo(){
+    public function medicalRecordsPersonnelAdmin(Request $request){
 
+        $validator = Validator::make($request->all(), [
+
+            'VS_bp_systolic' => 'required|integer',
+            'VS_bp_diastolic' => 'required|integer',
+            'VS_pulseRate' => 'required|integer',
+            'VS_respirationRate' => 'required|integer',
+            'VS_temp' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'VS_o2saturaion' => 'required|integer',
+            'VS_height' => 'required|integer',
+            'VS_weight' => 'required|integer',
+            'VS_bmi' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'VS_bloodType' => 'required|integer',
+        ]);
+
+        $user = Auth::guard('employee')->user();
+        $medRecordPersonnelAdmin = new MedicalRecordsPersonnel_Admin();
+
+        $medRecordPersonnelAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $medRecordPersonnelAdmin->o2saturation = filter_var($request->input('VS_o2saturation'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
+        $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
-
+    
+    
 }
