@@ -86,13 +86,14 @@ Route::group(['middleware' => ['web', 'auth.any']], function() {
 /**
  *  PROTECTED ROUTES FOR ADMINS
  */
+Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
+    Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
 Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/home',function () {
         return view('admin.home');
     })->name('admin.home');
    
-    Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
-    Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
+    
     // POST for Importing CSV File (users_students table) //
     Route::post('/admin/import-new-students', [ImportController::class, 'import'])->name('import.store');
     // POST for Importing CSV File (users_personnel table) //

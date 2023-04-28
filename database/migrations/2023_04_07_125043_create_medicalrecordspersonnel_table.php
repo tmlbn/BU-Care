@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('sex', 10);
             $table->string('gender', 20);
             $table->date('dateOfBirth');
-            $table->string('placeOfBirth', 100);
             $table->string('civilStatus', 20);
             $table->string('nationality', 20);
             $table->string('religion', 50);
@@ -36,10 +35,10 @@ return new class extends Migration
             $table->string('emergencyContactOccupation', 100);
             $table->string('emergencyContactRelationship', 100);
             $table->string('emergencyContactAddress', 100);
-            $table->unsignedBigInteger('MRP_familyHistoryID')->unique();
-            $table->unsignedBigInteger('MRP_personalSocialHistoryID')->unique();
-            $table->unsignedBigInteger('MRP_PMC_ID')->unique();
-            $table->unsignedBigInteger('MRP_immunizationHistoryID')->unique();
+            $table->unsignedBigInteger('MRP_familyHistoryID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('MRP_personalSocialHistoryID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('MRP_PMC_ID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('MRP_immunizationHistoryID')->unique()->nullable()->default(null);
             $table->boolean('hospitalization');
             $table->string('hospDetails', 100);
             $table->boolean('takingMedsRegularly', 20);

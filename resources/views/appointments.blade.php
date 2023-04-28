@@ -197,7 +197,7 @@
                     </div>
                 </div>
 
-                <!-- Edit Modal -->
+                <!-- GET APPOINTMENT TO EDIT MODAL -->
                 <div class="modal fade" id="editAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
@@ -277,7 +277,7 @@
                                                             var appointment = response.appointment;
                                                             var appointmentsForTheDay = response.appointmentsForTheDay;
                                                             $('#editAppointmentModal').modal('hide');
-                                                            $('#appointmentModal_ticketID').text('#'+ appointment.ticketID);
+                                                            $('#appointmentModal_ticketID').text('#'+ ticketID);
 
                                                             var AformattedDate = moment(response.appointmentDate).format('YYYY-MMMM-DD');
                                                             var AformattedTime = moment(response.appointmentTime, 'HH:mm:ss').format('h:mm A');
@@ -314,7 +314,7 @@
                 </div>
                 
                 <!-- Delete Modal -->
-                <div class="modal fade" id="deleteAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteAppointmentModalLabel" aria-hidden="true">
+                <div class="modal modal-lg fade" id="deleteAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteAppointmentModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -362,23 +362,82 @@
                                     </div>
                                     <div class="modal-footer">
                                         <div class="d-flex my-auto">
+                                            @php
+                                                $student = Auth::user()->student_id_number;
+                                            @endphp
+                                            @if($student)
                                             <div class="input-group">
-                                                <label for="passwordInputDelete" class="form-label h6 mt-2 me-2">Password:</label>
-                                                <input type="password" class="form-control" id="passwordInputDelete" name="passwordInputDelete" required>
-                                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordDelete">
-                                                <span class="bi bi-eye-fill" aria-hidden="true"></span>
-                                                </button>
-                                                <script>
-                                                    var passwordInputDelete = document.getElementById('passwordInputDelete');
-                                                    var togglePasswordDelete = document.getElementById('togglePasswordDelete');
-                                                    togglePasswordDelete.addEventListener('click', function() {
-                                                        const type = passwordInputDelete.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                        passwordInputDelete.setAttribute('type', type);
-                                                        togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-fill');
-                                                        togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-slash-fill');
-                                                        togglePasswordDelete.classList.toggle('active');
-                                                    });
-                                                </script>
+                                                    <label for="passwordInputDelete" class="form-label h6 mt-2 me-2">Password:</label>
+                                                    <input type="password" class="form-control" id="passwordInputDelete" name="passwordInputDelete">
+                                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordDelete">
+                                                        <div style="margin-top: -5px;">
+                                                            <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                        </div>
+                                                    </button>
+                                                    <script>
+                                                        const passwordInputDelete = document.getElementById('passwordInputDelete');
+                                                        const togglePasswordDelete = document.getElementById('togglePasswordDelete');
+                                                        togglePasswordDelete.addEventListener('click', function() {
+                                                            const type = passwordInputDelete.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                            passwordInputDelete.setAttribute('type', type);
+                                                            togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-fill');
+                                                            togglePasswordDelete.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                                            togglePasswordDelete.classList.toggle('active');
+                                                        });
+                                                    </script>
+                                                @else
+                                                <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+                                                    <div class="col-lg-4">
+                                                        <label for="applicantIDinputDelete" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
+                                                        <input type="text" class="form-control" id="applicantIDinputDelete" name="applicantIDinputDelete">
+                                                        <span class="text-danger" id="applicantIDSpan"> 
+                                                            @error('applicantIDinputDelete') 
+                                                            {{ $message }} 
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <label for="applicantBirthYearDelete" class="form-label h6 mt-2 me-2">Birth Year:</label>
+                                                        <input type="text" class="form-control" id="applicantBirthYearDelete" name="applicantBirthYearDelete">
+                                                        <span class="text-danger" id="birthYearSpan"> 
+                                                            @error('applicantBirthYearDelete') 
+                                                            {{ $message }} 
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="applicantBirthMonthDelete" class="form-label h6 mt-2 me-2">Birth Month:</label>
+                                                        <select class="form-control" name ="applicantBirthMonthDelete" id="applicantBirthMonthDelete" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px">
+                                                            <option selected="selected" disabled="disabled" value="">SELECT</option>
+                                                            <option value="JANUARY" id="januaryMonth" class="align-baseline">JANUARY</option>
+                                                            <option value="FEBRUARY" id="februaryMonth">FEBRUARY</option>
+                                                            <option value="MARCH" id="marchMonth">MARCH</option>
+                                                            <option value="APRIL" id="aprilMonth">APRIL</option>
+                                                            <option value="MAY" id="mayMonth">MAY</option>
+                                                            <option value="JUNE" id="juneMonth">JUNE</option>
+                                                            <option value="JULY" id="julyMonth">JULY</option>
+                                                            <option value="AUGUST" id="augustMonth">AUGUST</option>
+                                                            <option value="SEPTEMBER" id="septemberMonth">SEPTEMBER</option>
+                                                            <option value="OCTOBER" id="octoberMonth">OCTOBER</option>
+                                                            <option value="NOVEMBER" id="novemberMonth">NOVEMBER</option>
+                                                            <option value="DECEMBER" id="decemberMonth">DECEMBER</option>
+                                                        </select>
+                                                        <span class="text-danger" id="birthMonthSpan"> 
+                                                            @error('applicantBirthMonthDelete') 
+                                                            {{ $message }} 
+                                                            @enderror
+                                                        </span>
+                                                    </div>  
+                                                    <div class="col-lg-2">
+                                                        <label for="applicantBirthDateDelete" class="form-label h6 mt-2 me-2">Birth Date:</label>
+                                                        <input type="text" class="form-control" id="applicantBirthDateDelete" name="applicantBirthDateDelete">
+                                                        <span class="text-danger" id="birthDateSpan"> 
+                                                            @error('applicantBirthDateDelete') 
+                                                            {{ $message }} 
+                                                            @enderror
+                                                        </span>
+                                                    </div>  
+                                                @endif
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -689,25 +748,27 @@
                                                        
                                                 </div><!-- END OF CHECKBOX DIV -->
                                             </div>
-                                            <div class="col-lg-6 col-md-12 p-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Reinstatement" name="services">
-                                                        <label class="form-check-label" for="Reinstatement">
-                                                            Reinstatement
-                                                        </label>
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Sick Leave" name="services">
-                                                        <label class="form-check-label" for="Sick Leave">
-                                                            Sick Leave
-                                                        </label>
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Unkown" name="services">
-                                                        <label class="form-check-label" for="Unkown">
-                                                            Unkown
-                                                        </label>
-                                                </div><!-- END OF CHECKBOX DIV -->
+                                                <div class="col-lg-6 col-md-12 p-2">
+                                                    @if(Auth::guard('employee')->check())
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="Reinstatement" name="services">
+                                                            <label class="form-check-label" for="Reinstatement">
+                                                                Reinstatement
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="Sick Leave" name="services">
+                                                            <label class="form-check-label" for="Sick Leave">
+                                                                Sick Leave
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="Unkown" name="services">
+                                                            <label class="form-check-label" for="Unkown">
+                                                                Unkown
+                                                            </label>
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                @endif
                                                 <script>
                                                     $(document).ready(function(){
                                                         $('input[name="services"]').change(function(){
@@ -739,29 +800,87 @@
                                     </script>
                                     <div class="modal-footer mt-4 justify-content-between">
                                         <div class="d-flex my-auto">
-                                            <div class="input-group">
+                                            @php
+                                                $student = Auth::user()->student_id_number;
+                                            @endphp
+                                            @if($student)
                                                 <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                                <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                                    <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                    <div style="margin-top: -5px;">
+                                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                    </div>
                                                 </button>
-                                            </div>
+                                                <script>
+                                                    const passwordInput = document.getElementById('passwordInput');
+                                                    const togglePassword = document.getElementById('togglePassword');
+                                                    togglePassword.addEventListener('click', function() {
+                                                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                        passwordInput.setAttribute('type', type);
+                                                        togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                                        togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                                        togglePassword.classList.toggle('active');
+                                                    });
+                                                </script>
+                                            @else
+                                            <div class="row row-cols-lg-5 row-cols-md-2 row-cols-sm-1">
+                                                <div class="col-lg-4">
+                                                    <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
+                                                    <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput">
+                                                    <span class="text-danger" id="applicantIDSpan"> 
+                                                        @error('applicantIDinput') 
+                                                        {{ $message }} 
+                                                        @enderror
+                                                    </span>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label for="applicantBirthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
+                                                    <input type="text" class="form-control" id="applicantBirthYear" name="applicantBirthYear">
+                                                    <span class="text-danger" id="birthYearSpan"> 
+                                                        @error('applicantBirthYear') 
+                                                        {{ $message }} 
+                                                        @enderror
+                                                    </span>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label for="applicantBirthMonth" class="form-label h6 mt-2 me-2">Birth Month:</label>
+                                                    <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px">
+                                                        <option selected="selected" disabled="disabled" value="">SELECT</option>
+                                                        <option value="JANUARY" id="januaryMonth" class="align-baseline">JANUARY</option>
+                                                        <option value="FEBRUARY" id="februaryMonth">FEBRUARY</option>
+                                                        <option value="MARCH" id="marchMonth">MARCH</option>
+                                                        <option value="APRIL" id="aprilMonth">APRIL</option>
+                                                        <option value="MAY" id="mayMonth">MAY</option>
+                                                        <option value="JUNE" id="juneMonth">JUNE</option>
+                                                        <option value="JULY" id="julyMonth">JULY</option>
+                                                        <option value="AUGUST" id="augustMonth">AUGUST</option>
+                                                        <option value="SEPTEMBER" id="septemberMonth">SEPTEMBER</option>
+                                                        <option value="OCTOBER" id="octoberMonth">OCTOBER</option>
+                                                        <option value="NOVEMBER" id="novemberMonth">NOVEMBER</option>
+                                                        <option value="DECEMBER" id="decemberMonth">DECEMBER</option>
+                                                    </select>
+                                                    <span class="text-danger" id="birthMonthSpan"> 
+                                                        @error('applicantBirthMonth') 
+                                                        {{ $message }} 
+                                                        @enderror
+                                                    </span>
+                                                </div>  
+                                                <div class="col-lg-2">
+                                                    <label for="applicantBirthDate" class="form-label h6 mt-2 me-2">Birth Date:</label>
+                                                    <input type="text" class="form-control" id="applicantBirthDate" name="applicantBirthDate">
+                                                    <span class="text-danger" id="birthDateSpan"> 
+                                                        @error('applicantBirthDate') 
+                                                        {{ $message }} 
+                                                        @enderror
+                                                    </span>
+                                                </div>  
+                                            @endif
                                         </div>
-                                        <script>
-                                            var passwordInput = document.getElementById('passwordInput');
-                                            var togglePassword = document.getElementById('togglePassword');
-                                            togglePassword.addEventListener('click', function() {
-                                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                passwordInput.setAttribute('type', type);
-                                                togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                                                togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
-                                                togglePassword.classList.toggle('active');
-                                            });
-                                        </script>
-
-                                        <div class="d-flex">
-                                            <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
-                                            <button type="submit" id="editButtonSubmit" class="btn btn-info" hidden>Update</button>
+                                        <div class="row">
+                                            <div class="col-lg-2 mt-auto">
+                                                <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
+                                                <button type="submit" id="editButtonSubmit" class="btn btn-info" hidden>Update</button>
+                                            </div>
                                         </div>
                                         <script>
                                             $(document).ready(function() {
@@ -772,62 +891,130 @@
                                                 });
                                                 $('#editButtonSubmit').on('click', function(event) {
                                                     event.preventDefault(); // prevent default form submission behavior
-                                                    let patientID = $('#patientID').val();
-                                                    let patientType = $('#patientType').val();
-                                                    let appointmentDate = $('#appointmentDate').val();
-                                                    let appointmentTime = $('#appointmentTime').val();
-                                                    let appointmentDescription = $('#appointmentDescription').val();
-                                                    let services = $('input[name="services"]:checked').val();
-                                                    let othersInput = $('#othersInput').val();
-                                                    let password = $('#passwordInput').val();
-                                                    let ticketID = $('#ticketInputEdit').val();
-                                                    
-                                                    $.ajax({
-                                                        url: '/update-appointment/'+ticketID+'/edit',
-                                                        method: 'POST',
-                                                        dataType: 'json',
-                                                        data: {
-                                                            '_method': 'PATCH',
-                                                            patientID: patientID,
-                                                            patientType: patientType,
-                                                            appointmentDate: appointmentDate,
-                                                            appointmentTime: appointmentTime,
-                                                            appointmentDescription: appointmentDescription,
-                                                            services: services,
-                                                            othersInput: othersInput,
-                                                            password: password,
-                                                            ticketID: ticketID
-                                                        },
-                                                        success: function(response) {
-                                                            //console.log(othersInput);
-                                                            $('#appointmentModal').modal('hide');
+                                                    var student = "<?php echo $student;?>";
 
-                                                            $('#successDateTime').text(appointmentDate+' @ '+appointmentTime);
-                                                            $('#successTicketID').text('Ticket# '+ticketID);
-                                                            if(!services){
-                                                                $('#successService').text('Service: '+othersInput);
-                                                            }
-                                                            else{
-                                                                $('#successService').text('Service: '+services);
-                                                            }
-                                                            $('#successDescription').text('Description: '+appointmentDescription);
+                                                    if(student){
+                                                        let patientID = $('#patientID').val();
+                                                        let patientType = $('#patientType').val();
+                                                        let appointmentDate = $('#appointmentDate').val();
+                                                        let appointmentTime = $('#appointmentTime').val();
+                                                        let appointmentDescription = $('#appointmentDescription').val();
+                                                        let services = $('input[name="services"]:checked').val();
+                                                        let othersInput = $('#othersInput').val();
+                                                        let password = $('#passwordInput').val();
+                                                        let ticketID = $('#ticketInputEdit').val();
+                                                        
+                                                        $.ajax({
+                                                            url: '/update-appointment/'+ticketID+'/edit',
+                                                            method: 'POST',
+                                                            dataType: 'json',
+                                                            data: {
+                                                                '_method': 'PATCH',
+                                                                patientID: patientID,
+                                                                patientType: patientType,
+                                                                appointmentDate: appointmentDate,
+                                                                appointmentTime: appointmentTime,
+                                                                appointmentDescription: appointmentDescription,
+                                                                services: services,
+                                                                othersInput: othersInput,
+                                                                password: password,
+                                                                ticketID: ticketID
+                                                            },
+                                                            success: function(response) {
+                                                                //console.log(othersInput);
+                                                                $('#appointmentModal').modal('hide');
 
-                                                            var modal = $('#editSuccessModal');
-                                                            $('body').append(modal);
-                                                            modal.modal('show');
-                                                            // Close modal
-                                                            $('#editSuccessModal .close').on('click', function() {
-                                                                $('#editSuccessModal').modal('hide');
-                                                                $("#appointmentForm")[0].reset();
-                                                                location.reload();
-                                                            });
-                                                            
-                                                        },
-                                                        error: function(jqXHR, textStatus, errorThrown) {
-                                                            console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
-                                                            // handle error
-                                                        }
-                                                    });
+                                                                $('#successDateTime').text(appointmentDate+' @ '+appointmentTime);
+                                                                $('#successTicketID').text('Ticket# '+ticketID);
+                                                                if(!services){
+                                                                    $('#successService').text('Service: '+othersInput);
+                                                                }
+                                                                else{
+                                                                    $('#successService').text('Service: '+services);
+                                                                }
+                                                                $('#successDescription').text('Description: '+appointmentDescription);
+
+                                                                var modal = $('#editSuccessModal');
+                                                                $('body').append(modal);
+                                                                modal.modal('show');
+                                                                // Close modal
+                                                                $('#editSuccessModal .close').on('click', function() {
+                                                                    $('#editSuccessModal').modal('hide');
+                                                                    $("#appointmentForm")[0].reset();
+                                                                    location.reload();
+                                                                });
+                                                                
+                                                            },
+                                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                                console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
+                                                                // handle error
+                                                            }
+                                                        });
+                                                    }
+                                                    else{
+                                                        let patientID = $('#patientID').val();
+                                                        let patientType = $('#patientType').val();
+                                                        let appointmentDate = $('#appointmentDate').val();
+                                                        let appointmentTime = $('#appointmentTime').val();
+                                                        let appointmentDescription = $('#appointmentDescription').val();
+                                                        let services = $('input[name="services"]:checked').val();
+                                                        let othersInput = $('#othersInput').val();
+                                                        let applicantIDinput = $('#applicantIDinput').val();
+                                                        let applicantBirthYear = $('#applicantBirthYear').val();
+                                                        let applicantBirthMonth = $('#applicantBirthMonth').val();
+                                                        let applicantBirthDate = $('#applicantBirthDate').val();
+                                                        let ticketID = $('#ticketInputEdit').val();
+                                                        
+                                                        $.ajax({
+                                                            url: '/update-appointment/'+ticketID+'/edit',
+                                                            method: 'POST',
+                                                            dataType: 'json',
+                                                            data: {
+                                                                '_method': 'PATCH',
+                                                                patientID: patientID,
+                                                                patientType: patientType,
+                                                                appointmentDate: appointmentDate,
+                                                                appointmentTime: appointmentTime,
+                                                                appointmentDescription: appointmentDescription,
+                                                                services: services,
+                                                                othersInput: othersInput,
+                                                                applicantIDinput: applicantIDinput,
+                                                                applicantBirthYear: applicantBirthYear,
+                                                                applicantBirthMonth: applicantBirthMonth,
+                                                                applicantBirthDate: applicantBirthDate,
+                                                                ticketID: ticketID
+                                                            },
+                                                            success: function(response) {
+                                                                //console.log(othersInput);
+                                                                $('#appointmentModal').modal('hide');
+
+                                                                $('#successDateTime').text(appointmentDate+' @ '+appointmentTime);
+                                                                $('#successTicketID').text('Ticket# '+ticketID);
+                                                                if(!services){
+                                                                    $('#successService').text('Service: '+othersInput);
+                                                                }
+                                                                else{
+                                                                    $('#successService').text('Service: '+services);
+                                                                }
+                                                                $('#successDescription').text('Description: '+appointmentDescription);
+
+                                                                var modal = $('#editSuccessModal');
+                                                                $('body').append(modal);
+                                                                modal.modal('show');
+                                                                // Close modal
+                                                                $('#editSuccessModal .close').on('click', function() {
+                                                                    $('#editSuccessModal').modal('hide');
+                                                                    $("#appointmentForm")[0].reset();
+                                                                    location.reload();
+                                                                });
+                                                                
+                                                            },
+                                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                                console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
+                                                                // handle error
+                                                            }
+                                                        });
+                                                    }
                                                 });
                                             });
                                         </script>

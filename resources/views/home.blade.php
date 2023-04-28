@@ -49,7 +49,7 @@
 
   <section class="text-gray-600 body-font mt-5 mb-5">
     <div class="container mx-auto d-flex px-5 py-24 flex-md-row flex-column align-items-center">
-      <div class="col-md-6 mb-10 mb-md-0">
+      <div class="col-md-6 mb-10 mb-md-0 clearfix">
         <img class="img-fluid rounded" alt="hero" src="{{ asset('media/clinic.jpg') }}">
       </div>
   

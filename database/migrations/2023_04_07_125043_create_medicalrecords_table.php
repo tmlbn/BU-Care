@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('middle_name', 50)->nullable();
             $table->unsignedTinyInteger('age');
             $table->string('sex', 10);
-            $table->string('placeOfBirth', 100);
+            $table->date('dateOfBirth');
             $table->string('civilStatus', 20);
             $table->string('homeAddress');
             $table->string('nationality', 20);
@@ -44,11 +44,11 @@ return new class extends Migration
             $table->string('emergencyContactOccupation', 100);
             $table->string('emergencyContactRelationship', 100);
             $table->string('emergencyContactAddress', 100);
-            $table->unsignedBigInteger('familyHistoryID')->unique();
-            $table->unsignedBigInteger('personalSocialHistoryID')->unique();
-            $table->unsignedBigInteger('pastIllnessID')->unique();
-            $table->unsignedBigInteger('presentIllnessID')->unique();
-            $table->unsignedBigInteger('immunizationHistoryID')->unique();
+            $table->unsignedBigInteger('familyHistoryID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('personalSocialHistoryID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('pastIllnessID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('presentIllnessID')->unique()->nullable()->default(null);
+            $table->unsignedBigInteger('immunizationHistoryID')->unique()->nullable()->default(null);
             $table->boolean('hospitalization');
             $table->string('hospDetails', 100);
             $table->boolean('takingMedsRegularly', 20);

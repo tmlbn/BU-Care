@@ -38,27 +38,27 @@ return new class extends Migration
         Schema::table('medicalrecords', function (Blueprint $table) {
             $table->foreign('familyHistoryID')
                 ->references('familyHistoryID')->on('familyhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
             
             $table->foreign('personalSocialHistoryID')
                 ->references('personalSocialHistoryID')->on('personalsocialhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('pastIllnessID')
                 ->references('pastIllnessID')->on('pastillness')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('presentIllnessID')
                 ->references('presentIllnessID')->on('presentillness')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('immunizationHistoryID')
                 ->references('immunizationHistoryID')->on('immunizationhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('MRA_id')
@@ -75,27 +75,27 @@ return new class extends Migration
         Schema::table('medicalrecordspersonnel', function (Blueprint $table) {
             $table->foreign('MRP_familyHistoryID')
                 ->references('MRP_familyHistoryID')->on('mrp_familyhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
             
             $table->foreign('MRP_personalSocialHistoryID')
                 ->references('MRP_personalSocialHistoryID')->on('mrp_personalsocialhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('MRP_PMC_ID')
                 ->references('MRP_PMC_ID')->on('mrp_personalmedicalcondition')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('MRP_immunizationHistoryID')
                 ->references('MRP_immunizationHistoryID')->on('mrp_immunizationhistory')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('MRPA_id')
                 ->references('MRPA_id')->on('medicalrecordspersonnel_admin')
-                ->cascadeOnDelete()
+                ->nullOnDelete()
                 ->cascadeOnUpdate();
         
             $table->foreign('personnel_id')
@@ -127,7 +127,69 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        Schema::table('familyhistory', function (Blueprint $table){
+            $table->foreign('MR_id')
+                ->references('MR_id')->on('medicalrecords')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
         
+        Schema::table('immunizationhistory', function (Blueprint $table){
+            $table->foreign('MR_id')
+                ->references('MR_id')->on('medicalrecords')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('personalsocialhistory', function (Blueprint $table){
+            $table->foreign('MR_id')
+                ->references('MR_id')->on('medicalrecords')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('presentillness', function (Blueprint $table){
+            $table->foreign('MR_id')
+                ->references('MR_id')->on('medicalrecords')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('pastillness', function (Blueprint $table){
+            $table->foreign('MR_id')
+                ->references('MR_id')->on('medicalrecords')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('mrp_familyhistory', function (Blueprint $table){
+            $table->foreign('MRP_id')
+                ->references('MRP_id')->on('medicalrecordspersonnel')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('mrp_immunizationhistory', function (Blueprint $table){
+            $table->foreign('MRP_id')
+                ->references('MRP_id')->on('medicalrecordspersonnel')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('mrp_personalmedicalcondition', function (Blueprint $table){
+            $table->foreign('MRP_id')
+                ->references('MRP_id')->on('medicalrecordspersonnel')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::table('mrp_personalsocialhistory', function (Blueprint $table){
+            $table->foreign('MRP_id')
+                ->references('MRP_id')->on('medicalrecordspersonnel')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
     }
 
     /**

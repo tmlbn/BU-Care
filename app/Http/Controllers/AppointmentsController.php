@@ -115,26 +115,64 @@ class AppointmentsController extends Controller
 */
 
     public function appointmentStore(Request $request) {
-        $request->validate([
-            'appointmentDate' => 'required',
-            'appointmentTime' => 'required',
-            'services' => 'required_if:othersInput,null',
-            'othersInput' => 'required_if:services,null',
-            'appointmentDescription' => 'required',
-            'passwordInput' => 'required'
-        ],[
-            'appointmentDate.required' => 'Appointment Date is required',
-            'appointmentTime.required' => 'Appointment Time is required',
-            'services.required_if' => 'Services is required',
-            'othersInput.required_if' => 'Please input details.',
-            'appointmentDescription.required' => 'appointmentDescription is required',
-            'passwordInput.required' => 'Please input your password.'
-        ]);
-        // Confirm if password is a match
-        $password = $request->input('passwordInput');
-        $user = Auth::guard('employee')->user() ?: Auth::user();
-        if (!Hash::check($password, $user->password)) {
-            return back()->with('fail','Invalid password.');
+        if(Auth::user()->student_id_number){
+            $request->validate([
+                'appointmentDate' => 'required',
+                'appointmentTime' => 'required',
+                'services' => 'required_if:othersInput,null',
+                'othersInput' => 'required_if:services,null',
+                'appointmentDescription' => 'required',
+                'passwordInput' => 'required'
+            ],[
+                'appointmentDate.required' => 'Appointment Date is required',
+                'appointmentTime.required' => 'Appointment Time is required',
+                'services.required_if' => 'Services is required',
+                'othersInput.required_if' => 'Please input details.',
+                'appointmentDescription.required' => 'appointmentDescription is required',
+                'passwordInput.required' => 'Please input your password.'
+            ]);
+            // Confirm if password is a match
+            $password = $request->input('passwordInput');
+            $user = Auth::guard('employee')->user() ?: Auth::user();
+            if (!Hash::check($password, $user->password)) {
+                return back()->with('fail','Invalid password.');
+            }
+        }
+        else{
+            $request->validate([
+                'appointmentDate' => 'required',
+                'appointmentTime' => 'required',
+                'services' => 'required_if:othersInput,null',
+                'othersInput' => 'required_if:services,null',
+                'appointmentDescription' => 'required',
+                'applicantIDinput' => 'required',
+                'applicantBirthYear' => 'required',
+                'applicantBirthMonth' => 'required',
+                'applicantBirthDate' => 'required',
+            ],[
+                'appointmentDate.required' => 'Appointment Date is required',
+                'appointmentTime.required' => 'Appointment Time is required',
+                'services.required_if' => 'Services is required',
+                'othersInput.required_if' => 'Please input details.',
+                'appointmentDescription.required' => 'appointmentDescription is required',
+                'applicantIDinput.required' => 'Please input your Applicant ID Number.',
+                'applicantBirthYear.required' => 'Please input your birth year.',
+                'applicantBirthMonth.required' => 'Please input your birth month.',
+                'applicantBirthDate.required' => 'Please input your birth date.',
+            ]);
+            // Confirm if birthday details are match
+            $applicantID = $request->input('applicantIDinput');
+            $birthYear = $request->input('applicantBirthYear');
+            $birthMonth = $request->input('applicantBirthMonth');
+            $birthDate = $request->input('applicantBirthDate');
+            $user = Auth::user();
+
+            if(!($user->applicant_id_number == $applicantID && 
+            $user->birth_year == $birthYear && 
+            $user->birth_month == $birthMonth && 
+            $user->birth_date == $birthDate)){
+                return back()->with('fail','Invalid authentication.');
+            }
         }
 
         // Format Date
@@ -220,16 +258,7 @@ class AppointmentsController extends Controller
             return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
         }
         
-        return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket); 
-        /**
-         * DECREMENT WHEN DELETING AN APPOINTMENT ENTRY
-         * 
-         * $appointment = Appointment::find($id);
-         * $appointment->booked_slots--;
-         * $appointment->save();
-         */
-    
-        
+        return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket);
     }
     public function getAppointmentToUpdate(Request $request){
         $ticketID = $request->input('ticketID');
@@ -276,11 +305,47 @@ class AppointmentsController extends Controller
         else{
             return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
         }
-        
-        $password = $request->input('password');
-        if (!Hash::check($password, $user->password)) {
-            $response = 'Invalid Password';
-            return response()->json(['error' => $response]);
+        if($request->input('password')){
+            $password = $request->input('password');
+            if (!Hash::check($password, $user->password)) {
+                $response = 'Invalid Password';
+                return response()->json(['error' => $response]);
+            }
+        }
+        else{
+            $request->validate([
+                'appointmentDate' => 'required',
+                'appointmentTime' => 'required',
+                'services' => 'required_if:othersInput,null',
+                'othersInput' => 'required_if:services,null',
+                'appointmentDescription' => 'required',
+                'applicantIDinput' => 'required',
+                'applicantBirthYear' => 'required',
+                'applicantBirthMonth' => 'required',
+                'applicantBirthDate' => 'required',
+            ],[
+                'appointmentDate.required' => 'Appointment Date is required',
+                'appointmentTime.required' => 'Appointment Time is required',
+                'services.required_if' => 'Services is required',
+                'othersInput.required_if' => 'Please input details.',
+                'appointmentDescription.required' => 'appointmentDescription is required',
+                'applicantIDinput.required' => 'Please input your Applicant ID Number.',
+                'applicantBirthYear.required' => 'Please input your birth year.',
+                'applicantBirthMonth.required' => 'Please input your birth month.',
+                'applicantBirthDate.required' => 'Please input your birth date.',
+            ]);
+            // Confirm if birthday details are match
+            $applicantID = $request->input('applicantIDinput');
+            $birthYear = $request->input('applicantBirthYear');
+            $birthMonth = $request->input('applicantBirthMonth');
+            $birthDate = $request->input('applicantBirthDate');
+            $user = Auth::user();
+            if(!($user->applicant_id_number == $applicantID && 
+            $user->birth_year == $birthYear && 
+            $user->birth_month == $birthMonth && 
+            $user->birth_date == $birthDate)){
+                return back()->with('fail','Invalid authentication.');
+            }
         }
         
         $appointment = Appointment::where('ticket_id', $ticketID)
@@ -318,18 +383,46 @@ class AppointmentsController extends Controller
     }
 
     public function appointmentDelete(Request $request){
-        $request->validate([
-            'ticketInputDelete' => 'required',
-            'passwordInputDelete' => 'required',
-        ],[
-            'ticketInputDelete.required' => 'Please input the ticket number.',
-            'passwordInputDelete.required' => 'Please input your password.'
-        ]);
-        // Confirm password is a match
-        $password = $request->input('passwordInputDelete');
         $user = Auth::guard('employee')->user() ?: Auth::user();
-        if (!Hash::check($password, $user->password)) {
-            return back()->with('fail','Invalid password.');
+        if($request->passwordInputDelete){
+            $request->validate([
+                'ticketInputDelete' => 'required',
+                'passwordInputDelete' => 'required',
+            ],[
+                'ticketInputDelete.required' => 'Please input the ticket number.',
+                'passwordInputDelete.required' => 'Please input your password.'
+            ]);
+            // Confirm password is a match
+            $password = $request->input('passwordInputDelete');
+            if (!Hash::check($password, $user->password)) {
+                return back()->with('fail','Invalid password.');
+            }
+        }
+        else{
+            $request->validate([
+                'ticketInputDelete' => 'required',
+                'applicantIDinputDelete' => 'required',
+                'applicantBirthYearDelete' => 'required',
+                'applicantBirthMonthDelete' => 'required',
+                'applicantBirthDateDelete' => 'required',
+            ],[
+                'ticketInputDelete.required' => 'Please input the ticket number.',
+                'applicantIDinputDelete.required' => 'Please input your Applicant ID number.',
+                'applicantBirthYearDelete.required' => 'Please input your Birth Year.',
+                'applicantBirthMonthDelete.required' => 'Please input your Birth Month.',
+                'applicantBirthDateDelete.required' => 'Please input your Birth Date.',
+            ]);
+            $applicantID = $request->input('applicantIDinputDelete');
+            $birthYear = $request->input('applicantBirthYearDelete');
+            $birthMonth = $request->input('applicantBirthMonthDelete');
+            $birthDate = $request->input('applicantBirthDateDelete');
+
+            if(!($user->applicant_id_number == $applicantID && 
+            $user->birth_year == $birthYear && 
+            $user->birth_month == $birthMonth && 
+            $user->birth_date == $birthDate)){
+                return back()->with('fail','Invalid authentication.');
+            }
         }
 
         // Delete appointment entry
@@ -338,10 +431,23 @@ class AppointmentsController extends Controller
         if (!$appointment) {
             return back()->with('fail','Appointment not found. Please enter the correct Ticket Number.');
         }
+
+        /**
+         * DECREMENT WHEN DELETING AN APPOINTMENT ENTRY
+         */
+        $appointmentDateTimeToDelete = $appointment->appointmentDateTime;
+        $appointmentToDecrementSlot = Appointment::where('appointmentDateTime', $appointmentDateTimeToDelete)->first();
+
+        if($appointment->id ===  $appointmentToDecrementSlot->id){
+            $appointmentToDecrementSlot = Appointment::where('appointmentDateTime', $appointmentDateTimeToDelete)->skip(1)->take(1)->first();
+        }
+        if($appointmentToDecrementSlot){
+            $appointmentToDecrementSlot->booked_slots = 1;
+            $appointmentToDecrementSlot->save();
+        }
+
         $appointment->delete();
-
         return back()->with('success','Appointment deleted successfully.');
-
     }
     
 }

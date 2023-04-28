@@ -22,7 +22,15 @@
         background-attachment: fixed;
         background-size: cover;
     }
-
+    div.divForResults{
+        width:500px;
+        height:500px;
+        overflow:hidden;
+    }
+    div.divForResults img {
+        min-width:100%;
+        max-height:500px;
+    }
     div.settings {
     display:grid;
     grid-template-columns: max-content max-content;
@@ -69,6 +77,11 @@
             padding-right: 0;
             padding-left: 0;
         }
+    }
+    input.form-control-plaintext{
+        border: 0;
+        box-shadow: none;
+        outline: 0 !important;
     }
 
 </style>
@@ -120,122 +133,176 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 px-4d-print-inline-block">
+<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-3 px-4d-print-inline-block">
     @csrf     
     <div class="container d-print-inline-block">
         <input type="hidden" class="form-control" id="studentID" name="studentID" value="{{ $patient->id }}">
         <input type="hidden" class="form-control" id="medRecID" name="medRecID" value="{{ $patient->MR_id }}">
-        <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
-            <div class="col-xl-5 col-lg-6">
-                <p class="h6">Campus</p>
-                <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
-            </div>
-            <div class="col-xl-5 col-lg-6 col-md-6">
-                <p class="h6">Course</p>
-                <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->course }}" readonly>
-            </div>
-            <div class="col-xl-2 col-lg-12 col-md-12">
-                <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
-                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                    <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" value="{{ $patient->medicalRecord->SYstart }}" readonly>
-                    <span class="fs-6">-</span>
-                    <input type="text" class="form-control ms-1" id="schoolYearEnd" name="schoolYearEnd" value="{{ $patient->medicalRecord->SYend }}" readonly>
+            <div class="row justify-content-end">
+                <div class="col-xl-4 col-lg-6 col-md-12 d-flex" style="text-align: justify;">
+                    <p class="h6">Course:&nbsp;</p>
+                    <div class="col-xl-9 col-lg-6">
+                        <p class="fs-6 text-decoration-underline text-break">{{ $patient->medicalRecord->course }}</p>
+                    </div>
                 </div>
             </div>
-            
-            
-            
-        </div>
+            <div class="row justify-content-end">
+                <div class="col-xl-4 col-lg-6 col-md-12 d-flex">
+                    <p class="h6">School Year:&nbsp;</p>
+                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:50%;">
+                        <p class="fs-6">{{ $patient->medicalRecord->SYstart }}-{{ $patient->medicalRecord->SYend }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-xl-4 col-lg-6 col-md-12 d-flex">
+                    <p class="h6">Campus:&nbsp;</p>
+                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:50%; width: 72.75%;">
+                        <p class="fs-6">{{ $patient->medicalRecord->campus }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            @php
+                $date = $patient->medicalRecord->dateOfBirth;
+                $formatted_dateOfBirth = date("Y F d", strtotime($date));
+            @endphp
+        
     </div>   
     <div class="d-flex flex-row d-print-inline-block">
-        <h4 class="pb-3"></h4>
-    </div>   
-        <div class="col-md-3 d-print-inline-block">
-            <label for="MR_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" value="{{ $patient->medicalRecord->last_name }}" readonly>
+    </div>
+    <div class="row justify-content-end pb-0 mb-0">
+        <div class="col-md-1 d-flex align-items-center justify-content-center">
+            <p class="h5 text-center text-bottom m-0 p-0">Name</p>
         </div>
-        <div class="col-md-3">
-            <label for="MR_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" value="{{ $patient->medicalRecord->firstName }}" readonly>
-        </div>
-        <div class="col-md-3">
-            <label for="MR_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ $patient->medicalRecord->middleName }}" readonly>
+        <div class="col-md-9 text-bottom">
+            <p class="form-label h6 p-0" style="position:static; margin-top: 0.3%; user-select:none;">&nbsp;</p>
+            <div class="row justify-content-around text-center border-bottom border-dark mb-0 pb-0">
+                <div class="col-4 pb-0 mb-0 text-bottom">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="last_name" name="last_name" value="{{ $patient->medicalRecord->last_name }}" readonly>
+                </div>
+                <div class="col-5">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="first_name" name="first_name" value="{{ $patient->medicalRecord->first_name }}" readonly>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="middle_name" name="middle_name" value="{{ $patient->medicalRecord->middle_name }}" readonly>
+                </div>
+            </div>
+            <div class="row justify-content-around text-center">
+                <div class="col-4">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(LAST)</p>
+                </div>
+                <div class="col-5">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(FIRST)</p>
+                </div>
+                <div class="col-3">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(MIDDLE)</p>
+                </div>
+            </div>
         </div>
         <div class="col-md-1">
-            <label for="MR_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MR_age" name="MR_age" value="{{ $patient->medicalRecord->age }}" readonly>
+            <label for="age" class="form-label h6">Age</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="age" name="age" value="{{ $patient->medicalRecord->age }}" readonly>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <label for="MR_sex" class="form-label h6">Sex</label>
-            <input type="text" class="form-control" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
         </div>
+    </div>
         <div class="col-md-4">
-            <label for="MR_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MR_placeOfBirth" name="MR_placeOfBirth" value="{{ $patient->medicalRecord->placeOfBirth }}" readonly>
+            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ $formatted_dateOfBirth }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MR_civilStatus" class="form-label h6">Civil Status</label>
-            <input type="text" class="form-control" id="MR_civilStatus" name="MR_civilStatus" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_civilStatus" name="MR_civilStatus" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
         </div>
         <div class="col-md-4">
             <label for="MR_nationality" class="form-label h6">Nationality</label>
-            <input type="text" class="form-control" id="MR_nationality" name="MR_nationality" value="{{ $patient->medicalRecord->nationality }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_nationality" name="MR_nationality" value="{{ $patient->medicalRecord->nationality }}" readonly>
             </div>
         <div class="col-md-2">
             <label for="MR_religion" class="form-label h6">Religion</label>
-            <input type="text" class="form-control" id="MR_religion" name="MR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_religion" name="MR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
             </div>
         <div class="col-md-12">
             <label for="MR_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_fatherName" class="form-label h6">Father's Name</label>
-            <input type="text" class="form-control" id="MR_fatherName" name="MR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherName" name="MR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_motherName" class="form-label h6">Mother's Name</label>
-            <input type="text" class="form-control" id="MR_motherName" name="MR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherName" name="MR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_fatherOccupation" class="form-label h6">Father's Occupation</label>
-            <input type="text" class="form-control" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ $patient->medicalRecord->fatherOccupation }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ $patient->medicalRecord->fatherOccupation }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_motherOccupation" class="form-label h6">Mother's Occupation</label>
-            <input type="text" class="form-control" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ $patient->medicalRecord->motherOccupation }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ $patient->medicalRecord->motherOccupation }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_fatherOffice" class="form-label h6">Office Address of Father</label>
-            <input type="text" class="form-control" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_motherOffice" class="form-label h6">Office Address of Mother</label>
-            <input type="text" class="form-control" id="MR_motherOffice" name="MR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
-            <input type="text" class="form-control" id="MR_guardian" name="MR_guardianName" value="{{ $patient->medicalRecord->guardianName }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardian" name="MR_guardianName" value="{{ $patient->medicalRecord->guardianName }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_parentGuardianContactNumber" class="form-label h6">Parent's/Guardian's Contact No.</label>
-            <input type="text" class="form-control" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardianAddress" class="form-label h6">Guardian's Address</label>
-            <input type="text" class="form-control" id="MR_guardianAddress" name="MR_guardianAddress" value="{{ $patient->medicalRecord->guardianAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardianAddress" name="MR_guardianAddress" value="{{ $patient->medicalRecord->guardianAddress }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_studentContactNumber" class="form-label h6">Student's Contact No.</label>
-            <input type="text" class="form-control" id="MR_studentContactNumber" name="MR_studentContactNumber" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_studentContactNumber" name="MR_studentContactNumber" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
             </div>
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+        <div class="col-md-6">
+            <p class="h6 me-2">In case of emergency, contact:</p>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactName" value="{{ $patient->medicalRecord->emergencyContactName }}" name="MR_emergencyContactName" required>
+        </div>
+        <div class="col-md-6">
+            <label for="MR_emergencyContactOccupation" class="form-label h6">Occupation</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactOccupation" value="{{ $patient->medicalRecord->emergencyContactOccupation }}" name="MR_emergencyContactOccupation" required>
+        </div>
+        <div class="col-md-6">
+            <label for="MR_emergencyContactRelationship" class="form-label h6">Relationship</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactRelationship" value="{{ $patient->medicalRecord->emergencyContactRelationship }}" name="MR_emergencyContactRelationship" required>
+        </div>
+        <div class="col-md-6">
+            <label for="MR_emergencyContactNumber" class="form-label h6">Contact Number</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactNumber" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" name="MR_emergencyContactNumber" required>
+        </div>
+        <div class="col-md-12">
+            <label for="MR_emergencyContactAddress" class="form-label h6">Address</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactAddress" value="{{ $patient->medicalRecord->emergencyContactAddress }}" name="MR_emergencyContactAddress" required>
+        </div>
+        
         
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">
                 <!-- LINE BREAK -->
             </header>
         </section>
+        
 
         <h5>Please click the box if one of the following is applicable to you</h5>
 
@@ -342,7 +409,7 @@
                         <label class="form-check-label" for="FH_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" value="{{ $patient->medicalRecord->familyHistory->othersDetails }}" {{ $patient->medicalRecord->familyHistory->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>  
+                            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="FH_othersDetails" name="FH_othersDetails" value="{{ $patient->medicalRecord->familyHistory->othersDetails }}" {{ $patient->medicalRecord->familyHistory->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>  
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                 </div><!-- END OF COL OTHERS DIV -->
             </div><!-- END OF ROW OTHERS DIV -->
@@ -356,7 +423,7 @@
                         <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
+                            ( <input type="text" class="col-md-2 form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
                             sticks/day for 
                             <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ $patient->medicalRecord->personalSocialHistory->years }}" {{ $patient->medicalRecord->personalSocialHistory->years == 0 ? 'disabled' : 'readonly' }}> 
                             year/s ) 
@@ -810,28 +877,28 @@
             <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
-                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
+                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings">
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
+                            <img src="{{ asset('storage/'.$patient->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings">
                         </div>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->CBCResults) }}" alt="CBC Results">
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
+                            <img src="{{ asset('storage/'.$patient->medicalRecord->CBCResults) }}" alt="CBC Results">
                         </div>
-                      </div>                      
+                      </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
+                            <img src="{{ asset('storage/'.$patient->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
                         </div>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                            <img src="{{ asset('storage/app/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
+                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
+                            <img src="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
                         </div>
                     </div> 
                 </div>

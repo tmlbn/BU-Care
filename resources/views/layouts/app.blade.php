@@ -6,7 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <!-- ICON -->
+    <link rel="icon" type="image/png" href="{{ asset('media/BUHS-icon.ico') }}">
     <title>{{ config('app.name', 'BU-Care') }}</title>
 
     <!-- Fonts -->
@@ -17,7 +18,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' rel='stylesheet' media='print' />
     <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap/main.css' rel='stylesheet' />
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
@@ -26,6 +27,7 @@
     <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://use.fontawesome.com/03f8a0ebd4.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
     <script>
         $(function () {
@@ -111,10 +113,12 @@
 
         .text-responsive{
             color:black;
+            user-select: none;
         }
         @media (max-width: 650px) {
             .text-responsive{
                 color: white;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
             }
         }
     
