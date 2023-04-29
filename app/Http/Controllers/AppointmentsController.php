@@ -449,5 +449,32 @@ class AppointmentsController extends Controller
         $appointment->delete();
         return back()->with('success','Appointment deleted successfully.');
     }
-    
+
+
+    public function ClinicSideAppointments()
+    {
+            $dateToday = date('Y-m-d');
+        
+            $entries = Appointment::where('appointmentDate', '>=', $dateToday)->get(); //CHANGED = TO >=
+            if(!$entries){
+                // if the entries is empty, don't pass any data 
+                return response()->json([]);
+            }
+            // Count the appointment entries for each day
+            $counts = [];
+            foreach ($entries as $entry) {
+                $entryDate = $entry->appointmentDate;
+                if (isset($counts[$entryDate])) {
+                    $counts[$entryDate]++;
+                } else {
+                    $counts[$entryDate] = 1;
+                }
+            }
+            
+        
+            return view('admin.ClinicSideAppointments')->with([
+                'entries' => $entries
+            ]);
+    }
 }
+          

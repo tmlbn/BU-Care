@@ -115,4 +115,5 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
 	
 	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
+    Route::get('/admin/ClinicSideAppointments', [AppointmentsController::class, 'ClinicSideAppointments'])->name('admin.ClinicSideAppointments');
 });

@@ -57,10 +57,6 @@
                                     <option value="Table-Morbidities">Morbidities</option>
                                     <option value="Table-Appointments">Appointments</option>
                                     <option value="Table-Patients">Patients</option>
-                                    <option value="Graph-Select">Select table</option>
-                                    <option value="Graph-Morbidities">Morbidities</option>
-                                    <option value="Graph-Appointments">Appointments</option>
-                                    <option value="Graph-Patients">Patients</option>
                             </select>
                           </div>
                     </div>
@@ -94,7 +90,7 @@
         <thead class="text-center">
           <th>Month</th>
           <th>Number of Appointments</th>
-          <th>Top Reason of Appointment</th>
+          <th>Purpose of Appointment</th>
           <th>Percentage</th>
           <th>Top Course</th>
         </thead>
@@ -197,13 +193,13 @@
      var chart = new Chart(ctx, {
        type: 'bar',
        data: {
-         labels: ['John', 'Jane', 'Bob'],
+         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
          datasets: [{
            label: 'Age',
            backgroundColor: 'rgba(54, 162, 235, 0.5)',
            borderColor: 'rgba(54, 162, 235, 1)',
            borderWidth: 1,
-           data: [25, 30, 40]
+           data: [25, 30, 40, 35]
          }]
        },
        options: {
