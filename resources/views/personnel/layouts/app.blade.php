@@ -25,6 +25,7 @@
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://use.fontawesome.com/03f8a0ebd4.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
@@ -40,6 +41,29 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     <style>
+        html{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
 
         /* Navbar color scheme */
         .main-navbar {
@@ -66,8 +90,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-        }
-    
+        }    
         .main-navbar{
         border-bottom: 1px solid #ccc;
         }
@@ -148,33 +171,6 @@
         .textOrange{
             color: #f1731f !important;
         }
-    
-        .dropdown-menu {
-            transition: transform 0.3s ease-in-out 0.3s; /* added delay of 0.1s */
-            transform: translateY(-10px);
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 1000;
-            float: left;
-            min-width: 10rem;
-            padding: 0.5rem 0;
-            margin: 0.125rem 0 0;
-            font-size: 1rem;
-            color: #212529;
-            text-align: left;
-            list-style: none;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 0.25rem;
-        }
-    
-        .dropdown-menu.show {
-            transform: translateY(0);
-            display: block;
-        }
         .icon {
             position: relative;
             top: -4px; /* adjust the value as needed */
@@ -184,6 +180,9 @@
             background-repeat: no-repeat; 
             background-size:100%;
             background-image:url({{ asset('media/pillars.jpg') }}); 
+        }
+        .dropdown-toggle{
+            color: #f1731f !important;
         }
         
     </style>
@@ -195,30 +194,41 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-2 d-none d-sm-none d-md-block d-lg-block ms-5 my-1" style="height:45px; width:170px;">
-                        <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height:90%;">
+                        <a href="{{ route('home') }}">
+                            <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" class="img-fluid" style="height:90%;">
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="#">
+                <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="{{ route('home') }}">
                     <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" style="height:40px;">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
+                    <div class="offcanvas-header">
+                        <div class="col-5">
+                            <img src="{{ asset('media/BU-Carelogo1.png') }}" class="img-fluid offcanvas-title d-block" id="offcanvasNavbarLabel" alt="">
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
                     <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
-                        <li class="nav-item">
+                        <li class="nav-item pe-1">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : 'inactive' }}" href="{{ route('home') }}">HOME</a>
                         </li>
-                        <li class="nav-item mr-4">
+                        <li class="nav-item pe-1">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="{{ route('setAppointment.show') }}">SET APPOINTMENT</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'personnel.medicalForm.show' ? 'active' : 'inactive' }}" href="{{ route('personnel.medicalForm.show') }}">SUBMIT MEDICAL RECORD</a>
+                        </li>
                         <li class="pt-2 mt-1">
-                            <div class="vr pt-4"></div>
+                            <div class="vr pt-4 pe-1"></div>
                         </li>
                         <li class="nav-item dropdown">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-row">
@@ -228,24 +238,18 @@
                                         @if(Auth::guard('employee')->user()->hasMedRecord)
                                             @if(Auth::guard('employee')->user()->hasValidatedRecord)
                                                 <!-- HAS VALIDATED MEDICAL RECORD -->
-                                                <i class="bi bi-person-check icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+                                                <i class="bi bi-person-check icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
                                             @else
                                                 <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
-                                                <i class="bi bi-file-earmark-medical icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
+                                                <i class="bi bi-file-earmark-medical icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Submitted Medical Record"></i>
                                             @endif
                                         @else
                                             <!-- NO MEDICAL RECORD -->
-                                            <i class="bi bi-person-x icon" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="No Medical Record"></i>
+                                            <i class="bi bi-person-x icon" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="No Medical Record"></i>
                                         @endif
                                     </a>
                                     
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="#">Profile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" style="{{ Auth::guard('employee')->user()->hasMedRecord ? 'display:none;' : '' }}" href="{{ route('personnel.medicalForm.show') }}">Submit My Medical Form</a>
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="#">My Appointments History</a>
                                     </li>

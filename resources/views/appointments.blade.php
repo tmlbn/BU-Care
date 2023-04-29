@@ -245,7 +245,7 @@
                                     <div class="align-items-center">
                                         <span class="text-center text-danger" id="invalidTicket"></span>
                                     </div>
-                                    <button type="submit" id="editButton" class="btn btn-danger">Edit</button>
+                                    <button type="submit" id="editButton" class="btn btn-info">Edit</button>
                                 <!-- AJAX request to fetch the entry that the user wants to edit -->
                                     <script>
                                         $(document).ready(function() {
@@ -279,10 +279,43 @@
                                                             $('#editAppointmentModal').modal('hide');
                                                             $('#appointmentModal_ticketID').text('#'+ ticketID);
 
-                                                            var AformattedDate = moment(response.appointmentDate).format('YYYY-MMMM-DD');
-                                                            var AformattedTime = moment(response.appointmentTime, 'HH:mm:ss').format('h:mm A');
+                                                            var AformattedDate = moment(appointment.appointmentDate).format('YYYY-MMMM-DD');
+                                                            var AformattedTime = moment(appointment.appointmentTime, 'HH:mm:ss').format('h:mm A');
+                                                            var afternoonThreshold = moment('13:00:00','HH:mm:ss').format('h:mm A');
+                                                            console.log(afternoonThreshold);
                                                             $('#appointmentDate').val(AformattedDate);
+
+                                                            $('#time-slots tr').removeClass('booked lastOne selected');
+                                                            $('#time-slots tr #timeSlot, #time-slots tr #numberOfSlots').removeClass('pointer-events-none');
+                                                            $('#time-slots tr #numberOfSlots').text('2');
                                                             $('#appointmentTime').val(AformattedTime);
+
+                                                            if (AformattedTime >= afternoonThreshold) {
+                                                                $('#pmbtn').trigger('click');
+                                                            }
+                                                            //loop through the data
+                                                            $.each(appointmentsForTheDay, function(index, appointment) {
+                                                                //console.log(appointment.appointmentTime);
+                                                                //get the time of appointments
+                                                                console.log(AformattedTime);
+                                                                //console.log(appt_time);
+                                                                //loop through each table cell and check if it matches the appointment date and time
+                                                                $('#time-slots tr').each(function() {
+                                                                    var cell_time = $(this).find('#timeSlot').text();
+                                                                    //console.log(cell_time);
+                                                                    if (AformattedTime == cell_time) {
+                                                                    //if there is a match, add a class to the table cell that corresponds to the appointment status
+                                                                        if (appointment.booked_slots == 2) {
+                                                                            $(this).addClass('booked');
+                                                                            $(this).find('#timeSlot').addClass('pointer-events-none');
+                                                                            $(this).find('#numberOfSlots').addClass('pointer-events-none').text('FULL');
+                                                                        } else if (appointment.booked_slots == 1) {
+                                                                            $(this).addClass('lastOne');
+                                                                            $(this).find('#numberOfSlots').text('1 (you)');
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
 
                                                             $('tr[data-time="'+AformattedTime+'"]').addClass('selected');
                                                             $('#saveButton').prop('hidden', true);
@@ -312,6 +345,7 @@
                         </div>
                     </div>
                 </div>
+
                 
                 <!-- Delete Modal -->
                 <div class="modal modal-lg fade" id="deleteAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteAppointmentModalLabel" aria-hidden="true">
@@ -491,7 +525,6 @@
                             $.each(appointmentEntry[i], function (key, loopedAppointmentDate) {
                                 if(loopedAppointmentDate == date.format('YYYY-MM-DD')){
                                     countValue++;
-                                    
                                 }
                             });
                         });
@@ -541,6 +574,10 @@
                 
                 select:function(start, end, allDay)
                 {
+                    $('#appointmentModal_ticketID').text('');
+                    $('#saveButton').prop('hidden', false);
+                    $('#saveButton').attr('disabled', true);
+                    $('#editButtonSubmit').prop('hidden', true);
                     // set the appointmentDate input value to the selected date
                     var selectedDate = moment(start).format('YYYY-MMMM-DD');
                     $('#appointmentDate').val(selectedDate);
@@ -842,7 +879,7 @@
                                                         @enderror
                                                     </span>
                                                 </div>
-                                                <div class="col-lg-2">
+                                                <div class="col-lg-3">
                                                     <label for="applicantBirthMonth" class="form-label h6 mt-2 me-2">Birth Month:</label>
                                                     <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px">
                                                         <option selected="selected" disabled="disabled" value="">SELECT</option>

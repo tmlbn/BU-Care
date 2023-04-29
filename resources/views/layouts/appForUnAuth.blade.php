@@ -54,12 +54,20 @@
             overflow-x: hidden;
             width: 100%;
         }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
 
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
         .bg-whitetoblue{
             background-color: white;
             background-image: linear-gradient(to right, white 33.3%, #f1731f 33.3%, #f1731f 66.6%, #009edf 66.6%);
         }
-
         @media (max-width: 700px) {
             .bg-whitetoblue {
                 background-image: none;
@@ -68,7 +76,6 @@
                 size: 16px;
             }
         }
-
         .text-responsive{
             color:black;
             user-select: none;
@@ -79,56 +86,23 @@
                 text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
             }
         }
-        .login-responsive{
-            color:white;
-        }
-        @media screen and (max-width: 768px) {
-            /* Styles for screen width less than or equal to 768px */
-            .login-responsive {
-                color: black;
-            }
-            .btn-orange{
-                color: black;
-                border: 2px solid black !important;
-            }
-            #loginButton{
-                margin-top: -80px !important;
-            }
-        }
         .nav-link.dropdown-toggle::before {
             display: none;
         }
-
         .nav-link.active {
             color: #007bff !important;
             border-bottom: 2px solid #007bff !important;            
         }
-
         .nav-link {
             color: #30455c;
             transition: color 0.3s ease;
         }
-
         .nav-link:hover {
             color: #007bff;            
         }
-
         .textOrange{
             color: #f1731f !important;
         }
-
-        .btn-orange{
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-orange:hover,
-        .btn-orange.active {
-            color: black;
-            background: #f1731f;
-            border: 2px solid #f1731f;
-        }
-
         .pillars-bg{
             background-repeat: no-repeat; 
             background-size:100%;
@@ -147,12 +121,47 @@
             width: 115px;
             text-align: center; /* center the text horizontally */
         }
-        a.loginButton:hover,
-        a.loginButton.active{
+        a#loginButton:hover,
+        a#loginButton.active{
             background-color: #f1731f;
-            color: black;
-            text-decoration: none;
+            color: black !important;
             transition: 0.3s;
+            border: 2px solid #f1731f;
+        }
+        .btn-orange{
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-orange:hover,
+        .btn-orange.active {
+            color: black;
+            background: #f1731f;
+            border: 2px solid #f1731f;
+        }
+        .login-responsive{
+            color:white;
+        }
+        .login-responsive:hover,
+        .login-responsive.active {
+            color: black !important;
+        }
+        @media screen and (max-width: 698px) {
+            /* Styles for screen width less than or equal to 768px */
+            .login-responsive {
+                color: black;
+            }
+            .btn-orange{
+                color: black;
+                border: 2px solid black !important;
+            }
+            .btn-orange:hover{
+                color: black;
+                border: 2px solid #f1731f !important;
+            }
+            #loginButton{
+                margin-top: -80px !important;
+            }
         }
     </style>
 
@@ -169,7 +178,7 @@
                     <div class="col-md-8 d-flex justify-content-end my-auto">
                         <nav class="mb-1 md:ml-4 md:py-1 md:pl-4 me-5"> 
                             <button type="button" id="loginButton" class="btn btn-orange rounded d-inline-flex" data-toggle="popover" data-bs-html="true" title="Login as:">
-                                <span class="login-responsive">
+                                <span id="loginText" class="login-responsive fw-bold">
                                     Login
                                 </span>
                             </button>
@@ -186,8 +195,10 @@
                                     $('#loginButton').on('click', function() {
                                         if($(this).hasClass('active')){
                                             $(this).removeClass('active');
+                                            $('#loginText').removeClass('active');
                                         }else{
                                             $(this).addClass('active');
+                                            $('#loginText').addClass('active');
                                         }
                                     });
                                 });

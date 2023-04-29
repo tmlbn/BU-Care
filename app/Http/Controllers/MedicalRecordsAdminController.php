@@ -18,7 +18,7 @@ class MedicalRecordsAdminController extends Controller
 
     public function medFormSubmitAdmin(Request $request){
         dd($request->all());
-
+    try{
         /* VALIDATE USER INPUT */
         $validator = Validator::make($request->all(), [
         /* VITAL SIGNS */
@@ -121,13 +121,20 @@ class MedicalRecordsAdminController extends Controller
             $patient->save();
             return redirect('/')->with('success', 'Medical record saved successfully');
         }
+        } 
+        catch (QueryException $ex) {
+            // Handle the SQL error here
+            return redirect()->back()->withErrors([
+                "An error occurred: " . $ex->getMessage(),
+                'If this error persists, please contact the admin from Bicol University Health Services.'
+            ])->withInput();
+            Log::error('Error from '.$user->id.': '. $ex->getMessage());
+        }
     } // END OF medFormSubmit FUNCTION
 
     #NEW FUNCTION STARTS HERE
     public function medicalRecordsPersonnelAdmin(Request $request){
-
         $validator = Validator::make($request->all(), [
-
             'VS_bp_systolic' => 'required|integer',
             'VS_bp_diastolic' => 'required|integer',
             'VS_pulseRate' => 'required|integer',
@@ -141,18 +148,26 @@ class MedicalRecordsAdminController extends Controller
         ]);
 
         $user = Auth::guard('employee')->user();
-        $medRecordPersonnelAdmin = new MedicalRecordsPersonnel_Admin();
+        try{
+            $medRecordPersonnelAdmin = new MedicalRecordsPersonnel_Admin();
 
-        $medRecordPersonnelAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $medRecordPersonnelAdmin->o2saturation = filter_var($request->input('VS_o2saturation'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
-        $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $medRecordPersonnelAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $medRecordPersonnelAdmin->o2saturation = filter_var($request->input('VS_o2saturation'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        } 
+        catch (QueryException $ex) {
+            // Handle the SQL error here
+            return redirect()->back()->withErrors([
+                "An error occurred: " . $ex->getMessage(),
+                'If this error persists, please contact the admin from Bicol University Health Services.'
+            ])->withInput();
+            Log::error('Error from '.$user->id.': '. $ex->getMessage());
+        }    
     }
-    
-    
 }

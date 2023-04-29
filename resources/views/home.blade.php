@@ -35,7 +35,7 @@
             </div>
         @endif
 <div class="d-flex bg-cover p-5 p-md-16 p-lg-28 pillars-bg">
-    <div class="d-flex flex-column text-white mx-auto" style="max-width: 100rem;">
+    <div class="d-flex flex-column text-white mx-auto pillars-bg-content" style="max-width: 100rem;">
         <img class="" src="{{ asset('media/BU-CareText.png') }}" style="width: 20%;"></h1>
         <div class="col-md-4 border-bottom border-white border-4">
             <span>&nbsp;</span>
@@ -48,12 +48,12 @@
 </div>
 
   <section class="text-gray-600 body-font mt-5 mb-5">
-    <div class="container mx-auto d-flex px-5 py-24 flex-md-row flex-column align-items-center">
-      <div class="col-md-6 mb-10 mb-md-0 clearfix">
+    <div class="container mx-auto d-flex px-5 py-24 flex-lg-row flex-column align-items-center">
+      <div class="col-lg-6 col-md-12 mb-10 mb-md-0 clearfix">
         <img class="img-fluid rounded" alt="hero" src="{{ asset('media/clinic.jpg') }}">
       </div>
   
-      <div class="col-lg-6 col-md-6 flex-grow-1 d-flex flex-column ms-4">
+      <div class="col-lg-6 col-md-12 flex-grow-1 d-flex flex-column ms-4">
         <p class="mb-4 lead">With the University Health Clinic stations situated in the Main Campus, the University effectively ensures the provision of quick and competent health care at any time. While it strived to gain this certification to ensure that our patients have peace of mind during their clinic visit. MyHealth’s value of compassionate care translates to initiatives such as this to provide constant reassurance that, aside from health, the safety and security of our people and patients matter.</p>
       </div>
     </div>
@@ -61,59 +61,58 @@
 
 <!-- Second -->
 <div class="bg-light">
-    <section class="text-gray-600 body-font">
-      <div class="container px-5 py-5 mx-auto">
-        <div class="row mb-5 flex-column justify-content-center align-items-center">
-          <p class="sm-text-3xl text-2xl font-medium title-font fs-2 mb-2 text-center">Health Services Offered</h1>
-          <p class="col-lg-6 col-12 text-center leading-relaxed text-muted">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke farm-to-table.</p>
+  <section class="text-gray-600 body-font">
+    <div class="container px-5 py-5 mx-auto">
+      <div class="row mb-5 flex-column justify-content-center align-items-center">
+        <p class="sm-text-3xl text-2xl font-medium title-font fs-2 mb-2 text-center">Health Services Offered</h1>
+        <p class="col-lg-12 col-12 text-center leading-relaxed text-muted">Providing accessible and comprehensive healthcare for all students, faculty, and staff.</p>
+      </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-xl-2 g-4">
+          <div class="col-lg-6 col-md-12 col-sm-12 p-3">
+            <div class="border border-secondary p-4 rounded-lg">
+              <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
+                  <img src="{{ asset('media/png/medical.png') }}" alt="Medical Icon" style="height:50px;">
+              </div>
+                  <h2 class="h5 text-gray-900 font-weight-medium mb-2">Medical</h2>
+                  <p class="mb-0 text-base">We provide comprehensive medical services using the latest technologies and techniques to diagnose, evaluate, and treat various illnesses and conditions. We offer the highest level of care and attention to our patients.</p>
+            </div>
+          </div>
+      
+          <div class="col-lg-6 col-md-12 col-sm-10 p-3">
+            <div class="border border-secondary p-4 rounded-lg">
+              <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
+                  <img src="{{ asset('media/png/doctor.png') }}" alt="Doctor Icon" style="height:50px;">
+              </div>
+                  <h2 class="h5 text-gray-900 font-weight-medium mb-2">Qualified Doctors</h2>
+                  <p class="mb-0 text-base">Our doctors have years of experience and training to handle various medical conditions and illnesses. They stay up-to-date with the latest advancements to provide you with the best care possible.</p>
+            </div>
+          </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
-            <div class="col p-3">
-              <div class="border border-secondary p-4 rounded-lg">
-                <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
-                    <img src="{{ asset('media/png/medical.png') }}" alt="Medical Icon" style="height:50px;">
-                </div>
-                    <h2 class="h5 text-gray-900 font-weight-medium mb-2">Medical</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+        <div class="row row-cols-1 row-cols-xl-2 g-4">
+          <div class="col-lg-6 col-md-12 col-sm-10 p-3">
+            <div class="border border-secondary p-4 rounded-lg">
+              <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
+                  <img src="{{ asset('media/png/emergency.png') }}" alt="Emergency Icon" style="height:50px;">
               </div>
-            </div>
-        
-            <div class="col p-3">
-              <div class="border border-secondary p-4 rounded-lg">
-                <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
-                    <img src="{{ asset('media/png/doctor.png') }}" alt="Doctor Icon" style="height:50px;">
-                </div>
-                    <h2 class="h5 text-gray-900 font-weight-medium mb-2">Qualified Doctors</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
-              </div>
+                  <h2 class="h5 text-gray-900 font-weight-medium mb-2">Emergency Care</h2>
+                  <p class="mb-0 text-base">Our emergency care services provide immediate medical attention to patients with urgent care needs. Our experienced team is equipped with state-of-the-art medical equipment to handle a range of emergencies, available for 8 hours a day.</p>
             </div>
           </div>
-
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
-            <div class="col p-3">
-              <div class="border border-secondary p-4 rounded-lg">
-                <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
-                    <img src="{{ asset('media/png/emergency.png') }}" alt="Emergency Icon" style="height:50px;">
-                </div>
-                    <h2 class="h5 text-gray-900 font-weight-medium mb-2">Emergency Care</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
+      
+          <div class="col-lg-6 col-md-12 col-sm-10 p-3">
+            <div class="border border-secondary p-4 rounded-lg">
+              <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
+                  <img src="{{ asset('media/png/checkup.png') }}" alt="Checkup Icon" style="height:50px;">
               </div>
-            </div>
-        
-            <div class="col p-3">
-              <div class="border border-secondary p-4 rounded-lg">
-                <div class="w-10 h-10 d-inline-flex align-items-center justify-content-center rounded-circle bg-info text-white mb-4">
-                    <img src="{{ asset('media/png/checkup.png') }}" alt="Checkup Icon" style="height:50px;">
-                </div>
-                    <h2 class="h5 text-gray-900 font-weight-medium mb-2">Checkup</h2>
-                    <p class="mb-0 text-base">Fingerstache flexitarian street art 8-bit waist co, subway tile poke farm.</p>
-              </div>
+                  <h2 class="h5 text-gray-900 font-weight-medium mb-2">Checkup</h2>
+                  <p class="mb-0 text-base">Our check-up services detect potential health issues early on and help maintain good health. We offer comprehensive health screenings and health plans for to your unique needs and goals. Regular check-ups are essential for optimal well-being.</p>
             </div>
           </div>
-
-        
-</div>
+        </div>
+      </div>
+    </div>
   </section>
 
 <!-- third -->

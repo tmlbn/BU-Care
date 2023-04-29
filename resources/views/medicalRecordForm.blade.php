@@ -99,7 +99,16 @@
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('medicalForm.store') }}" id="MR_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<form method="POST" action="{{ route('medicalForm.store') }}" id="MR_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4 needs-validation" novalidate>
     @csrf
     <div class="container">
         <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
@@ -123,11 +132,14 @@
                     <option value="Polangui Campus" class="alternate" {{ old('campusSelect') == 'Polangui Campus' ? 'selected' : '' }}>Polangui Campus</option>
                     <option value="Tabaco Campus" {{ old('campusSelect') == 'Tabaco Campus' ? 'selected' : '' }}>Tabaco Campus</option>
                 </select>
+                <div class="invalid-feedback">
+                    Please select your campus.
+                </div>
                 <span class="text-danger"> 
                     @error('campusSelect') 
                       {{ $message }} 
                     @enderror
-                  </span>
+                </span>
             </div>
             <div class="col-xl-5 col-lg-6 col-md-6">
                 <p class="h6">Course</p>
@@ -201,6 +213,9 @@
                         });
                     </script>
                 </select>
+                <div class="invalid-feedback">
+                    Please select your course.
+                </div>
                 <span class="text-danger"> 
                     @error('courseSelect') 
                       {{ $message }} 
@@ -210,18 +225,21 @@
             <div class="col-xl-2 col-lg-12 col-md-12">
                 <label for="schoolYearStart" class="form-label h6" style="white-space: nowrap;">School Year</label>
                     <div class="d-flex align-items-center" style="margin-top:-1%;">
-                        <input type="text" class="form-control me-1" id="schoolYearStart" name="schoolYearStart" value="{{ old('schoolYearStart') }}" placeholder="YYYY" maxlength="4" required>
+                        <input type="number" class="form-control me-1 @error('schoolYearStart') is-invalid @enderror" id="schoolYearStart" name="schoolYearStart" value="{{ old('schoolYearStart') }}" placeholder="YYYY" onKeyPress="if(this.value.length==4) return false;"  onkeyup="if(this.value.length == 4) document.getElementById('schoolYearEnd').value = parseInt(this.value) + 1;"required> 
                         <span class="fs-6">-</span>
-                        <input type="text" class="form-control ms-2" id="schoolYearEnd" name="schoolYearEnd" value="{{ old('schoolYearEnd') }}" placeholder="YYYY" maxlength="4" required>
+                        <input type="number" class="form-control ms-2 @error('schoolYearEnd') is-invalid @enderror" id="schoolYearEnd" name="schoolYearEnd" value="{{ old('schoolYearEnd') }}" placeholder="YYYY" onKeyPress="if(this.value.length==4) return false;" required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter your school year.
                     </div>
                     <span class="text-danger"> 
                         @error('schoolYearStart') 
-                        {{ $message }} 
+                            {{ $message }}
                         @enderror
                     </span>
                     <span class="text-danger"> 
                         @error('schoolYearEnd') 
-                        {{ $message }} 
+                            {{ $message }}
                         @enderror
                     </span>
             </div>   
@@ -232,16 +250,22 @@
     </div>   
         <div class="col-md-3">
             <label for="MR_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MR_lastName" name="MR_lastName" value="{{ old('MR_lastName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control @error('MR_lastName') is-invalid @enderror" id="MR_lastName" name="MR_lastName" value="{{ old('MR_lastName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your last name.
+            </div>
             <span class="text-danger"> 
                 @error('MR_lastName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-3">
             <label for="MR_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MR_firstName" name="MR_firstName" value="{{ old('MR_firstName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control @error('MR_firstName') is-invalid @enderror" id="MR_firstName" name="MR_firstName" value="{{ old('MR_firstName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your first name.
+            </div>
             <span class="text-danger"> 
                 @error('MR_firstName') 
                   {{ $message }} 
@@ -250,38 +274,50 @@
         </div>
         <div class="col-md-3">
             <label for="MR_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MR_middleName" name="MR_middleName" value="{{ old('MR_middleName') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MR_middleName') is-invalid @enderror" id="MR_middleName" name="MR_middleName" value="{{ old('MR_middleName') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your middle name.
+            </div>
             <span class="text-danger"> 
                 @error('MR_middleName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-1">
             <label for="MR_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MR_age" name="MR_age" value="{{ old('MR_age') }}" required>
+            <input type="number" class="form-control @error('MR_age') is-invalid @enderror" id="MR_age" name="MR_age" value="{{ old('MR_age') }}" onKeyPress="if(this.value.length==2) return false;" required>
+            <div class="invalid-feedback">
+                Please enter your age.
+            </div>
             <span class="text-danger"> 
                 @error('MR_age') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MR_sex" class="form-label h6">Sex</label>
-            <select id="MR_sex" class="form-select" name="MR_sex" required>
+            <select id="MR_sex" class="form-select @error('MR_sex') is-invalid @enderror" name="MR_sex" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 <option value="MALE" {{ old('MR_sex') == 'MALE' ? 'selected' : '' }}>MALE</option>
                 <option value="FEMALE" {{ old('MR_sex') == 'FEMALE' ? 'selected' : '' }}>FEMALE</option>
             </select>
+            <div class="invalid-feedback">
+                Please enter your sex.
+            </div>
             <span class="text-danger"> 
                 @error('MR_sex') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-4">
-            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" required>
+            <label for="MR_dateOfBirth" class="form-label h6 @error('MR_dateOfBirth') is-invalid @enderror">Date of Birth</label>
+            <input type="text" class="form-control" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
+            <div class="invalid-feedback">
+                Please enter your date of birth.
+            </div>
             <span class="text-danger"> 
                 @error('MR_dateOfBirth') 
                     {{ $message }} 
@@ -289,19 +325,19 @@
             </span>
         </div>
         <script>
-       $(document).ready(function() {
-            $("#MR_dateOfBirth").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'yy MM d',
-                showButtonPanel: true,
-                yearRange: "1900:c",
-                showAnim: 'slideDown',
+        $(document).ready(function() {
+                $("#MR_dateOfBirth").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy MM d',
+                    showButtonPanel: true,
+                    yearRange: "1900:c",
+                    showAnim: 'slideDown',
+                });
             });
-        });
         </script>
         <div class="col-md-2">
-            <label for="MR_civilStatus" class="form-label h6">Civil Status</label>
+            <label for="MR_civilStatus" class="form-label h6 @error('MR_civilStatus') is-invalid @enderror">Civil Status</label>
             <select id="MR_civilStatus" name="MR_civilStatus" class="form-select" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 <option value="SINGLE" {{ old('MR_civilStatus') == 'SINGLE' ? 'selected' : '' }}>SINGLE</option>
@@ -310,68 +346,86 @@
                 <option value="SEPARATED" {{ old('MR_civilStatus') == 'SEPARATE' ? 'selected' : '' }} class="alternate">SEPARATED</option>
                 <option value="WIDOWED" {{ old('MR_civilStatus') == 'WIDOWED' ? 'selected' : '' }}>WIDOWED</option>
             </select>
+            <div class="invalid-feedback">
+                Please enter your civil status.
+            </div>
             <span class="text-danger"> 
                 @error('MR_civilStatus') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-4">
-            <label for="MR_nationality" class="form-label h6">Nationality</label>
+            <label for="MR_nationality" class="form-label h6 @error('MR_nationality') is-invalid @enderror">Nationality</label>
             <input type="text" class="form-control" id="MR_nationality" name="MR_nationality" value="{{ old('MR_nationality') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your nationality.
+            </div>
             <span class="text-danger"> 
                 @error('MR_nationality') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_religion" class="form-label h6">Religion</label>
+            <label for="MR_religion" class="form-label h6 @error('MR_religion') is-invalid @enderror">Religion</label>
             <input type="text" class="form-control" id="MR_religion" name="MR_religion" value="{{ old('MR_religion') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your religion.
+            </div>
             <span class="text-danger"> 
                 @error('MR_religion') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-12">
-            <label for="MR_address" class="form-label h6">Home Address</label>
+            <label for="MR_address" class="form-label h6 @error('MR_address') is-invalid @enderror">Home Address</label>
             <input type="text" class="form-control" id="MR_address" name="MR_address" value="{{ old('MR_address') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your home address.
+            </div>
             <span class="text-danger"> 
                 @error('MR_address') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherName" class="form-label h6">Father's Name</label>
+            <label for="MR_fatherName" class="form-label h6 @error('MR_fatherName') is-invalid @enderror">Father's Name</label>
             <input type="text" class="form-control" id="MR_fatherName" name="MR_fatherName" value="{{ old('MR_fatherName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your father's name.
+            </div>
             <span class="text-danger"> 
                 @error('MR_fatherName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherName" class="form-label h6">Mother's Name</label>
+            <label for="MR_motherName" class="form-label h6 @error('MR_motherName') is-invalid @enderror">Mother's Name</label>
             <input type="text" class="form-control" id="MR_motherName" name="MR_motherName" value="{{ old('MR_motherName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your mother's name.
+            </div>
             <span class="text-danger"> 
                 @error('MR_motherName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOccupation" class="form-label h6">Father's Occupation</label>
+            <label for="MR_fatherOccupation" class="form-label h6 @error('MR_fatherOccupation') is-invalid @enderror">Father's Occupation</label>
             <input type="text" class="form-control" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ old('MR_fatherOccupation') }}" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MR_fatherOccupation') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherOccupation" class="form-label h6">Mother's Occupation</label>
+            <label for="MR_motherOccupation" class="form-label h6 @error('MR_motherOccupation') is-invalid @enderror">Mother's Occupation</label>
             <input type="text" class="form-control" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ old('MR_motherOccupation') }}" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MR_motherOccupation') 
@@ -380,7 +434,7 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOffice" class="form-label h6">Office Address of Father</label>
+            <label for="MR_fatherOffice" class="form-label h6 @error('MR_fatherOffice') is-invalid @enderror">Office Address of Father</label>
             <input type="text" class="form-control" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ old('MR_fatherOffice') }}" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MR_fatherOffice') 
@@ -389,7 +443,7 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherOffice" class="form-label h6">Office Address of Mother</label>
+            <label for="MR_motherOffice" class="form-label h6 @error('MR_motherOffice') is-invalid @enderror">Office Address of Mother</label>
             <input type="text" class="form-control" id="MR_motherOffice" name="MR_motherOffice" value="{{ old('MR_motherOffice') }}" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MR_motherOffice') 
@@ -398,7 +452,7 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
+            <label for="MR_guardian" class="form-label h6 @error('MR_guardian') is-invalid @enderror">Guardian's Name</label>
             <input type="text" class="form-control" id="MR_guardian" name="MR_guardianName" value="{{ old('MR_guardianName') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger">
                 @error('MR_guardianName') 
@@ -407,8 +461,11 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_parentGuardianContactNumber" class="form-label h6">Parent's/Guardian's Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" name="MR_parentGuardianContactNumber" required>
+            <label for="MR_parentGuardianContactNumber" class="form-label h6 @error('MR_parentGuardianContactNumber') is-invalid @enderror">Parent's/Guardian's Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" maxlength="11" name="MR_parentGuardianContactNumber" required>
+            <div class="invalid-feedback">
+                Please enter your parent's or guardian's contact number.
+            </div>
             <span class="text-danger"> 
                 @error('MR_parentGuardianContactNumber') 
                   {{ $message }} 
@@ -416,8 +473,11 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_guardianAddress" class="form-label h6">Guardian's Address</label>
+            <label for="MR_guardianAddress" class="form-label h6 @error('MR_guardianAddress') is-invalid @enderror">Guardian's Address</label>
             <input type="text" class="form-control" id="MR_guardianAddress" name="MR_guardianAddress" value="{{ old('MR_guardianAddress') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your parent's or guardian's address.
+            </div>
             <span class="text-danger"> 
                 @error('MR_guardianAddress') 
                   {{ $message }} 
@@ -425,13 +485,16 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_studentContactNumber" class="form-label h6">Student's Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" required>
+            <label for="MR_studentContactNumber" class="form-label h6 @error('MR_studentContactNumber') is-invalid @enderror">Student's Contact No.</label>
+            <input type="text" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" maxlength="11" required>
+            <div class="invalid-feedback" id="studentContactFeedback">
+                Please enter your contact number.
+            </div>
             <span class="text-danger"> 
                 @error('MR_studentContactNumber') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">
@@ -440,13 +503,16 @@
         </section>
         <div class="col-md-6">
             <p class="h6 me-2">In case of emergency, contact:</p>
-            <select class="form-select" name="MR_emergencyContactPerson" id="MR_emergencyContactPerson">
+            <select class="form-select @error('MR_emergencyContactPerson') is-invalid @enderror" name="MR_emergencyContactPerson" id="MR_emergencyContactPerson" required>
                 <option value="" selected disabled>SELECT</option>
                 <option value="FATHER" {{ old('MR_emergencyContactPerson') == 'FATHER' ? 'selected' : '' }}>Father</option>
                 <option value="MOTHER" {{ old('MR_emergencyContactPerson') == 'MOTHER' ? 'selected' : '' }}>Mother</option>
                 <option value="GUARDIAN" {{ old('MR_emergencyContactPerson') == 'GUARDIAN' ? 'selected' : '' }}>Guardian</option>
                 <option value="OTHERS" {{ old('MR_emergencyContactPerson') == 'OTHERS' ? 'selected' : '' }}>Someone else</option>
             </select>
+            <div class="invalid-feedback">
+                Please select your emergency contact person.
+            </div>
             <script>
                 $(document).ready(function() {
                     $('#MR_emergencyContactPerson').on('change', function() {
@@ -477,49 +543,64 @@
         </div>
         
         <div class="col-md-6">
-            <label for="MR_emergencyContactName" class="form-label h6">Emergency Contact Name</label>
-            <input type="text" class="form-control" id="MR_emergencyContactName" value="{{ old('MR_emergencyContactName') }}" name="MR_emergencyContactName" required>
-            <span class="text-danger"> 
+            <label for="MR_emergencyContactName" class="form-label h6 @error('MR_emergencyContactName') is-invalid @enderror">Emergency Contact Name</label>
+            <input type="text" class="form-control" id="MR_emergencyContactName" value="{{ old('MR_emergencyContactName') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactName" required>
+            <div class="invalid-feedback">
+                Please enter the name of your emergency contact person.
+            </div>
+            <span class="text-danger">
                 @error('MR_emergencyContactName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_emergencyContactOccupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MR_emergencyContactOccupation" value="{{ old('MR_emergencyContactOccupation') }}" name="MR_emergencyContactOccupation" required>
+            <label for="MR_emergencyContactOccupation" class="form-label h6 @error('MR_emergencyContactOccupation') is-invalid @enderror">Occupation</label>
+            <input type="text" class="form-control" id="MR_emergencyContactOccupation" value="{{ old('MR_emergencyContactOccupation') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactOccupation" required>
+            <div class="invalid-feedback">
+                Please enter the occupation of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MR_emergencyContactOccupation') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_emergencyContactRelationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MR_emergencyContactRelationship" value="{{ old('MR_emergencyContactRelationship') }}" name="MR_emergencyContactRelationship" required>
+            <label for="MR_emergencyContactRelationship" class="form-label h6 @error('MR_emergencyContactRelationship') is-invalid @enderror">Relationship</label>
+            <input type="text" class="form-control" id="MR_emergencyContactRelationship" value="{{ old('MR_emergencyContactRelationship') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactRelationship" required>
+            <div class="invalid-feedback">
+                Please enter your relationship with your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MR_emergencyContactRelationship') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_emergencyContactAddress" class="form-label h6">Address</label>
-            <input type="text" class="form-control" id="MR_emergencyContactAddress" value="{{ old('MR_emergencyContactAddress') }}" name="MR_emergencyContactAddress" required>
+            <label for="MR_emergencyContactAddress" class="form-label h6 @error('MR_emergencyContactAddress') is-invalid @enderror">Address</label>
+            <input type="text" class="form-control" id="MR_emergencyContactAddress" value="{{ old('MR_emergencyContactAddress') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactAddress" required>
+            <div class="invalid-feedback">
+                Please enter the address of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MR_emergencyContactAddress') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_emergencyContactNumber" class="form-label h6">Contact Number</label>
-            <input type="text" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" required>
+            <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number</label>
+            <input type="text" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" maxlength="11" required>
+            <div class="invalid-feedback">
+                Please enter the contact number of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MR_emergencyContactNumber') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
 
         
@@ -670,7 +751,10 @@
                         <label class="form-check-label" for="FH_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('FH_others') == '1' ? '' : 'disabled' }}>
+                            <input type="text" class="form-control input-sm @error('FH_othersDetails') is-invalid @enderror" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('FH_others') == '1' ? '' : 'disabled' }}>
+                            <div class="invalid-feedback">
+                                Please enter the details of the other illnesses or diseases in your family history.
+                            </div>
                             <span class="text-danger"> 
                                 @error('FH_othersDetails') 
                                   {{ $message }} 
@@ -712,21 +796,29 @@
                     <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking" {{ old('PSH_smoking') == '1' ? 'checked' : '' }}>
                         <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
                             Smoking
+                        </label>
                             <br>
-                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ old('PSH_smoking_amount') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> 
-                            <span class="text-danger"> 
-                                @error('PSH_smoking_amount') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>  
-                            sticks/day for 
-                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ old('PSH_smoking_freq') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> year/s )
+                            <div class="d-flex align-items-center">
+                                ( <input type="text" class="form-control col-md-2 mx-1 @error('PSH_smoking_amount') is-invalid @enderror" style="width: 10%;" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ old('PSH_smoking_amount') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> 
+                                <div class="invalid-feedback">
+                                    Please enter the amount of stick/s you smoke per/day.
+                                </div>
+                                <span class="text-danger"> 
+                                    @error('PSH_smoking_amount') 
+                                    {{ $message }} 
+                                    @enderror
+                                </span>  
+                                sticks/day for 
+                                <input type="text" class="form-control col-md-2 mx-1 @error('PSH_smoking_freq') is-invalid @enderror" style="width: 10%;"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ old('PSH_smoking_freq') }}" {{ old('PSH_smoking') == '1' ? '' : 'disabled' }}> year/s )
+                            <div class="invalid-feedback">
+                                Please enter the amount of year/s you've been smoking.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PSH_smoking_freq') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
-                        </label>
+                            </span>  
+                        </div>
                 </div><!-- END OF SMOKING FORM DIV -->
 
                 <div class="form-check" style="margin-top:5%;">
@@ -734,37 +826,52 @@
                     <input class="form-check-input" type="checkbox" value="1" id="PSH_drinking" name="PSH_drinking" {{ old('PSH_drinking') == '1' ? 'checked' : '' }}>
                         <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
                             Drinking 
+                        </label>
                             <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ old('PSH_drinking_amountOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
+                            <div class="d-flex align-items-center">
+                            ( <input type="text" class="form-control mx-1 @error('PSH_drinking_amountOfBeer') is-invalid @enderror" style="width: 20%;" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ old('PSH_drinking_amountOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
+                            <div class="invalid-feedback">
+                                Please enter the amount of beer you intake.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PSH_drinking_amountOfBeer') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
-                             Beer per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ old('PSH_drinking_freqOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}> ) 
-                             <span class="text-danger"> 
+                            </span>  
+                            Beer per 
+                            <input type="text" class="form-control mx-1 @error('PSH_drinking_freqOfBeer') is-invalid @enderror" style="width: 20%;" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ old('PSH_drinking_freqOfBeer') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}> ) 
+                            <div class="invalid-feedback">
+                                Please enter how frequently you drink beer.
+                            </div>
+                            <span class="text-danger"> 
                                 @error('PSH_drinking_freqOfBeer') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
+                            </span>  
                             <br>
+                            </div>
                                 or
-                            <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ old('PSH_drinking_amountofShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
+                            <div class="d-flex align-items-center">
+                            ( <input type="text" class="form-control mx-1 @error('PSH_drinking_amountofShots') is-invalid @enderror" style="width: 20%;" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ old('PSH_drinking_amountofShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>
+                            <div class="invalid-feedback">
+                                Please how many shots you intake.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PSH_drinking_amountofShots') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
-                             Shots per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ old('PSH_drinking_freqOfShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>)
-                             <span class="text-danger"> 
+                            </span>  
+                            Shots per 
+                            <input type="text" class="form-control mx-1 @error('PSH_drinking_freqOfShots') is-invalid @enderror" style="width: 20%;" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ old('PSH_drinking_freqOfShots') }}" {{ old('PSH_drinking') == '1' ? '' : 'disabled' }}>)
+                            <div class="invalid-feedback">
+                                Please enter how frequently you intake shots.
+                            </div>
+                            <span class="text-danger"> 
                                 @error('PSH_drinking_freqOfShots') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
-                        </label>
+                            </span>  
+                        </div>
                 </div><!-- END OF DRINKING FORM DIV -->
 
                     <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
@@ -1106,16 +1213,20 @@
                         <label class="form-check-label" for="PI_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('PI_others') == '1' ? '' : 'disabled' }}>
-                            <span class="text-danger"> 
-                                @error('PI_othersDetails') 
-                                    {{ $message }} 
-                                 @enderror
-                            </span>     
+                        <input type="text" class="form-control input-sm @error('PI_othersDetails') is-invalid @enderror" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('PI_others') == '1' ? '' : 'disabled' }}>
+                        <div class="invalid-feedback">
+                            Please enter your other present illness/es.
+                        </div>
+                        <span class="text-danger"> 
+                            @error('PI_othersDetails') 
+                                {{ $message }} 
+                             @enderror
+                        </span>     
                         <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                         <script>
                             document.getElementById('PI_others').onchange = function() {
                                 document.getElementById('PI_othersDetails').disabled = !this.checked;
+                                document.getElementById('PI_othersDetails').required = this.checked;
                             };
                         </script>
                     </div><!-- END OF OTHERS COL DIV -->
@@ -1129,35 +1240,36 @@
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
                     <div class="col-sm">
-                     Do you have history of hospitalization for serious illness, operation, fracture or injury?
-                        (<div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark border-dark" type="radio" name="hospitalization" id="hospitalization_YES" value="1" {{ old('hospitalization') == '1' ? 'checked' : '' }} required/>
-                            <label class="form-check-label fw-bold" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                            yes
+                        <div class="form-check form-switch">
+                            <input class="form-check-input border-dark @error('hospitalization') is-invalid @enderror" type="checkbox" role="switch" name="hospitalization" id="hospitalization" value="0" {{ old('hospitalization') == '1' ? 'checked' : '' }} required/>
+                            <label class="form-check-label fw-bold" for="hospitalization">
+                                Do you have history of hospitalization for serious illness, operation, fracture or injury?
                             </label>
                         </div><!-- END OF YES DIV -->
-                        &nbsp;
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="radio" name="hospitalization" id="hospitalization_NO" value="0" {{ old('hospitalization') == '0' ? 'checked' : '' }}/>
-                            <label class="form-check-label fw-bold" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                            no
-                            </label>
-                        </div>)<!-- END OF NO DIV -->
-                        If yes, please give details:
-                        <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" value="{{ old('hospitalizationDetails') }}" disabled/>
+                        <div class="invalid-feedback">
+                            Please select one.
+                        </div>
+                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" disabled/>
+                        <div class="invalid-feedback">
+                            Please enter the details of your hospitalization for serious illness, operation, fracture or injury.
+                        </div>
                         <span class="text-danger"> 
                             @error('hospitalizationDetails') 
                               {{ $message }} 
                             @enderror
-                          </span>  
+                        </span>  
                             <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                             <script>
                                 $(document).ready(function() {
-                                    $('#hospitalization_YES, #hospitalization_NO').change(function() {
-                                        if ($('#hospitalization_YES').is(':checked')) {
+                                    $('#hospitalization').change(function() {
+                                        if ($('#hospitalization').is(':checked')) {
+                                            $('#hospitalization').val(1);
                                             $('#hospitalizationDetails').prop('disabled', false);
-                                        } else if ($('#hospitalization_NO').is(':checked')) {
+                                            $('#hospitalizationDetails').prop('required', true);
+                                        } else {
+                                            $('#hospitalization').val(0);
                                             $('#hospitalizationDetails').prop('disabled', true);
+                                            $('#hospitalizationDetails').prop('required', false);
                                         }
                                     });
                                 });
@@ -1169,35 +1281,36 @@
                 <!-- REGULAR MEDICINES -->
                 <div class="d-flex flex-row pt-2">
                     <div class="col-sm">
-                        Are you taking any medicine regularly?
-                           (<div class="form-check form-check-inline">
-                               <input class="form-check-input border-dark" type="radio" name="regMeds" id="regMeds_YES" value="1" {{ old('regMeds') == '1' ? 'checked' : '' }} required/>
-                               <label class="form-check-label fw-bold" for="regMeds_YES" style="margin-right: -15px; margin-left:-5px">
-                               yes
+                            <div class="form-check form-switch">
+                               <input class="form-check-input border-dark @error('regMeds') is-invalid @enderror" type="checkbox" role="switch" name="regMeds" id="regMeds" value="0" {{ old('regMeds') == '1' ? 'checked' : '' }} required/>
+                               <label class="form-check-label fw-bold" for="regMeds">
+                                    Are you taking any medicine regularly?
                                </label>
-                           </div><!-- END OF YES DIV -->
-                           &nbsp;
-                           <div class="form-check form-check-inline">
-                               <input class="form-check-input border-dark" type="radio" name="regMeds" id="regMeds_NO" value="0" {{ old('regMeds') == '0' ? 'checked' : '' }}/>
-                               <label class="form-check-label fw-bold" for="regMeds_NO" style="margin-right: -15px; margin-left:-5px">
-                               no
-                               </label>
-                           </div>)<!-- END OF NO DIV -->
-                           If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="regMedsDetails" name="regMedsDetails" value="{{ old('regMedsDetails') }}" disabled/>
-                           <span class="text-danger"> 
-                            @error('regMedsDetails') 
-                              {{ $message }} 
-                            @enderror
-                          </span>  
+                            </div><!-- END OF YES DIV -->
+                            <div class="invalid-feedback">
+                                Please select one.
+                            </div>
+                            <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" disabled/>
+                            <div class="invalid-feedback">
+                                Please enter the details of the medicine/s you regularly take.
+                            </div>
+                            <span class="text-danger"> 
+                                @error('regMedsDetails') 
+                                {{ $message }} 
+                                @enderror
+                            </span>  
                                <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                                <script>
                                    $(document).ready(function() {
-                                       $('#regMeds_YES, #regMeds_NO').change(function() {
-                                           if ($('#regMeds_YES').is(':checked')) {
-                                               $('#regMedsDetails').prop('disabled', false);
-                                           } else if ($('#regMeds_NO').is(':checked')) {
-                                               $('#regMedsDetails').prop('disabled', true);
+                                       $('#regMeds').change(function() {
+                                           if ($('#regMeds').is(':checked')) {
+                                                $('#regMeds').val(1);
+                                                $('#regMedsDetails').prop('disabled', false);
+                                                $('#regMedsDetails').prop('required', true);
+                                           } else {
+                                                $('#regMeds').val(0);
+                                                $('#regMedsDetails').prop('disabled', true);
+                                                $('#regMedsDetails').prop('required', false);
                                            }
                                        });
                                    });
@@ -1208,35 +1321,36 @@
 
                    <!-- ALLERGIES -->
                    <div class="col-sm" required>
-                    Are you allergic to any food or medicine?
-                       (<div class="form-check form-check-inline">
-                           <input class="form-check-input border-dark" type="radio" name="allergy" id="allergy_YES" value="1" {{ old('allergy') == '1' ? 'checked' : '' }} required/>
-                           <label class="form-check-label fw-bold" for="allergy_YES" style="margin-right: -15px; margin-left:-5px">
-                           yes
+                        <div class="form-check form-switch">
+                           <input class="form-check-input border-dark @error('allergy') is-invalid @enderror" type="checkbox" role="switch" name="allergy" id="allergy" value="0" {{ old('allergy') == '1' ? 'checked' : '' }} required/>
+                           <label class="form-check-label fw-bold" for="allergy">
+                                Are you allergic to any food or medicine?
                            </label>
-                       </div><!-- END OF YES DIV -->
-                       &nbsp;
-                       <div class="form-check form-check-inline">
-                           <input class="form-check-input border-dark" type="radio" name="allergy" id="allergy_NO" value="0" {{ old('allergy') == '0' ? 'checked' : '' }}/>
-                           <label class="form-check-label fw-bold" for="allergy_NO" style="margin-right: -15px; margin-left:-5px">
-                           no
-                           </label>
-                       </div>)<!-- END OF NO DIV -->
-                       If yes, specify:
-                       <input type="text" class="col-sm-10" id="allergyDetails" name="allergyDetails" value="{{ old('allergyDetails') }}" disabled/>
-                       <span class="text-danger"> 
-                        @error('allergyDetails') 
-                          {{ $message }} 
-                        @enderror
-                      </span> 
-                           <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
-                           <script>
+                        </div><!-- END OF YES DIV -->                    
+                        <div class="invalid-feedback">
+                            Please select one.
+                        </div>
+                        <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" disabled/>
+                        <div class="invalid-feedback">
+                            Please enter the details of the food and/or medicine that you are alergic to.
+                        </div>
+                        <span class="text-danger"> 
+                            @error('allergyDetails') 
+                            {{ $message }} 
+                            @enderror
+                        </span> 
+                            <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
+                            <script>
                                $(document).ready(function() {
-                                   $('#allergy_YES, #allergy_NO').change(function() {
-                                       if ($('#allergy_YES').is(':checked')) {
-                                           $('#allergyDetails').prop('disabled', false);
-                                       } else if ($('#allergy_NO').is(':checked')) {
-                                           $('#allergyDetails').prop('disabled', true);
+                                   $('#allergy').change(function() {
+                                       if ($('#allergy').is(':checked')) {
+                                            $('#allergy').val(0);
+                                            $('#allergyDetails').prop('disabled', false);
+                                            $('#allergyDetails').prop('required', true);
+                                       } else {
+                                            $('#allergy').val(0);
+                                            $('#allergyDetails').prop('disabled', true);
+                                            $('#allergyDetails').prop('required', false);
                                        }
                                    });
                                });
@@ -1244,8 +1358,7 @@
                            <!-- END OF SCRIPT --> 
                    </div><!-- END OF COL DIV -->
                </div><!-- END OF ROW DIV -->    
-
-        </div>   
+            </div>   
         
         <!--Immunization History-->
         <div class="mx-auto row mt-2">
@@ -1351,16 +1464,20 @@
                         <label class="form-check-label" for="IH_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('IH_others') == '1' ? '' : 'disabled' }}>
-                            <span class="text-danger"> 
-                                @error('IH_othersDetails') 
-                                    {{ $message }} 
-                                 @enderror
-                            </span>     
+                        <input type="text" class="form-control input-sm @error('IH_othersDetails') is-invalid @enderror" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('IH_others') == '1' ? '' : 'disabled' }}>
+                        <div class="invalid-feedback">
+                            Please enter the details of other immunization you you've taken.
+                        </div>
+                        <span class="text-danger"> 
+                            @error('IH_othersDetails') 
+                                {{ $message }} 
+                                @enderror
+                        </span>     
                         <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                         <script>
                             document.getElementById('IH_others').onchange = function() {
                                 document.getElementById('IH_othersDetails').disabled = !this.checked;
+                                document.getElementById('IH_othersDetails').required = this.checked;
                             };
                         </script>
                     </div><!-- END OF OTHERS COL DIV -->
@@ -1376,6 +1493,9 @@
                     <div class="mb-3 col-xl-3 col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center" >
                         <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
                         <input type="file" class="form-control" id="MR_chestXray" name="MR_chestXray" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                         <span class="text-danger"> 
                             @error('MR_chestXray') 
                               {{ $message }} 
@@ -1385,6 +1505,9 @@
                     <div class="mb-3 col-xl-3 col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_cbcresults" class="form-label fw-bold">CBC Results</label>
                         <input type="file" class="form-control" id="MR_cbcresults" name="MR_cbcresults" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                         <span class="text-danger"> 
                             @error('MR_cbcresults') 
                               {{ $message }} 
@@ -1394,6 +1517,9 @@
                     <div class="mb-3 col-xl-3 col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
                         <input type="file" class="form-control" id="MR_hepaBscreening" name="MR_hepaBscreening" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                         <span class="text-danger"> 
                             @error('MR_hepaBscreening') 
                               {{ $message }} 
@@ -1403,6 +1529,9 @@
                     <div class="mb-3 col-xl-3 col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_bloodtype" class="form-label fw-bold">Blood Type</label>
                         <input type="file" class="form-control" id="MR_bloodtype" name="MR_bloodtype" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                         <span class="text-danger"> 
                             @error('MR_bloodtype') 
                               {{ $message }} 
@@ -1439,11 +1568,17 @@
                                         </div>
                                         <input type="text" class="form-control my-1" id="MR_additionalResult${nextResultId}" name="MR_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG">
                                         <input type="file" class="form-control my-1" id="MR_additionalUpload${nextResultId}" name="MR_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
+                                        <div class="invalid-feedback">
+                                            Please select enter the title of your additional result.
+                                        </div>
                                         <span class="text-danger"> 
                                             @error('MR_additionalResult${nextResultId}') 
                                             {{ $message }} 
                                             @enderror
                                         </span>
+                                        <div class="invalid-feedback">
+                                            Please select your additional result.
+                                        </div>
                                         <span class="text-danger"> 
                                             @error('MR_additionalUpload${nextResultId}') 
                                             {{ $message }} 
@@ -1503,11 +1638,15 @@
                     $('#radioCertify').prop('checked', false);
                     $('#radioCertify').val('0');
                     $('#certify').val('0');
+                    $('#radioCertify').attr('required', true);
+                    $('#passwordInput').attr('required', true);
                     var modal = $('#submitModal');
                     $('body').append(modal);
                     modal.modal('show');
                     // Close modal
                     $('#editSuccessModal .close').on('click', function() {
+                        $('#radioCertify').attr('required', false);
+                        $('#passwordInput').attr('required', false);
                         $('#editSuccessModal').modal('hide');
                     });
                 } else {
@@ -1516,6 +1655,8 @@
                         if ($(this).val() == '') {
                             $(this).focus();
                             a = this;
+                            $('#radioCertify').attr('required', false);
+                            $('#passwordInput').attr('required', false);
                             return false;
                         }
                     });
@@ -1771,6 +1912,31 @@
                 }
             });
         });
+
+        (() => {
+            'use strict'
+
+            // Fetch all the forms to apply validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+
+                    // Get all the invalid input fields
+                    const invalidInputs = form.querySelectorAll(':invalid')
+
+                    // Focus on the first invalid input field
+                    invalidInputs[0].focus()
+                }
+
+                form.classList.add('was-validated')
+                }, false)
+            })
+        })()
 
     </script>
 

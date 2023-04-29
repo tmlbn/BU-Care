@@ -37,15 +37,15 @@
             </div>
             <div class="col-md-3">
                 <label for="MPR_lastName" class="form-label h6">Last Name</label>
-                <input type="text" class="form-control" id="MPR_lastName" name="MPR_lastName" value="{{ $patient->medicalRecord->lastName }}" readonly>
+                <input type="text" class="form-control" id="MPR_lastName" name="MPR_lastName" value="{{ $patient->medicalRecord->last_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_firstName" class="form-label h6">First Name</label>
-                <input type="text" class="form-control" id="MPR_firstName" name="MPR_firstName" value="{{ $patient->medicalRecord->firstName }}" readonly>
+                <input type="text" class="form-control" id="MPR_firstName" name="MPR_firstName" value="{{ $patient->medicalRecord->first_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_middleName" class="form-label h6">Middle Name</label>
-                <input type="text" class="form-control" id="MPR_middleName" name="MPR_middleName" value="{{ $patient->medicalRecord->middleName }}" readonly>
+                <input type="text" class="form-control" id="MPR_middleName" name="MPR_middleName" value="{{ $patient->medicalRecord->middle_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_birthday" class="form-label h6">Birthday</label>
@@ -103,11 +103,11 @@
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Incase of Emergency please notify</span>
             <div class="col-md-6">
                 <label for="MPR_emergencyName" class="form-label">Name</label>
-                <input type="text" class="form-control" id="MPR_emergencyName" name="MPR_emergencyName" readonly>
+                <input type="text" class="form-control" id="MPR_emergencyName" name="MPR_emergencyName" value="{{ $patient->medicalRecord->emergencyContactName }}" readonly>
             </div>
             <div class="col-md-6">
                 <label for="MPR_emergencyContact" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MPR_emergencyContact" name="MPR_emergencyContact" readonly>
+                <input type="text" class="form-control" id="MPR_emergencyContact" name="MPR_emergencyContact" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" readonly>
             </div>
         </div>
         <!--Illness-->
@@ -241,7 +241,7 @@
             <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
                 @csrf
             <table id="data_table" name="data_table" class="table table-striped table-bordered border-dark table-hover">       
-                <caption>Medical Patient Record of {{ $patient->medicalRecord->firstName }} {{ $patient->medicalRecord->middleName }} {{ $patient->medicalRecord->lastName }}</caption>       
+                <caption>Medical Patient Record of {{ $patient->medicalRecord->first_name }} {{ $patient->medicalRecord->middle_name }} {{ $patient->medicalRecord->last_name }}</caption>       
                 <thead>
                     <tr>
                         <th>Date</th>
