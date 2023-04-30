@@ -133,7 +133,7 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-3 px-4d-print-inline-block">
+<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-2 d-print-inline-block">
     @csrf     
     <div class="container d-print-inline-block">
         <input type="hidden" class="form-control" id="studentID" name="studentID" value="{{ $patient->id }}">
@@ -142,23 +142,23 @@
                 <div class="col-xl-4 col-lg-6 col-md-12 d-flex" style="text-align: justify;">
                     <p class="h6">Course:&nbsp;</p>
                     <div class="col-xl-9 col-lg-6">
-                        <p class="fs-6 text-decoration-underline text-break">{{ $patient->medicalRecord->course }}</p>
+                        <p class="h6 text-decoration-underline text-break">{{ $patient->medicalRecord->course }}</p>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-end">
                 <div class="col-xl-4 col-lg-6 col-md-12 d-flex">
                     <p class="h6">School Year:&nbsp;</p>
-                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:50%;">
-                        <p class="fs-6">{{ $patient->medicalRecord->SYstart }}-{{ $patient->medicalRecord->SYend }}</p>
+                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:60%;">
+                        <p class="h6">{{ $patient->medicalRecord->SYstart }}-{{ $patient->medicalRecord->SYend }}</p>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-end">
                 <div class="col-xl-4 col-lg-6 col-md-12 d-flex">
                     <p class="h6">Campus:&nbsp;</p>
-                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:50%; width: 72.75%;">
-                        <p class="fs-6">{{ $patient->medicalRecord->campus }}</p>
+                    <div class="col-xl-8 col-lg-6 border-bottom border-dark" style="height:59%; width: 72.75%;">
+                        <p class="h6">{{ $patient->medicalRecord->campus }}</p>
                     </div>
                 </div>
             </div>
@@ -172,11 +172,11 @@
     </div>   
     <div class="d-flex flex-row d-print-inline-block">
     </div>
-    <div class="row justify-content-end pb-0 mb-0">
-        <div class="col-md-1 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-end pb-0 mb-0 d-print-inline-block">
+        <div class="col-md-1 d-flex align-items-center justify-content-center d-print-inline-block">
             <p class="h5 text-center text-bottom m-0 p-0">Name</p>
         </div>
-        <div class="col-md-9 text-bottom">
+        <div class="col-md-9 text-bottom d-print-inline-block">
             <p class="form-label h6 p-0" style="position:static; margin-top: 0.3%; user-select:none;">&nbsp;</p>
             <div class="row justify-content-around text-center border-bottom border-dark mb-0 pb-0">
                 <div class="col-4 pb-0 mb-0 text-bottom">
@@ -423,10 +423,12 @@
                         <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2 form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
-                            sticks/day for 
-                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ $patient->medicalRecord->personalSocialHistory->years }}" {{ $patient->medicalRecord->personalSocialHistory->years == 0 ? 'disabled' : 'readonly' }}> 
-                            year/s ) 
+                            <div class="d-flex align-items-center">
+                                ( <input type="text" class="col-md-2 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_smoking_amount" name="PSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
+                                sticks/day for 
+                                <input type="text" class="col-md-2 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;"   id="PSH_smoking_freq" name="PSH_smoking_freq" value="{{ $patient->medicalRecord->personalSocialHistory->years }}" {{ $patient->medicalRecord->personalSocialHistory->years == 0 ? 'disabled' : 'readonly' }}> 
+                                year/s ) 
+                            </div>
                         </label>
                 </div><!-- END OF SMOKING FORM DIV -->
 
@@ -435,25 +437,20 @@
                         <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
                             Drinking 
                             <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfBeers }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfBeers == 'N/A' ? 'disabled' : 'readonly' }}> 
-                             Beer per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->beerFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->beerFrequency == 'N/A' ? 'disabled' : 'readonly' }}> ) 
-                            <br>
+                            <div class="d-flex align-items-center">
+                                ( <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfBeers }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfBeers == 'N/A' ? 'disabled' : 'readonly' }}> 
+                                Beer per 
+                                <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->beerFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->beerFrequency == 'N/A' ? 'disabled' : 'readonly' }}> ) 
+                                <br>
+                            </div>
                                 or
                             <br>
-                            ( <input type="text" class="col-md-4" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfShots }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfShots == 'N/A' ? 'disabled' : 'readonly' }}> 
-                            <span class="text-danger"> 
-                                @error('PSH_drinking_amountofShots') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>  
-                             Shots per 
-                             <input type="text" class="col-md-4" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ $patient->medicalRecord->personalSocialHistory->shotsFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->shotsFrequency == 'N/A' ? 'disabled' : 'readonly' }}> )
-                             <span class="text-danger"> 
-                                @error('PSH_drinking_freqOfShots') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>  
+                            <div class="d-flex">
+                                ( <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfShots }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfShots == 'N/A' ? 'disabled' : 'readonly' }}>
+                                Shots per 
+                                <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ $patient->medicalRecord->personalSocialHistory->shotsFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->shotsFrequency == 'N/A' ? 'disabled' : 'readonly' }}> 
+                                )
+                            </div>
                         </label>
                 </div><!-- END OF DRINKING FORM DIV -->
             </div><!-- END OF PSH COL DIV -->
@@ -688,7 +685,7 @@
                                     <label class="form-check-label" for="PI_others" style="display: contents!important;">
                                         <span class="h6">Others</span>
                                     </label>
-                                        <input type="text" class="form-control input-sm" id="PI_othersDetails" name="PI_othersDetails" value="{{ $patient->medicalRecord->presentIllness->othersDetails }}" {{ $patient->medicalRecord->presentIllness->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>  
+                                        <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="PI_othersDetails" name="PI_othersDetails" value="{{ $patient->medicalRecord->presentIllness->othersDetails }}" {{ $patient->medicalRecord->presentIllness->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>  
                             </div><!-- END OF OTHERS COL DIV -->
                         </div><!-- END OF OTHERS ROW DIV -->
                 </div><!-- END OF PRESENT ILLNESS DIV -->
@@ -723,7 +720,7 @@
                             </script>
                         </div>)<!-- END OF NO DIV -->
                         If yes, please give details:
-                        <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" value="{{ $patient->medicalRecord->hospDetails }}" {{ $patient->medicalRecord->hospDetails == 'N/A' ? 'disabled' : 'readonly' }}>
+                        <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="hospitalizationDetails" name="hospitalizationDetails" value="{{ $patient->medicalRecord->hospDetails }}" {{ $patient->medicalRecord->hospDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                     </div><!-- END OF COL DIV -->
                 </div><!-- END OF ROW DIV -->
 
@@ -745,7 +742,7 @@
                                </label>
                            </div>)<!-- END OF NO DIV -->
                            If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="regMedsDetails" name="regMedsDetails"  value="{{ $patient->medicalRecord->medsDetails }}" {{ $patient->medicalRecord->medsDetails == 'N/A' ? 'disabled' : 'readonly' }}>
+                           <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="regMedsDetails" name="regMedsDetails"  value="{{ $patient->medicalRecord->medsDetails }}" {{ $patient->medicalRecord->medsDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                                <!-- SCRIPT TO SHOW IF YES OR NO -->
                                <script>
                                 if ({{ $patient->medicalRecord->takingMedsRegularly }} == 1) {
@@ -775,7 +772,7 @@
                            </label>
                        </div>)<!-- END OF NO DIV -->
                        If yes, specify:
-                       <input type="text" class="col-sm-10" id="allergyDetails" name="allergyDetails" value="{{ $patient->medicalRecord->allergyDetails }}" {{ $patient->medicalRecord->allergyDetails == 'N/A' ? 'disabled' : 'readonly' }}>
+                       <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="allergyDetails" name="allergyDetails" value="{{ $patient->medicalRecord->allergyDetails }}" {{ $patient->medicalRecord->allergyDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                         <!-- SCRIPT TO SHOW IF YES OR NO -->
                         <script>
                             if ({{ $patient->medicalRecord->allergic }} == 1) {
@@ -858,21 +855,21 @@
                             </label>
                     </div>
                     <div class="w-100"></div>
+                </div>
                     <!-- NEW LINE -->
-                    <div class="col-sm-1 p-2">
-                        <input class="form-check-input" type="checkbox" {{ $patient->medicalRecord->immunizationHistory->others == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;" id="IH_others" name="IH_others">
+                    <div class="form-row mx-5 align-items-center">
+                        <div class="col p-2">
+                            <input class="form-check-input" type="checkbox" id="IH_others" name="IH_others" {{ $patient->medicalRecord->immunizationHistory->others == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                             <label class="form-check-label" for="IH_others">
                                 Others
                             </label>
-                    </div>
-                    <div class="col-sm-9 p-2">
-                            <input type="text" class="col-sm-12" id="IH_othersDetails" name="IH_othersDetails" value="{{ $patient->medicalRecord->immunizationHistory->othersDetails }}" {{ $patient->medicalRecord->immunizationHistory->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>
-                    </div>
+                            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="IH_othersDetails" name="IH_othersDetails" value="{{ $patient->medicalRecord->immunizationHistory->othersDetails }}" {{ $patient->medicalRecord->immunizationHistory->othersDetails == 'N/A' ? 'disabled' : 'readonly' }}>
+                        </div><!-- END OF OTHERS COL DIV -->
+                    </div><!-- END OF OTHERS ROW DIV -->
             </div>
         </div>
-    </div>
     <!-- ATTACHMENTS -->
-    <div class="d-flex flex-row">
+    <div class="mx-auto row row-cols-lg-1 mt-2">
         <div class="col-md-12 p-1 border border-dark">
             <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">

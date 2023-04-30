@@ -123,27 +123,33 @@
     </div>
 
     <!--Personal Basic Information-->
-<form method="POST" action="{{ route('personnel.medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
+<form method="POST" action="{{ route('personnel.medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4 needs-validation" novalidate>
     @csrf
 
         <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
             <div class="col-xl-4 col-lg-12">
                 <label for="designation" class="form-label h6">Designation</label>
                 <input type="text" class="form-control" id="designation" name="designation" oninput="this.value = this.value.toUpperCase()" required>
-                <span class="text-danger"> 
+                <div class="invalid-feedback">
+                    Please enter your Designation.
+                </div>
+                <span class="text-danger">
                     @error('designation') 
                       {{ $message }} 
                     @enderror
-                  </span>
+                </span>
             </div>
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Unit/Department</p>
                 <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" oninput="this.value = this.value.toUpperCase()" required>
+                <div class="invalid-feedback">
+                    Please enter your Unit/Department.
+                </div>
                 <span class="text-danger"> 
                     @error('unitDepartment') 
                       {{ $message }} 
                     @enderror
-                  </span>
+                </span>
             </div> 
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Campus</p>
@@ -165,11 +171,14 @@
                     <option value="Polangui Campus" class="alternate">Polangui Campus</option>
                     <option value="Tabaco Campus">Tabaco Campus</option>
                 </select>
+                <div class="invalid-feedback">
+                    Please select your Campus.
+                </div>
                 <span class="text-danger"> 
                     @error('campusSelect') 
                       {{ $message }} 
                     @enderror
-                  </span>
+                </span>
             </div>   
         </div>   
     <div class="d-flex flex-row">
@@ -178,38 +187,47 @@
         <div class="col-md-2">
             <label for="MRP_lastName" class="form-label h6">Last Name</label>
             <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your last name.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_lastName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MRP_firstName" class="form-label h6">First Name</label>
             <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your first name.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_firstName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MRP_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MRP_middleName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-1">
             <label for="MRP_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MRP_age" name="MRP_age" required>
+            <input type="number" class="form-control" id="MRP_age" name="MRP_age" onKeyPress="if(this.value.length==2) return false;" required>
+            <div class="invalid-feedback">
+                Please enter your age.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_age') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MRP_sex" class="form-label h6">Sex</label>
@@ -218,31 +236,39 @@
                 <option value="MALE">MALE</option>
                 <option value="FEMALE">FEMALE</option>
             </select>
+            <div class="invalid-feedback">
+                Please select your sex.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_sex') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MRP_gender" class="form-label h6">Gender</label>
             <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" required>
+            <div class="invalid-feedback">
+                Please enter your gender.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_gender') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
-        <div class="col-md-1">
-            <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <input type="hidden" name="pwd" id="pwd" value="0">
-                <input class="form-check-input" type="checkbox" value="1" name="pwd" id="pwd">
-                <label for="pwd" class="form-check-label mt-1 ms-1">PWD</label>
-              </div>
+        <div class="col-md-1 d-flex align-items-end">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" value="0" name="pwd" id="pwd">
+                <label for="pwd" class="form-check-label">PWD</label>
+            </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_dateOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MRP_dateOfBirth" name="MRP_dateOfBirth" required>
+            <input type="text" class="form-control" id="MRP_dateOfBirth" name="MRP_dateOfBirth" required onkeydown="return false;">
+            <div class="invalid-feedback">
+                Please select your date of birth.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_dateOfBirth') 
                     {{ $message }} 
@@ -251,27 +277,18 @@
         </div>      
         <script>
         $(document).ready(function() {
-            $("#MRP_dateOfBirth").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'MM/d/yy',
-                showButtonPanel: true,
-                yearRange: "1900:c",
-                showAnim: 'slideDown',
+                $("#MRP_dateOfBirth").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy MM d',
+                    showButtonPanel: true,
+                    yearRange: "1900:c",
+                    showAnim: 'slideDown',
+                });
             });
-        });
         </script>
 
-        <div class="col-md-4">
-            <label for="MRP_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MRP_placeOfBirth') 
-                  {{ $message }} 
-                @enderror
-              </span>
-        </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_civilStatus" class="form-label h6">Civil Status</label>
             <select id="MRP_civilStatus" name="MRP_civilStatus" class="form-select" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
@@ -281,93 +298,123 @@
                 <option value="SEPARATED" class="alternate">SEPARATED</option>
                 <option value="WIDOWED">WIDOWED</option>
             </select>
+            <div class="invalid-feedback">
+                Please select your civil status.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_civilStatus') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_nationality" class="form-label h6">Nationality</label>
             <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your nationality.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_nationality') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_religion" class="form-label h6">Religion</label>
             <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your religion.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_religion') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-10">
             <label for="MRP_address" class="form-label h6">Home Address</label>
             <input type="text" class="form-control" id="MRP_address" name="MRP_address" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your address.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_address') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MRP_personnelContactNumber" required>
+            <input type="number" class="form-control" placeholder="09XXXXXXXXX" id="MRP_personnelContactNumber" name="MRP_personnelContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <div class="invalid-feedback">
+                Please enter your contact number.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_personnelContactNumber') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
             <label for="MRP_emergencyContactName" class="form-label h6">Name</label>
             <input type="text" class="form-control" id="MRP_emergencyContactName" name="MRP_emergencyContactName" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
+            <div class="invalid-feedback">
+                Please enter the name of your emergency contact person.
+            </div>
+            <span class="text-danger">
                 @error('MRP_emergencyContactName') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
             <label for="MRP_emergencyContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_emergencyContactNumber" name="MRP_emergencyContactNumber" required>
+            <input type="number" class="form-control" placeholder="09XXXXXXXXX" id="MRP_emergencyContactNumber" name="MRP_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <div class="invalid-feedback">
+                Please enter the contact number of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_emergencyContactNumber') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
             <label for="MRP_emergencyContactOccupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactOccupation" name="MRP_emergencyContactOccupation" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control" id="MRP_emergencyContactOccupation" name="MRP_emergencyContactOccupation" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter the occupation of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_emergencyContactOccupation') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-6">
             <label for="MRP_emergencyContactRelationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactRelationship" name="MRP_emergencyContactRelationship" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control" id="MRP_emergencyContactRelationship" name="MRP_emergencyContactRelationship" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your relationship with your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_emergencyContactRelationship') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         <div class="col-md-12">
             <label for="MRP_emergencyContactAddress" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactAddress" name="MRP_emergencyContactAddress" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control" id="MRP_emergencyContactAddress" name="MRP_emergencyContactAddress" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter the address of your emergency contact person.
+            </div>
             <span class="text-danger"> 
                 @error('MRP_emergencyContactAddress') 
                   {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
         
         
@@ -386,125 +433,125 @@
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FH_cancer">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_cancer">
-                                <label class="form-check-label" for="FH_cancer">
+                            <input type="hidden" value="0" name="FHP_cancer">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_cancer">
+                                <label class="form-check-label" for="FHP_cancer">
                                     Cancer
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FH_heartDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_heartDisease">
-                                <label class="form-check-label" for="FH_heartDisease">
+                            <input type="hidden" value="0" name="FHP_heartDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_heartDisease">
+                                <label class="form-check-label" for="FHP_heartDisease">
                                     Heart Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FH_hypertension">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_hypertension">
-                                <label class="form-check-label" for="FH_hypertension">
+                            <input type="hidden" value="0" name="FHP_hypertension">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hypertension">
+                                <label class="form-check-label" for="FHP_hypertension">
                                     Hypertension
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FH_thyroidDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_thyroidDisease">
-                                <label class="form-check-label" for="FH_thyroidDisease">
+                            <input type="hidden" value="0" name="FHP_thyroidDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_thyroidDisease">
+                                <label class="form-check-label" for="FHP_thyroidDisease">
                                     Thyroid Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_tuberculosis">
-                                <label class="form-check-label" for="FH_tuberculosis">
+                            <input type="hidden" name="FHP_tuberculosis" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_tuberculosis">
+                                <label class="form-check-label" for="FHP_tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_hivAids" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_hivAids">
-                                <label class="form-check-label" for="FH_hivAids">
+                            <input type="hidden" name="FHP_hivAids" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hivAids">
+                                <label class="form-check-label" for="FHP_hivAids">
                                     HIV/AIDS
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" value="0" name="FH_diabetesMelittus">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_diabetesMelittus">
-                                <label class="form-check-label" for="FH_diabetesMelittus">
+                            <input type="hidden" value="0" name="FHP_diabetesMelittus">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_diabetesMelittus">
+                                <label class="form-check-label" for="FHP_diabetesMelittus">
                                     Diabetes Melittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_mentalDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_mentalDisorder">
-                                <label class="form-check-label" for="FH_mentalDisorder">
+                            <input type="hidden" name="FHP_mentalDisorder" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_mentalDisorder">
+                                <label class="form-check-label" for="FHP_mentalDisorder">
                                     Mental Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_asthma" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_asthma">
-                                <label class="form-check-label" for="FH_asthma">
+                            <input type="hidden" name="FHP_asthma" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_asthma">
+                                <label class="form-check-label" for="FHP_asthma">
                                     Asthma
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_convulsions" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_convulsions">
-                                <label class="form-check-label" for="FH_convulsions">
+                            <input type="hidden" name="FHP_convulsions" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_convulsions">
+                                <label class="form-check-label" for="FHP_convulsions">
                                     Convulsions
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_bleedingDyscrasia">
-                                <label class="form-check-label" for="FH_bleedingDyscrasia">
+                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
+                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Bleeding Dyscrasia
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_bleedingDyscrasia">
-                                <label class="form-check-label" for="FH_bleedingDyscrasia">
+                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
+                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Arthritis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input type="hidden" name="FH_eyeDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_eyeDisorder">
-                                <label class="form-check-label" for="FH_eyeDisorder">
+                            <input type="hidden" name="FHP_eyeDisorder" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_eyeDisorder">
+                                <label class="form-check-label" for="FHP_eyeDisorder">
                                     Eye Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_skinProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_skinProblems">
-                                <label class="form-check-label" for="FH_skinProblems">
+                            <input type="hidden" name="FHP_skinProblems" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_skinProblems">
+                                <label class="form-check-label" for="FHP_skinProblems">
                                     Skin Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_kidneyProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_kidneyProblems">
-                                <label class="form-check-label" for="FH_kidneyProblems">
+                            <input type="hidden" name="FHP_kidneyProblems" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_kidneyProblems">
+                                <label class="form-check-label" for="FHP_kidneyProblems">
                                     Kidney Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_gastroDisease">
-                                <label class="form-check-label" for="FH_gastroDisease">
+                            <input type="hidden" name="FHP_gastroDisease" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease">
+                                <label class="form-check-label" for="FHP_gastroDisease">
                                     Gastrointestinal Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_hepatitis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FH_hepatitis"   >
-                                <label class="form-check-label" for="FH_hepatitis">
+                            <input type="hidden" name="FHP_hepatitis" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hepatitis"   >
+                                <label class="form-check-label" for="FHP_hepatitis">
                                     Hepatitis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -512,84 +559,113 @@
                 </div><!-- END OF ROW of CHECKBOXES DIV -->
             <div class="form-row align-items-center">
                 <div class="col p-2">
-                    <input type="hidden" name="FH_others" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="FH_others" name="FH_others">
-                        <label class="form-check-label" for="FH_others" style="display: contents!important;">
+                    <input type="hidden" name="FHP_others" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="FHP_others" name="FHP_others">
+                        <label class="form-check-label" for="FHP_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="hidden" name="FH_othersDetails" value="N/A">
-                            <input type="text" class="form-control input-sm" id="FH_othersDetails" name="FH_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
+                            <input type="hidden" name="FHP_othersDetails" value="N/A">
+                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
                             <span class="text-danger"> 
-                                @error('FH_othersDetails') 
+                                @error('FHP_othersDetails') 
                                   {{ $message }} 
                                 @enderror
                               </span>    
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                                 <script>
-                                    const fhOthers = document.getElementById('FH_others');
-                                    const fhOthersDetails = document.getElementById('FH_othersDetails');
+                                    const fhPOthers = document.getElementById('FHP_others');
+                                    const fhPOthersDetails = document.getElementById('FHP_othersDetails');
                                     
-                                    fhOthers.onchange = function() {
+                                    fhPOthers.onchange = function() {
                                         if (this.checked) {
-                                            fhOthersDetails.disabled = false;
-                                            fhOthersDetails.required = true;
+                                            fhPOthersDetails.disabled = false;
+                                            fhPOthersDetails.required = true;
                                         } else {
-                                            fhOthersDetails.disabled = true;
-                                            fhOthersDetails.required = false;
+                                            fhPOthersDetails.disabled = true;
+                                            fhPOthersDetails.required = false;
                                         }
                                     };
 
                                     // Initialize the form state on page load
-                                    if (fhOthers.checked) {
-                                        fhOthersDetails.disabled = false;
-                                        fhOthersDetails.required = true;
+                                    if (fhPOthers.checked) {
+                                        fhPOthersDetails.disabled = false;
+                                        fhPOthersDetails.required = true;
                                     } else {
-                                        fhOthersDetails.disabled = true;
-                                        fhOthersDetails.required = false;
+                                        fhPOthersDetails.disabled = true;
+                                        fhPOthersDetails.required = false;
                                     }
                                 </script>
                     </div><!-- END OF COL OTHERS DIV -->
                 </div><!-- END OF ROW OTHERS DIV -->
-            </div><!-- END OF COL FH -->
+            </div><!-- END OF COL FHP -->
 
-            <!-- START OF PSH -->
+            <!-- START OF PPSH -->
             <div class="col-lg-5 col-md-12 p-2 border border-dark">
                 <h6>Personal Social History</h6>
                     <div class="form-check">
-                    <input type="hidden" name="PSH_smoking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PSH_smoking" name="PSH_smoking">
-                        <label class="form-check-label" for="PSH_smoking" style="display: contents!important;">
+                    <input type="hidden" name="PPSH_smoking" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_smoking" name="PPSH_smoking">
+                        <label class="form-check-label" for="PPSH_smoking" style="display: contents!important;">
                             Smoking
+                        </label>
                             <br>
-                            ( <input type="text" class="col-md-2" id="PSH_smoking_amount" name="PSH_smoking_amount" disabled> 
+                            <div class="d-flex align-items-center">
+                            ( <input type="text" class="form-control col-sm-2 mx-1" style="width: 10%;" id="PPSH_smoking_amount" name="PPSH_smoking_amount" disabled> 
                             <span class="text-danger"> 
-                                @error('PSH_smoking_amount') 
+                                @error('PPSH_smoking_amount') 
                                   {{ $message }} 
                                 @enderror
                               </span>  
                             sticks/day for 
-                            <input type="text" class="col-md-2"  id="PSH_smoking_freq" name="PSH_smoking_freq" disabled> year/s )
+                            <input type="text" class="form-control col-sm-2 mx-1" style="width: 10%;" id="PPSH_smoking_freq" name="PPSH_smoking_freq" disabled> year/s )
                             <span class="text-danger"> 
-                                @error('PSH_smoking_freq') 
+                                @error('PPSH_smoking_freq') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
+                              </span>
+                            </div>
+                        
+                    </div>
+                    <div class="form-check mt-3">
+                        <input type="hidden" name="PPSH_eCig" value="0">
+                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_eCig" name="PPSH_eCig">
+                        <label class="form-check-label" for="PPSH_eCig" style="display: contents!important;">
+                            E-Cigarette
                         </label>
-                </div><!-- END OF SMOKING FORM DIV -->
+                        <span class="text-danger"> 
+                            @error('PPSH_eCig') 
+                              {{ $message }} 
+                            @enderror
+                        </span>    
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="PPSH_vape" value="0">
+                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_vape" name="PPSH_vape">
+                        <label class="form-check-label" for="PPSH_vape" style="display: contents!important;">
+                            Vape
+                        </label>
+                        <span class="text-danger"> 
+                            @error('PPSH_vape') 
+                              {{ $message }} 
+                            @enderror
+                        </span>    
+                    </div>
 
-                <div class="form-check" style="margin-top:5%;">
-                    <input type="hidden" name="PSH_drinking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PSH_drinking" name="PSH_drinking">
-                        <label class="form-check-label" for="PSH_drinking" style="display: contents!important;">
+                <!-- END OF SMOKING FORM DIV -->
+
+                <div class="form-check mt-3">
+                    <input type="hidden" name="PPSH_drinking" value="0">
+                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_drinking" name="PPSH_drinking">
+                        <label class="form-check-label" for="PPSH_drinking" style="display: contents!important;">
                             Liquor Consumption:
                             <br>
                             How often?
-                            <input type="text" class="col-sm-10" id="PSH_drinkingDetails" name="PSH_drinkingDetails" disabled/>
+                            <input type="text" class="form-control col-sm-10" id="PPSH_drinkingDetails" name="PPSH_drinkingDetails" disabled/>
                             <span class="text-danger"> 
-                                @error('PSH_drinkingDetails') 
+                                @error('PPSH_drinkingDetails') 
                                   {{ $message }} 
                                 @enderror
-                              </span>                   
+                            </span>                   
                         </label>
                 </div><!-- END OF DRINKING FORM DIV -->
 
@@ -597,23 +673,23 @@
                 <script>
                    $(document).ready(function() {
                         /* SMOKING */
-                        $('#PSH_smoking').change(function() {
-                            $('#PSH_smoking_amount').prop('disabled', !this.checked);
-                            $('#PSH_smoking_freq').prop('disabled', !this.checked);
+                        $('#PPSH_smoking').change(function() {
+                            $('#PPSH_smoking_amount').prop('disabled', !this.checked);
+                            $('#PPSH_smoking_freq').prop('disabled', !this.checked);
                         });
                         
                         /* DRINKING */
-                        $('#PSH_drinking').change(function() {
-                            $('#PSH_drinking_amountOfBeer').prop('disabled', !this.checked);
-                            $('#PSH_drinking_freqOfBeer').prop('disabled', !this.checked);
-                            $('#PSH_drinking_amountofShots').prop('disabled', !this.checked);
-                            $('#PSH_drinking_freqOfShots').prop('disabled', !this.checked);
+                        $('#PPSH_drinking').change(function() {
+                            $('#PPSH_drinking_amountOfBeer').prop('disabled', !this.checked);
+                            $('#PPSH_drinking_freqOfBeer').prop('disabled', !this.checked);
+                            $('#PPSH_drinking_amountofShots').prop('disabled', !this.checked);
+                            $('#PPSH_drinking_freqOfShots').prop('disabled', !this.checked);
                         });
                     });
 
                 </script>
 
-            </div><!-- END OF PSH COL DIV -->
+            </div><!-- END OF PPSH COL DIV -->
         </div><!-- END OF ROW ENTIRE DIV -->
 
         <!--Personal History-->
@@ -688,9 +764,9 @@
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input type="hidden" name="hivAids" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="hivAids">
-                                    <label class="form-check-label" for="hivAids">
+                                <input type="hidden" name="PMC_hivAids" value="0">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hivAids">
+                                    <label class="form-check-label" for="PMC_hivAids">
                                         HIV/AIDS
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
@@ -875,35 +951,36 @@
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
                     <div class="col-sm">
-                     Do you have history of hospitalization for serious illness, operation, fracture or injury?
-                        (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_YES" value="1" required/>
-                            <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                            yes
+                        <div class="form-check form-switch">
+                            <input class="form-check-input border-dark @error('hospitalization') is-invalid @enderror" type="checkbox" role="switch" name="hospitalization" id="hospitalization" value="0" {{ old('hospitalization') == '1' ? 'checked' : '' }} required/>
+                            <label class="form-check-label fw-bold" for="hospitalization">
+                                Do you have history of hospitalization for serious illness, operation, fracture or injury?
                             </label>
                         </div><!-- END OF YES DIV -->
-                        &nbsp;
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_NO" value="0"/>
-                            <label class="form-check-label" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                            no
-                            </label>
-                        </div>)<!-- END OF NO DIV -->
-                        If yes, please give details:
-                        <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" disabled/>
+                        <div class="invalid-feedback">
+                            Please select one.
+                        </div>
+                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" disabled/>
+                        <div class="invalid-feedback">
+                            Please enter the details of your hospitalization for serious illness, operation, fracture or injury.
+                        </div>
                         <span class="text-danger"> 
                             @error('hospitalizationDetails') 
                               {{ $message }} 
                             @enderror
-                          </span>  
+                        </span>  
                             <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                             <script>
                                 $(document).ready(function() {
-                                    $('#hospitalization_YES, #hospitalization_NO').change(function() {
-                                        if ($('#hospitalization_YES').is(':checked')) {
+                                    $('#hospitalization').change(function() {
+                                        if ($('#hospitalization').is(':checked')) {
+                                            $('#hospitalization').val(1);
                                             $('#hospitalizationDetails').prop('disabled', false);
-                                        } else if ($('#hospitalization_NO').is(':checked')) {
+                                            $('#hospitalizationDetails').prop('required', true);
+                                        } else {
+                                            $('#hospitalization').val(0);
                                             $('#hospitalizationDetails').prop('disabled', true);
+                                            $('#hospitalizationDetails').prop('required', false);
                                         }
                                     });
                                 });
@@ -915,83 +992,86 @@
                 <!-- REGULAR MEDICINES -->
                 <div class="d-flex flex-row pt-2">
                     <div class="col-sm">
-                        Are you taking any medicine regularly?
-                           (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_YES" value="1" required/>
-                               <label class="form-check-label" for="regMeds_YES" style="margin-right: -15px; margin-left:-5px">
-                               yes
-                               </label>
-                           </div><!-- END OF YES DIV -->
-                           &nbsp;
-                           <div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_NO" value="0"/>
-                               <label class="form-check-label" for="regMeds_NO" style="margin-right: -15px; margin-left:-5px">
-                               no
-                               </label>
-                           </div>)<!-- END OF NO DIV -->
-                           If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="regMedsDetails" name="regMedsDetails" disabled/>
-                           <span class="text-danger"> 
+                        <div class="form-check form-switch">
+                           <input class="form-check-input border-dark @error('regMeds') is-invalid @enderror" type="checkbox" role="switch" name="regMeds" id="regMeds" value="0" {{ old('regMeds') == '1' ? 'checked' : '' }} required/>
+                           <label class="form-check-label fw-bold" for="regMeds">
+                                Are you taking any medicine regularly?
+                           </label>
+                        </div><!-- END OF YES DIV -->
+                        <div class="invalid-feedback">
+                            Please select one.
+                        </div>
+                        <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" disabled/>
+                        <div class="invalid-feedback">
+                            Please enter the details of the medicine/s you regularly take.
+                        </div>
+                        <span class="text-danger"> 
                             @error('regMedsDetails') 
-                              {{ $message }} 
+                            {{ $message }} 
                             @enderror
-                          </span>  
-                               <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
-                               <script>
-                                   $(document).ready(function() {
-                                       $('#regMeds_YES, #regMeds_NO').change(function() {
-                                           if ($('#regMeds_YES').is(':checked')) {
-                                               $('#regMedsDetails').prop('disabled', false);
-                                           } else if ($('#regMeds_NO').is(':checked')) {
-                                               $('#regMedsDetails').prop('disabled', true);
-                                           }
-                                       });
-                                   });
-                               </script>
-                               <!-- END OF SCRIPT --> 
-                       </div><!-- END OF COL DIV -->
-                   </div><!-- END OF ROW DIV -->
-
-                   <!-- ALLERGIES -->
-                   <div class="col-sm" required>
-                    Are you allergic to any food or medicine?
-                       (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="allergy" id="allergy_YES" value="1" required/>
-                           <label class="form-check-label" for="allergy_YES" style="margin-right: -15px; margin-left:-5px">
-                           yes
-                           </label>
-                       </div><!-- END OF YES DIV -->
-                       &nbsp;
-                       <div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="allergy" id="allergy_NO" value="0"/>
-                           <label class="form-check-label" for="allergy_NO" style="margin-right: -15px; margin-left:-5px">
-                           no
-                           </label>
-                       </div>)<!-- END OF NO DIV -->
-                       If yes, specify:
-                       <input type="text" class="col-sm-10" id="allergyDetails" name="allergyDetails" disabled/>
-                       <span class="text-danger"> 
-                        @error('allergyDetails') 
-                          {{ $message }} 
-                        @enderror
-                      </span> 
+                        </span>  
                            <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
                            <script>
                                $(document).ready(function() {
-                                   $('#allergy_YES, #allergy_NO').change(function() {
-                                       if ($('#allergy_YES').is(':checked')) {
-                                           $('#allergyDetails').prop('disabled', false);
-                                       } else if ($('#allergy_NO').is(':checked')) {
-                                           $('#allergyDetails').prop('disabled', true);
+                                   $('#regMeds').change(function() {
+                                       if ($('#regMeds').is(':checked')) {
+                                            $('#regMeds').val(1);
+                                            $('#regMedsDetails').prop('disabled', false);
+                                            $('#regMedsDetails').prop('required', true);
+                                       } else {
+                                            $('#regMeds').val(0);
+                                            $('#regMedsDetails').prop('disabled', true);
+                                            $('#regMedsDetails').prop('required', false);
                                        }
                                    });
                                });
                            </script>
                            <!-- END OF SCRIPT --> 
                    </div><!-- END OF COL DIV -->
-               </div><!-- END OF ROW DIV -->    
+               </div><!-- END OF ROW DIV -->
 
-        </div>   
+                   <!-- ALLERGIES -->
+            <div class="d-flex flex-row pt-2">
+                <div class="col-sm" required>
+                    <div class="form-check form-switch">
+                       <input class="form-check-input border-dark @error('allergy') is-invalid @enderror" type="checkbox" role="switch" name="allergy" id="allergy" value="0" {{ old('allergy') == '1' ? 'checked' : '' }} required/>
+                       <label class="form-check-label fw-bold" for="allergy">
+                            Are you allergic to any food or medicine?
+                       </label>
+                    </div><!-- END OF YES DIV -->                    
+                    <div class="invalid-feedback">
+                        Please select one.
+                    </div>
+                    <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" disabled/>
+                    <div class="invalid-feedback">
+                        Please enter the details of the food and/or medicine that you are alergic to.
+                    </div>
+                    <span class="text-danger"> 
+                        @error('allergyDetails') 
+                        {{ $message }} 
+                        @enderror
+                    </span> 
+                        <!-- SCRIPT FOR TOGGLE DETAILS IF YES/NO -->
+                        <script>
+                           $(document).ready(function() {
+                               $('#allergy').change(function() {
+                                   if ($('#allergy').is(':checked')) {
+                                        $('#allergy').val(0);
+                                        $('#allergyDetails').prop('disabled', false);
+                                        $('#allergyDetails').prop('required', true);
+                                   } else {
+                                        $('#allergy').val(0);
+                                        $('#allergyDetails').prop('disabled', true);
+                                        $('#allergyDetails').prop('required', false);
+                                   }
+                               });
+                           });
+                       </script>
+                       <!-- END OF SCRIPT --> 
+                </div><!-- END OF COL DIV -->
+            </div><!-- END OF ROW DIV -->    
+        </div>
+    </div>
         
         <!--Immunization History-->
         <div class="mx-auto row row-cols-lg-1 mt-2">
@@ -1165,8 +1245,8 @@
                         <input type="file" class="form-control" id="MRP_chestXray" name="MRP_chestXray" accept="image/jpeg, image/png" required>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_cbcResults" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="MRP_cbcResults" name="MRP_cbcResults" accept="image/jpeg, image/png" required>
+                        <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
+                        <input type="file" class="form-control" id="MRP_cbcresults" name="MRP_cbcresults" accept="image/jpeg, image/png" required>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
@@ -1239,9 +1319,54 @@
     </div>
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-            <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#submitModal">
+            <button type="submit" class="btn btn-lg btn-primary btn-login fw-bold mb-2" id="submitButton">
                 Submit
             </button>
+        </div>
+    </div>
+        <script>
+        $(document).ready(function() {
+                $('#submitButton').on('click', function(event) {
+                    // Check if all required fields are filled
+                    $('#passwordSpan').text('');
+                    $('#certifySpan').text('');
+                    $('#passwordInput').removeClass('is-invalid');
+                    $('#radioCertify').removeClass('is-invalid');
+                    var a = '';
+                    var b = $('#MR_form')[0].checkValidity();
+                    if ($('#MR_form')[0].checkValidity()) {
+                        event.preventDefault();
+                        $('#radioCertify').prop('checked', false);
+                        $('#radioCertify').val('0');
+                        $('#certify').val('0');
+                        $('#radioCertify').attr('required', true);
+                        $('#passwordInput').attr('required', true);
+                        var modal = $('#submitModal');
+                        $('body').append(modal);
+                        modal.modal('show');
+                        // Close modal
+                        $('#editSuccessModal .close').on('click', function() {
+                            $('#radioCertify').attr('required', false);
+                            $('#passwordInput').attr('required', false);
+                            $('#editSuccessModal').modal('hide');
+                        });
+                    } else {
+                        // If not all required fields are filled, focus on the first one
+                        $('#MR_form :input[required]:visible').each(function() {
+                            if ($(this).val() == '') {
+                                $(this).focus();
+                                a = this;
+                                $('#radioCertify').attr('required', false);
+                                $('#passwordInput').attr('required', false);
+                                return false;
+                            }
+                        });
+                    }
+                    console.log(a);
+                    console.log(b);
+                });
+            });
+        </script>
         </div>
     </div>
     <!-- Modal -->
@@ -1257,13 +1382,25 @@
                     <div class="modal-body">
                         <p class="fs-5 fw-bold text-center">Please review your responses carefully before submitting this medical form. </p>
                         <hr>
-                        <p class="fs-5 text-center">By submitting this medical form, you are confirming that all the answers provided are true and correct to the best of your knowledge.</p>
+                        <div class="input-group ms-3">
+                            <div class="input-group-text bg-white border-0">
+                                <input class="form-check-input" type="radio" name="radioCertify" id="radioCertify" value="0"/>
+                            </div>
+                            <label for="certify" class="fs-5 text-center mt-1">
+                                I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.
+                            </label>
+                            <span class="text-danger" id="certifySpan"> 
+                                @error('certify') 
+                                  {{ $message }} 
+                                @enderror
+                            </span>
+                        </div>
                     </div>
                     <div class="modal-footer align-items-center mb-3">
                         <div class="d-flex align-items-center my-auto mx-auto">
                             <div class="input-group">
                                 <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                <input type="password" class="form-control" id="passwordInput" name="passwordInput" required>
+                                <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                     <div style="margin-top: -5px;">
                                         <span class="bi bi-eye-fill" aria-hidden="true"></span>
@@ -1271,6 +1408,11 @@
                                 </button>
                             </div>
                         </div>
+                        <span class="text-danger" id="passwordSpan"> 
+                            @error('passwordInput') 
+                              {{ $message }}
+                            @enderror
+                        </span>
                         
                         <script>
                             const passwordInput = document.getElementById('passwordInput');
@@ -1283,27 +1425,52 @@
                                 togglePassword.classList.toggle('active');
                             });
                         </script>
-                        <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %;">
-                            <button class="btn btn-primary btn-login fw-bold" type="submit" onclick="form_submit()">Submit</button>
+                        <div class="col d-flex justify-content-end align-items-center" style="margin-right:-1  %; margin-top: 3%">
+                            <button class="btn btn-primary btn-login fw-bold" type="button" id="medFormSubmitButton">Submit</button>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
-        
     </div> 
     <script>
         $(document).ready(function() {
             $('input[type=checkbox]').change(function() {
                 var input = $(this).closest('.input-group').find('input[type=text]');
                 input.prop('disabled', !this.checked);
+                input.prop('required', this.checked);
             });
         });
     </script>
     <script>
         function form_submit() {
             document.getElementById("MRP_form").submit();
-        }    
+        }
+
+        (() => {
+            'use strict'
+
+            // Fetch all the forms to apply validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+
+                    // Get all the invalid input fields
+                    const invalidInputs = form.querySelectorAll(':invalid')
+
+                    // Focus on the first invalid input field
+                    invalidInputs[0].focus()
+                }
+
+                form.classList.add('was-validated')
+                }, false)
+            })
+        })()
     </script>
     <!-- AJAX to prevent refresh 
     <script>

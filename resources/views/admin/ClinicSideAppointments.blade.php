@@ -285,12 +285,13 @@
                 });
             });
         </script>
-        <!-- Modal for Appointments Set -->
-        <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="patientsappointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+
+        <!-- Modal for Appointments Set by Patients-->
+        <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p class="modal-title fs-5 fw-bold" id="patientsappointmentModalLabel">BU-Care Appointment <span id="appointmentModal_ticketID"></span></p>
+                        <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointment <span id="appointmentModal_ticketID"></span></p>
                         <button type="butto" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -341,39 +342,40 @@
                                         </div>                      
                                         <div class="row justify-content-end">
                                             <div class="col-4">
-                                              <button type="button" class="btn btn-info float-end" onclick='swapmodal();'>set appointments</button>
+                                              <button type="button" class="btn btn-info float-end" onclick='swapModal();'>set appointments</button>
                                         </div>                                        
                                     </div>
-                                    <!-- Modal for Time -->
-                                    <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointment <span id="appointmentModal_ticketID"></span></p>
-                                                    <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="container">
-                                                        <div class="row row-cols-lg-2 rol-cols-md-1"><!-- MODAL DIV -->
-                                                            <div class="col-lg-3 col-md-12">
-                                                                <!-- APPOINTMENT TIME SELECT -->
-                                                                <div class="row row-cols-lg-2 justify-content-center">
-                                                                    <div class="col-lg-6 col-md-3 pb-2">
-                                                                        <button type="button" class="btn btn-primary float-lg-end float-md-start" id="ambtn" onclick="showAM()" disabled>AM</button>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-3 pb-2">
-                                                                         <button type="button" class="btn btn-primary float-lg-start float-md-end" id="pmbtn" onclick="showPM()">PM</button>
-                                                                    </div>
-                                                                  </div>
-                                                                  <table class="table table-bordered border-dark">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Time</th>
-                                                                            <th>Slots</th>
-                                                                        </tr>
-                                                                    </thead>
+
+                    <!-- Set Appointments -->
+                        <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="setappointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <p class="modal-title fs-5 fw-bold" id="setappointmentModalLabel">BU-Care Appointment <span id="appointmentModal_ticketID"></span></p>
+                                                <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row row-cols-lg-2 rol-cols-md-1"><!-- MODAL DIV -->
+                                                    <div class="col-lg-3 col-md-12">
+                                                        <!-- APPOINTMENT TIME SELECT -->
+                                                    <div class="row row-cols-lg-2 justify-content-center">
+                                                        <div class="col-lg-6 col-md-3 pb-2">
+                                                            <button type="button" class="btn btn-primary float-lg-end float-md-start" id="ambtn" onclick="showAM()" disabled>AM</button>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-3 pb-2">
+                                                                <button type="button" class="btn btn-primary float-lg-start float-md-end" id="pmbtn" onclick="showPM()">PM</button>
+                                                            </div>
+                                                                </div>
+                                                            <table class="table table-bordered border-dark">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Time</th>
+                                                                        <th>Slots</th>
+                                                                    </tr>
+                                                                </thead>
                                                                     <tbody id="time-slots">
                                                                         <?php
                                                                             $start_am = strtotime('8:00 AM');
@@ -430,6 +432,187 @@
                                                                     </script>
                                                                 </table>
                                                               </div> 
+                                                              <!-- APPOINTMENT DETAILS -->
+                                                              <div class="col-lg-9 col-md-12" id="services">
+                                                                  <form method="post" id="appointmentForm" action="{{ route('appointmentDetails.store') }}">
+                                                                      @csrf
+                                                                      <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
+                                                                      </div>
+                                                                      <div class="d-flex flex-row p-2">
+                                                                        <div class="col-sm-3" style="margin-right: 5px;">
+                                                                      <input type="text" class="form-control" name="patientID" placeholder="Enter Patient ID or Applicant ID">
+                                                                        </div>
+                                                                      <div class="col-sm-3">
+                                                                        <select id="patientType" name="patientType" class="form-select">
+                                                                                <option value="">Select table</option>
+                                                                                <option value="NewStudent">New Student</option>
+                                                                                <option value="OldStudent">Old Student</option>
+                                                                                <option value="Employee">Employee</option>
+                                                                        </select>
+                                                                      </div>
+                                                                    </div>
+                                                                    <script>
+                                                                        $(document).ready(function() {
+                                                                            // Hide all divs initially
+                                                                            $(".my-div").hide();
+                                                                            
+                                                                          
+                                                                            
+                                                                            // Handle the change event of the dropdown
+                                                                            $("#patientType").change(function() {
+                                                                              var selectedOption = $(this).val();
+                                                                              
+                                                                              // Hide all divs
+                                                                              $(".my-div").hide();
+                                                                              
+                                                                              // Show the selected div
+                                                                              if (selectedOption === "NewStudent") {
+                                                                                $("#OldStudent").show();
+                                                                              } else if (selectedOption === "OldStudent") {
+                                                                                $("#OldStudent").show();
+                                                                              } else if (selectedOption === "Employee") {
+                                                                                $("#Employee").show();
+                                                                              }
+                                                                            });
+                                                                          });
+       
+    
+                                                                    </script>
+                                                                      <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
+                                                                          <div class="form-group col-lg-6 col-md-12">
+                                                                              <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
+                                                                              <input type="text" class="form-control fw-bold" name="appointmentDate" id="appointmentDate" required readonly>
+                                                                          </div>
+                                                                          <div class="form-group col-lg-6 col-md-12">
+                                                                              <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
+                                                                              <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required readonly>
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-lg-12 p-2 border-lg-end-0">
+                                                                          <h5>Services Availed</h5>
+                                                                          <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
+                                                                              <div class="col-lg-6 col-md-12 p-2">
+                                                                                  <div class="form-check">
+                                                                                      <input class="form-check-input" type="radio" value="Medical Certificate" name="services" required>
+                                                                                          <label class="form-check-label" for="services">
+                                                                                              Medical Certificate
+                                                                                          </label>    
+                                                                                  </div><!-- END OF CHECKBOX DIV -->
+                                                                                  <div class="form-check">
+                                                                                      <input class="form-check-input" type="radio" value="OPD Consultant" name="services">
+                                                                                          <label class="form-check-label" for="services">
+                                                                                              OPD Consultant
+                                                                                          </label>
+                                                                                  </div><!-- END OF CHECKBOX DIV -->
+                                                                                  <div class="form-check">
+                                                                                      <input class="form-check-input" type="radio" value="others" id="others" name="services">
+                                                                                          <label class="form-check-label" for="others">
+                                                                                              Others
+                                                                                          </label>
+                                                                                          <div class="form-check">
+                                                                                              <label for="othersInput" class="form-check-label">
+                                                                                                  <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled>
+                                                                                              </label>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div><!-- END OF CHECKBOX DIV -->     
+                                                                                </div>
+                                                                                <div class="my-div col-lg-6 col-md-12 p-2" id="OldStudent">
+                                                                                
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" type="radio" value="Reinstatement" name="services">
+                                                                                            <label class="form-check-label" for="Reinstatement">
+                                                                                                OJT Medical Form
+                                                                                            </label>
+                                                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                                                </div>
+                                                                                <div class="my-div col-lg-6 col-md-12 p-2" id="Employee">  
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" type="radio" value="Reinstatement" name="services">
+                                                                                            <label class="form-check-label" for="Reinstatement">
+                                                                                                Reinstatement
+                                                                                            </label>
+                                                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" type="radio" value="Sick Leave" name="services">
+                                                                                            <label class="form-check-label" for="Sick Leave">
+                                                                                                Sick Leave
+                                                                                            </label>
+                                                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input" type="radio" value="Unkown" name="services">
+                                                                                            <label class="form-check-label" for="Unkown">
+                                                                                                Unkown
+                                                                                            </label>
+                                                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                                                
+                                                                                <script>
+                                                                                    $(document).ready(function(){
+                                                                                        $('input[name="services"]').change(function(){
+                                                                                            if($('#others').is(':checked')){
+                                                                                                $('#othersInput').prop('disabled', false);
+                                                                                                $('#othersInput').attr('required', true);
+                                                                                            }else{
+                                                                                                $('#othersInput').prop('disabled', true);
+                                                                                                $('#othersInput').attr('required', true);
+                                                                                            }
+                                                                                        });
+                                                                                    });
+                                                                                </script>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="appointmentDescription" class="col-form-label">Description:</label>
+                                                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;" required></textarea>
+                                                                    </div>  
+                                                                    <script>
+                                                                        var textarea = document.getElementById('appointmentDescription');
+                                
+                                                                        textarea.addEventListener('input', function() {
+                                                                            this.style.height = 'auto';
+                                                                            this.style.height = this.scrollHeight + 'px';
+                                                                        });
+                                                                    </script>
+                                                                    <div class="modal-footer mt-4 justify-content-between">
+                                                                        <div class="d-flex my-auto">
+                                                                            <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
+                                                                            <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                                                                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                                            <div style="margin-top: -5px;"></div>
+                                                                            <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                                        </div>
+                                                                    </button>
+                                                                    <script>
+                                                                        const passwordInput = document.getElementById('passwordInput');
+                                                                        const togglePassword = document.getElementById('togglePassword');
+                                                                        togglePassword.addEventListener('click', function() {
+                                                                            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                            passwordInput.setAttribute('type', type);
+                                                                            togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                                                            togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                                                            togglePassword.classList.toggle('active');
+                                                                        });
+                                                                    </script>  
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2 mt-auto">
+                                                                            <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                <script>
+                                                    function swapModal(){
+                                                        $('#appointmentModal').modal('hide');
+                                                      
+                                                        var modal = $('#setappointmentModal');
+                                                        $('body').append(modal);
+                                                        modal.modal('show');
+                                                      }
+                                                      $('#setappointmentModal .close').on('click', function() {
+                                                        $('#setappointmentModal').modal('hide');
+                                                      });
+                                                </script>
                                 </div>
                             </div>       
                         </div>

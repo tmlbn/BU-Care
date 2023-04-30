@@ -10,7 +10,7 @@ class MRP_PersonalMedicalCondition extends Model
 {
     use HasFactory;
     protected $table = 'mrp_personalmedicalcondition';
-    protected $primaryKey = 'mrp_personalMedicalConditionID';
+    protected $primaryKey = 'MRP_PMC_ID';
 
     public function medicalRecordPersonnel(){
         return $this->belongsTo(MedicalRecord::class, 'MRP_id');

@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use DateTime;
+use Session;
+use Hash;
+use DB;
+
+# Students
 use App\Models\UserStudent;
 use App\Models\MedicalRecord;
 use App\Models\FamilyHistory;
@@ -14,10 +21,13 @@ use App\Models\ImmunizationHistory;
 use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
-use DateTime;
-use Session;
-use Hash;
-use DB;
+# Personnel
+use App\Models\UserPersonnel;
+use App\Models\MedicalRecordPersonnel;
+use App\Models\MRP_FamilyHistory;
+use App\Models\MRP_ImmunizationHistory;
+use App\Models\MRP_PersonalMedicalCondition;
+use App\Models\MRP_PersonalSocialHistory;
 
 class MedicalRecordFormController extends Controller
 {
@@ -126,8 +136,9 @@ class MedicalRecordFormController extends Controller
         $rules = [
             'MR_parentGuardianContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
             'MR_studentContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
+            'MR_emergencyContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
         ];
-        $validator = Validator::make($request->only(['MR_parentGuardianContactNumber', 'MR_studentContactNumber']), $rules);
+        $validator = Validator::make($request->only(['MR_parentGuardianContactNumber', 'MR_studentContactNumber', 'MR_emergencyContactNumber']), $rules);
             // Return error message if validation fails
         if ($validator->fails()) {
             #dd($validator);
@@ -139,7 +150,17 @@ class MedicalRecordFormController extends Controller
             'campusSelect' => 'required',
             'courseSelect' => 'required',
             'schoolYearStart' => 'required_with:schoolYearEnd|integer|min:2015',
-            'schoolYearEnd' => 'required_with:schoolYearStart|integer|gt:schoolYearStart',
+            'schoolYearEnd' => [
+                'required_with:schoolYearStart',
+                'integer',
+                'gt:schoolYearStart',
+                function ($attribute, $value, $fail) use ($request) {
+                    $start = $request->input('schoolYearStart');
+                    if ($value != $start + 1) {
+                        $fail('The end school year must be exactly one greater than school year start.');
+                    }
+                },
+            ],
             'MR_lastName' => 'required|string',
             'MR_firstName' => 'required|string',
             'MR_middleName' => 'nullable',
@@ -158,6 +179,10 @@ class MedicalRecordFormController extends Controller
             'MR_motherOffice' => 'nullable',
             'MR_guardian' => 'nullable|string',
             'MR_guardianAddress' => 'nullable|required_with:MR_guardian|string',
+            'MR_emergencyContactName' => 'required|string',
+            'MR_emergencyContactOccupation' => 'required|string',
+            'MR_emergencyContactRelationship' => 'required|string',
+            'MR_emergencyContactAddress' => 'required|string',
 
             /* FAMILY HISTORY[FH_] */
             'FH_cancer' => 'required|in:0,1', 
@@ -275,7 +300,6 @@ class MedicalRecordFormController extends Controller
             'MR_additionalUpload8' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
 
         ],[ #--- CATCH SPECIFIC ERRORS ---#
-            'required' => 'The :attribute field is required.',
             'campusSelect.required' => 'Please select a campus.',
             'courseSelect.required' => 'Please select a course.',
             'schoolYearStart.required_with' => 'Please provide a start year.',
@@ -306,6 +330,7 @@ class MedicalRecordFormController extends Controller
         }
             /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
             ###----- FAMILY HISTORY TABLE -----###
+        try {
             $familyHistory = new FamilyHistory();
                 $familyHistory->cancer = filter_var($request->FH_cancer, FILTER_SANITIZE_NUMBER_INT);
                 $familyHistory->heartDisease = filter_var($request->FH_heartDisease, FILTER_SANITIZE_NUMBER_INT);
@@ -325,7 +350,7 @@ class MedicalRecordFormController extends Controller
                 $familyHistory->othersDetails = $request->filled('FH_othersDetails') ? filter_var($request->input('FH_othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
             $res = $familyHistory->save();
             if(!$res){
-                dd($res);
+                return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
             }
 
             ###----- PERSONAL SOCIAL HISTORY TABLE -----###
@@ -340,9 +365,9 @@ class MedicalRecordFormController extends Controller
                 $psHistory->shotsFrequency = $request->filled('PSH_drinking_freqOfShots') ? filter_var($request->input('PSH_drinking_freqOfShots'), FILTER_SANITIZE_STRING) : 'N/A';
             $res = $psHistory->save();
                 if(!$res){
-                    dd($res);
+                    return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
                 }
-            
+        
             ###----- PAST ILLNESS TABLE -----###
             $pastIllness = new PastIllness();
                 $pastIllness->primaryComplex = filter_var($request->input('pi_primaryComplex'), FILTER_SANITIZE_NUMBER_INT);
@@ -368,9 +393,9 @@ class MedicalRecordFormController extends Controller
                 $pastIllness->mumps = filter_var($request->input('pi_mumps'), FILTER_SANITIZE_NUMBER_INT);
             $res = $pastIllness->save();
                 if(!$res){
-                    dd($res);
+                    return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
                 }
-
+        
             ###----- PRESENT ILLNESS TABLE -----###
             $presentIllness = new PresentIllness();
                 $presentIllness->chestPain = filter_var($request->input('PI_chestPain'), FILTER_SANITIZE_NUMBER_INT);
@@ -389,9 +414,9 @@ class MedicalRecordFormController extends Controller
                 $presentIllness->othersDetails = $request->filled('PI_othersDetails') ? filter_var($request->input('PI_othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
             $res = $presentIllness->save();
                 if(!$res){
-                    dd($res);
+                    return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
                 }
-            
+
         ###----- IMMUNIZATION HISTORY TABLE -----###
             $immunizationHistory = new ImmunizationHistory;
                 $immunizationHistory->BCG = filter_var($request->input('IH_bcg'), FILTER_SANITIZE_NUMBER_INT);
@@ -408,7 +433,7 @@ class MedicalRecordFormController extends Controller
                 $immunizationHistory->othersDetails = $request->filled('IH_othersDetails') ? filter_var($request->input('IH_othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
             $res = $immunizationHistory->save();
                 if(!$res){
-                    dd($res);
+                    return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
                 }
                 
                 $user = Auth::user();
@@ -469,7 +494,7 @@ class MedicalRecordFormController extends Controller
                     $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
                 }
                 $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
-                $medRecord->emergencyContactNumber = filter_var($request->input('MR_emergencyContactNumber'), FILTER_SANITIZE_STRING);
+                $medRecord->emergencyContactNumber = filter_var(ltrim($request->input('MR_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
 
                 $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
                 $medRecord->hospDetails = $request->filled('hospitalizationDetails') ? filter_var($request->input('hospitalizationDetails'), FILTER_SANITIZE_STRING) : 'N/A';   
@@ -559,27 +584,38 @@ class MedicalRecordFormController extends Controller
             $res = $medRecord->save();
 
             //IF FALSE
-        if(!$res){
-            // Log error and display user-friendly message
-            Log::error('Failed to register user.');
-            return back()->with('fail','Failed to register. Please try again later.');
+            if(!$res){
+                // Log error and display user-friendly message
+                Log::error('Failed to register user.');
+                return redirect()->back()->with('fail','Failed to register. Please try again later.');
+            }
+
+            $familyHistory->MR_id =  $medRecord->MR_id;
+            $psHistory->MR_id =  $medRecord->MR_id;
+            $pastIllness->MR_id =  $medRecord->MR_id;
+            $presentIllness->MR_id =  $medRecord->MR_id;
+            $immunizationHistory->MR_id =  $medRecord->MR_id;
+
+            $familyHistory->save();
+            $psHistory->save();
+            $pastIllness->save();
+            $presentIllness->save();
+            $immunizationHistory->save();
+
+            $user->hasMedRecord = intval('1');
+            $user->MR_id =  $medRecord->MR_id;
+            $user->save();
+
+            return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
+        } 
+        catch (QueryException $ex) {
+            // Handle the SQL error here
+            return redirect()->back()->withErrors([
+                "An error occurred: " . $ex->getMessage(),
+                'If this error persists, please contact the admin from Bicol University Health Services.'
+            ])->withInput();
+            Log::error('Error from '.$user->id.': '. $ex->getMessage());
         }
-        $familyHistory->MR_id =  $medRecord->MR_id;
-        $psHistory->MR_id =  $medRecord->MR_id;
-        $pastIllness->MR_id =  $medRecord->MR_id;
-        $presentIllness->MR_id =  $medRecord->MR_id;
-        $immunizationHistory->MR_id =  $medRecord->MR_id;
-
-        $familyHistory->save();
-        $psHistory->save();
-        $pastIllness->save();
-        $presentIllness->save();
-        $immunizationHistory->save();
-
-        $user->hasMedRecord = intval('1');
-        $user->MR_id =  $medRecord->MR_id;
-        $user->save();
-        return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
         
     } // END OF medFormSubmit FUNCTION
 
@@ -594,6 +630,18 @@ class MedicalRecordFormController extends Controller
     }
 
     public function personnelMedFormSubmit(Request $request){
+
+        $rules = [
+            'MRP_personnelContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
+            'MRP_emergencyContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
+        ];
+        $validator = Validator::make($request->only(['MRP_personnelContactNumber', 'MRP_emergencyContactNumber']), $rules);
+            // Return error message if validation fails
+        if ($validator->fails()) {
+            #dd($validator);
+            return back()->withErrors($validator)->withInput();
+        }
+
         $validator = Validator::make($request->all(), [
             /* BASIC INFORMATION */
             'designation' => 'required',
@@ -753,15 +801,251 @@ class MedicalRecordFormController extends Controller
             'FHP_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
             'PIH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
         ]); /* END OF VALIDATION */
-    /*
+
+        /* GET USER */
         $user = Auth::guard('employee')->user();
-        $medRecordPersonnel = new MedicalRecordPersonnel();
+    try{
+        # Family History
+        $familyHistory = new MRP_FamilyHistory();
+            $familyHistory->cancer = filter_var($request->FHP_cancer, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->heartDisease = filter_var($request->FHP_heartDisease, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->hypertension = filter_var($request->FHP_hypertension, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->thyroidDisease = filter_var($request->FHP_thyroidDisease, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->tuberculosis = filter_var($request->FHP_tuberculosis, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->hivAids = filter_var($request->FHP_hivAids, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->diabetesMelittus = filter_var($request->FHP_diabetesMelittus, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->mentalDisorder = filter_var($request->FHP_mentalDisorder, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->asthma = filter_var($request->FHP_asthma, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->convulsions = filter_var($request->FHP_convulsions, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->bleedingDyscrasia = filter_var($request->FHP_bleedingDyscrasia, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->eyeDisorder = filter_var($request->FHP_eyeDisorder, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->skinProblems = filter_var($request->FHP_skinProblems, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->kidneyProblems = filter_var($request->FHP_kidneyProblems, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->hepatitis = filter_var($request->FHP_hepatitis, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->gastrointestinalDisease = filter_var($request->FHP_gastroDisease, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->others = filter_var($request->FHP_others, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->othersDetails = $request->filled('FHP_othersDetails') ? filter_var($request->input('FHP_othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+        $res = $familyHistory->save();
+        if(!$res){
+            return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
+        }
+
+        ###----- PERSONAL SOCIAL HISTORY TABLE -----###
+        $psHistory = new MRP_PersonalSocialHistory();
+            $psHistory->smoking = filter_var($request->input('PPSH_smoking'), FILTER_SANITIZE_NUMBER_INT);
+            $psHistory->sticksPerDay = $request->filled('PPSH_smoking_amount') ? filter_var($request->input('PPSH_smoking_amount'), FILTER_SANITIZE_NUMBER_INT) : intval('0');
+            $psHistory->years = $request->filled('PPSH_smoking_freq') ? filter_var($request->input('PPSH_smoking_freq'), FILTER_SANITIZE_NUMBER_INT) : intval('0');
+            $psHistory->eCig = filter_var($request->input('PPSH_eCig'), FILTER_SANITIZE_NUMBER_INT);
+            $psHistory->vape =filter_var($request->input('PPSH_vape'), FILTER_SANITIZE_NUMBER_INT);
+            $psHistory->drinking = filter_var($request->input('PPSH_drinking'), FILTER_SANITIZE_NUMBER_INT);
+            $psHistory->shotsFrequency = $request->filled('PPSH_drinkingDetails') ? filter_var($request->input('PPSH_drinkingDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+        $res = $psHistory->save();
+        if(!$res){
+            return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
+        }
+
+        ###----- PERSONAL MEDICAL CONDITION HISTORY TABLE -----###
+        $personalMedicalCondition = new MRP_PersonalMedicalCondition();
+            $personalMedicalCondition->hypertension = filter_var($request->PMC_hypertension, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->asthma = filter_var($request->PMC_asthma, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->diabetes = filter_var($request->PMC_diabetes, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->arthritis = filter_var($request->PMC_arthritis, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->chickenPox = filter_var($request->PMC_chickenPox, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->dengue = filter_var($request->PMC_dengue, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->tuberculosis = filter_var($request->PMC_tuberculosis, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->pneumonia = filter_var($request->PMC_pneumonia, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->covid19 = filter_var($request->PMC_covid19, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->hivAids = filter_var($request->PMC_hivAids, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->hepatitis = filter_var($request->PMC_hepatitis, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->hepatitisDetails = $request->filled('PMC_hepatitisDetails') ? filter_var($request->input('PMC_hepatitisDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->thyroidDisorder = filter_var($request->PMC_thyroidDisorder, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->thyroidDisorderDetails = $request->filled('PMC_thyroidDisorderDetails') ? filter_var($request->input('PMC_thyroidDisorderDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->eyeDisorder = filter_var($request->PMC_eyeDisorder, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->eyeDisorderDetails = $request->filled('PMC_eyeDisorderDetails') ? filter_var($request->input('PMC_eyeDisorderDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->mentalDisorder = filter_var($request->PMC_mentalDisorder, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->mentalDisorderDetails = $request->filled('PMC_mentalDisorderDetails') ? filter_var($request->input('PMC_mentalDisorderDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->gastroDisease = filter_var($request->PMC_gastroDisease, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->gastroDiseaseDetails = $request->filled('PMC_gastroDiseaseDetails') ? filter_var($request->input('PMC_gastroDiseaseDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->kidneyDisease = filter_var($request->PMC_kidneyDisease, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->kidneyDiseaseDetails = $request->filled('PMC_kidneyDiseaseDetails') ? filter_var($request->input('PMC_kidneyDiseaseDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->heartDisease = filter_var($request->PMC_heartDisease, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->heartDiseaseDetails = $request->filled('PMC_heartDiseaseDetails') ? filter_var($request->input('PMC_heartDiseaseDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->skinDisease = filter_var($request->PMC_skinDisease, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->skinDiseaseDetails = $request->filled('PMC_skinDiseaseDetails') ? filter_var($request->input('PMC_skinDiseaseDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->earDisease = filter_var($request->PMC_earDisease, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->earDiseaseDetails = $request->filled('PMC_earDiseaseDetails') ? filter_var($request->input('PMC_earDiseaseDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->cancer = filter_var($request->PMC_cancer, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->cancerDetails = $request->filled('PMC_cancerDetails') ? filter_var($request->input('PMC_cancerDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $personalMedicalCondition->others = filter_var($request->PMC_others, FILTER_SANITIZE_NUMBER_INT);
+            $personalMedicalCondition->othersDetails = $request->filled('PMC_othersDetails') ? filter_var($request->input('PMC_othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+        $res = $personalMedicalCondition->save();
+        if(!$res){
+            return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
+        }
+
+        ###----- IMMUNIZATION HISTORY TABLE -----###
+        $immunizationHistory = new MRP_ImmunizationHistory();
+            $immunizationHistory->bcg = filter_var($request->IH_bcg, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->polio = filter_var($request->IH_polio, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->chickenPox = filter_var($request->IH_chickenPox, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->dpt = filter_var($request->IH_dpt, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->covidVacc = filter_var($request->IH_covidVacc, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->covidVaccName = $request->filled('IH_covidVaccName') ? filter_var($request->input('IH_covidVaccName'), FILTER_SANITIZE_STRING) : 'N/A';
+            $immunizationHistory->covidBooster = filter_var($request->IH_covidBooster, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->covidBoosterName = $request->filled('IH_covidBoosterName') ? filter_var($request->input('IH_covidBoosterName'), FILTER_SANITIZE_STRING) : 'N/A';
+            $immunizationHistory->typhoid = filter_var($request->IH_typhoid, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->mumps = filter_var($request->IH_mumps, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->hepatitisA = filter_var($request->IH_hepatitisA, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->measles = filter_var($request->IH_measles, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->germanMeasles = filter_var($request->IH_germanMeasles, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->hepatitisB = filter_var($request->IH_hepatitisB, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->pneumococcal = filter_var($request->IH_pneumococcal, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->influenza = filter_var($request->IH_influenza, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->hpv = filter_var($request->IH_hpv, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->others = filter_var($request->IH_others, FILTER_SANITIZE_NUMBER_INT);
+            $immunizationHistory->othersDetails = $request->filled('IH_othersDetails') ? filter_var($request->input('othersDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+        $res = $immunizationHistory->save();
+        if(!$res){
+            return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
+        }
+
+        /* SAVE INPUT TO MEDICAL RECORDS PERSONNEL TABLE */
             $medRecordPersonnel->personnel_id = $user->id;
-            $medRecordPersonnel->designation = 
-            $medRecordPersonnel->unitDepartment = 
-            $medRecordPersonnel->campus = 
-            $medRecordPersonnel->
-            $medRecordPersonnel->
-    */
+            $medRecordPersonnel->designation = filter_var($request->input('designation'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->unitDepartment = filter_var($request->input('unitDepartment'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->campus = filter_var($request->input('P_campusSelect'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->last_name = filter_var($request->input('MRP_lastName'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->first_name = filter_var($request->input('MRP_firstName'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->middle_name = filter_var($request->input('MRP_middleName'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->age = filter_var($request->input('MRP_age'), FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnel->sex = filter_var($request->input('MRP_sex'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->gender = filter_var($request->input('MRP_gender'), FILTER_SANITIZE_STRING);
+
+                $dateString = $request->input('MRP_dateOfBirth');
+                $date = DateTime::createFromFormat('Y F d', $dateString);
+                $formattedDate = $date->format('Y-m-d');
+
+            $medRecordPersonnel->dateOfBirth = $formattedDate;
+            $medRecordPersonnel->civilStatus = filter_var($request->input('MRP_civilStatus'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->nationality = filter_var($request->input('MRP_nationality'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->religion = filter_var($request->input('MRP_religion'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->homeAddress = filter_var($request->input('MRP_homeAddress'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->contactNumber = filter_var(ltrim($request->input('MRP_personnelContactNumber'), '0'), FILTER_VALIDATE_INT);
+            $medRecordPersonnel->emergencyContactName = filter_var($request->input('MRP_emergencyContactName'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactNumber = filter_var(ltrim($request->input('MRP_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
+            $medRecordPersonnel->emergencyContactOccupation = filter_var($request->input('MRP_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactRelationship = filter_var($request->input('MRP_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactAddress = filter_var($request->input('MRP_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnel->hospDetails = $request->filled('hospitalizationDetails') ? filter_var($request->input('hospitalizationDetails'), FILTER_SANITIZE_STRING) : 'N/A';  
+            $medRecordPersonnel->takingMedsRegularly = filter_var($request->input('regMeds'), FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnel->medsDetails = $request->filled('regMedsDetails') ? filter_var($request->input('regMedsDetails'), FILTER_SANITIZE_STRING) : 'N/A';  
+            $medRecordPersonnel->allergic =  filter_var($request->input('allergy'), FILTER_SANITIZE_NUMBER_INT);
+            $medRecordPersonnel->allergyDetails = $request->filled('allergyDetails') ? filter_var($request->input('allergyDetails'), FILTER_SANITIZE_STRING) : 'N/A';  
+
+            # UPLOADS
+                    // Get the validated, uploaded file
+                    $chestXray = $request->file('MRP_chestXray');
+                    $cbcresults = $request->file('MRP_cbcresults');
+                    $hepaBscreening = $request->file('MRP_hepaBscreening');
+                    $bloodtype = $request->file('MRP_bloodtype');
+                        // Other uploads
+                    $otherUpload1 = $request->file('MRP_additionalUpload1');
+                    $otherUpload2 = $request->file('MRP_additionalUpload2');
+                    $otherUpload3 = $request->file('MRP_additionalUpload3');
+                    $otherUpload4 = $request->file('MRP_additionalUpload4');
+                    $otherUpload5 = $request->file('MRP_additionalUpload5');
+                    $otherUpload6 = $request->file('MRP_additionalUpload6');
+                    $otherUpload7 = $request->file('MRP_additionalUpload7');
+                    $otherUpload8 = $request->file('MRP_additionalUpload8');
+    
+                        // Sanitize the file name to remove any special characters
+                    $chestXrayName = filter_var($chestXray->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $cbcresultsName = filter_var($cbcresults->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $hepaBscreeningName = filter_var($hepaBscreening->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                    $bloodtypeName = filter_var($bloodtype->getClientOriginalName(), FILTER_SANITIZE_STRING);
+                        // Other uploads names
+                    $otherUpload1name = filter_var($request->input('MRP_additionalResult1'), FILTER_SANITIZE_STRING);
+                    $otherUpload2name = filter_var($request->input('MRP_additionalResult2'), FILTER_SANITIZE_STRING);
+                    $otherUpload3name = filter_var($request->input('MRP_additionalResult3'), FILTER_SANITIZE_STRING);
+                    $otherUpload4name = filter_var($request->input('MRP_additionalResult4'), FILTER_SANITIZE_STRING);
+                    $otherUpload5name = filter_var($request->input('MRP_additionalResult5'), FILTER_SANITIZE_STRING);
+                    $otherUpload6name = filter_var($request->input('MRP_additionalResult6'), FILTER_SANITIZE_STRING);
+                    $otherUpload7name = filter_var($request->input('MRP_additionalResult7'), FILTER_SANITIZE_STRING);
+                    $otherUpload8name = filter_var($request->input('MRP_additionalResult8'), FILTER_SANITIZE_STRING);
+                        // Store the file on the server
+                    $medRecordPersonnel->chestXray = $chestXray->storeAs('uploads', $chestXrayName, 'public');
+                    $medRecordPersonnel->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
+                    $medRecordPersonnel->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
+                    $medRecordPersonnel->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
+                    
+                    if($otherUpload1name){
+                        $medRecordPersonnel->resultImage1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
+                    }
+                    if($otherUpload2name){
+                        $medRecordPersonnel->resultImage2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
+                    }
+                    if($otherUpload3name){
+                        $medRecordPersonnel->resultImage3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
+                    }
+                    if($otherUpload4name){
+                        $medRecordPersonnel->resultImage4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
+                    }
+                    if($otherUpload5name){
+                        $medRecordPersonnel->resultImage5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
+                    }
+                    if($otherUpload6name){
+                        $medRecordPersonnel->resultImage6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
+                    }
+                    if($otherUpload7name){
+                        $medRecordPersonnel->resultImage7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
+                    }
+                    if($otherUpload8name){
+                        $medRecordPersonnel->resultImage8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
+                    }
+                    $medRecord->signed = intval('1');
+
+            # Foreign Keys
+            $medRecordPersonnel->MRP_familyHistoryID = $familyHistory->MRP_familyHistoryID;
+            $medRecordPersonnel->MRP_personalSocialHistoryID = $psHistory->MRP_personalSocialHistoryID;
+            $medRecordPersonnel->MRP_PMC_ID = $personalMedicalCondition->MRP_PMC_ID;
+            $medRecordPersonnel->MRP_immunizationHistoryID = $immunizationHistory->MRP_immunizationHistoryID;
+
+            /**
+            * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE
+            */
+            $res = $medRecordPersonnel->save();
+            // IF FALSE
+            if(!$res){
+                // Log error and display message
+                Log::error('Failed to register user.');
+                return redirect()->back()->with('fail','Failed to register. Please try again later.');
+            }
+
+            $familyHistory->MRP_id =  $medRecord->MRP_id;
+                $familyHistory->save();
+            $psHistory->MRP_id =  $medRecord->MRP_id;
+                $psHistory->save();
+            $pastIllness->MRP_id =  $medRecord->MRP_id;
+                $pastIllness->save();
+            $personalMedicalCondition->MRP_id =  $medRecord->MRP_id;
+                $presentIllness->save();
+            $immunizationHistory->MRP_id =  $medRecord->MRP_id;
+                $immunizationHistory->save();
+            
+            $user->hasMedRecord = intval('1');
+            $user->MR_id =  $medRecord->MR_id;
+            $user->save();
+
+            return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
+        } 
+        catch (QueryException $ex) {
+            // Handle the SQL error here
+            return redirect()->back()->withErrors([
+                "An error occurred: " . $ex->getMessage(),
+                'If this error persists, please contact the admin from Bicol University Health Services.'
+            ])->withInput();
+            Log::error('Error from '.$user->id.': '. $ex->getMessage());
+        }
     }
 }

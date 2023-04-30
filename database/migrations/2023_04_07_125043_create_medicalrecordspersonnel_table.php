@@ -66,7 +66,6 @@ return new class extends Migration
             $table->string('resultName8', 50);
             $table->binary('resultImage8', 'mediumblob');
             $table->boolean('signed');
-            $table->string('othersDetails', 100);
             $table->timestamps();
         });
     }

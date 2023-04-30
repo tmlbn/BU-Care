@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +40,29 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     <style>
+        html{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
 
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
         /* Navbar color scheme */
         .main-navbar {
         background-color: white;
@@ -186,14 +208,13 @@
         }
 
         .pillars-bg{
-            background-repeat: no-repeat; 
-            background-size:100%;
-            background-image:url({{ asset('media/pillars.jpg') }}); 
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-image:url({{ asset('media/pillars.jpg') }});
         }
-        
+
     </style>
 </head>
-
 <body>
     <div class="main-navbar shadow-sm">
         <div class="top-navbar">
@@ -206,15 +227,21 @@
             </div>
         </div>
     </div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="#">
-                    <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" style="height:40px;">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="{{ route('home') }}">
+                <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="" style="height:40px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
+                <div class="offcanvas-header">
+                    <div class="col-5">
+                        <img src="{{ asset('media/BU-Carelogo1.png') }}" class="img-fluid offcanvas-title d-block" id="offcanvasNavbarLabel" alt="">
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
                     <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : 'inactive' }}" href="{{ route('home') }}">HOME</a>
