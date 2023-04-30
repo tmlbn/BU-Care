@@ -26,11 +26,11 @@
             </div>
             <div class="col-md-3">
                 <p class="h6">Course/Grade/Year</p>
-                <input type="text" class="form-control" id="campusSelect" name="campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
+                <input type="text" class="form-control" id="campusSelect" name="MPR_campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div>
             <div class="col-md-3">
                 <p class="h6">Unit</p>
-                <input type="text" class="form-control" id="courseSelect" name="courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
+                <input type="text" class="form-control" id="courseSelect" name="MPR_courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div> 
         
             <div class="d-flex flex-row">
@@ -118,31 +118,31 @@
                 <div class="d-flex flex-row">
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="hypertension">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Hypertension
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="diabetes">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Diabetes
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="Kidney_disease">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Kidney Disease
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="measles">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Measles
                                 </label>
                         </div>
                             <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="diphteria">
                                 <label class="form-check-label" for="flexCheckDefault">
                                      Diphteria
                                 </label>
@@ -151,32 +151,32 @@
                     <!--Column 2-->
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="asthma">
                             <label class="form-check-label" for="flexCheckDefault">
                                 Asthma
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="rheumatic_fever">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Rheumatic Fever
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="seizure_disorder">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Seizure Disorder
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="hepatitis">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Hepatitis
                                 </label>
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="allergy"/>
                                 <label class="form-check-label" for="flexCheckDefault">
                                        Allergy 
                                 </label>
@@ -187,32 +187,32 @@
                     <!--Column 3--> 
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="mumps">
                                  <label class="form-check-label" for="flexCheckDefault">
                                     Mumps
                                    </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="cardiac_disease">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Cardiac Disease
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="chicken_pox">
                                 <label class="form-check-label" for="flexCheckDefault">
                                         Chicken Pox
                                 </label>
                         </div>
                         <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="tuberculosis">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Tuberculosis
                                 </label>
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="others" />
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Others 
                                 </label>
