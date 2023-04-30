@@ -243,7 +243,7 @@
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.home' ? 'active' : 'inactive' }}" href="{{ route('admin.home') }}">HOME</a>
                         </li>
                         <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="#">SET APPOINTMENT</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="{{ route('admin.ClinicSideAppointments') }}">SET APPOINTMENT</a>
                         </li>
                         <li class="nav-item mr-4">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : (Route::currentRouteName() === 'admin.patientMedForm.show' ? 'active' : 'inactive') }}" href="{{ route('admin.patientMedFormList.show') }}">HEALTH RECORDS</a>
