@@ -1381,12 +1381,12 @@
                         }
                     </script>
                 </div>
-                <!-- IMPRESSION -->
+                <!-- Recommendations -->
                 <div class="pt-3 border border-top-0 border-bottom-0 border-dark pb-2">
-                    <h5>IMPRESSION</h5>
-                    <textarea class="form-control" id="MRA_impression" name="MRA_impression" style="resize: none; overflow: hidden;"></textarea>
+                    <h5>Recommendations</h5>
+                    <textarea class="form-control" id="MRA_recommendations" name="MRA_recommendations" style="resize: none; overflow: hidden;"></textarea>
                         <script>
-                            var textarea = document.getElementById('MRA_impression');
+                            var textarea = document.getElementById('MRA_recommendations');
 
                             textarea.addEventListener('input', function() {
                                 this.style.height = 'auto';

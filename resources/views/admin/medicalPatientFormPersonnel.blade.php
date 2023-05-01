@@ -316,7 +316,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="FHP_diabetesMelittus" {{  }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_diabetesMelittus">
-                                    Diabetes Melittus
+                                    Diabetes Mellittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">

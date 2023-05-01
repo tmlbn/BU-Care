@@ -236,6 +236,7 @@
                                 date: selectedDate
                             },
                             success: function(entries) {
+                                $('#daily-appointments-div').empty();
                                 //console.log(entries);
                                 // remove classes before looping through the data
                                 $('#time-slots tr').removeClass('booked lastOne selected');
@@ -252,7 +253,7 @@
                                     //loop through each table cell and check if it matches the appointment date and time
                                     $('#time-slots tr').each(function() {
                                         var cell_time = $(this).find('#timeSlot').text();
-
+                                        let counter = 0;
                                         if (formatted_time == cell_time) {
                                         //if there is a match, add a class to the table cell that corresponds to the appointment status
                                             if (appointment.booked_slots == 2) {
@@ -265,7 +266,21 @@
                                             }
 
                                             // DIGDI PO DEFAU1T
-                                            console.log(appointment);
+
+                                            // Create DateTime objects
+                                            let formatted_date = moment(appointment.appointmentDate).format('YYYY-MM-DD');
+                                            counter++;
+                                                // Append the HTML to a div
+                                                $('#daily-appointments-div').append(`
+                                                    <div class="col-sm-3">
+                                                        <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
+                                                        <p class="m-0">Ticket# ${appointment.ticket_id}</p>
+                                                        <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
+                                                        <hr class="mx-auto" style="width:300px;">
+                                                    </div>
+                                                `);
+                                            
+                                            
                                         }
                                     });
                                 });
@@ -306,36 +321,8 @@
                                         Patient Appointments:
                                         <br style="user-select: none;"><br style="user-select: none;">
                                     </span>
-                                    <div class="d-flex flex-row">
-                                        <?php
-                                            $counter = 0;
-                                            foreach ($entries as $appointment) {
-                                                $counter++;
-                                                    // Create DateTime objects
-                                                $date = new DateTime($appointment->appointmentDate);
-                                                $time = DateTime::createFromFormat('H:i:s', $appointment->appointmentTime);
-                                
-                                                    // Format date as "Y F d" (e.g. "2023 April 24")
-                                                $formattedDate = $date->format('Y F d');
-                                                    // Format time as "g:i A" (e.g. "8:00 AM")
-                                                $formattedTime = $time->format('g:i A');
-                                                        
-                                                echo '<div class="col-sm-3">';
-                                                echo '<p class="m-0 fw-bold">';
-                                                echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
-                                                echo '</p>';
-                                                echo '<p class="m-0">';
-                                                echo 'Ticket# '. $appointment->ticket_id;
-                                                echo '</p>';
-                                                echo '<p class="m-0">';
-                                                echo 'Service: ' . ($appointment->services ?: $appointment->others);
-                                                echo '<br style="user-select: none;">';
-                                                echo 'Description: ' . $appointment->appointmentDescription;
-                                                echo '</p>';
-                                                echo '<hr class="mx-auto " style="width:300px;">';
-                                                echo '</div>';   
-                                            }
-                                        ?>
+                                    <div class="d-flex justify-content-center flex-row text-center" id="daily-appointments-div">
+                                        <!-- APPOINTMENT ENTRIES FOR THE DAY PRINTS HERE -->
                                     </div>
                                 </div>                      
                                 <div class="row justify-content-end">
