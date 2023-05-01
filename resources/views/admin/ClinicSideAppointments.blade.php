@@ -434,7 +434,7 @@
                                                               </div> 
                                                               <!-- APPOINTMENT DETAILS -->
                                                               <div class="col-lg-9 col-md-12" id="services">
-                                                                  <form method="post" id="appointmentForm" action="{{ route('appointmentDetails.store') }}">
+                                                                  <form method="post" id="appointmentForm" action="{{ route('admin.appointments.store') }}">
                                                                       @csrf
                                                                       <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                                                       </div>
@@ -447,7 +447,7 @@
                                                                                 <option value="">Select table</option>
                                                                                 <option value="NewStudent">New Student</option>
                                                                                 <option value="OldStudent">Old Student</option>
-                                                                                <option value="Employee">Employee</option>
+                                                                                <option value="Personnel">Personnel</option>
                                                                         </select>
                                                                       </div>
                                                                     </div>
@@ -470,8 +470,8 @@
                                                                                 $("#OldStudent").show();
                                                                               } else if (selectedOption === "OldStudent") {
                                                                                 $("#OldStudent").show();
-                                                                              } else if (selectedOption === "Employee") {
-                                                                                $("#Employee").show();
+                                                                              } else if (selectedOption === "Personnel") {
+                                                                                $("#Personnel").show();
                                                                               }
                                                                             });
                                                                           });
@@ -526,7 +526,7 @@
                                                                                             </label>
                                                                                     </div><!-- END OF CHECKBOX DIV -->
                                                                                 </div>
-                                                                                <div class="my-div col-lg-6 col-md-12 p-2" id="Employee">  
+                                                                                <div class="my-div col-lg-6 col-md-12 p-2" id="Personnel">  
                                                                                     <div class="form-check">
                                                                                         <input class="form-check-input" type="radio" value="Reinstatement" name="services">
                                                                                             <label class="form-check-label" for="Reinstatement">
@@ -575,14 +575,22 @@
                                                                             this.style.height = this.scrollHeight + 'px';
                                                                         });
                                                                     </script>
-                                                                    <div class="modal-footer mt-4 justify-content-between">
-                                                                        <div class="d-flex my-auto">
-                                                                            <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                                                            <input type="password" class="form-control" id="passwordInput" name="passwordInput">
-                                                                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                                                            <div style="margin-top: -5px;"></div>
-                                                                            <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                                    <div class="modal-footer align-items-center mb-3">
+                                                                        <div class="d-flex align-items-center my-auto mx-auto">
+                                                                            <div class="input-group">
+                                                                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password<span class="text-danger">*</span>:</label>
+                                                                                <input type="password" class="form-control @error('passwordInput') is-invalid @enderror" id="passwordInput" name="passwordInput">
+                                                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                                                    <div style="margin-top: -5px;">
+                                                                                        <span class="bi bi-eye-fill" aria-hidden="true"></span>
+                                                                                    </div>
+                                                                            </div>
                                                                         </div>
+                                                                        <span class="text-danger" id="passwordSpan"> 
+                                                                            @error('passwordInput') 
+                                                                              {{ $message }}
+                                                                            @enderror
+                                                                        </span>
                                                                     </button>
                                                                     <script>
                                                                         const passwordInput = document.getElementById('passwordInput');
@@ -594,6 +602,47 @@
                                                                             togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
                                                                             togglePassword.classList.toggle('active');
                                                                         });
+
+                                                                        $(document).ready(function() {
+                                                                            $.ajaxSetup({
+                                                                                headers:{
+                                                                                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                                                                                }
+                                                                            });
+                                                                            $('#saveButton').on('click', function(event) {
+                                                                                event.preventDefault(); // prevent default form submission behavior
+
+                                                                                let password = $('#passwordInput').val();
+                                                                                $('#passwordSpan').text('');
+                                                                                $('#passwordInput').removeClass('is-invalid');
+                                                                                if(password == ""){
+                                                                                    $('#passwordInput').addClass('is-invalid');
+                                                                                    $('#passwordSpan').text('Please provide your password');
+                                                                                return false;
+                                                                                }
+                                                                                $.ajax({
+                                                                                url: '/admin/check-password',
+                                                                                method: 'POST',
+                                                                                dataType: 'json',
+                                                                                data: {
+                                                                                    password: password
+                                                                                },
+                                                                                success: function(response) {
+                                                                                    if(response.success){
+                                                                                    $('#appointmentForm').submit();
+                                                                                    }
+                                                                                    else if(response.error){
+                                                                                    // password is incorrect, display an error message
+                                                                                    $('#passwordInput').addClass('is-invalid');
+                                                                                    $('#passwordSpan').text('Incorrect password');
+                                                                                    }
+                                                                                },
+                                                                                error: function(jqXHR, textStatus, errorThrown) {
+                                                                                    console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
+                                                                                }
+                                                                                });
+                                                                            });
+});
                                                                     </script>  
                                                                     <div class="row">
                                                                         <div class="col-lg-2 mt-auto">

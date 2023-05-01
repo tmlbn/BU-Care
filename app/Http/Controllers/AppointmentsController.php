@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Appointment;
 use App\Models\UserStudent;
+use App\Models\UserPersonnel;
+use App\Models\UserClinic;
 use App\Models\MedicalRecord;
 use App\Models\FamilyHistory;
 use App\Models\ImmunizationHistory;
@@ -241,7 +243,7 @@ class AppointmentsController extends Controller
             $time = DateTime::createFromFormat('g:i A', $timeString)->format('Gi');
             $tTime = sprintf("%04d", $time);
             
-            $tPID = filter_var($request->patientID, FILTER_SANITIZE_STRING);  
+            $tPID = filter_var($request->patientID, FILTER_SANITIZE_STRING);
  
         $res = $appointment->save();
 
@@ -367,8 +369,8 @@ class AppointmentsController extends Controller
         $appointment->appointmentTime = $formattedTime;
         $appointment->appointmentDatetime = $formattedDateTime;
         $request->services == 'others'
-                                ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
-                                : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+                ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
+                : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
         $appointment->appointmentDescription = filter_var($request->input('appointmentDescription'), FILTER_SANITIZE_STRING);
 
         $res = $appointment->save();
@@ -470,11 +472,140 @@ class AppointmentsController extends Controller
                     $counts[$entryDate] = 1;
                 }
             }
-            
         
             return view('admin.ClinicSideAppointments')->with([
                 'entries' => $entries
             ]);
     }
-}
-          
+
+    public function adminAppointmentsStore(Request $request) {
+        
+        $request->validate([
+        
+            'patientID' => 'required',
+            'patientType' => 'required',
+            'appointmentDate' => 'required',
+            'appointmentTime' => 'required',
+            'services' => 'required_if:othersInput,null',
+            'othersInput' => 'required_if:services,null',
+            'appointmentDescription' => 'required',
+        ]);
+
+        $appointClinicSide = new Appointment();
+     
+        // Knowing the patient type and what their ID number
+        if($request->patientType == 'OldStudent'){
+            try{
+                $patient = UserStudent::where('student_id_number', $request->input('patientID'))->first();
+            }
+            catch(ModelNotFoundException $e){
+                return redirect()->back()->with('fail', 'Student ID Number '.$request->input('patientID').' not found.');
+            }
+        }
+        elseif($request->patientType == 'NewStudent') {
+            try{
+                $patient = UserStudent::where('applicant_id_number', $request->input('patientID'))->first();
+            }
+            catch(ModelNotFoundException $e){
+                return redirect()->back()->with('fail', 'Applicant ID Number '.$request->input('patientID').' not found.');
+            }     
+        }
+        elseif($request->patientType == 'Personnel') {
+            try{
+                $patient = UserPersonnel::where('personnel_id_number', $request->input('patientID'))->first();
+            }
+            catch(ModelNotFoundException $e){
+                return redirect()->back()->with('fail', 'personne;l ID Number '.$request->input('patientID').' not found.');
+            }
+        }
+
+        $appointClinicSide->patientID = $patient->id;
+        $appointClinicSide->patientType = $patient->user_type;
+
+       // Format Date
+       $dateString = $request->appointmentDate;
+       $date = DateTime::createFromFormat('Y-F-d', $dateString);
+       $formattedDate = $date->format('Y-m-d');
+       // Format Time
+       $timeString = $request->appointmentTime;
+       $formattedTime = DateTime::createFromFormat('g:i A', $timeString)->format('H:i:s');
+
+       // Merge as Datetime
+       $formattedDateTime = $formattedDate . ' ' . $formattedTime;
+
+   // Count number of entries with Datetime
+       $appointmentEntries = Appointment::whereDate('appointmentDateTime', $formattedDateTime)->count();
+       if($appointmentEntries == 2){
+           return back()->with('fail','No available slots for '. $request->appointmentDate .' @ '. $request->appointmentTime);
+       }
+       // Get latest entry with the user-input Datetime
+       $appointmentLatestEntry = Appointment::where('appointmentDateTime', $formattedDateTime)
+                           ->latest()
+                           ->first();
+
+   /* If things are good, start saving the new entry */
+   $appointment = new appointment();
+
+       if(Auth::guard('employee')->check()){
+           $appointment->personnel_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+       }
+       elseif(Auth::check()){
+           $appointment->student_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+       }
+       else{
+           return back()->with('fail', 'Please login to continue.'); // If somehow authentication fails e.g. session ended or interrupted.
+       }
+
+       $appointment->patient_type = filter_var($request->patientType, FILTER_SANITIZE_STRING);
+       $appointment->appointmentDate = $formattedDate;
+       $appointment->appointmentTime = $formattedTime;
+       $appointment->appointmentDateTime = $formattedDateTime;
+       $appointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
+           
+       $request->services == 'others'
+                           ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
+                           : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+
+       // Determine if booked_slots should be 1 or 2
+       if($appointmentLatestEntry == NULL){
+           // If there are no entries
+           $appointment->booked_slots = 1;
+           $temp = 1;
+       }elseif($appointmentLatestEntry->booked_slots == 1){
+           $appointment->booked_slots = 2;
+           $appointmentLatestEntry->booked_slots = 2;
+           $temp = 2;
+           $resLatest = $appointmentLatestEntry->save();
+           if(!$resLatest){
+               return back()->with('fail','Failed to save appointment reservation. Please try again later');
+           }
+       }
+       else{
+           return back()->with('fail','No available slots for '. $request->appointmentDate .' @ '. $request->appointmentTime);
+       }
+       
+       $tDate = $date->format('Ymd');
+       $time = DateTime::createFromFormat('g:i A', $timeString)->format('Gi');
+       $tTime = sprintf("%04d", $time);
+       
+       $tPID = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+
+   $res = $appointment->save();
+
+   if(!$res){
+       return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+   }
+   $tAPID = $appointment->id;
+   // E-Ticket
+   $e_ticket = $tDate . '-' . $tTime . '-'. $tAPID . $tPID . $temp;
+   $appointment->ticket_id = $e_ticket;
+   $res = $appointment->save();
+
+   if(!$res){
+       return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+   }
+   
+   return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket);
+
+    }
+}   

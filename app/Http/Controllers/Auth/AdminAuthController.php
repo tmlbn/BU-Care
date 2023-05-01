@@ -243,4 +243,17 @@ class AdminAuthController extends Controller
             }
         }
     }
+    
+    public function checkPassword(Request $request){
+        $password = $request->input('password');
+        $user = Auth::guard('admin')->user();
+            
+            if (!Hash::check($password, $user->password)) {
+                $response = 'Invalid Password';
+                 return response()->json(['error' => $response]);
+            }
+
+            $response = 'Password match';
+             return response()->json(['success' => $response]);
+    }
 }

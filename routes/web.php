@@ -116,4 +116,6 @@ Route::group(['middleware' => ['web', 'admin']], function(){
 	
 	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
     Route::get('/admin/ClinicSideAppointments', [AppointmentsController::class, 'ClinicSideAppointments'])->name('admin.ClinicSideAppointments');
+    Route::post('/admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
+    Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
 });
