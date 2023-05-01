@@ -877,7 +877,7 @@
                                             <div class="row row-cols-lg-5 row-cols-md-2 row-cols-sm-1">
                                                 <div class="col-lg-4">
                                                     <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
-                                                    <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput">
+                                                    <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput" required>
                                                     <span class="text-danger" id="applicantIDSpan"> 
                                                         @error('applicantIDinput') 
                                                         {{ $message }} 
@@ -886,7 +886,7 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <label for="applicantBirthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
-                                                    <input type="text" class="form-control" id="applicantBirthYear" name="applicantBirthYear">
+                                                    <input type="text" class="form-control" id="applicantBirthYearDelete" name="applicantBirthYearDelete" maxlength="4" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
                                                     <span class="text-danger" id="birthYearSpan"> 
                                                         @error('applicantBirthYear') 
                                                         {{ $message }} 
@@ -895,7 +895,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="applicantBirthMonth" class="form-label h6 mt-2 me-2">Birth Month:</label>
-                                                    <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px">
+                                                    <select class="form-control" name ="applicantBirthMonth" id="applicantBirthMonth" placeholder="Birth Month" autofocus style="height:38px; margin-top: 1px" required>
                                                         <option selected="selected" disabled="disabled" value="">SELECT</option>
                                                         <option value="JANUARY" id="januaryMonth" class="align-baseline">JANUARY</option>
                                                         <option value="FEBRUARY" id="februaryMonth">FEBRUARY</option>
@@ -918,7 +918,7 @@
                                                 </div>  
                                                 <div class="col-lg-2">
                                                     <label for="applicantBirthDate" class="form-label h6 mt-2 me-2">Birth Date:</label>
-                                                    <input type="text" class="form-control" id="applicantBirthDate" name="applicantBirthDate">
+                                                    <input type="text" class="form-control" id="applicantBirthDate" name="applicantBirthDate"maxlength="2" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
                                                     <span class="text-danger" id="birthDateSpan"> 
                                                         @error('applicantBirthDate') 
                                                         {{ $message }} 
