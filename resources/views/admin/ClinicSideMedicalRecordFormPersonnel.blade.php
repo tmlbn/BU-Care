@@ -1006,6 +1006,21 @@
                  </div>
             </div>
         </div>
+        <!-- Recommendation -->
+        <div class="pt-3 border border-top-0 border-bottom-1 border-dark pb-3">
+            <h5>Recommendations</h5>
+            <textarea class="form-control" id="MRA_impression" name="MRA_recommendations" style="resize: none; overflow: hidden;"></textarea>
+                <script>
+                    var textarea = document.getElementById('MRA_impression');
+
+                    textarea.addEventListener('input', function() {
+                        this.style.height = 'auto';
+                        this.style.height = this.scrollHeight + 'px';
+                    });
+                </script>
+            <input type="hidden" name="mrp_id" value="{{ $patient->medicalRecordPersonnel->MRP_id }}">
+            <input type="hidden" name="personnel_id" value="{{ $patient->id }}">
+        </div>
     </div>
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
