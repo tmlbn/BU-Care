@@ -50,43 +50,29 @@ class MedicalRecordFormController extends Controller
         $filterByCampus = request()->campus;
         $filterByCourse = request()->course;
     
-        $patientsList = UserStudent::has('medicalRecord')
-            ->when($searchQuery, function($query, $searchQuery) {
-                return $query->where('first_name', 'LIKE', '%'.$searchQuery.'%')
-                             ->orWhere('middle_name', 'LIKE', '%'.$searchQuery.'%')
-                             ->orWhere('last_name', 'LIKE', '%'.$searchQuery.'%')
-                             ->orWhere('applicant_id_number', 'LIKE', '%'.$searchQuery.'%')
-                             ->orWhere('student_id_number', 'LIKE', '%'.$searchQuery.'%');
-            })
-            ->join('medicalrecords', 'users_students.MR_id', '=', 'medicalrecords.MR_id')
-            ->when($filterByCampus, function($query, $filterByCampus) {
-                return $query->where('medicalrecords.campus', '=', $filterByCampus);
-            })
-            ->when($filterByCourse, function($query, $filterByCourse) {
-                return $query->where('medicalrecords.course', '=', $filterByCourse);
-            })
-            ->select('users_students.*')
+        $studentsList = UserStudent::has('medicalRecord')
+            ->get();
+        
+        $personnelList = UserPersonnel::has('medicalRecordPersonnel')
             ->get();
     
         return view('admin.medicalRecordList', [
-            'patients' => $patientsList,
-            'searchQuery' => $searchQuery,
-            'filterByCampus' => $filterByCampus,
-            'filterByCourse' => $filterByCourse
+            'students' => $studentsList,
+            'personnel' => $personnelList,
         ]);
     }
 
     public function showPatientForm($patientID){
         try {
             // Try to find a patient with the specified applicant ID
-            $patient = UserStudent::with('medicalRecord')
+            $student = UserStudent::with('medicalRecord')
                                     ->where('applicant_id_number', $patientID)
                                     ->where('hasMedRecord', 1)
                                     ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             try {
                 // If it fails or a student ID number is used, try to find a patient with the specified student ID
-                $patient = UserStudent::with('medicalRecord')
+                $student = UserStudent::with('medicalRecord')
                                         ->where('student_id_number', $patientID)
                                         ->where('hasMedRecord', 1)
                                         ->firstOrFail();
@@ -98,7 +84,7 @@ class MedicalRecordFormController extends Controller
         }
     
         // Display the patient form with the found user data
-        return view('admin.ClinicSideMedicalRecordForm')->with('patient', $patient);
+        return view('admin.ClinicSideMedicalRecordForm')->with('patient', $student);
     }
 
     public function checkAuthentication(Request $request){

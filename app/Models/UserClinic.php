@@ -24,4 +24,10 @@ class UserClinic extends Authenticatable
 
     protected $primaryKey = 'id';
 
+    public function accomplishedPersonnelMedicalRecord(){
+        return $this->hasMany(MedicalRecordsPersonnel_Admin::class, 'doctor_id');
+    }
+    public function accomplishedStudentMedicalRecord(){
+        return $this->hasMany(edicalRecordsPersonnel::class, 'doctor_id');
+    }
 }

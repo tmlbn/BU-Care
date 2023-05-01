@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use DateTime;
+use Session;
+use Hash;
+use DB;
+use App\Models\MedicalRecordPersonnel;
+use App\Models\UserPersonnel;
 use App\Models\MedicalRecordsPersonnel_Admin;
 use App\Models\MedicalRecord_Admin;
 use App\Models\UserStudent;
-use DB;
-use Hash;
 
 class MedicalRecordsAdminController extends Controller
 {
 
     public function medFormSubmitAdmin(Request $request){
-        dd($request->all());
     try{
         /* VALIDATE USER INPUT */
         $validator = Validator::make($request->all(), [
@@ -134,40 +138,104 @@ class MedicalRecordsAdminController extends Controller
 
     #NEW FUNCTION STARTS HERE
     public function medicalRecordsPersonnelAdmin(Request $request){
-        $validator = Validator::make($request->all(), [
-            'VS_bp_systolic' => 'required|integer',
-            'VS_bp_diastolic' => 'required|integer',
-            'VS_pulseRate' => 'required|integer',
-            'VS_respirationRate' => 'required|integer',
-            'VS_temp' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'VS_o2saturaion' => 'required|integer',
-            'VS_height' => 'required|integer',
-            'VS_weight' => 'required|integer',
-            'VS_bmi' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'VS_bloodType' => 'required|integer',
-        ]);
-
-        $user = Auth::guard('employee')->user();
         try{
-            $medRecordPersonnelAdmin = new MedicalRecordsPersonnel_Admin();
+            $validator = Validator::make($request->all(), [
+                'VS_bp_systolic' => 'required|integer',
+                'VS_bp_diastolic' => 'required|integer',
+                'VS_pulseRate' => 'required|integer',
+                'VS_respirationRate' => 'required|integer',
+                'VS_temp' => [
+                    'required',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                ],
+                'VS_o2saturation' => 'required|integer',
+                'VS_height' => [
+                    'required',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                ],
+                'VS_weight' => 'required|integer',
+                'VS_bmi' => [
+                    'required',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                ],
+                'VS_xrayFindings' => 'required|string',
+                'VS_cbcResults' => 'required|string',
+                'VS_hepaBscreening' => 'required|string',
+                'VS_bloodType' => 'required|string',
+                'MRA_recommendations' => 'required|string',
+                'mrp_id' => 'required|string',
+                'personnel_id' => 'required|string',
+            ], [
+                'VS_temp.regex' => 'The temperature must have at most 2 decimal places',
+                'VS_height.regex' => 'The height must have at most 2 decimal places',
+                'VS_bmi.regex' => 'The BMI must have at most 2 decimal places',
+            ]);
 
-            $medRecordPersonnelAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $medRecordPersonnelAdmin->o2saturation = filter_var($request->input('VS_o2saturation'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        } 
-        catch (QueryException $ex) {
-            // Handle the SQL error here
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+            
+            // Get the admin/doctor type user
+            $user = Auth::guard('admin')->user();
+            // Create new instance of MedicalRecordsPersonnel_Admin and save
+            $medRecordPersonnelAdmin = new MedicalRecordsPersonnel_Admin();
+                $medRecordPersonnelAdmin->MRP_id = filter_var($request->input('mrp_id'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->personnel_id = filter_var($request->input('personnel_id'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->respirationRate = filter_var($request->input('VS_respirationRate'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->temp = filter_var($request->input('VS_temp'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $medRecordPersonnelAdmin->o2saturation = filter_var($request->input('VS_o2saturation'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->height = filter_var($request->input('VS_height'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->weight = filter_var($request->input('VS_weight'),FILTER_SANITIZE_NUMBER_INT);
+                $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $medRecordPersonnelAdmin->chestXrayFinding = filter_var($request->input('VS_xrayFindings'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->CBCResults = filter_var($request->input('VS_cbcResults'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->hepatitsBscreeningResults = filter_var($request->input('VS_hepaBscreening'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->bloodtype = filter_var($request->input('VS_bloodType'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->recommendations = filter_var($request->input('MRA_recommendations'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->physician = $user->last_name.' '.$user->first_name.' '.$user->middle_name.'-'.$user->id;
+            $res = $medRecordPersonnelAdmin->save();
+            // Return an error if saving fails
+            if(!$res){
+                return redirect()->back()->with('fail', 'An error occured. Please try again later.');
+            }
+            // Get the personnel who owns this medical record
+            $userPersonnel = UserPersonnel::where('id', $request->input('personnel_id'))->first();
+            // Save foreign keys
+            $userPersonnel->MRPA_id = $medRecordPersonnelAdmin->MRPA_id;
+            $userPersonnel->hasValidatedRecord = intval('1');
+            $res = $userPersonnel->save();
+            // Return an error if saving fails
+            if(!$res){
+                return redirect()->back()->with('fail', 'An error occured. Please try again later.');
+            }
+            // Get the frst part of the personnel's medical record and save foreign keys
+            $personnelMRP = MedicalRecordPersonnel::where('personnel_id', $request->input('personnel_id'))->first();
+
+            $personnelMRP->MRPA_id = $medRecordPersonnelAdmin->MRPA_id;
+            $res = $personnelMRP->save();
+            // Return an error if saving fails
+            if(!$res){
+                return redirect()->back()->with('fail', 'An error occured. Please try again later.');
+            }
+            // Success
+            return redirect()->back()->with('success', 'Medical Record successfully submitted.');
+        }
+        catch (Exception $ex) {
+            // Handle error here
             return redirect()->back()->withErrors([
                 "An error occurred: " . $ex->getMessage(),
                 'If this error persists, please contact the admin from Bicol University Health Services.'
             ])->withInput();
             Log::error('Error from '.$user->id.': '. $ex->getMessage());
-        }    
+        }
     }
 }

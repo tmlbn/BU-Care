@@ -105,7 +105,7 @@ Route::group(['middleware' => ['web', 'admin']], function(){
 
     /* STUDENT FORMS */
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
-    Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');
+    Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.studentMedForm.show');
     Route::get('/admin/medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editMedRecord'])->name('admin.medRecord.edit');
     Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
     Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
@@ -118,6 +118,7 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::delete('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyPersonnelMedRecord'])->name('admin.personnelMedRecord.destroy');
 
     Route::post('admin/submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
+    Route::post('admin/personnel-submit-medical-form', [MedicalRecordsAdminController::class, 'medicalRecordsPersonnelAdmin'])->name('medicalFormAdminPersonnel.store');
 
     Route::get('/admin/medical-patient-records', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
     Route::post('admin/medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');
@@ -128,6 +129,6 @@ Route::group(['middleware' => ['web', 'admin']], function(){
 	
 	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
     Route::get('/admin/appointments', [AppointmentsController::class, 'showAdminAppointments'])->name('admin.appointments.show');
-    Route::post('/admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
+    Route::post('admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
 	Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
 });

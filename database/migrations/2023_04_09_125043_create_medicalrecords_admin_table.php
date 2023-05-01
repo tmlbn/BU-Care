@@ -42,6 +42,7 @@ return new class extends Migration
             $table->string('licenseNumber');
             $table->string('PTRnumber');
             $table->date('dateOfExam');
+            $table->text('physician');
             $table->timestamps();
         });
     }

@@ -1161,26 +1161,10 @@
                                         Covid-19 Vaccine I, II
                                     </label>
                                         <input type="text" class="form-control @error('IH_covidVaccName') is-invalid @enderror" style="width: 20%;" id="IH_covidVaccName" name="IH_covidVaccName" value="{{ old('IH_covidVaccName') }}" oninput="this.value = this.value.toUpperCase()" {{ old('IH_covidVacc') == 1 ? '' : 'disabled' }}>
-                                        <div class="invalid-feedback">
-                                            Please enter the name of your covid vaccine.
-                                        </div>
-                                        <span class="text-danger"> 
-                                            @error('IH_covidVaccName') 
-                                            {{  $message }} 
-                                            @enderror
-                                        </span>
                                         <label class="form-check-label mx-1" for="IH_dpt">
                                             Booster I, II
                                         </label>
                                         <input type="text" class="form-control @error('IH_covidBoosterName') is-invalid @enderror" style="width: 20%;" id="IH_covidBoosterName" name="IH_covidBoosterName" value="{{ old('IH_covidBoosterName') }}" oninput="this.value = this.value.toUpperCase()" {{ old('IH_covidVacc') == 1 ? '' : 'disabled' }}>
-                                        <div class="invalid-feedback">
-                                            Please enter the name of your booster.
-                                        </div>
-                                        <span class="text-danger"> 
-                                            @error('IH_covidBoosterName') 
-                                            {{  $message }} 
-                                            @enderror
-                                        </span>
                                         <script>
                                             $(document).ready(function() {
                                                 $('#IH_covidVacc').change(function() {
@@ -1191,8 +1175,17 @@
                                                 });
                                             });
                                         </script>
-
                             </div>
+                            <span class="text-danger"> 
+                                @error('IH_covidVaccName') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
+                            <span class="text-danger"> 
+                                @error('IH_covidBoosterName') 
+                                {{  $message }} 
+                                @enderror
+                            </span>
                         </div>
                     </div>
                     <div class="col-6">
@@ -1271,15 +1264,12 @@
                                 Others
                             </label>
                         <input type="text" class="form-control @error('IH_othersDetails') is-invalid @enderror" value="{{ old('IH_othersDetails') }}" style="width: 90%;" id="IH_othersDetails" name="IH_othersDetails" {{ old('IH_others') == 1 ? '' : 'disabled' }}>
-                        <div class="invalid-feedback">
-                            Please enter the details of your other immunization/s.
-                        </div>
-                        <span class="text-danger"> 
-                            @error('IH_othersDetails') 
-                            {{ $message }} 
-                            @enderror
-                        </span> 
                     </div>
+                    <span class="text-danger"> 
+                        @error('IH_othersDetails') 
+                        {{ $message }} 
+                        @enderror
+                    </span> 
                     <script>
                         document.getElementById('IH_others').onchange = function() {
                             document.getElementById('IH_othersDetails').disabled = !this.checked;

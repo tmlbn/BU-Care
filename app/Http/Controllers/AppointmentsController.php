@@ -250,7 +250,7 @@ class AppointmentsController extends Controller
             return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
         }
         
-        return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket);
+        return redirect()->route('setAppointment.show')->with('success', 'Your Appointment Ticket# is: ' . $e_ticket);
     }
     public function getAppointmentToUpdate(Request $request){
         $ticketID = $request->input('ticketID');
@@ -481,12 +481,14 @@ class AppointmentsController extends Controller
             'appointmentDescription' => 'required',
         ]);
 
-        $appointClinicSide = new Appointment();
+    $adminAppointment = new Appointment();
      
         // Knowing the patient type and what their ID number
         if($request->patientType == 'OldStudent'){
             try{
-                $patient = UserStudent::where('student_id_number', $request->input('patientID'))->first();
+                $patient = UserStudent::where('student_id_number', $request->input('patientID'))->firstOrFail();
+                    $adminAppointment->student_id = $patient->id;
+                    $adminAppointment->patient_type = $patient->user_type;
             }
             catch(ModelNotFoundException $e){
                 return redirect()->back()->with('fail', 'Student ID Number '.$request->input('patientID').' not found.');
@@ -494,7 +496,9 @@ class AppointmentsController extends Controller
         }
         elseif($request->patientType == 'NewStudent') {
             try{
-                $patient = UserStudent::where('applicant_id_number', $request->input('patientID'))->first();
+                $patient = UserStudent::where('applicant_id_number', $request->input('patientID'))->firstOrFail();
+                    $adminAppointment->student_id = $patient->id;
+                    $adminAppointment->patient_type = $patient->user_type;
             }
             catch(ModelNotFoundException $e){
                 return redirect()->back()->with('fail', 'Applicant ID Number '.$request->input('patientID').' not found.');
@@ -502,7 +506,9 @@ class AppointmentsController extends Controller
         }
         elseif($request->patientType == 'Personnel') {
             try{
-                $patient = UserPersonnel::where('personnel_id_number', $request->input('patientID'))->first();
+                $patient = UserPersonnel::where('personnel_id_number', $request->input('patientID'))->firstOrFail();
+                    $adminAppointment->personnel_id = $patient->id;
+                    $adminAppointment->patient_type = $patient->user_type;
             }
             catch(ModelNotFoundException $e){
                 return redirect()->back()->with('fail', 'Personnel ID Number '.$request->input('patientID').' not found.');
@@ -511,9 +517,6 @@ class AppointmentsController extends Controller
         else{
             return redirect()->back()->with('fail', 'Personnel ID Number '.$request->input('patientID').' not found.');
         }
-
-        $appointClinicSide->patientID = $patient->id;
-        $appointClinicSide->patientType = $patient->user_type;
 
        // Format Date
        $dateString = $request->appointmentDate;
@@ -536,36 +539,23 @@ class AppointmentsController extends Controller
                            ->latest()
                            ->first();
 
-   /* If things are good, start saving the new entry */
-   $appointment = new appointment();
-
-       if(Auth::guard('employee')->check()){
-           $appointment->personnel_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
-       }
-       elseif(Auth::check()){
-           $appointment->student_id = filter_var($request->patientID, FILTER_SANITIZE_STRING);
-       }
-       else{
-           return back()->with('fail', 'Please login to continue.'); // If somehow authentication fails e.g. session ended or interrupted.
-       }
-
-       $appointment->patient_type = filter_var($request->patientType, FILTER_SANITIZE_STRING);
-       $appointment->appointmentDate = $formattedDate;
-       $appointment->appointmentTime = $formattedTime;
-       $appointment->appointmentDateTime = $formattedDateTime;
-       $appointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
+       $adminAppointment->patient_type = filter_var($request->patientType, FILTER_SANITIZE_STRING);
+       $adminAppointment->appointmentDate = $formattedDate;
+       $adminAppointment->appointmentTime = $formattedTime;
+       $adminAppointment->appointmentDateTime = $formattedDateTime;
+       $adminAppointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
            
        $request->services == 'others'
-                           ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
-                           : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+                           ? $adminAppointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
+                           : $adminAppointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
 
        // Determine if booked_slots should be 1 or 2
        if($appointmentLatestEntry == NULL){
            // If there are no entries
-           $appointment->booked_slots = 1;
+           $adminAppointment->booked_slots = 1;
            $temp = 1;
        }elseif($appointmentLatestEntry->booked_slots == 1){
-           $appointment->booked_slots = 2;
+           $adminAppointment->booked_slots = 2;
            $appointmentLatestEntry->booked_slots = 2;
            $temp = 2;
            $resLatest = $appointmentLatestEntry->save();
@@ -581,24 +571,24 @@ class AppointmentsController extends Controller
        $time = DateTime::createFromFormat('g:i A', $timeString)->format('Gi');
        $tTime = sprintf("%04d", $time);
        
-       $tPID = filter_var($request->patientID, FILTER_SANITIZE_STRING);
+       $tPID = $patient->id;
 
-   $res = $appointment->save();
+   $res = $adminAppointment->save();
 
    if(!$res){
-       return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+       return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
    }
-   $tAPID = $appointment->id;
+   $tAPID = $adminAppointment->id;
    // E-Ticket
    $e_ticket = $tDate . '-' . $tTime . '-'. $tAPID . $tPID . $temp;
-   $appointment->ticket_id = $e_ticket;
-   $res = $appointment->save();
+   $adminAppointment->ticket_id = $e_ticket;
+   $res = $adminAppointment->save();
 
    if(!$res){
-       return redirect()->route('setAppointment.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+       return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
    }
    
-   return redirect()->route('setAppointment.show')->with('success', 'Appointment saved' . $e_ticket);
+   return redirect()->route('admin.appointments.show')->with('success', 'Your Appointment Ticket# is: ' . $e_ticket);
 
     }
 }   

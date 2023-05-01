@@ -54,6 +54,10 @@
             overflow-x: hidden;
             width: 100%;
         }
+        .was-validated .form-control:valid {
+            background-image: none;
+            padding-right: 0.75em;
+        }
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             /* display: none; <- Crashes Chrome on hover */

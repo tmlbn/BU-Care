@@ -50,7 +50,7 @@ class UserPersonnel extends Authenticatable
     }
 
     public function medicalRecord_admin(){
-        return $this->hasOne(MedicalRecordAdmin::class, 'personnel_id');
+        return $this->hasOne(MedicalRecordsPersonnel_Admin::class, 'personnel_id');
     }
 
     public function medicalPatientRecords(){

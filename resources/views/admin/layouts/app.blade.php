@@ -66,9 +66,13 @@
         .dropdown-toggle{
             color: #f1731f !important;
         }
+        .was-validated .form-control:valid {
+            background-image: none;
+            padding-right: 0.75em;
+        }
         div.divForResults{
-            width:500px;
-            height:500px;
+            width:450px;
+            height:450px;
             overflow:hidden;
         }
         div.divForResults img {

@@ -24,8 +24,12 @@ return new class extends Migration
             $table->float('height', 8, 2);
             $table->unsignedSmallInteger('weight');
             $table->float('bmi', 8, 2);
-            $table->string('bloodtype');
-            $table->string('recommendations');
+            $table->text('chestXrayFinding');
+            $table->text('CBCResults');
+            $table->text('hepatitisBscreeningResults');
+            $table->text('bloodtype');
+            $table->text('recommendations');
+            $table->text('physician');
             $table->timestamps();
         });
     }

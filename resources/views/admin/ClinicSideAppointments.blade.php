@@ -43,6 +43,10 @@
     tr.lastOne {
         background-color: rgb(250, 250, 119);
     }
+    .break {
+        flex-basis: 100%;
+        height: 0;
+    }
     tr.lastOne:hover {
         cursor: pointer;
         background-color: rgb(216, 216, 45) !important;
@@ -244,16 +248,17 @@
                                 $('#time-slots tr #numberOfSlots').text('2');
                                 $('#appointmentTime').val('');
                                 //loop through the data
+                                let counter = 0;
                                 $.each(entries, function(index, appointment) {
-
+                                    counter++;
                                 //get the time of appointments
                                     var appt_time = appointment.appointmentTime;
                                     var formatted_time = moment(appt_time, 'HH:mm:ss').format('h:mm A');
                                     
                                     //loop through each table cell and check if it matches the appointment date and time
                                     $('#time-slots tr').each(function() {
+                                        
                                         var cell_time = $(this).find('#timeSlot').text();
-                                        let counter = 0;
                                         if (formatted_time == cell_time) {
                                         //if there is a match, add a class to the table cell that corresponds to the appointment status
                                             if (appointment.booked_slots == 2) {
@@ -264,23 +269,18 @@
                                                 $(this).addClass('lastOne');
                                                 $(this).find('#numberOfSlots').text('1');
                                             }
-
-                                            // DIGDI PO DEFAU1T
-
+                                            
                                             // Create DateTime objects
                                             let formatted_date = moment(appointment.appointmentDate).format('YYYY-MM-DD');
-                                            counter++;
-                                                // Append the HTML to a div
-                                                $('#daily-appointments-div').append(`
-                                                    <div class="col-sm-3">
-                                                        <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
-                                                        <p class="m-0">Ticket# ${appointment.ticket_id}</p>
-                                                        <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
-                                                        <hr class="mx-auto" style="width:300px;">
-                                                    </div>
-                                                `);
-                                            
-                                            
+
+                                            // Append the HTML to a div
+                                            $('#daily-appointments-div').append(`
+                                                <div class="col-12 col-xl-3 col-md-6">
+                                                    <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
+                                                    <p class="m-0">Ticket# ${appointment.ticket_id}</p>
+                                                    <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
+                                                </div>
+                                            `);
                                         }
                                     });
                                 });
@@ -304,8 +304,8 @@
         </script>
 
         <!-- Modal for Appointments Set by Patients-->
-        <div class="modal modal-dialog-scrollable modal-xl fade" data-bs-backdrop="static" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal modal-xl fade" data-bs-backdrop="static" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <p class="modal-title fs-5 fw-bold" id="appointmentModalLabel">BU-Care Appointments<span id="appointmentModal_ticketID"></span></p>
@@ -321,13 +321,13 @@
                                         Patient Appointments:
                                         <br style="user-select: none;"><br style="user-select: none;">
                                     </span>
-                                    <div class="d-flex justify-content-center flex-row text-center" id="daily-appointments-div">
+                                    <div class="row row-cols-1 row-cols-xl-4 row-cols-md-2" id="daily-appointments-div">
                                         <!-- APPOINTMENT ENTRIES FOR THE DAY PRINTS HERE -->
                                     </div>
                                 </div>                      
                                 <div class="row justify-content-end">
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-info float-end" onclick='swapModal();'>Set Appointment</button>
+                                        <button type="button" class="btn btn-primary float-end mt-4" onclick='swapModal();'>Set Appointment</button>
                                     </div>                                        
                                 </div>
                             </div>
@@ -423,43 +423,10 @@
                                     </div> 
                                 <!-- APPOINTMENT DETAILS -->
                                     <div class="col-lg-9 col-md-12" id="services">
-                                        <form method="post" id="appointmentForm" action="{{ route('admin.appointments.store') }}">
+                                        <form method="post" id="appointmentForm" action="{{ route('admin.appointments.store') }}" class="needs-validation" novalidate>
                                             @csrf
                                             <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                             </div>
-                                            <div class="d-flex flex-row p-2">
-                                                <div class="col-sm-5" style="margin-right: 5px;">
-                                                    <input type="text" class="form-control" name="patientID" placeholder="ID Number or Applicant ID Number">
-                                                </div>
-                                                <div class="col-sm-5">
-                                                    <select id="patientType" name="patientType" class="form-select">
-                                                        <option value="" selected disabled>PATIENT TYPE</option>
-                                                        <option value="NewStudent">New Student</option>
-                                                        <option value="OldStudent">Old Student</option>
-                                                        <option value="Personnel">Personnel</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <script>
-                                                $(document).ready(function() {
-                                                        // Hide all divs initially
-                                                    $(".hidden").hide();            
-                                                        // Handle the change event of the dropdown
-                                                    $("#patientType").change(function() {
-                                                        var selectedOption = $(this).val();
-                                                        // Hide all divs
-                                                        $(".hidden").hide();
-                                                        // Show the selected div
-                                                        if (selectedOption === "NewStudent") {
-                                                            $("#enrollment").show();
-                                                        } else if (selectedOption === "OldStudent") {
-                                                            $("#ojt").show();
-                                                        } else if (selectedOption === "Personnel") {
-                                                            $("#Personnel").show();
-                                                        }
-                                                    });
-                                                });
-                                            </script>
                                             <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
                                                 <div class="form-group col-lg-6 col-md-12">
                                                     <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
@@ -469,6 +436,39 @@
                                                     <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
                                                     <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required readonly>
                                                 </div>
+                                                <div class="form-group col-lg-6 col-md-12">
+                                                    <label for="patientID" class="col-form-label fw-bolder">ID:</label>
+                                                    <input type="text" class="form-control" name="patientID" placeholder="ID Number or Applicant ID Number" oninput="this.value = this.value.toUpperCase()" required>
+                                                </div>
+                                                <div class="form-group col-lg-6 col-md-12">
+                                                    <label for="patientType" class="col-form-label fw-bolder">Patient Type:</label>
+                                                    <select id="patientType" name="patientType" class="form-select" required>
+                                                        <option value="" selected disabled>SELECT</option>
+                                                        <option value="NewStudent">New Student</option>
+                                                        <option value="OldStudent">Old Student</option>
+                                                        <option value="Personnel">Personnel</option>
+                                                    </select>
+                                                </div>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                            // Hide all divs initially
+                                                        $(".hidden").hide();            
+                                                            // Handle the change event of the dropdown
+                                                        $("#patientType").change(function() {
+                                                            var selectedOption = $(this).val();
+                                                            // Hide all divs
+                                                            $(".hidden").hide();
+                                                            // Show the selected div
+                                                            if (selectedOption === "NewStudent") {
+                                                                $("#enrollment").show();
+                                                            } else if (selectedOption === "OldStudent") {
+                                                                $("#ojt").show();
+                                                            } else if (selectedOption === "Personnel") {
+                                                                $("#Personnel").show();
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
                                                 </div>
                                                     <div class="col-lg-12 p-2 border-lg-end-0">
                                                         <h5>Service to Avail</h5>
@@ -554,93 +554,47 @@
                                                         this.style.height = this.scrollHeight + 'px';
                                                     });
                                                 </script>
-                                                <div class="modal-footer align-items-center mb-3 d-flex justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="input-group">
-                                                            <label for="passwordInput" class="form-label h6 mt-2 me-2">Password<span class="text-danger">*</span>:</label>
-                                                            <input type="password" class="form-control @error('passwordInput') is-invalid @enderror" id="passwordInput" name="passwordInput">
-                                                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                                                <div style="margin-top: -5px;">
-                                                                    <span class="bi bi-eye-fill" aria-hidden="true"></span>
-                                                                </div>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-danger" id="passwordSpan"> 
-                                                        @error('passwordInput') 
-                                                            {{ $message }}
-                                                        @enderror
-                                                    </span>
-                                                    <div class="row">
-                                                        <div class="col-lg-2 mt-auto">
-                                                            <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
-                                                        </div>
-                                                    </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save</button>
                                                 </div>
                                                 <script>
-                                                      const passwordInput = document.getElementById('passwordInput');
-                                                      const togglePassword = document.getElementById('togglePassword');
-                                                      togglePassword.addEventListener('click', function() {
-                                                          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                          passwordInput.setAttribute('type', type);
-                                                          togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
-                                                          togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
-                                                          togglePassword.classList.toggle('active');
-                                                      });
-
-                                                      $(document).ready(function() {
-                                                          $.ajaxSetup({
-                                                              headers:{
-                                                              'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-                                                              }
-                                                          });
-                                                          $('#saveButton').on('click', function(event) {
-                                                              event.preventDefault(); // prevent default form submission behavior
-
-                                                              let password = $('#passwordInput').val();
-                                                              $('#passwordSpan').text('');
-                                                              $('#passwordInput').removeClass('is-invalid');
-                                                              if(password == ""){
-                                                                  $('#passwordInput').addClass('is-invalid');
-                                                                  $('#passwordSpan').text('Please provide your password');
-                                                                  return false;
-                                                              }
-                                                              $.ajax({
-                                                                  url: '/admin/check-password',
-                                                                  method: 'POST',
-                                                                  dataType: 'json',
-                                                                  data: {
-                                                                      password: password
-                                                                  },
-                                                                  success: function(response) {
-                                                                      if(response.success){
-                                                                          $('#appointmentForm').submit();
-                                                                      }
-                                                                      else if(response.error){
-                                                                          // password is incorrect, display an error message
-                                                                          $('#passwordInput').addClass('is-invalid');
-                                                                          $('#passwordSpan').text('Incorrect password');
-                                                                      }
-                                                                  },
-                                                                  error: function(jqXHR, textStatus, errorThrown) {
-                                                                      console.log('AJAX error: ' + textStatus + ' - ' + errorThrown);
-                                                                  }
-                                                              });
-                                                          });
-                                                      });
-
                                                     function swapModal(){
                                                         $('#appointmentModal').modal('hide');
-                                                      
                                                         var modal = $('#setappointmentModal');
                                                         $('body').append(modal);
                                                         modal.modal('show');
                                                       }
                                                       $('#setappointmentModal .close').on('click', function() {
+                                                        $('#appointmentForm')[0].reset();
                                                         $('#setappointmentModal').modal('hide');
                                                       });
+                                                      (() => {
+                                                        'use strict'
+
+                                                        // Fetch all forms to apply validation styles to
+                                                        const forms = document.querySelectorAll('.needs-validation')
+
+                                                        // Loop and prevent submission
+                                                        Array.from(forms).forEach(form => {
+                                                            form.addEventListener('submit', event => {
+                                                            if (!form.checkValidity()) {
+                                                                event.preventDefault()
+                                                                event.stopPropagation()
+
+                                                                // Get all the invalid input fields
+                                                                const invalidInputs = form.querySelectorAll(':invalid')
+
+                                                                // Focus on the first invalid input field
+                                                                invalidInputs[0].focus()
+                                                            }
+
+                                                            form.classList.add('was-validated')
+                                                            }, false)
+                                                        })
+                                                    })()
                                                 </script>
                                             </div>
+                                        </form>
                                         </div>       
                                     </div>
                                 </div>

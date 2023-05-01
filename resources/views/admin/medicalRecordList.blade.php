@@ -80,6 +80,7 @@
     .divHover:hover {
         background-color: #f5c999; /* Change to the desired color on hover */
         color: #2460a0; /* Change the text color to make it visible */
+        cursor: pointer;
     }
     .bg-custom{
         background-color:#f0faff;
@@ -97,14 +98,40 @@
         <span id="file-name"></span>
         <button id="import-btn" class="btn btn-success mb-1" style="display: none">Import</button>
     </form>
-    
+    <div class="col-xl-2 col-lg-12 my-2">
+        <label for="listType" class="form-label h6">Select Table</label>
+        <select id="listType" name="listType" class="form-select" required>
+            <option value="STUDENTS" selected="selected">Students</option>
+            <option value="PERSONNEL" class="alternate">Personnel</option>
+        </select>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#listType').on('change', function(){
+                if($('#listType').val() == 'STUDENTS'){
+                    $('#studentsList').show();
+                    $('#bannerStudent').show()
+                    $('#personnelList').hide();
+                    $('#bannerPersonnel').hide()
+                }
+                else{
+                    $('#studentsList').hide();
+                    $('#bannerStudent').hide()
+                    $('#personnelList').show();
+                    $('#bannerPersonnel').show()
+                }
+            })
+        })
+    </script>
     
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">
                 <h5 class="display-7 pt-3">
                     <p class="fs-2 fw-bold">Bicol University Health Services</p>
-                    <p class="fs-4 fw-normal">Student Health Records List</p>
+                    <p class="fs-4 fw-normal" id="bannerStudent">Student Health Records List</p>
+                    <p class="fs-4 fw-normal" id="bannerPersonnel" style="display: none;">Personnel Health Records List</p>
             </header>
         </div>
     </div>
@@ -152,72 +179,100 @@
                     </div>
                 </div>
         </form>
+        <div class="table-responsive" id="studentsList">
+            <table class="table table-bordered table-sm">
+                <caption style="user-select: none;">End of Student Health Records List</caption>
+                <thead>
+                    <tr class="text-center">
+                        <th class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
+                            <span class="fs-4 font-monospace fw-bold">ID</span>
+                        </th>
+                        <th class="col-md-4 col-sm-3 border border-dark border-end-0">
+                            <span class="fs-4 font-monospace fw-bold">NAME</span>
+                        </th>
+                        <th class="col-md-3 col-sm-3 border border-dark border-end-0">
+                            <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
+                        </th>
+                        <th class="col-md-3 col-sm-3 border border-dark">
+                            <span class="fs-4 font-monospace fw-bold">COURSE</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach ($students as $student)
+                        <tr class="text-center divHover" onClick="window.open('{{ route('admin.studentMedForm.show', ['patientID' => $student->student_id_number ? $student->student_id_number : $student->applicant_id_number]) }}', '_blank'); return false;">
+                            <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="col-sm">
+                                        <p class="fs-5 fw-normal lessBottomMargin">{{ $student->applicant_id_number }}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row border-dark">
+                                    <div class="col-sm">
+                                        <p class="fs-5 fw-normal lessBottomMargin">{{ $student->student_id_number }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-md-4 col-sm-3 border border-dark border-end-0">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</p>
+                            </td>
+                            <td class="col-md-3 col-sm-3 border border-dark border-end-0">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->campus }}</p>
+                            </td>
+                            <td class="col-md-3 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->course }}</p>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        
 
-    <div class="d-flex flex-row text-align-center justify-content-center">
-        <div class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
-            <p class="fs-4 font-monospace fw-bold text-center">PATIENT ID</p>
-        </div>
-        <div class="col-md-4 col-sm-3 border border-dark border-end-0">
-            <p class="fs-4 font-monospace fw-bold text-center">NAME</p>
-        </div>
-        <div class="col-md-3 col-sm-3 border border-dark border-end-0 custom-col-CC">
-            <p class="fs-4 font-monospace fw-bold text-center">CAMPUS</p>
-        </div>
-        <div class="col-md-3 col-sm-3 border border-dark custom-col-CC">
-            <p class="fs-4 font-monospace fw-bold text-center">COURSE</p>
-        </div>
+    <div class="table-responsive" id="personnelList" style="display: none;">
+        <table class="table table-bordered table-sm">
+            <caption style="user-select: none;">End of Personnel Health Records List</caption>
+            <thead>
+                <tr class="text-center">
+                    <th class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">ID</span>
+                    </th>
+                    <th class="col-md-4 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">NAME</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">DESIGNATION</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">UNIT/DEPARTMENT</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark">
+                        <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach ($personnel as $personnel)
+                    <tr class="text-center divHover" onClick="window.open('{{ route('admin.personnelMedForm.show', ['patientID' => $personnel->personnel_id_number ]) }}', '_blank'); return false;">
+                        <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
+                            <p class="fs-5 fw-normal lessBottomMargin">{{ $personnel->personnel_id_number }}</p>
+                        </td>
+                        <td class="col-md-4 col-sm-3 border border-dark border-end-0">
+                            <p class="fs-5 fw-normal mt-2">{{ $personnel->first_name }} {{ $personnel->middle_name }} {{ $personnel->last_name }}</p>
+                        </td>
+                        <td class="col-md-2 col-sm-3 border border-dark">
+                            <p class="fs-5 fw-normal mt-2">{{ $personnel->medicalRecordPersonnel->designation }}</p>
+                        </td>
+                        <td class="col-md-2 col-sm-3 border border-dark">
+                            <p class="fs-5 fw-normal mt-2">{{ $personnel->medicalRecordPersonnel->unitDepartment }}</p>
+                        </td>
+                        <td class="col-md-2 col-sm-3 border border-dark">
+                            <p class="fs-5 fw-normal mt-2">{{ $personnel->medicalRecordPersonnel->campus }}</p>
+                        </td>
+                        
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-   
-    <!-- Start list of Medical Forms -->
-    <!-- Modify loop to filter based on search query -->
-    <script>
-        $searchQuery = '';
-        if (isset($_GET['search'])) {
-            $searchQuery = $_GET['search'];
-        }
-    </script>
-      
-
-    @foreach ($patients->filter(function($patient) use ($searchQuery) {
-        return stripos($patient->first_name, $searchQuery) !== false 
-            || stripos($patient->middle_name, $searchQuery) !== false 
-            || stripos($patient->last_name, $searchQuery) !== false
-            || stripos($patient->applicant_id_number, $searchQuery) !== false
-            || stripos($patient->student_id_number, $searchQuery) !== false;
-    }) as $patient)
-    <a class="text-decoration-none text-dark" href="{{ route('admin.patientMedForm.show', ['patientID' => $patient->student_id_number ? $patient->student_id_number : $patient->applicant_id_number]) }}" target="_blank">
-    <div class="d-flex flex-row divHover">
-        <div class="col-md-2 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-id">
-            <!-- Applicant ID Number -->
-            <div class="d-flex flex-row">
-                <div class="col-sm">
-                    <p class="fs-5 fw-normal text-center lessBottomMargin">{{ $patient->applicant_id_number }}</p>
-                </div>
-            </div>
-            <!-- Student ID Number -->
-            <div class="d-flex flex-row border-dark border-top">
-                <div class="col-sm">
-                    <p class="fs-5 fw-normal text-center lessBottomMargin">{{ $patient->student_id_number }}</p>
-                </div>
-            </div>
-        </div>
-        <!-- NAME -->
-        <div class="col-md-4 col-sm-3 border border-dark border-top-0 border-end-0">
-            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</p>
-        </div>
-        <!-- CAMPUS -->
-        <div class="col-md-3 col-sm-3 border border-dark border-top-0 border-end-0 custom-col-CC">
-            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->campus }}</p>
-        </div>
-        <!-- COURSE -->
-        <div class="col-md-3 col-sm-3 border border-dark border-top-0 custom-col-CC">
-            <p class="fs-5 fw-normal text-center mt-2">{{ $patient->medicalRecord->course }}</p>
-        </div>
-    </div>
-    </a>
-    @endforeach
-
-    <p class="text-center fw-light fst-italic pt-1" style="user-select:none;">---------- NOTHING FOLLOWS ----------</p>
-
-</div> 
 @endsection
