@@ -13,17 +13,17 @@ class MedicalRecordPersonnel extends Model
     protected $table = 'medicalrecordspersonnel';
     protected $primaryKey = 'MRP_id';
     
-    public function MRP_familyHistory(){
+    public function familyHistory(){
         return $this->belongsTo(MRP_FamilyHistory::class, 'MRP_familyHistoryID');
     }
-    public function MRP_personalSocialHistory(){
+    public function personalSocialHistory(){
         return $this->belongsTo(MRP_PersonalSocialHistory::class, 'MRP_personalSocialHistoryID');
     }
-    public function MRP_immunizationHistory(){
+    public function immunizationHistory(){
         return $this->belongsTo(MRP_ImmunizationHistory::class, 'MRP_immunizationHistoryID');
     }
-    public function MRP_personalMedicalCondition(){
-        return $this->belongsTo(MRP_PersonalMedicalCondition::class, 'MRP_personalMedicalConditionID');
+    public function personalMedicalCondition(){
+        return $this->belongsTo(MRP_PersonalMedicalCondition::class, 'MRP_PMC_ID');
     }
     
     public function userPersonnel(){

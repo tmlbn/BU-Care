@@ -45,10 +45,15 @@ class UserPersonnel extends Authenticatable
         'updated_at',
     ];
 
+    public function medicalRecordPersonnel(){
+        return $this->hasOne(MedicalRecordPersonnel::class, 'personnel_id');
+    }
+
     public function medicalRecord_admin(){
         return $this->hasOne(MedicalRecordAdmin::class, 'personnel_id');
     }
+
     public function medicalPatientRecords(){
-        return $this->hasMany(MedicalPatientRecord::class, 'user_student_id');
+        return $this->hasMany(MedicalPatientRecord::class, 'personnel_id');
     }
 }

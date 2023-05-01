@@ -21,6 +21,7 @@
     "autoprefixer": "^10.4.14",
     "bootstrap-icons": "^1.10.3",
     "bootstrap-print-css": "^1.0.1",
+    "lightbox2": "^2.11.4",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1"
   },

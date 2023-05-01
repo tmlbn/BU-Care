@@ -22,15 +22,6 @@
         background-attachment: fixed;
         background-size: cover;
     }
-    div.divForResults{
-        width:500px;
-        height:500px;
-        overflow:hidden;
-    }
-    div.divForResults img {
-        min-width:100%;
-        max-height:500px;
-    }
     div.settings {
     display:grid;
     grid-template-columns: max-content max-content;
@@ -438,17 +429,17 @@
                             Drinking 
                             <br>
                             <div class="d-flex align-items-center">
-                                ( <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfBeers }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfBeers == 'N/A' ? 'disabled' : 'readonly' }}> 
+                                ( <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 20%;" id="PSH_drinking_amountOfBeer" name="PSH_drinking_amountOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfBeers }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfBeers == 'N/A' ? 'disabled' : 'readonly' }}> 
                                 Beer per 
-                                <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->beerFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->beerFrequency == 'N/A' ? 'disabled' : 'readonly' }}> ) 
+                                <input type="text" class="col-md-4 mb-2 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 20%;" id="PSH_drinking_freqOfBeer" name="PSH_drinking_freqOfBeer" value="{{ $patient->medicalRecord->personalSocialHistory->beerFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->beerFrequency == 'N/A' ? 'disabled' : 'readonly' }}> ) 
                                 <br>
                             </div>
                                 or
                             <br>
                             <div class="d-flex">
-                                ( <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfShots }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfShots == 'N/A' ? 'disabled' : 'readonly' }}>
+                                ( <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 20%;" id="PSH_drinking_amountofShots" name="PSH_drinking_amountofShots" value="{{ $patient->medicalRecord->personalSocialHistory->numberOfShots }}" {{ $patient->medicalRecord->personalSocialHistory->numberOfShots == 'N/A' ? 'disabled' : 'readonly' }}>
                                 Shots per 
-                                <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 10%;" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ $patient->medicalRecord->personalSocialHistory->shotsFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->shotsFrequency == 'N/A' ? 'disabled' : 'readonly' }}> 
+                                <input type="text" class="col-md-4 text-center form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" style="width: 20%;" id="PSH_drinking_freqOfShots" name="PSH_drinking_freqOfShots" value="{{ $patient->medicalRecord->personalSocialHistory->shotsFrequency }}" {{ $patient->medicalRecord->personalSocialHistory->shotsFrequency == 'N/A' ? 'disabled' : 'readonly' }}> 
                                 )
                             </div>
                         </label>
@@ -897,7 +888,17 @@
                         <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
                             <img src="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
                         </div>
-                    </div> 
+                    </div>
+                    @php
+                        for($i=1; $patient->medicalRecord->{'resultName' . $i} != NULL; $i++){
+                            echo    '<div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">';
+                            echo        '<label for="MR_parentGuardianSignature" class="form-label fw-bold">'. $patient->medicalRecord->{'resultName' . $i} .'</label>';
+                            echo        '<div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">';
+                            echo            '<img src="' . asset("storage/" .$patient->medicalRecord->{'resultImage' . $i}) . '" alt="Blood Type">';
+                            echo        '</div>';
+                            echo    '</div>';
+                        }
+                    @endphp
                 </div>
             </div>
         </div>
@@ -908,17 +909,11 @@
                 <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
                 <div class="flex justify-content-center">
                     <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center" style="margin-top: -2%;">
+                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
                             <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
-                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">  
-                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->studentSignature) }}" alt="Signature of student">
-                            </div>
                         </div>
                         <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
                             <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('storage/app/'.$patient->medicalRecord->parentGuardianSignature) }}" alt="Signature of parent/guardian">
-                            </div>
                         </div>                              
                     </div>
                 </div>

@@ -52,7 +52,6 @@ Route::group(['middleware' => ['web', 'auth']], function() {
     #------------MedicalRecordFormController------------#
     Route::get('/medical-record-form',[MedicalRecordFormController::class, 'medicalRecordFormReg'])->name('medicalForm.show');
     Route::post('submit-medical-form', [MedicalRecordFormController::class, 'medFormSubmit'])->name('medicalForm.store');
-    Route::post('/medical-record-check-auth', [MedicalRecordFormController::class, 'checkAuthentication'])->name('medicalForm.checkAuth');
 
 });
 
@@ -72,6 +71,10 @@ Route::group(['middleware' => ['web', 'auth.any']], function() {
     #---------------BUCareAuthController---------------#
     Route::post('logout', [BUCareAuthController::class, 'logout'])->name('logout');
     Route::get('/check-password', [BUCareAuthController::class, 'checkPassword'])->name('password.check');
+
+    #------------MedicalRecordFormController------------#
+    Route::post('/medical-record-check-auth', [MedicalRecordFormController::class, 'checkAuthentication'])->name('medicalForm.checkAuth');
+
     #--------------AppointmentsController---------------#
     Route::get('/set-appointment', [AppointmentsController::class, 'setAppointment'])->name('setAppointment.show');
     Route::get('/check-availability', [AppointmentsController::class, 'checkAvailability'])->name('availability.check');
@@ -88,6 +91,7 @@ Route::group(['middleware' => ['web', 'auth.any']], function() {
  */
 Route::get('/admin/manual-register',[AdminAuthController::class, 'register'])->name('admin.register');
     Route::post('admin/manual-register', [AdminAuthController::class, 'manualRegister'])->name('manualRegister.store');
+
 Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/home',function () {
         return view('admin.home');
@@ -99,11 +103,19 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     // POST for Importing CSV File (users_personnel table) //
     Route::post('/admin/import-new-personnel', [ImportController::class, 'import'])->name('import.store');
 
+    /* STUDENT FORMS */
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.patientMedForm.show');
     Route::get('/admin/medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editMedRecord'])->name('admin.medRecord.edit');
     Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
     Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
+
+    /* PERSONNEL FORMS */
+    Route::get('/admin/personnel-medical-record',[MedicalRecordFormController::class, 'showPersonnelMedFormList'])->name('admin.personnelMedFormList.show');
+    Route::get('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'showPersonnelForm'])->name('admin.personnelMedForm.show');
+    Route::get('/admin/personnel-medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editPersonnelMedRecord'])->name('admin.personnelMedRecord.edit');
+    Route::patch('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'updatePersonnelMedRecord'])->name('admin.personnelMedRecord.update');
+    Route::delete('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyPersonnelMedRecord'])->name('admin.personnelMedRecord.destroy');
 
     Route::post('admin/submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
 
@@ -115,7 +127,7 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
 	
 	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
-    Route::get('/admin/ClinicSideAppointments', [AppointmentsController::class, 'ClinicSideAppointments'])->name('admin.ClinicSideAppointments');
+    Route::get('/admin/appointments', [AppointmentsController::class, 'showAdminAppointments'])->name('admin.appointments.show');
     Route::post('/admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
-    Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
+	Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
 });

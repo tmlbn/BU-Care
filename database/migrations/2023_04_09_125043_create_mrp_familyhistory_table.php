@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('asthma');
             $table->boolean('convulsions');
             $table->boolean('bleedingDyscrasia');
+            $table->boolean('arthritis');
             $table->boolean('eyeDisorder');
             $table->boolean('skinProblems');
             $table->boolean('kidneyProblems');

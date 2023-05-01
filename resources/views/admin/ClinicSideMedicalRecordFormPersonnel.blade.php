@@ -1,4 +1,4 @@
-@extends('')
+@extends('admin.layouts.app')
 
 @section('content')
 
@@ -25,10 +25,10 @@
     }
 
     div.settings {
-    display:grid;
-    grid-template-columns: max-content max-content;
-    grid-gap:5px;
-    padding-left: -5px;
+        display:grid;
+        grid-template-columns: max-content max-content;
+        grid-gap:5px;
+        padding-left: -5px;
     }
     div.settings label{
         text-align:right;
@@ -36,15 +36,15 @@
     span.h5{
         margin-bottom:10px;
     }
-    .checkboxes input, select{
-        outline: 1px solid #d4d4d4dc;
-    }
     option.alternate{
         background-color: #ececec;
     }
     .custom-file-upload {
         padding: 6px 12px;
         cursor: pointer;
+    }
+    input[type=checkbox] {
+        outline: 1px solid #464646dc;
     }
 
     input.signa{
@@ -142,6 +142,10 @@
     </div>
     @endif
 
+@php
+    $date = $patient->date_of_birth;
+    $formatted_dateOfBirth = date("Y F d", strtotime($date));
+@endphp
 
 <form method="POST" action="{{ route('medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4">
     @csrf
@@ -149,115 +153,112 @@
         <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
             <div class="col-xl-4 col-lg-12">
                 <label for="designation" class="form-label h6">Designation</label>
-                <input type="text" class="form-control" id="designation" name="designation" value="{{  }}" readonly>               
+                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="designation" name="designation" value="{{ $patient->medicalRecordPersonnel->designation }}" readonly>               
             </div>
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Unit/Department</p>
-                <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" value="{{  }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="unitDepartment" name="unitDepartment" value="{{ $patient->medicalRecordPersonnel->unitDepartment }}" readonly>
             </div> 
             <div class="col-xl-4 col-lg-12">
                 <p class="h6">Campus</p>
-                <input type="text" class="form-control" id="P_campusSelect" name="P_campusSelect" value="{{  }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="P_campusSelect" name="P_campusSelect" value="{{ $patient->medicalRecordPersonnel->campus }}" readonly>
             </div>   
         </div>   
     <div class="d-flex flex-row">
         <h4 class="pb-3"></h4>
     </div>   
-        <div class="col-md-2">
-            <label for="MRP_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" value="{{  }}" readonly>
+        <div class="col-md-1 d-flex align-items-center justify-content-center d-print-inline-block" style="width: 70px;">
+            <span class="h5 text-center text-bottom" style="margin-left: -30%; padding-right: -50%;">Name</span>
         </div>
-        <div class="col-md-2">
-            <label for="MRP_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" value="{{  }}" readonly>
-        </div>
-        <div class="col-md-2">
-            <label for="MRP_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" value="{{  }}" readonly>
+        <div class="col-md-6 text-bottom d-print-inline-block">
+            <p class="form-label h6 p-0" style="position:static; margin-top: 0.3%; user-select:none;">&nbsp;</p>
+            <div class="row justify-content-around text-center border-bottom border-dark mb-0 pb-0">
+                <div class="col-3 pb-0 mb-0 text-bottom">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="last_name" name="last_name" value="{{ $patient->medicalRecordPersonnel->last_name }}" readonly>
+                </div>
+                <div class="col-6">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="first_name" name="first_name" value="{{ $patient->medicalRecordPersonnel->first_name }}" readonly>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="middle_name" name="middle_name" value="{{ $patient->medicalRecordPersonnel->middle_name }}" readonly>
+                </div>
+            </div>
+            <div class="row justify-content-around text-center">
+                <div class="col-3">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(LAST)</p>
+                </div>
+                <div class="col-6">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(FIRST)</p>
+                </div>
+                <div class="col-3">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(MIDDLE)</p>
+                </div>
+            </div>
         </div>
         <div class="col-md-1">
             <label for="MRP_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control" id="MRP_age" name="MRP_age" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_age" name="MRP_age" value="{{ $patient->medicalRecordPersonnel->age }}" readonly>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <label for="MRP_sex" class="form-label h6">Sex</label>
-            <input type="text" class="form-control" id="MRP_sex" name="MRP_sex" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_sex" name="MRP_sex" value="{{ $patient->medicalRecordPersonnel->sex }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_gender" class="form-label h6">Gender</label>
-            <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold overflow-visible" id="MRP_gender" name="MRP_gender" value="{{ $patient->medicalRecordPersonnel->gender }}" readonly>
         </div>
         <div class="col-md-1">
             <div class="form-group d-flex align-items-center pt-4" style="margin-top: 6px;">
-                <input class="form-check-input" type="checkbox" name="MRP_pwd" id="MRP_pwd" {{  }} onclick="this.checked=!this.checked;"/>
-                <label for="MRP_pwd" class="form-check-label mt-1 ms-1">PWD</label>
+                <input class="form-check-input" type="checkbox" name="MRP_pwd" id="MRP_pwd" {{ $patient->medicalRecordPersonnel->pwd == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                <label for="MRP_pwd" class="form-check-label mt-1 ms-1 fs-5 fw-bold">PWD</label>
               </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_placeOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_placeOfBirth" name="MRP_placeOfBirth" value="{{ $formatted_dateOfBirth }}" readonly>
         </div>
 
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-        
-        <script>
-        $(document).ready(function() {
-            $("#MRP_placeOfBirth").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'MM/d/yy',
-                showButtonPanel: true,
-                yearRange: "1900:c",
-                showAnim: 'slideDown',
-            });
-        });
-        </script>
 
-        <div class="col-md-4">
-            <label for="MRP_placeOfBirth" class="form-label h6">Place of Birth</label>
-            <input type="text" class="form-control" id="MRP_placeOfBirth" name="MRP_placeOfBirth" value="{{  }}" readonly>
-        </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_civilStatus" class="form-label h6">Civil Status</label>
-            <input type="text" class="form-control" id="MRP_civilStatus" name="MRP_civilStatus" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_civilStatus" name="MRP_civilStatus" value="{{ $patient->medicalRecordPersonnel->civilStatus }}" readonly>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_nationality" class="form-label h6">Nationality</label>
-            <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_nationality" name="MRP_nationality" value="{{ $patient->medicalRecordPersonnel->nationality }}" readonly>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MRP_religion" class="form-label h6">Religion</label>
-            <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_religion" name="MRP_religion" value="{{ $patient->medicalRecordPersonnel->religion }}" readonly>
         </div>
         <div class="col-md-10">
             <label for="MRP_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control" id="MRP_address" name="MRP_address" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_address" name="MRP_address" value="{{ $patient->medicalRecordPersonnel->homeAddress }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" value="0{{ $patient->medicalRecordPersonnel->contactNumber }}" readonly>
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
             <label for="MRP_contactName" class="form-label h6">Name</label>
-            <input type="text" class="form-control" id="MRP_contactName" name="MRP_contactName" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_contactName" name="MRP_contactName" value="{{ $patient->medicalRecordPersonnel->emergencyContactName }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_ContactNumber" class="form-label h6">Contact No.</label>
-            <input type="text" class="form-control" id="MRP_ContactNumber" name="MR_ContactNumber" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_ContactNumber" name="MR_ContactNumber" value="0{{ $patient->medicalRecordPersonnel->emergencyContactNumber }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_Occupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MRP_Occupation" name="MRP_Occupation" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_Occupation" name="MRP_Occupation" value="{{ $patient->medicalRecordPersonnel->emergencyContactOccupation }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MRP_relationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MRP_relationship" name="MRP_relationship" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_relationship" name="MRP_relationship" value="{{ $patient->medicalRecordPersonnel->emergencyContactRelationship }}" readonly>
         </div>
         <div class="col-md-12">
             <label for="MRP_OfficeAdd" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{  }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{ $patient->medicalRecordPersonnel->emergencyContactAddress }}" readonly>
         </div>
         
         
@@ -276,37 +277,37 @@
                 <div class="d-flex flex-row checkboxes">
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_cancer" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_cancer" {{ $patient->medicalRecordPersonnel->familyHistory->cancer == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_cancer">
                                     Cancer
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_heartDisease" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_heartDisease" {{ $patient->medicalRecordPersonnel->familyHistory->heartDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_heartDisease">
                                     Heart Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_hypertension" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_hypertension" {{ $patient->medicalRecordPersonnel->familyHistory->hypertension == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_hypertension">
                                     Hypertension
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_thyroidDisease" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_thyroidDisease" {{ $patient->medicalRecordPersonnel->familyHistory->thyroidDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_thyroidDisease">
                                     Thyroid Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_tuberculosis" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_tuberculosis" {{ $patient->medicalRecordPersonnel->familyHistory->tuberculosis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_HIV/AIDS" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_hivAids" {{ $patient->medicalRecordPersonnel->familyHistory->hivAids == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_tuberculosis">
                                     HIV/AIDS
                                 </label>
@@ -314,69 +315,69 @@
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_diabetesMelittus" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_diabetesMelittus" {{ $patient->medicalRecordPersonnel->familyHistory->diabetesMelittus == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_diabetesMelittus">
                                     Diabetes Melittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_mentalDisorder" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_mentalDisorder" {{ $patient->medicalRecordPersonnel->familyHistory->mentalDisorder == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_mentalDisorder">
                                     Mental Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_asthma" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_asthma" {{ $patient->medicalRecordPersonnel->familyHistory->asthma == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_asthma">
                                     Asthma
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_convulsions" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_convulsions" {{ $patient->medicalRecordPersonnel->familyHistory->convulsions == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_convulsions">
                                     Convulsions
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{ $patient->medicalRecordPersonnel->familyHistory->bleedingDyscrasia == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Bleeding Dyscrasia
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_bleedingDyscrasia" {{  }} onclick="this.checked=!this.checked;"/>
-                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
+                            <input class="form-check-input" type="checkbox" name="FHP_arthritis" {{ $patient->medicalRecordPersonnel->familyHistory->arthritis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                <label class="form-check-label" for="FHP_arthritis">
                                     Arthritis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div><!-- END OF COL DIV -->
                     <div class="col-md-4 p-2">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_eyeDisorder" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_eyeDisorder" {{ $patient->medicalRecordPersonnel->familyHistory->eyeDisorder == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_eyeDisorder">
                                     Eye Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_skinProblems" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_skinProblems" {{ $patient->medicalRecordPersonnel->familyHistory->skinProblems == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_skinProblems">
                                     Skin Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_kidneyProblems" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_kidneyProblems" {{ $patient->medicalRecordPersonnel->familyHistory->kidneyProblems == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_kidneyProblems">
                                     Kidney Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{ $patient->medicalRecordPersonnel->familyHistory->gastroDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_gastroDisease">
                                     Gastrointestinal Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{  }} onclick="this.checked=!this.checked;"/>
+                            <input class="form-check-input" type="checkbox" name="FHP_gastroDisease" {{ $patient->medicalRecordPersonnel->familyHistory->gastroDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FHP_gastroDisease">
                                     Hepatitis
                                 </label>
@@ -385,11 +386,11 @@
                 </div><!-- END OF ROW of CHECKBOXES DIV -->
             <div class="form-row align-items-center">
                 <div class="col p-2">
-                    <input class="form-check-input" type="checkbox" id="FHP_others" name="FHP_others" {{  }} onclick="this.checked=!this.checked;"/>
+                    <input class="form-check-input" type="checkbox" id="FHP_others" name="FHP_others" {{ $patient->medicalRecordPersonnel->familyHistory->others == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="FHP_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" value="{{  }}" {{  }}>
+                            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-6 fw-bold" id="FHP_othersDetails" name="FHP_othersDetails" value="{{ $patient->medicalRecordPersonnel->familyHistory->othersDetails }}" readonly disabled>
 
                             <!-- SCRIPT FOR INPUT TOGGLE ON CHECKBOX TICK -->
                     </div><!-- END OF COL OTHERS DIV -->
@@ -400,42 +401,37 @@
             <div class="col-lg-5 col-md-12 p-2 border border-dark">
                 <h6>Personal Social History</h6>
                     <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="PPSH_smoking" name="PPSH_smoking" {{  }} onclick="this.checked=!this.checked;"/>
+                    <input class="form-check-input" type="checkbox" id="PPSH_smoking" name="PPSH_smoking" {{ $patient->medicalRecordPersonnel->personalSocialHistory->smoking == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="PPSH_smoking" style="display: contents!important;">
                             Smoking
                             <br>
-                            ( <input type="text" class="col-md-2" id="PPSH_smoking_amount" name="PPSH_smoking_amount" value="{{ $patient->medicalRecord->personalSocialHistory->sticksPerDay }}" {{ $patient->medicalRecord->personalSocialHistory->sticksPerDay == 0 ? 'disabled' : 'readonly' }}> 
-                            sticks/day for 
-                            <input type="text" class="col-md-2"  id="PPSH_smoking_freq" name="PPSH_smoking_freq" value="{{ $patient->medicalRecord->personalSocialHistory->years }}" {{ $patient->medicalRecord->personalSocialHistory->years == 0 ? 'disabled' : 'readonly' }}> 
-                            year/s ) 
+                            <div class="d-flex align-items-center">
+                                ( <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 text-center mb-2 pb-0 fs-6 fw-bold" style="width: 10%;" id="PPSH_smoking_amount" name="PPSH_smoking_amount" value="{{ $patient->medicalRecordPersonnel->personalSocialHistory->sticksPerDay }}" readonly> 
+                                sticks/day for 
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 text-center mb-2 pb-0 fs-6 fw-bold" style="width: 10%;"  id="PPSH_smoking_freq" name="PPSH_smoking_freq" value="{{$patient->medicalRecordPersonnel->personalSocialHistory->years }}" readonly> 
+                                year/s ) 
+                            </div>
                         </label>
                 </div><!-- END OF SMOKING FORM DIV -->
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" id="PPSH_eCig" name="PPSH_eCig" {{ $patient->medicalRecordPersonnel->personalSocialHistory->eCig == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
+                    <label class="form-check-label" for="PPSH_eCig" style="display: contents!important;">
+                        E-Cigarette
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="PPSH_vape" name="PPSH_vape" {{ $patient->medicalRecordPersonnel->personalSocialHistory->vape == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
+                    <label class="form-check-label" for="PPSH_vape" style="display: contents!important;">
+                        Vape
+                    </label>  
+                </div>
 
                 <div class="form-check" style="margin-top:5%;">
-                    <input class="form-check-input" type="checkbox" id="PPSH_drinking" name="PPSH_drinking" {{  }} onclick="this.checked=!this.checked;"/>
+                    <input class="form-check-input" type="checkbox" id="PPSH_drinking" name="PPSH_drinking" {{ $patient->medicalRecordPersonnel->personalSocialHistory->drinking == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                         <label class="form-check-label" for="PPSH_drinking" style="display: contents!important;">
                             Liquor Consumption:
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hospitalization" id="_hospitalization_YES" value="1" required/>
-                                <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                                yes
-                                </label>
-                            </div><!-- END OF YES DIV -->
-                            &nbsp;
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_NO" value="0"/>
-                                <label class="form-check-label" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                                no
-                                </label>
-                            </div><!-- END OF NO DIV -->
-                            <br>
-                           How often?
-                            <input type="text" class="col-sm-10" id="hospitalizationDetails" name="hospitalizationDetails" disabled/>
-                            <span class="text-danger"> 
-                                @error('hospitalizationDetails') 
-                                  {{ $message }} 
-                                @enderror
-                              </span>                   
+                            How often?
+                            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-6 fw-bold" id="PPSH_drinkingDetails" name="PPSH_drinkingDetails" value="{{ $patient->medicalRecordPersonnel->personalSocialHistory->drinkingDetails }}" readonly/>                
                         </label>
                 </div><!-- END OF DRINKING FORM DIV -->
 
@@ -449,66 +445,66 @@
         <h5 class="ms-1">Personal Medical Condition</h5>
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-2 border border-dark">  
-                <div class="d-flex row row-cols-xl-3 row-cols-md-1 justify-content-between">
+                <div class="d-flex row row-cols-xl-3 row-cols-lg-1 justify-content-between">
                     <div class="col-xl-2 p-2">
-                        <div class="mx-auto row row-cols-xl-1 row-cols-md-2 row-cols-sm-2 mt-2 ">
+                        <div class="mx-auto row row-cols-xl-1 row-cols-lg-2 row-cols-sm-2 row-cols-xs-1 mt-2 ">
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_hypertension" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_hypertension" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->hypertension == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="PPMC_hypertension">
                                     Hypertension
                                 </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_asthma" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_asthma" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->asthma == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_asthma">
                                         Asthma
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_diabetes" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" value="1" name="PPMC_diabetes" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->diabetes == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_diabetes">
                                         Diabetes
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_arthritis" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_arthritis" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->arthritis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_arthritis">
                                         Arthritis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">                    
-                                <input class="form-check-input" type="checkbox" name="PPMC_chickenPox" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_chickenPox" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->chickenPox == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_dengue" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_dengue" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->dengue == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_dengue">
                                         Dengue
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_tuberculosis" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_tuberculosis" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->tuberculosis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_tuberculosis">
                                         Tuberculosis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_pneumonia" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_pneumonia" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->pneumonia == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_pneumonia">
                                         Pneumonia
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_covid19" {{  }} onclick="this.checked=!this.checked;"/>
+                                <input class="form-check-input" type="checkbox" name="PPMC_covid19" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->covid19 == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                     <label class="form-check-label" for="PPMC_covid19">
                                         Covid-19
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
-                                <input class="form-check-input" type="checkbox" name="PPMC_hivAIDS" {{  }} onclick="this.checked=!this.checked;"/>
-                                    <label class="form-check-label" for="PPMC_hivAIDS">
+                                <input class="form-check-input" type="checkbox" name="PPMC_hivAids" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->hivAids == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                    <label class="form-check-label" for="PPMC_hivAids">
                                         HIV/AIDS
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
@@ -519,55 +515,55 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_hepatitis" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_hepatitis" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->hepatitis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
-                                <input type="text" class="form-control" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 72%;" id="PPMC_hepatitisDetails" name="PPMC_hepatitisDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->hepatitisDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_thyroidDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_thyroidDisorder" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->thyroidDisorder == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Thyroid Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_thyroidDisorderDetails" name="PPMC_thyroidDisorderDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 59%;" id="PPMC_thyroidDisorderDetails" name="PPMC_thyroidDisorderDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->thyroidDisorderDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_eyeDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PPMC_eyeDisorder" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->eyeDisorder == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Eye Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PPMC_eyeDisorderDetails" value="{{  }}" readonly>                                
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 66%;" id="PMC_eyeDisorderDetails" name="PPMC_eyeDisorderDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->eyeDisorderDetails }}" readonly>                                
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_mentalDisorder" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_mentalDisorder" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->mentalDisorder == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Mental Disorder: </span>
-                                <input type="text" class="form-control" id="PPMC_mentalDisorderDetails" name="PPMC_mentalDisorderDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 60%;" id="PPMC_mentalDisorderDetails" name="PPMC_mentalDisorderDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->mentalDisorderDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_gastroDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_gastroDisease" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->gastroDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Gastrointestinal Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_gastroDiseaseDetails" name="PPMC_gastroDiseaseDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 45.1%;" id="PPMC_gastroDiseaseDetails" name="PPMC_gastroDiseaseDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->gastroDiseaseDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_kidneyDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_kidneyDisease" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->kidneyDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                  <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Kidney Disease: </span>
-                                 <input type="text" class="form-control" id="PPMC_kidneyDiseaseDetails" name="PPMC_kidneyDiseaseDetails" value="{{  }}" readonly>
+                                 <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 61%;" id="PPMC_kidneyDiseaseDetails" name="PPMC_kidneyDiseaseDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->kidneyDiseaseDetails }}" readonly>
                              </div>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div>
@@ -575,46 +571,46 @@
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_heartDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_heartDisease" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->heartDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Heart Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_heartDiseaseDetails" name="PPMC_heartDiseaseDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 63%;" id="PPMC_heartDiseaseDetails" name="PPMC_heartDiseaseDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->heartDiseaseDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_skinDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_skinDisease" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->skinDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Skin Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_skinDiseaseDetails" name="PPMC_skinDiseaseDetails" value="" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 65.6%;" id="PPMC_skinDiseaseDetails" name="PPMC_skinDiseaseDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->skinDiseaseDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_earDisease" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_earDisease" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->earDisease == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Ear Disease: </span>
-                                <input type="text" class="form-control" id="PPMC_earDiseaseDetails" name="PPMC_earDiseaseDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 67.1%;" id="PPMC_earDiseaseDetails" name="PPMC_earDiseaseDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->earDiseaseDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_cancer" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_cancer" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->cancer == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Cancer: </span>
-                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PPMC_cancerDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 74.2%;" id="PMC_cancerDetails" name="PPMC_cancerDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->cancerDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="col-md-11">
                             <div class="input-group mb-3">
                             <div class="input-group-text bg-light border-0">
-                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_others" style="margin-right: -10px;" {{  }} onclick="this.checked=!this.checked;"/>
+                                    <input class="form-check-input mt-0" type="checkbox" name="PPMC_others" style="margin-right: -10px;" {{ $patient->medicalRecordPersonnel->personalMedicalCondition->others == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 </div>
                             <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Others: </span>
-                                <input type="text" class="form-control" id="PPMC_othersDetails" name="PPMC_othersDetails" value="{{  }}" readonly>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" style="width: 75.6%;" id="PPMC_othersDetails" name="PPMC_othersDetails" value="{{ $patient->medicalRecordPersonnel->personalMedicalCondition->othersDetails }}" readonly>
                             </div>
                         </div><!-- END OF CHECKBOX DIV -->
                     </div>
@@ -624,97 +620,49 @@
         <!--Medical Status
                     HOSPITALIZATION-->
                     
-        <div class="mx-auto row row-cols-lg-1 mt-2">
-            <div class="col-md-12 p-2 border border-dark">  
-                <div class="d-flex flex-row">
-                    <div class="col-sm">
-                     Do you have history of hospitalization for serious illness, operation, fracture or injury?
-                        (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_YES" onclick="return false;/>
-                            <label class="form-check-label" for="P_hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                            yes
-                            </label>
-                        </div><!-- END OF YES DIV -->
-                        &nbsp;
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="P_hospitalization" id="P_hospitalization_NO" onclick="return false;"/>
-                            <label class="form-check-label" for="P_hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                            no
-                            </label>
-                            <script>
-                                if ({{ $patient->medicalRecord->hospitalization }} == 1) {
-                                    document.getElementById("hospitalization_YES").checked = true;
-                                } else {
-                                    document.getElementById("hospitalization_NO").checked = true;
-                                }
-                            </script>
-                        </div>)<!-- END OF NO DIV -->
-                        If yes, please give details:
-                        <input type="text" class="col-sm-10" id="P_hospitalizationDetails" name="P_hospitalizationDetails" value="{{  }}" {{  }}>
-                            <!-- END OF SCRIPT --> 
-                    </div><!-- END OF COL DIV -->
-                </div><!-- END OF ROW DIV -->
-
-                <!-- REGULAR MEDICINES -->
-                <div class="d-flex flex-row pt-2">
-                    <div class="col-sm">
-                        Are you taking any medicine regularly?
-                           (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_YES" onclick="return false;"/>
-                               <label class="form-check-label" for="P_regMeds_YES" style="margin-right: -15px; margin-left:-5px">
-                               yes
-                               </label>
-                           </div><!-- END OF YES DIV -->
-                           &nbsp;
-                           <div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="P_regMeds" id="P_regMeds_NO" onclick="return false;"/>
-                               <label class="form-check-label" for="P_regMeds_NO" style="margin-right: -15px; margin-left:-5px">
-                               no
-                               </label>
-                               <script>
-                                if ({{ $patient->medicalRecord->hospitalization }} == 1) {
-                                    document.getElementById("hospitalization_YES").checked = true;
-                                } else {
-                                    document.getElementById("hospitalization_NO").checked = true;
-                                }
-                            </script>
-                           </div>)<!-- END OF NO DIV -->
-                           If yes, name of drug/s:
-                           <input type="text" class="col-sm-10" id="P_regMedsDetails" name="P_regMedsDetails" value="{{  }}" {{  }}>
-                               <!-- END OF SCRIPT --> 
-                       </div><!-- END OF COL DIV -->
-                   </div><!-- END OF ROW DIV -->
-
-                   <!-- ALLERGIES -->
-                   <div class="col-sm" required>
-                    Are you allergic to any food or medicine?
-                       (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_YES" onclick="return false;"/>
-                           <label class="form-check-label" for="P_allergy_YES" style="margin-right: -15px; margin-left:-5px">
-                           yes
-                           </label>
-                       </div><!-- END OF YES DIV -->
-                       &nbsp;
-                       <div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="P_allergy" id="P_allergy_NO" onclick="return false;"/>
-                           <label class="form-check-label" for="P_allergy_NO" style="margin-right: -15px; margin-left:-5px">
-                           no
-                           </label>
-                           <script>
-                            if ({{ ->hospitalization }} == 1) {
-                                document.getElementById("hospitalization_YES").checked = true;
-                            } else {
-                                document.getElementById("hospitalization_NO").checked = true;
-                            }
-                        </script>
-                       </div>)<!-- END OF NO DIV -->
-                       If yes, specify:
-                       <input type="text" class="col-sm-10" id="P_allergyDetails" name="P_allergyDetails" value="{{  }}" {{  }}>
-                           <!-- END OF SCRIPT --> 
-                   </div><!-- END OF COL DIV -->
-               </div><!-- END OF ROW DIV -->    
-
-        </div>   
+                    <div class="mx-auto row row-cols-lg-1 mt-2">
+                        <div class="col-md-12 p-2 border border-dark">  
+                            <div class="d-flex flex-row">
+                                <div class="col-sm">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input border-dark" type="checkbox" role="switch" name="hospitalization" id="hospitalization" {{ $patient->medicalRecordPersonnel->hospitalization == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                        <label class="form-check-label fw-bold" for="hospitalization">
+                                            Do you have history of hospitalization for serious illness, operation, fracture or injury?
+                                        </label>
+                                    </div><!-- END OF YES DIV -->
+                                    <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ $patient->medicalRecordPersonnel->hospDetails }}" readonly/>
+                                </div><!-- END OF COL DIV -->
+                            </div><!-- END OF ROW DIV -->
+            
+                            <!-- REGULAR MEDICINES -->
+                            <div class="d-flex flex-row pt-2">
+                                <div class="col-sm">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input border-dark" type="checkbox" role="switch" name="regMeds" id="regMeds" {{ $patient->medicalRecordPersonnel->takingMedsRegularly == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                        <label class="form-check-label fw-bold" for="regMeds">
+                                                Are you taking any medicine regularly?
+                                        </label>
+                                    </div><!-- END OF YES DIV -->
+                                    <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ $patient->medicalRecordPersonnel->medsDetails }}" readonly/>
+                                       <!-- END OF SCRIPT --> 
+                               </div><!-- END OF COL DIV -->
+                           </div><!-- END OF ROW DIV -->
+            
+                               <!-- ALLERGIES -->
+                        <div class="d-flex flex-row pt-2">
+                            <div class="col-sm" required>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input border-dark" type="checkbox" role="switch" name="allergy" id="allergy" {{ $patient->medicalRecordPersonnel->allergic == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                                    <label class="form-check-label fw-bold" for="allergy">
+                                        Are you allergic to any food or medicine?
+                                    </label>
+                                </div><!-- END OF YES DIV -->                    
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ $patient->medicalRecordPersonnel->allergyDetails }}" readonly/>
+                                   <!-- END OF SCRIPT --> 
+                            </div><!-- END OF COL DIV -->
+                        </div><!-- END OF ROW DIV -->    
+                    </div>
+                </div>
         
         <!--Immunization History-->
         <div class="mx-auto row row-cols-lg-1 mt-2">
@@ -724,25 +672,25 @@
                     <div class="col-6">
                         <div class="row row-cols-2 row-cols-sm-1 align-items-center">
                             <div class="col-sm-4 p-2">
-                                <input class="form-check-input" type="checkbox" name="PIH_bcg" {{  }} onclick="this.checked=!this.checked;">
+                                <input class="form-check-input" type="checkbox" name="PIH_bcg" {{ $patient->medicalRecordPersonnel->immunizationHistory->bcg == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
                                         BCG
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
-                                <input class="form-check-input" type="checkbox" name="PIH_polio" onclick="this.checked=!this.checked;">
+                                <input class="form-check-input" type="checkbox" name="PIH_polio" {{ $patient->medicalRecordPersonnel->immunizationHistory->polio == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_polio">
                                         Polio I, II, II, Booster Dose
                                     </label>
                             </div>
                             <div class="col-sm-4 p-2">
-                                <input class="form-check-input" type="checkbox" name="PIH_chickenPox" onclick="this.checked=!this.checked;">
+                                <input class="form-check-input" type="checkbox" name="PIH_chickenPox" {{ $patient->medicalRecordPersonnel->immunizationHistory->chickenPox == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
-                                <input class="form-check-input" type="checkbox" name="PIH_dpt" onclick="this.checked=!this.checked;">
+                                <input class="form-check-input" type="checkbox" name="PIH_dpt" {{ $patient->medicalRecordPersonnel->immunizationHistory->dpt == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                     <label class="form-check-label" for="PIH_dpt">
                                         DPT I, II, III, Booster Dose
                                     </label>
@@ -750,146 +698,145 @@
                         </div>
                         <div class="row row-cols-1 row-cols-sm-1 align-items-center">
                             <div class="col-sm-12 p-2">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_covidVacc" name="IH_covidVacc" onclick="this.checked=!this.checked;">
-                                    <label class="form-check-label" for="PIH_covidVacc">
+                                <div class="d-flex align-items-center">
+                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_covidVacc" name="IH_covidVacc" {{ $patient->medicalRecordPersonnel->immunizationHistory->covidVacc == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
+                                    <label class="form-check-label mt-2 ms-1" for="PIH_covidVacc">
                                         Covid-19 Vaccine I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidVaccName" name="PIH_covidVaccName" value="{{  }}">
+                                    <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 text-center mb-2 pb-0 fs-6 fw-bold" style="width:20%;" id="PIH_covidVaccName" name="PIH_covidVaccName" value="{{ $patient->medicalRecordPersonnel->immunizationHistory->covidVaccName }}" readonly>
                                     <label class="form-check-label" for="IH_dpt">
                                         Booster I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="PIH_covidBooster" name="PIH_covidBooster" value="{{  }}">
-                                        <script>
-                                            $(document).ready(function() {
-                                                $('#PIH_covidVacc').change(function() {
-                                                    $('#PIH_covidVaccName').prop('disabled', !this.checked);
-                                                    $('#PIH_covidBooster').prop('disabled', !this.checked);
-                                                });
-                                            });
-                                        </script>
-
+                                    <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 text-center mb-2 pb-0 fs-6 fw-bold" style="width:20%;" id="PIH_covidBooster" name="PIH_covidBooster" value="{{ $patient->medicalRecordPersonnel->immunizationHistory->covidBoosterName }}" readonly>
+                                </div>
                             </div>
-                            <div class="col-sm-12 p-2">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" id="IH_others" name="IH_others" onclick="this.checked=!this.checked;">
-                                    <label class="form-check-label" for="PIH_others">
-                                        Others
-                                    </label>
-                                <input type="text" class="col-sm-8" id="PIH_othersDetails" name="PIH_othersDetails" value="{{  }}">
-                            </div>
-                            <script>
-                                document.getElementById('PIH_others').onchange = function() {
-                                document.getElementById('PIH_othersDetails').disabled = !this.checked;
-                                };
-                            </script>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-sm-3 align-items-center">
                                 <div class="col-4 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_typhoid" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" name="PIH_typhoid" {{ $patient->medicalRecordPersonnel->immunizationHistory->typhoid == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_typhoid">
                                             Typhoid
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_mumps" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" name="PIH_mumps" {{ $patient->medicalRecordPersonnel->immunizationHistory->mumps == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_mumps">
                                             Mumps
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisA" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_hepatitisA" {{ $patient->medicalRecordPersonnel->immunizationHistory->hepatitisA == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_hepatitisA">
                                             Hepatitis A
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" value="1" name="PIH_measles" {{ $patient->medicalRecordPersonnel->immunizationHistory->measles == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_measles">
                                             Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" {{ $patient->medicalRecordPersonnel->immunizationHistory->germanMeasles == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_germanMeasles">
                                             German Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" {{ $patient->medicalRecordPersonnel->immunizationHistory->hepatitisB == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_hepatitisB">
                                             Hepatitis B
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_measles" onclick="this.checked=!this.checked;">
+                                    <input class="form-check-input" type="checkbox" name="PIH_measles" {{ $patient->medicalRecordPersonnel->immunizationHistory->measles == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
                                         <label class="form-check-label" for="PIH_measles">
                                             Pneumoccal
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_germanMeasles" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_germanMeasles">
+                                    <input class="form-check-input" type="checkbox" name="PIH_influenza" {{ $patient->medicalRecordPersonnel->immunizationHistory->influenza == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
+                                        <label class="form-check-label" for="PIH_influenza">
                                             Influenza
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
-                                    <input class="form-check-input" type="checkbox" name="PIH_hepatitisB" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_hepatitisB">
+                                    <input class="form-check-input" type="checkbox" name="PIH_hpv" {{ $patient->medicalRecordPersonnel->immunizationHistory->hpv == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;">
+                                        <label class="form-check-label" for="PIH_hpv">
                                             HPV
                                         </label>
                                 </div>
                             </div>
-                            <div class="row row-cols-1 row-cols-sm-1 align-items-center">
-                                <div class="col-sm-12 p-2">
-                                    <input class="form-check-input" type="checkbox" id="PIH_others" name="IH_others" onclick="this.checked=!this.checked;">
-                                        <label class="form-check-label" for="PIH_others">
-                                            Others
-                                        </label>
-                                <input type="text" class="col-sm-9" id="PIH_othersDetails" name="PIH_othersDetails" disabled>
-                                        <span class="text-danger"> 
-                                            @error('PIH_othersDetails') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span> 
-                                </div>
-                            <script>
-                                document.getElementById('PIH_others').onchange = function() {
-                                document.getElementById('PIH_othersDetails').disabled = !this.checked;
-                                };
-                            </script>
                         </div>
+                    </div>
+                <div class="my-auto pt-2 row row-cols-1 align-items-center" style="margin-left: 5%;">
+                            <div class="form-group align-items-center col-sm-12 d-flex p-2">
+                                <input type="hidden" name="IH_others" value="0">
+                                <input class="form-check-input mb-1" type="checkbox" value="1" id="IH_others" name="IH_others" {{ $patient->medicalRecordPersonnel->immunizationHistory->others == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label mx-1" for="IH_others">
+                                        Others
+                                    </label>
+                                <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-6 fw-bold" value="{{ $patient->medicalRecordPersonnel->immunizationHistory->othersDetails  }}" style="width: 90%;" id="IH_othersDetails" name="IH_othersDetails" {{ old('IH_others') == 1 ? '' : 'disabled' }}>
+                            </div>
+                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
     <!-- ATTACHMENTS -->
     <div class="mx-auto row row-cols-lg-1 mt-2">
-        <div class="col-md-12 p-2 border border-dark">
+        <div class="col-md-12 p-1 border border-dark">
             <p class="fs-5 text-center">Please upload a photo of the official reading and result of the following:</p>
             <div class="flex justify-content-center">
-                <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
-                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
-                        <label for="MR_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <input type="file" class="form-control" id="PMRP_chestXray" name="PMRP_chestXray" accept="image/jpeg, image/png" required>
+                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
+                    <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <a href="{{ asset('storage/'.$patient->medicalRecordPersonnel->chestXray) }}" data-lightbox="Chest X-Ray Findings">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecordPersonnel->chestXray) }}" alt="Chest X-Ray Findings" style="">
+                            </div>
+                        </a>
                     </div>
-                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
-                        <input type="file" class="form-control" id="PMRP_cbcresults" name="PMRP_cbcresults" accept="image/jpeg, image/png" required>
-                      </div>                      
-                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <input type="file" class="form-control" id="PMRP_hepaBscreening" name="PMRP_hepaBscreening" accept="image/jpeg, image/png" required>
+                    <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
+                        <a href="{{ asset('storage/'.$patient->medicalRecordPersonnel->CBCResults) }}" data-lightbox="CBC Results">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">  
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecordPersonnel->CBCResults) }}" alt="CBC Results">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <a href="{{ asset('storage/'.$patient->medicalRecordPersonnel->hepaBscreening) }}" data-lightbox="Hepatitis B Screening">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecordPersonnel->hepaBscreening) }}" alt="Hepatitis B Screening">
+                            </div>
+                        </a>
                     </div> 
-                    <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_bloodtype" class="form-label fw-bold">Blood Type</label>
-                        <input type="file" class="form-control" id="PMRP_bloodtype" name="PMRP_bloodtype" accept="image/jpeg, image/png" required>
+                    <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                        <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
+                        <a href="{{ asset('storage/'.$patient->medicalRecordPersonnel->bloodType) }}" data-lightbox="Blood Type">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecordPersonnel->bloodType) }}" alt="Blood Type">
+                            </div>
+                        </a>
                     </div>
+                    @php
+                        for($i=1; $patient->medicalRecordPersonnel->{'resultName' . $i} != NULL; $i++){
+                            echo    '<div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">';
+                            echo        '<label for="MR_parentGuardianSignature" class="form-label fw-bold">'. $patient->medicalRecordPersonnel->{'resultName' . $i} .'</label>';
+                            echo        '<a href="' . asset("storage/" .$patient->medicalRecordPersonnel->{'resultImage' . $i}) . '" data-lightbox="'. $patient->medicalRecordPersonnel->{'resultName' . $i} .'">';
+                            echo            '<div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">';
+                            echo                '<img class="img-fluid" src="' . asset("storage/" .$patient->medicalRecordPersonnel->{'resultImage' . $i}) . '" alt="'. $patient->medicalRecordPersonnel->{'resultName' . $i} .'">';
+                            echo            '</div>';
+                            echo        '</a>';
+                            echo    '</div>';
+                        }
+                    @endphp
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
         <header class="text-center">
@@ -1115,14 +1062,6 @@
     </div>
         
     </div> 
-    <script>
-        $(document).ready(function() {
-            $('input[type=checkbox]').change(function() {
-                var input = $(this).closest('.input-group').find('input[type=text]');
-                input.prop('disabled', !this.checked);
-            });
-        });
-    </script>
     <!-- AJAX to prevent refresh
     <script>
         document.getElementById('myForm').addEventListener('submit', function(event) {

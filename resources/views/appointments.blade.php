@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(Auth::check() ? 'layouts.app' : (Auth::guard('employee')->check() ? 'personnel.layouts.app' : 'layouts.appForUnAuth'))
 @section('content')
 <style>
     table{
@@ -188,14 +188,16 @@
                         }
                     ?>
                 </div>
-                <div class="row justify-content-between">
-                    <div class="col-4">
-                      <button type="button" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">Edit</button>
+                @if($counter)
+                    <div class="row justify-content-between">
+                        <div class="col-4">
+                            <button type="button" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">Edit</button>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-danger float-start" data-bs-toggle="modal" data-bs-target="#deleteAppointmentModal">Delete</button>
+                        </div>
                     </div>
-                    <div class="col-4">
-                      <button type="button" class="btn btn-danger float-start" data-bs-toggle="modal" data-bs-target="#deleteAppointmentModal">Delete</button>
-                    </div>
-                </div>
+                @endif
 
                 <!-- GET APPOINTMENT TO EDIT MODAL -->
                 <div class="modal fade" id="editAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
@@ -397,9 +399,14 @@
                                     <div class="modal-footer">
                                         <div class="d-flex my-auto">
                                             @php
-                                                $student = Auth::user()->student_id_number;
+                                                if (Auth::user()){
+                                                    $student = Auth::user()->student_id_number;
+                                                }
+                                                else{
+                                                    $student = 0;
+                                                }
                                             @endphp
-                                            @if($student)
+                                            @if($student || Auth::guard('employee')->user())
                                             <div class="input-group">
                                                     <label for="passwordInputDelete" class="form-label h6 mt-2 me-2">Password:</label>
                                                     <input type="password" class="form-control" id="passwordInputDelete" name="passwordInputDelete">
@@ -528,7 +535,7 @@
                                 }
                             });
                         });
-                        if(date.format('YYYY-MM-DD') >= (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
+                        if(date.format('YYYY-MM-DD') <= (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
                             if(countValue > 0 && countValue < 25){
                                 cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #8deb8d;">' + (maxAppointment - countValue) + '</p>');
                             }
@@ -744,31 +751,31 @@
                                     @csrf
                                     <div class="mx-auto row row-cols-lg-2 row-cols-md-1">
                                     </div>
-                                    <input type="hidden" name="patientID" value={{ Auth::user()->id ?: Auth::guard('employee')->user()->id }}>
-                                    <input type="hidden" name="patientType" value={{ Auth::user()->user_type ?: Auth::guard('employee')->user()->user_type }}>
+                                    <input type="hidden" name="patientID" value={{ Auth::check() ? Auth::user()->id : Auth::guard('employee')->user()->id }}>
+                                    <input type="hidden" name="patientType" value={{ Auth::check() ? Auth::user()->user_type : Auth::guard('employee')->user()->user_type }}>
                                     <div class="row row-cols-lg-2 row-cols-md-1"><!-- DATE/TIME DIV -->
                                         <div class="form-group col-lg-6 col-md-12">
-                                            <label for="appointmentDate" class="col-form-label fw-bolder">Date:</label>
+                                            <label for="appointmentDate" class="col-form-label fw-bolder">Date<span class="text-danger">*</span>:</label>
                                             <input type="text" class="form-control fw-bold" name="appointmentDate" id="appointmentDate" required readonly>
                                         </div>
                                         <div class="form-group col-lg-6 col-md-12">
-                                            <label for="appointmentTime" class="col-form-label fw-bolder">Time:</label>
+                                            <label for="appointmentTime" class="col-form-label fw-bolder">Time<span class="text-danger">*</span>:</label>
                                             <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-2 border-lg-end-0">
-                                        <h5>Services Availed</h5>
+                                        <p class="fs-5 fw-bold mt-1">Service to Avail<span class="text-danger">*</span></p>
                                         <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
                                             <div class="col-lg-6 col-md-12 p-2">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services" required>
-                                                        <label class="form-check-label" for="services">
+                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services" id="medcert" required>
+                                                        <label class="form-check-label" for="medcert">
                                                             Medical Certificate
                                                         </label>    
                                                 </div><!-- END OF CHECKBOX DIV -->
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="OPD Consultant" name="services">
-                                                        <label class="form-check-label" for="services">
+                                                    <input class="form-check-input" type="radio" value="OPD Consultant" name="services" id="opd">
+                                                        <label class="form-check-label" for="opd">
                                                             OPD Consultant
                                                         </label>
                                                 </div><!-- END OF CHECKBOX DIV -->
@@ -786,23 +793,23 @@
                                                 </div><!-- END OF CHECKBOX DIV -->
                                             </div>
                                                 <div class="col-lg-6 col-md-12 p-2">
-                                                    @if(Auth::guard('employee')->check())
+                                                @if(Auth::guard('employee')->check())
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" value="Reinstatement" name="services">
-                                                            <label class="form-check-label" for="Reinstatement">
+                                                        <input class="form-check-input" type="radio" value="Reinstatement" name="services" id="reinstatement">
+                                                            <label class="form-check-label" for="reinstatement">
                                                                 Reinstatement
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" value="Sick Leave" name="services">
-                                                            <label class="form-check-label" for="Sick Leave">
+                                                        <input class="form-check-input" type="radio" value="Sick Leave" name="services" id="sickleave">
+                                                            <label class="form-check-label" for="sickleave">
                                                                 Sick Leave
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" value="Unkown" name="services">
-                                                            <label class="form-check-label" for="Unkown">
-                                                                Unkown
+                                                        <input class="form-check-input" type="radio" value="Newly Hired" name="services" id="newlyhired">
+                                                            <label class="form-check-label" for="newlyhired">
+                                                                Newly Hired
                                                             </label>
                                                     </div><!-- END OF CHECKBOX DIV -->
                                                 @endif
@@ -838,9 +845,15 @@
                                     <div class="modal-footer mt-4 justify-content-between">
                                         <div class="d-flex my-auto">
                                             @php
-                                                $student = Auth::user()->student_id_number;
+                                                if (Auth::user()){
+                                                    $student = Auth::user()->student_id_number;
+                                                }
+                                                else{
+                                                    $student = 0;
+                                                }
                                             @endphp
-                                            @if($student)
+                                            @if($student || Auth::guard('employee')->user())
+                                            <div class="input-group">
                                                 <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
                                                 <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
@@ -859,6 +872,7 @@
                                                         togglePassword.classList.toggle('active');
                                                     });
                                                 </script>
+                                            </div>
                                             @else
                                             <div class="row row-cols-lg-5 row-cols-md-2 row-cols-sm-1">
                                                 <div class="col-lg-4">

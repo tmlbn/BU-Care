@@ -79,11 +79,17 @@ class MedicalRecordFormController extends Controller
     public function showPatientForm($patientID){
         try {
             // Try to find a patient with the specified applicant ID
-            $patient = UserStudent::with('medicalRecord')->where('applicant_id_number', $patientID)->firstOrFail();
+            $patient = UserStudent::with('medicalRecord')
+                                    ->where('applicant_id_number', $patientID)
+                                    ->where('hasMedRecord', 1)
+                                    ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             try {
                 // If it fails or a student ID number is used, try to find a patient with the specified student ID
-                $patient = UserStudent::with('medicalRecord')->where('student_id_number', $patientID)->firstOrFail();
+                $patient = UserStudent::with('medicalRecord')
+                                        ->where('student_id_number', $patientID)
+                                        ->where('hasMedRecord', 1)
+                                        ->firstOrFail();
             } catch (ModelNotFoundException $e) {
                 // Neither applicant ID nor student ID found
                 $message = 'Patient '.$patientID.' not found.';
@@ -515,68 +521,62 @@ class MedicalRecordFormController extends Controller
                     $cbcresults = $request->file('MR_cbcresults');
                     $hepaBscreening = $request->file('MR_hepaBscreening');
                     $bloodtype = $request->file('MR_bloodtype');
-                        // Other uploads
-                    $otherUpload1 = $request->file('MR_additionalUpload1');
-                    $otherUpload2 = $request->file('MR_additionalUpload2');
-                    $otherUpload3 = $request->file('MR_additionalUpload3');
-                    $otherUpload4 = $request->file('MR_additionalUpload4');
-                    $otherUpload5 = $request->file('MR_additionalUpload5');
-                    $otherUpload6 = $request->file('MR_additionalUpload6');
-                    $otherUpload7 = $request->file('MR_additionalUpload7');
-                    $otherUpload8 = $request->file('MR_additionalUpload8');
-    
-                        // Sanitize the file name to remove any special characters
-                    $chestXrayName = filter_var($chestXray->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $cbcresultsName = filter_var($cbcresults->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $hepaBscreeningName = filter_var($hepaBscreening->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $bloodtypeName = filter_var($bloodtype->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                        // Other uploads names
-                    $otherUpload1name = filter_var($request->input('MR_additionalResult1'), FILTER_SANITIZE_STRING);
-                    $otherUpload2name = filter_var($request->input('MR_additionalResult2'), FILTER_SANITIZE_STRING);
-                    $otherUpload3name = filter_var($request->input('MR_additionalResult3'), FILTER_SANITIZE_STRING);
-                    $otherUpload4name = filter_var($request->input('MR_additionalResult4'), FILTER_SANITIZE_STRING);
-                    $otherUpload5name = filter_var($request->input('MR_additionalResult5'), FILTER_SANITIZE_STRING);
-                    $otherUpload6name = filter_var($request->input('MR_additionalResult6'), FILTER_SANITIZE_STRING);
-                    $otherUpload7name = filter_var($request->input('MR_additionalResult7'), FILTER_SANITIZE_STRING);
-                    $otherUpload8name = filter_var($request->input('MR_additionalResult8'), FILTER_SANITIZE_STRING);
+                      // Filename prefix
+                    $secondID = $user->student_id_number ?: $user->applicant_id_number;
+                    $uploadPrefix = $user->id.''.$secondID.''.$request->lastName;
+
+                    $chestXrayName = $uploadPrefix.'CHESTXRAY.'.$chestXray->getClientOriginalExtension();
+                    $cbcresultsName = $uploadPrefix.'CBCRESULTS.'.$cbcresults->getClientOriginalExtension();
+                    $hepaBscreeningName = $uploadPrefix.'HEPATITISBSCREENING.'.$hepaBscreening->getClientOriginalExtension();
+                    $bloodtypeName = $uploadPrefix.'BLOODTYPE.'.$bloodtype->getClientOriginalExtension();
+
                         // Store the file on the server
                     $medRecord->chestXray = $chestXray->storeAs('uploads', $chestXrayName, 'public');
                     $medRecord->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
                     $medRecord->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecord->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
-                    
-                    if($otherUpload1name){
-                        $medRecord->resultName1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
+                        // Other uploads
+                    if($otherUpload1 = $request->file('MR_additionalUpload1')){
+                        $otherUpload1name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult1'), FILTER_SANITIZE_STRING).'.'.$otherUpload1->getClientOriginalExtension();
+                        $medRecord->resultName1 = filter_var($request->input('MR_additionalResult1'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
                     }
-                    if($otherUpload2name){
-                        $medRecord->resultName2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
+                    if($otherUpload2 = $request->file('MR_additionalUpload2')){
+                        $otherUpload2name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult2'), FILTER_SANITIZE_STRING).'.'.$otherUpload2->getClientOriginalExtension();
+                        $medRecord->resultName2 = filter_var($request->input('MR_additionalResult2'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
                     }
-                    if($otherUpload3name){
-                        $medRecord->resultName3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
+                    if($otherUpload3 = $request->file('MR_additionalUpload3')){
+                        $otherUpload3name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult3'), FILTER_SANITIZE_STRING).'.'.$otherUpload3->getClientOriginalExtension();
+                        $medRecord->resultName3 = filter_var($request->input('MR_additionalResult3'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
                     }
-                    if($otherUpload4name){
-                        $medRecord->resultName4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
+                    if($otherUpload4 = $request->file('MR_additionalUpload4')){
+                        $otherUpload4name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult4'), FILTER_SANITIZE_STRING).'.'.$otherUpload4->getClientOriginalExtension();
+                        $medRecord->resultName4 = filter_var($request->input('MR_additionalResult4'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
                     }
-                    if($otherUpload5name){
-                        $medRecord->resultName5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
+                    if($otherUpload5 = $request->file('MR_additionalUpload5')){
+                        $otherUpload5name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult5'), FILTER_SANITIZE_STRING).'.'.$otherUpload5->getClientOriginalExtension();
+                        $medRecord->resultName5 = filter_var($request->input('MR_additionalResult5'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
                     }
-                    if($otherUpload6name){
-                        $medRecord->resultName6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
+                    if($otherUpload6 = $request->file('MR_additionalUpload6')){
+                        $otherUpload6name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult6'), FILTER_SANITIZE_STRING).'.'.$otherUpload6->getClientOriginalExtension();
+                        $medRecord->resultName6 = filter_var($request->input('MR_additionalResult6'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
                     }
-                    if($otherUpload7name){
-                        $medRecord->resultName7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
+                    if($otherUpload7 = $request->file('MR_additionalUpload7')){
+                        $otherUpload7name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult7'), FILTER_SANITIZE_STRING).'.'.$otherUpload7->getClientOriginalExtension();
+                        $medRecord->resultName7 = filter_var($request->input('MR_additionalResult7'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
                     }
-                    if($otherUpload8name){
-                        $medRecord->resultName8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
+                    if($otherUpload8 = $request->file('MR_additionalUpload8')){
+                        $otherUpload8name = $uploadPrefix.''.filter_var($request->input('MR_additionalResult8'), FILTER_SANITIZE_STRING).'.'.$otherUpload8->getClientOriginalExtension();
+                        $medRecord->resultName8 = filter_var($request->input('MR_additionalResult8'), FILTER_SANITIZE_STRING);
                         $medRecord->resultImage8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
                     }
+    
                     $medRecord->signed = intval('1');
                 /**
                  * SAVE EVERY INPUT WITH && SO THAT IF ONE ->save() RETURNS FALSE, $res WILL BE FALSE
@@ -646,7 +646,7 @@ class MedicalRecordFormController extends Controller
             /* BASIC INFORMATION */
             'designation' => 'required',
             'unitDepartment' => 'required',
-            'P_campusSelect' => 'required',
+            'campusSelect' => 'required',
             'MRP_lastName' => 'required|string',
             'MRP_firstName' => 'required|string',
             'MRP_middleName' => 'required|string',
@@ -659,12 +659,11 @@ class MedicalRecordFormController extends Controller
             'MRP_nationality' => 'required|string',
             'MRP_religion' => 'required|string',
             'MRP_address' => 'required|string',
-            'MRP_personnelContactNumber' => 'required|string',
-            'MRP_contactName' => 'required|string',
-            'MR_ContactNumber' => 'required|string',
-            'MRP_Occupation' => 'required|string',
-            'MRP_relationship' => 'nullable|string',
-            'MRP_OfficeAdd' => 'nullable|required_with:MRP_OfficeAdd|string',
+            'MRP_emergencyContactName' => 'required|string',
+            'MRP_emergencyContactOccupation' => 'required|string',
+            'MRP_emergencyContactRelationship' => 'required|string',
+            'MRP_emergencyContactAddress' => 'required|string',
+            'certify' => 'required|in:1',
 
             /* FAMILY and SOCIAL HISTORY  PERSONNEL*/
             'FHP_cancer' => 'required|in:0,1', 
@@ -672,100 +671,91 @@ class MedicalRecordFormController extends Controller
             'FHP_hypertension' => 'required|in:0,1', 
             'FHP_thyroidDisease' => 'required|in:0,1', 
             'FHP_tuberculosis' => 'required|in:0,1', 
-            'FHP_HIV/AIDS' => 'required|in:0,1', 
+            'FHP_hivAids' => 'required|in:0,1', 
             'FHP_diabetesMelittus' => 'required|in:0,1', 
             'FHP_mentalDisorder' => 'required|in:0,1', 
             'FHP_asthma' => 'required|in:0,1', 
             'FHP_convulsions' => 'required|in:0,1', 
             'FHP_bleedingDyscrasia' => 'required|in:0,1', 
-            'FHP_Arthritis' => 'required|in:0,1', 
+            'FHP_arthritis' => 'required|in:0,1', 
             'FHP_eyeDisorder' => 'required|in:0,1', 
             'FHP_skinProblems' => 'required|in:0,1', 
             'FHP_kidneyProblems' => 'required|in:0,1', 
             'FHP_gastroDisease' => 'required|in:0,1', 
-            'FHP_Hepatitis' => 'required|in:0,1', 
+            'FHP_hepatitis' => 'required|in:0,1', 
             'FHP_others' => 'required_if:FHP_others,1|string', 
-            'FHP_othersDetails' => 'required_if:FHP_othersDetails,1|string', 
+            'FHP_othersDetails' => 'required_if:FHP_others,1|string', 
 
-            /* PERSONAL SOCIAL HISTORY[PSH_] */
+            /* PERSONAL SOCIAL HISTORY[PPSH_] */
             'PPSH_smoking' => 'required|in:0,1', 
-            'PPSH_smoking_amount' => 'required_if:PPSH_smoking,1|int', 
-            'PPSH_smoking_freq' => 'required_if:PPSH_smoking,1|int', 
+            'PPSH_smoking_amount' => 'required_if:PPSH_smoking,1|int',
+            'PPSH_smoking_freq' => 'required_if:PPSH_smoking,1|int',
+            'PPSH_eCig' => 'required|in:0,1', 
+            'PPSH_vape' => 'required|in:0,1', 
             'PPSH_drinking' => 'required|in:0,1',
-            'hospitalization' => 'required|in:0,1',
-            'hospitalizationDetails' => 'required_if:hospitalizationDetails,1|string', 
-            /*
-            'PSH_drinking_amountOfBeer' => 'nullable|required_if:PPSH_drinking,1|string',
-            'PSH_drinking_freqOfBeer' => 'nullable|required_with:PSH_drinking_amountOfBeer|string',
-            'PSH_drinking_amountofShots' => 'nullable|required_if:PPSH_drinking,1|string',
-            'PSH_drinking_freqOfShots' => 'nullable|required_with:PSH_drinking_amountofShots|string',
-            */
-            /* Personal History*/
-            'PPMC_hypertension' => 'required|in:0,1', 
-            'PPMC_asthma' => 'required|in:0,1', 
-            'PPMC_diabetes' => 'required|in:0,1', 
-            'PPMC_arthritis' => 'required|in:0,1', 
-            'PPMC_chickenPox' => 'required|in:0,1', 
-            'PPMC_dengue' => 'required|in:0,1', 
-            'PPMC_tuberculosis' => 'required|in:0,1', 
-            'PPMC_pneumonia' => 'required|in:0,1', 
-            'PPMC_covid19' => 'required|in:0,1', 
-            'PPMC_hivAIDS' => 'required|in:0,1', 
 
-            'PPMC_hepatitis' => 'required|in:0,1', 
-            'PPMC_hepatitisDetails' => 'required_if:PPMC_hepatitisDetails,1|string',
-            'PPMC_thyroidDisorder' => 'required|in:0,1', 
-            'PPMC_thyroidDisorderDetails' => 'required_if:PPMC_thyroidDisorderDetails,1|string', 
-            'PPMC_eyeDisorder' => 'required|in:0,1', 
-            'PPMC_eyeDisorderDetails' => 'required_if:PPMC_eyeDisorderDetails,1|string',
-            'PPMC_mentalDisorder' => 'required|in:0,1', 
-            'PPMC_mentalDisorderDetails' => 'required_if:PPMC_mentalDisorderDetails,1|string',
-            'PPMC_gastroDisease' => 'required|in:0,1', 
-            'PPMC_gastroDiseaseDetails' => 'required_if:PPMC_gastroDiseaseDetails,1|string',
-            'PPMC_kidneyDisease' => 'required|in:0,1',
-            'PPMC_kidneyDiseaseDetails' => 'required_if:PPMC_kidneyDiseaseDetails,1|string',
-            'PPMC_heartDisease' => 'required|in:0,1',
-            'PPMC_heartDiseaseDetails' => 'required_if:PPMC_heartDiseaseDetails,1|string',
-            'PPMC_skinDisease' => 'required|in:0,1',
-            'PPMC_skinDiseaseDetails' => 'required_if:PPMC_skinDiseaseDetails,1|string',
-            'PPMC_earDisease' => 'required|in:0,1',
-            'PPMC_earDiseaseDetails' => 'required_if:PPMC_earDiseaseDetails,1|string',
-            'PPMC_cancer' => 'required|in:0,1',
-            'PPMC_cancerDetails' => 'required_if:PPMC_cancerDetails,1|string',
-            'PPMC_others' => 'required|in:0,1',
-            'PPMC_othersDetails' => 'required_if:PPMC_othersDetails,1|string',
+            /* PERSONAL MEDICAL CONDITION */
+            'PMC_hypertension' => 'required|in:0,1', 
+            'PMC_asthma' => 'required|in:0,1', 
+            'PMC_diabetes' => 'required|in:0,1', 
+            'PMC_arthritis' => 'required|in:0,1', 
+            'PMC_chickenPox' => 'required|in:0,1', 
+            'PMC_dengue' => 'required|in:0,1', 
+            'PMC_tuberculosis' => 'required|in:0,1', 
+            'PMC_pneumonia' => 'required|in:0,1', 
+            'PMC_covid19' => 'required|in:0,1', 
+            'PMC_hivAids' => 'required|in:0,1', 
+
+            'PMC_hepatitis' => 'required|in:0,1', 
+            'PMC_hepatitisDetails' => 'required_if:PMC_hepatitis,1|string',
+            'PMC_thyroidDisorder' => 'required|in:0,1', 
+            'PMC_thyroidDisorderDetails' => 'required_if:PMC_thyroidDisorder,1|string', 
+            'PMC_eyeDisorder' => 'required|in:0,1', 
+            'PMC_eyeDisorderDetails' => 'required_if:PMC_eyeDisorder,1|string',
+            'PMC_mentalDisorder' => 'required|in:0,1', 
+            'PMC_mentalDisorderDetails' => 'required_if:PMC_mentalDisorder,1|string',
+            'PMC_gastroDisease' => 'required|in:0,1', 
+            'PMC_gastroDiseaseDetails' => 'required_if:PMC_gastroDisease,1|string',
+            'PMC_kidneyDisease' => 'required|in:0,1',
+            'PMC_kidneyDiseaseDetails' => 'required_if:PMC_kidneyDisease,1|string',
+            'PMC_heartDisease' => 'required|in:0,1',
+            'PMC_heartDiseaseDetails' => 'required_if:PMC_heartDisease,1|string',
+            'PMC_skinDisease' => 'required|in:0,1',
+            'PMC_skinDiseaseDetails' => 'required_if:PMC_skinDisease,1|string',
+            'PMC_earDisease' => 'required|in:0,1',
+            'PMC_earDiseaseDetails' => 'required_if:PMC_earDisease,1|string',
+            'PMC_cancer' => 'required|in:0,1',
+            'PMC_cancerDetails' => 'required_if:PMC_cancer,1|string',
+            'PMC_others' => 'required|in:0,1',
+            'PMC_othersDetails' => 'required_if:PMC_others,1|string',
 
             /* Hospitalization */
-            'P_hospitalization' => 'required|in:0,1', 
-            'P_hospitalizationDetails' => 'required_if:P_hospitalizationDetails,1|string',
-            'P_regMeds' => 'required|in:0,1', 
-            'P_regMedsDetails' => 'required_if:P_regMedsDetails,1|string', 
-            /* allergies */
-            'P_allergy' => 'required|in:0,1', 
-            'P_allergyDetails' => 'required_if:P_allergyDetails,1|string',  
+            'hospitalization' => 'required|in:0,1', 
+            'hospitalizationDetails' => 'required_if:hospitalization,1|string',
+            'regMeds' => 'required|in:0,1', 
+            'regMedsDetails' => 'required_if:regMeds,1|string', 
+            'allergy' => 'required|in:0,1', 
+            'allergyDetails' => 'required_if:allergy,1|string',  
  
             /* IMMUNIZATION HISTORY[IH_] */
-            'PIH_bcg' => 'required|in:0,1', 
-            'PIH_polio' => 'required|in:0,1', 
-            'PIH_chickenPox' => 'required|in:0,1', 
-            'PIH_dpt' => 'required|in:0,1', 
+            'IH_bcg' => 'required|in:0,1', 
+            'IH_polio' => 'required|in:0,1', 
+            'IH_chickenPox' => 'required|in:0,1', 
+            'IH_dpt' => 'required|in:0,1', 
             'IH_covidVacc' => 'required|in:0,1', 
-            'PIH_covidVaccName' => 'required|in:0,1', 
-            'PIH_covidBooster' => 'required|in:0,1', 
-
-            'PPIH_others' => 'required_if:PPIH_othersDetails,1|string',  
-            'PPIH_othersDetails' => 'required|in:0,1', 
-            'PIH_typhoid' => 'required|in:0,1', 
-            'PIH_mumps' => 'required|in:0,1', 
-            'PIH_hepatitisA' => 'required|in:0,1',
-            'PIH_measles' => 'required|in:0,1',
-            'PIH_germanMeasles' => 'required|in:0,1',
-            'PIH_hepatitisB' => 'required|in:0,1', 
-            'PIH_Pneumoccal' => 'required|in:0,1',
-            'PIH_Influenza' => 'required|in:0,1',
-            'PIH_HPV' => 'required|in:0,1', 
-            'PIH_others' => 'required|in:0,1', 
-            'PIH_othersDetails' => 'required_if:PIH_othersDetails,1|string',  
+            'IH_covidVaccName' => 'required_if:IH_covidVacc,1|string', 
+            'IH_covidBoosterName' => 'required_if:IH_covidVacc,1|string', 
+            'IH_typhoid' => 'required|in:0,1', 
+            'IH_mumps' => 'required|in:0,1',
+            'IH_hepatitisA' => 'required|in:0,1',
+            'IH_measles' => 'required|in:0,1',
+            'IH_germanMeasles' => 'required|in:0,1',
+            'IH_hepatitisB' => 'required|in:0,1', 
+            'IH_pneumococcal' => 'required|in:0,1',
+            'IH_influenza' => 'required|in:0,1',
+            'IH_hpv' => 'required|in:0,1', 
+            'IH_others' => 'required|in:0,1', 
+            'IH_othersDetails' => 'required_if:IH_others,1|string',  
 
 
             /* NAME OF UPLOADS */
@@ -792,18 +782,24 @@ class MedicalRecordFormController extends Controller
             'required' => 'The :attribute field is required.',
             'designation.required' => 'Please select a designation.',
             'unitDepartment.required' => 'Please select a Unit Department.',
-            'P_campusSelect.required_with' => 'Please Select a your present Campus.',
+            'campusSelect.required' => 'Please select your campus.',
             'PPSH_smoking_amount.required_if' => 'Please provide the amount of cigarettes.',
             'PPSH_smoking_freq.required_if' => 'Please provide the frequency of cigarette consumption.',
             'hospitalizationDetails.required_if' => 'Please provide the details of your hospitalization for serious illness, operation, fracture or injury.',
-            'P_regMedsDetails.required_if' => 'Please provide the name/s of your regular drug/s.',
-            'P_allergyDetails.required_if' => 'Please specify your allergy details.',
+            'regMedsDetails.required_if' => 'Please provide the name/s of your regular drug/s.',
+            'allergyDetails.required_if' => 'Please specify your allergy details.',
             'FHP_othersDetails.required_if' => 'Please provide the details of your other disease/s in Family History.',
-            'PIH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
+            'IH_othersDetails.required_if' => 'Please provide the details of other immunization you have taken.',
+            'certify.required' => 'Please certify that the foregoing answers are true and complete, and to the best of my knowledge by checking the checkbox.'
         ]); /* END OF VALIDATION */
 
+        if ($validator->fails()) {
+            #dd($validator);
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         /* GET USER */
         $user = Auth::guard('employee')->user();
+        //dd($user->id);
     try{
         # Family History
         $familyHistory = new MRP_FamilyHistory();
@@ -818,6 +814,7 @@ class MedicalRecordFormController extends Controller
             $familyHistory->asthma = filter_var($request->FHP_asthma, FILTER_SANITIZE_NUMBER_INT);
             $familyHistory->convulsions = filter_var($request->FHP_convulsions, FILTER_SANITIZE_NUMBER_INT);
             $familyHistory->bleedingDyscrasia = filter_var($request->FHP_bleedingDyscrasia, FILTER_SANITIZE_NUMBER_INT);
+            $familyHistory->arthritis = filter_var($request->FHP_arthritis, FILTER_SANITIZE_NUMBER_INT);
             $familyHistory->eyeDisorder = filter_var($request->FHP_eyeDisorder, FILTER_SANITIZE_NUMBER_INT);
             $familyHistory->skinProblems = filter_var($request->FHP_skinProblems, FILTER_SANITIZE_NUMBER_INT);
             $familyHistory->kidneyProblems = filter_var($request->FHP_kidneyProblems, FILTER_SANITIZE_NUMBER_INT);
@@ -838,7 +835,7 @@ class MedicalRecordFormController extends Controller
             $psHistory->eCig = filter_var($request->input('PPSH_eCig'), FILTER_SANITIZE_NUMBER_INT);
             $psHistory->vape =filter_var($request->input('PPSH_vape'), FILTER_SANITIZE_NUMBER_INT);
             $psHistory->drinking = filter_var($request->input('PPSH_drinking'), FILTER_SANITIZE_NUMBER_INT);
-            $psHistory->shotsFrequency = $request->filled('PPSH_drinkingDetails') ? filter_var($request->input('PPSH_drinkingDetails'), FILTER_SANITIZE_STRING) : 'N/A';
+            $psHistory->drinkingDetails = $request->filled('PPSH_drinkingDetails') ? filter_var($request->input('PPSH_drinkingDetails'), FILTER_SANITIZE_STRING) : 'N/A';
         $res = $psHistory->save();
         if(!$res){
             return redirect()->back()->with('fail','An error occured while saving your data. Please try again later.');
@@ -891,7 +888,6 @@ class MedicalRecordFormController extends Controller
             $immunizationHistory->dpt = filter_var($request->IH_dpt, FILTER_SANITIZE_NUMBER_INT);
             $immunizationHistory->covidVacc = filter_var($request->IH_covidVacc, FILTER_SANITIZE_NUMBER_INT);
             $immunizationHistory->covidVaccName = $request->filled('IH_covidVaccName') ? filter_var($request->input('IH_covidVaccName'), FILTER_SANITIZE_STRING) : 'N/A';
-            $immunizationHistory->covidBooster = filter_var($request->IH_covidBooster, FILTER_SANITIZE_NUMBER_INT);
             $immunizationHistory->covidBoosterName = $request->filled('IH_covidBoosterName') ? filter_var($request->input('IH_covidBoosterName'), FILTER_SANITIZE_STRING) : 'N/A';
             $immunizationHistory->typhoid = filter_var($request->IH_typhoid, FILTER_SANITIZE_NUMBER_INT);
             $immunizationHistory->mumps = filter_var($request->IH_mumps, FILTER_SANITIZE_NUMBER_INT);
@@ -910,26 +906,28 @@ class MedicalRecordFormController extends Controller
         }
 
         /* SAVE INPUT TO MEDICAL RECORDS PERSONNEL TABLE */
+        $medRecordPersonnel = new MedicalRecordPersonnel();
             $medRecordPersonnel->personnel_id = $user->id;
             $medRecordPersonnel->designation = filter_var($request->input('designation'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->unitDepartment = filter_var($request->input('unitDepartment'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->campus = filter_var($request->input('P_campusSelect'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->campus = filter_var($request->input('campusSelect'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->last_name = filter_var($request->input('MRP_lastName'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->first_name = filter_var($request->input('MRP_firstName'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->middle_name = filter_var($request->input('MRP_middleName'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->age = filter_var($request->input('MRP_age'), FILTER_SANITIZE_NUMBER_INT);
             $medRecordPersonnel->sex = filter_var($request->input('MRP_sex'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->gender = filter_var($request->input('MRP_gender'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->pwd = filter_var($request->input('MRP_pwd'), FILTER_SANITIZE_NUMBER_INT);
 
                 $dateString = $request->input('MRP_dateOfBirth');
                 $date = DateTime::createFromFormat('Y F d', $dateString);
                 $formattedDate = $date->format('Y-m-d');
-
             $medRecordPersonnel->dateOfBirth = $formattedDate;
+
             $medRecordPersonnel->civilStatus = filter_var($request->input('MRP_civilStatus'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->nationality = filter_var($request->input('MRP_nationality'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->religion = filter_var($request->input('MRP_religion'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->homeAddress = filter_var($request->input('MRP_homeAddress'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->homeAddress = filter_var($request->input('MRP_address'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->contactNumber = filter_var(ltrim($request->input('MRP_personnelContactNumber'), '0'), FILTER_VALIDATE_INT);
             $medRecordPersonnel->emergencyContactName = filter_var($request->input('MRP_emergencyContactName'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->emergencyContactNumber = filter_var(ltrim($request->input('MRP_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
@@ -946,64 +944,78 @@ class MedicalRecordFormController extends Controller
             # UPLOADS
                     // Get the validated, uploaded file
                     $chestXray = $request->file('MRP_chestXray');
+                    $chestXrayExtension = $chestXray->getClientOriginalExtension();
                     $cbcresults = $request->file('MRP_cbcresults');
+                    $cbcresultsExtension = $cbcresults->getClientOriginalExtension();
                     $hepaBscreening = $request->file('MRP_hepaBscreening');
+                    $hepaBscreeningExtension = $hepaBscreening->getClientOriginalExtension();
                     $bloodtype = $request->file('MRP_bloodtype');
-                        // Other uploads
-                    $otherUpload1 = $request->file('MRP_additionalUpload1');
-                    $otherUpload2 = $request->file('MRP_additionalUpload2');
-                    $otherUpload3 = $request->file('MRP_additionalUpload3');
-                    $otherUpload4 = $request->file('MRP_additionalUpload4');
-                    $otherUpload5 = $request->file('MRP_additionalUpload5');
-                    $otherUpload6 = $request->file('MRP_additionalUpload6');
-                    $otherUpload7 = $request->file('MRP_additionalUpload7');
-                    $otherUpload8 = $request->file('MRP_additionalUpload8');
-    
-                        // Sanitize the file name to remove any special characters
-                    $chestXrayName = filter_var($chestXray->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $cbcresultsName = filter_var($cbcresults->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $hepaBscreeningName = filter_var($hepaBscreening->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                    $bloodtypeName = filter_var($bloodtype->getClientOriginalName(), FILTER_SANITIZE_STRING);
-                        // Other uploads names
-                    $otherUpload1name = filter_var($request->input('MRP_additionalResult1'), FILTER_SANITIZE_STRING);
-                    $otherUpload2name = filter_var($request->input('MRP_additionalResult2'), FILTER_SANITIZE_STRING);
-                    $otherUpload3name = filter_var($request->input('MRP_additionalResult3'), FILTER_SANITIZE_STRING);
-                    $otherUpload4name = filter_var($request->input('MRP_additionalResult4'), FILTER_SANITIZE_STRING);
-                    $otherUpload5name = filter_var($request->input('MRP_additionalResult5'), FILTER_SANITIZE_STRING);
-                    $otherUpload6name = filter_var($request->input('MRP_additionalResult6'), FILTER_SANITIZE_STRING);
-                    $otherUpload7name = filter_var($request->input('MRP_additionalResult7'), FILTER_SANITIZE_STRING);
-                    $otherUpload8name = filter_var($request->input('MRP_additionalResult8'), FILTER_SANITIZE_STRING);
-                        // Store the file on the server
+                    $bloodtypeExtension = $bloodtype->getClientOriginalExtension();
+
+                    $fileNamePreFix = $user->id.''.$user->personnel_id_number.''.$request->lastName;
+                    
+                    // RENAME
+                    $chestXrayName = $fileNamePreFix.'-CHESTXRAY.'.$chestXrayExtension;
+                    $cbcresultsName = $fileNamePreFix.'-CBC RESULTS.'.$cbcresultsExtension;
+                    $hepaBscreeningName = $fileNamePreFix.'-HEPATITIS B SCREENING.'.$hepaBscreeningExtension;
+                    $bloodtypeName = $fileNamePreFix.'-BLOODTYPE.'.$bloodtypeExtension;
+                    // Store the file on the server
                     $medRecordPersonnel->chestXray = $chestXray->storeAs('uploads', $chestXrayName, 'public');
                     $medRecordPersonnel->CBCResults = $cbcresults->storeAs('uploads', $cbcresultsName, 'public');
                     $medRecordPersonnel->hepaBscreening = $hepaBscreening->storeAs('uploads', $hepaBscreeningName, 'public');
                     $medRecordPersonnel->bloodType = $bloodtype->storeAs('uploads', $bloodtypeName, 'public');
-                    
-                    if($otherUpload1name){
+
+                        // Other uploads
+                    if($otherUpload1 = $request->file('MRP_additionalUpload1')){
+                        $extension1 = $otherUpload1->getClientOriginalExtension();
+                        $otherUpload1name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult1'), FILTER_SANITIZE_STRING).'.'.$extension1;
+                        $medRecordPersonnel->resultName1 = filter_var($request->input('MRP_additionalResult1'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage1 = $otherUpload1->storeAs('uploads', $otherUpload1name, 'public');
                     }
-                    if($otherUpload2name){
+                    if($otherUpload2 = $request->file('MRP_additionalUpload2')){
+                        $extension2 = $otherUpload2->getClientOriginalExtension();
+                        $otherUpload2name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult2'), FILTER_SANITIZE_STRING).'.'.$extension2;
+                        $medRecordPersonnel->resultName2 = filter_var($request->input('MRP_additionalResult2'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage2 = $otherUpload2->storeAs('uploads', $otherUpload2name, 'public');
                     }
-                    if($otherUpload3name){
+                    if($otherUpload3 = $request->file('MRP_additionalUpload3')){
+                        $extension3 = $otherUpload3->getClientOriginalExtension();
+                        $otherUpload3name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult3'), FILTER_SANITIZE_STRING).'.'.$extension3;
+                        $medRecordPersonnel->resultName3 = filter_var($request->input('MRP_additionalResult3'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage3 = $otherUpload3->storeAs('uploads', $otherUpload3name, 'public');
                     }
-                    if($otherUpload4name){
+                    if($otherUpload4 = $request->file('MRP_additionalUpload4')){
+                        $extension4 = $otherUpload4->getClientOriginalExtension();
+                        $otherUpload4name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult4'), FILTER_SANITIZE_STRING).'.'.$extension4;
+                        $medRecordPersonnel->resultName4 = filter_var($request->input('MRP_additionalResult4'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage4 = $otherUpload4->storeAs('uploads', $otherUpload4name, 'public');
                     }
-                    if($otherUpload5name){
+                    if($otherUpload5 = $request->file('MRP_additionalUpload5')){
+                        $extension5 = $otherUpload5->getClientOriginalExtension();
+                        $otherUpload5name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult5'), FILTER_SANITIZE_STRING).'.'.$extension5;
+                        $medRecordPersonnel->resultName5 = filter_var($request->input('MRP_additionalResult5'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage5 = $otherUpload5->storeAs('uploads', $otherUpload5name, 'public');
                     }
-                    if($otherUpload6name){
+                    if($otherUpload6 = $request->file('MRP_additionalUpload6')){
+                        $extension6 = $otherUpload6->getClientOriginalExtension();
+                        $otherUpload6name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult6'), FILTER_SANITIZE_STRING).'.'.$extension6;
+                        $medRecordPersonnel->resultName6 = filter_var($request->input('MRP_additionalResult6'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage6 = $otherUpload6->storeAs('uploads', $otherUpload6name, 'public');
                     }
-                    if($otherUpload7name){
+                    if($otherUpload7 = $request->file('MRP_additionalUpload7')){
+                        $extension7 = $otherUpload7->getClientOriginalExtension();
+                        $otherUpload7name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult7'), FILTER_SANITIZE_STRING).'.'.$extension7;
+                        $medRecordPersonnel->resultName7 = filter_var($request->input('MRP_additionalResult7'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage7 = $otherUpload7->storeAs('uploads', $otherUpload7name, 'public');
                     }
-                    if($otherUpload8name){
+                    if($otherUpload8 = $request->file('MRP_additionalUpload8')){
+                        $extension8 = $otherUpload8->getClientOriginalExtension();
+                        $otherUpload8name = $fileNamePreFix.''.filter_var($request->input('MRP_additionalResult8'), FILTER_SANITIZE_STRING).'.'.$extension8;
+                        $medRecordPersonnel->resultName8 = filter_var($request->input('MRP_additionalResult8'), FILTER_SANITIZE_STRING);
                         $medRecordPersonnel->resultImage8 = $otherUpload8->storeAs('uploads', $otherUpload8name, 'public');
                     }
-                    $medRecord->signed = intval('1');
+
+                    $medRecordPersonnel->signed = intval('1');
 
             # Foreign Keys
             $medRecordPersonnel->MRP_familyHistoryID = $familyHistory->MRP_familyHistoryID;
@@ -1022,19 +1034,17 @@ class MedicalRecordFormController extends Controller
                 return redirect()->back()->with('fail','Failed to register. Please try again later.');
             }
 
-            $familyHistory->MRP_id =  $medRecord->MRP_id;
+            $familyHistory->MRP_id =  $medRecordPersonnel->MRP_id;
                 $familyHistory->save();
-            $psHistory->MRP_id =  $medRecord->MRP_id;
+            $psHistory->MRP_id =  $medRecordPersonnel->MRP_id;
                 $psHistory->save();
-            $pastIllness->MRP_id =  $medRecord->MRP_id;
-                $pastIllness->save();
-            $personalMedicalCondition->MRP_id =  $medRecord->MRP_id;
-                $presentIllness->save();
-            $immunizationHistory->MRP_id =  $medRecord->MRP_id;
+            $personalMedicalCondition->MRP_id =  $medRecordPersonnel->MRP_id;
+                $personalMedicalCondition->save();
+            $immunizationHistory->MRP_id =  $medRecordPersonnel->MRP_id;
                 $immunizationHistory->save();
             
             $user->hasMedRecord = intval('1');
-            $user->MR_id =  $medRecord->MR_id;
+            $user->MRP_id =  $medRecordPersonnel->MRP_id;
             $user->save();
 
             return redirect('/')->with('MedicalRecordSuccess', 'Medical record saved successfully');
@@ -1047,5 +1057,21 @@ class MedicalRecordFormController extends Controller
             ])->withInput();
             Log::error('Error from '.$user->id.': '. $ex->getMessage());
         }
+    }
+
+    public function showPersonnelForm($patientID){
+        try {
+            // Try to find a patient with the specified personnel ID
+            $patient = UserPersonnel::with('medicalRecordPersonnel')
+                                    ->where('personnel_id_number', $patientID)
+                                    ->where('hasMedRecord', 1)
+                                    ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            $message = 'Patient '.$patientID.' not found.';
+            return redirect()->route('admin.patientMedFormList.show')->with('fail', $message);
+        }
+    
+        // Display the patient form with the found user data
+        return view('admin.ClinicSideMedicalRecordFormPersonnel')->with('patient', $patient);
     }
 }

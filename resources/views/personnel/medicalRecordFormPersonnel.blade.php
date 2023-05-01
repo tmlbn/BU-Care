@@ -123,13 +123,22 @@
     </div>
 
     <!--Personal Basic Information-->
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form method="POST" action="{{ route('personnel.medicalForm.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4 needs-validation" novalidate>
     @csrf
 
-        <div class="row row-cols-lg-4 row-cols-md-2 mt-2">
-            <div class="col-xl-4 col-lg-12">
-                <label for="designation" class="form-label h6">Designation</label>
-                <input type="text" class="form-control" id="designation" name="designation" oninput="this.value = this.value.toUpperCase()" required>
+        <div class="row row-cols-lg-3 row-cols-md-1 mt-2">
+            <div class="col-xl-4 col-lg-12 mt-2">
+                <label for="designation" class="form-label h6">Designation<span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('designation') is-invalid @enderror" id="designation" name="designation" value="{{ old('designation') }}" oninput="this.value = this.value.toUpperCase()" required>
                 <div class="invalid-feedback">
                     Please enter your Designation.
                 </div>
@@ -139,9 +148,9 @@
                     @enderror
                 </span>
             </div>
-            <div class="col-xl-4 col-lg-12">
-                <p class="h6">Unit/Department</p>
-                <input type="text" class="form-control" id="unitDepartment" name="unitDepartment" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="col-xl-4 col-lg-12 mt-2">
+                <label for="unitDepartment" class="form-label h6">Unit/Department<span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('unitDepartment') is-invalid @enderror" id="unitDepartment" name="unitDepartment" value="{{ old('unitDepartment') }}" oninput="this.value = this.value.toUpperCase()" required>
                 <div class="invalid-feedback">
                     Please enter your Unit/Department.
                 </div>
@@ -151,28 +160,28 @@
                     @enderror
                 </span>
             </div> 
-            <div class="col-xl-4 col-lg-12">
-                <p class="h6">Campus</p>
+            <div class="col-xl-4 col-lg-12 mt-2">
+                <label for="campusSelect" class="form-label h6">Campus<span class="text-danger">*</span></label>
                 <select id="campusSelect" name="campusSelect" class="form-select" required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
-                    <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
-                    <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
-                    <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
-                    <option value="College of Education" class="alternate">College of Education</option>
-                    <option value="College of Engineering">College of Engineering</option>
-                    <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
-                    <option value="College of Medicine">College of Medicine</option>
-                    <option value="College of Nursing" class="alternate">College of Nursing</option>
-                    <option value="College of Science">College of Science</option>
-                    <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
-                    <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
-                    <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
-                    <option value="Gubat Campus">Gubat Campus</option>
-                    <option value="Polangui Campus" class="alternate">Polangui Campus</option>
-                    <option value="Tabaco Campus">Tabaco Campus</option>
+                    <option value="College of Agriculture and Forestry" {{ old('campusSelect') == 'College of Agriculture and Forestry' ? 'selected' : '' }}>College of Agriculture and Forestry</option>
+                    <option value="College of Arts and Letters" class="alternate" {{ old('campusSelect') == 'College of Arts and Letters' ? 'selected' : '' }}>College of Arts and Letters</option>
+                    <option value="College of Business, Entrepreneurship, and Management" {{ old('campusSelect') == 'College of Business, Entrepreneurship, and Management' ? 'selected' : '' }}>College of Business, Entrepreneurship, and Management</option>
+                    <option value="College of Education" class="alternate" {{ old('campusSelect') == 'College of Education' ? 'selected' : '' }}>College of Education</option>
+                    <option value="College of Engineering" {{ old('campusSelect') == 'College of Engineering' ? 'selected' : '' }}>College of Engineering</option>
+                    <option value="College of Industrial Technology" class="alternate" {{ old('campusSelect') == 'College of Industrial Technology' ? 'selected' : '' }}>College of Industrial Technology</option>
+                    <option value="College of Medicine" {{ old('campusSelect') == 'College of Medicine' ? 'selected' : '' }}>College of Medicine</option>
+                    <option value="College of Nursing" class="alternate" {{ old('campusSelect') == 'College of Nursing' ? 'selected' : '' }}>College of Nursing</option>
+                    <option value="College of Science" {{ old('campusSelect') == 'College of Science' ? 'selected' : '' }}>College of Science</option>
+                    <option value="College of Social Science and Philosophy" class="alternate" {{ old('campusSelect') == 'College of Social Science and Philosophy' ? 'selected' : '' }}>College of Social Science and Philosophy</option>
+                    <option value="Institute of Design and Architecture" {{ old('campusSelect') == 'Institute of Design and Architecture' ? 'selected' : '' }}>Institute of Design and Architecture</option>
+                    <option value="Institute of Physical Education, Sports, and Recreation" class="alternate" {{ old('campusSelect') == 'Institute of Physical Education, Sports, and Recreation' ? 'selected' : '' }}>Institute of Physical Education, Sports, and Recreation</option>
+                    <option value="Gubat Campus" {{ old('campusSelect') == 'Gubat Campus' ? 'selected' : '' }}>Gubat Campus</option>
+                    <option value="Polangui Campus" class="alternate" {{ old('campusSelect') == 'Polangui Campus' ? 'selected' : '' }}>Polangui Campus</option>
+                    <option value="Tabaco Campus" {{ old('campusSelect') == 'Tabaco Campus' ? 'selected' : '' }}>Tabaco Campus</option>
                 </select>
                 <div class="invalid-feedback">
-                    Please select your Campus.
+                    Please select your campus.
                 </div>
                 <span class="text-danger"> 
                     @error('campusSelect') 
@@ -183,10 +192,11 @@
         </div>   
     <div class="d-flex flex-row">
         <h4 class="pb-3"></h4>
-    </div>   
-        <div class="col-md-2">
-            <label for="MRP_lastName" class="form-label h6">Last Name</label>
-            <input type="text" class="form-control" id="MRP_lastName" name="MRP_lastName" oninput="this.value = this.value.toUpperCase()" required>
+    </div>
+    <div class="row row-cols-1 row-cols-xl-7 row-cols-lg-4">
+        <div class="col-xl-2 col-lg-3">
+            <label for="MRP_lastName" class="form-label h6">Last Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_lastName') is-invalid @enderror" id="MRP_lastName" name="MRP_lastName" value="{{ old('MRP_lastName') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your last name.
             </div>
@@ -196,9 +206,9 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2">
-            <label for="MRP_firstName" class="form-label h6">First Name</label>
-            <input type="text" class="form-control" id="MRP_firstName" name="MRP_firstName" oninput="this.value = this.value.toUpperCase()" required>
+        <div class="col-xl-2 col-lg-3">
+            <label for="MRP_firstName" class="form-label h6">First Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_firstName') is-invalid @enderror" id="MRP_firstName" name="MRP_firstName" value="{{ old('MRP_firstName') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your first name.
             </div>
@@ -208,18 +218,18 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-lg-3">
             <label for="MRP_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control" id="MRP_middleName" name="MRP_middleName" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MRP_middleName') is-invalid @enderror" id="MRP_middleName" name="MRP_middleName" value="{{ old('MRP_middleName') }}" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger"> 
                 @error('MRP_middleName') 
                   {{ $message }} 
                 @enderror
             </span>
         </div>
-        <div class="col-md-1">
-            <label for="MRP_age" class="form-label h6">Age</label>
-            <input type="number" class="form-control" id="MRP_age" name="MRP_age" onKeyPress="if(this.value.length==2) return false;" required>
+        <div class="col-xl-1 col-lg-3">
+            <label for="MRP_age" class="form-label h6">Age<span class="text-danger">*</span></label>
+            <input type="number" class="form-control @error('MRP_age') is-invalid @enderror" id="MRP_age" name="MRP_age" value="{{ old('MRP_age') }}" onKeyPress="if(this.value.length==2) return false;" required>
             <div class="invalid-feedback">
                 Please enter your age.
             </div>
@@ -229,12 +239,12 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2">
-            <label for="MRP_sex" class="form-label h6">Sex</label>
-            <select id="MRP_sex" class="form-select" name="MRP_sex" required>
+        <div class="col-xl-2 col-lg-3">
+            <label for="MRP_sex" class="form-label h6">Sex<span class="text-danger">*</span></label>
+            <select id="MRP_sex" class="form-select @error('MRP_sex') is-invalid @enderror" name="MRP_sex" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
-                <option value="MALE">MALE</option>
-                <option value="FEMALE">FEMALE</option>
+                <option value="MALE" {{ old('MRP_sex') == 'MALE' ? 'selected' : '' }}>MALE</option>
+                <option value="FEMALE" {{ old('MRP_sex') == 'FEMALE' ? 'selected' : '' }}>FEMALE</option>
             </select>
             <div class="invalid-feedback">
                 Please select your sex.
@@ -245,9 +255,9 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2">
-            <label for="MRP_gender" class="form-label h6">Gender</label>
-            <input type="text" class="form-control" id="MRP_gender" name="MRP_gender" required>
+        <div class="col-xl-2 col-lg-3">
+            <label for="MRP_gender" class="form-label h6">Gender<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_gender') is-invalid @enderror" id="MRP_gender" name="MRP_gender" value="{{ old('MRP_gender') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your gender.
             </div>
@@ -257,15 +267,17 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-1 d-flex align-items-end">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" value="0" name="pwd" id="pwd">
-                <label for="pwd" class="form-check-label">PWD</label>
+        <div class="col-xl-1 col-lg-3 mt-2">
+            <div class="form-check mt-4">
+                <input type="hidden" name="MRP_pwd" value="0">
+                <label for="MRP_pwd" class="form-label h6">PWD</label>
+                <input class="form-check-input" type="checkbox" value="1" name="MRP_pwd" id="MRP_pwd" {{ old('MRP_pwd') == 1 ? 'checked' : '' }}>
             </div>
         </div>
+    </div>
         <div class="col-md-3">
-            <label for="MRP_dateOfBirth" class="form-label h6">Date of Birth</label>
-            <input type="text" class="form-control" id="MRP_dateOfBirth" name="MRP_dateOfBirth" required onkeydown="return false;">
+            <label for="MRP_dateOfBirth" class="form-label h6">Date of Birth<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_dateOfBirth') is-invalid @enderror" id="MRP_dateOfBirth" name="MRP_dateOfBirth" value="{{ old('MRP_dateOfBirth') }}" required onkeydown="return false;">
             <div class="invalid-feedback">
                 Please select your date of birth.
             </div>
@@ -289,14 +301,14 @@
         </script>
 
         <div class="col-md-3">
-            <label for="MRP_civilStatus" class="form-label h6">Civil Status</label>
-            <select id="MRP_civilStatus" name="MRP_civilStatus" class="form-select" required>
+            <label for="MRP_civilStatus" class="form-label h6">Civil Status<span class="text-danger">*</span></label>
+            <select id="MRP_civilStatus" name="MRP_civilStatus" class="form-select @error('MRP_civilStatus') is-invalid @enderror" value="{{ old('MRP_civilStatus') }}" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
-                <option value="SINGLE">SINGLE</option>
-                <option value="MARRIED" class="alternate">MARRIED</option>
-                <option value="DIVORCED">DIVORCED</option>
-                <option value="SEPARATED" class="alternate">SEPARATED</option>
-                <option value="WIDOWED">WIDOWED</option>
+                <option value="SINGLE" {{ old('MRP_civilStatus') == 'SINGLE' ? 'selected' : '' }}>SINGLE</option>
+                <option value="MARRIED" {{ old('MRP_civilStatus') == 'MARRIED' ? 'selected' : '' }} class="alternate">MARRIED</option>
+                <option value="DIVORCED" {{ old('MRP_civilStatus') == 'DIVORCED' ? 'selected' : '' }}>DIVORCED</option>
+                <option value="SEPARATED" {{ old('MRP_civilStatus') == 'SEPARATED' ? 'selected' : '' }} class="alternate">SEPARATED</option>
+                <option value="WIDOWED" {{ old('MRP_civilStatus') == 'SINGWIDOWEDLE' ? 'selected' : '' }}>WIDOWED</option>
             </select>
             <div class="invalid-feedback">
                 Please select your civil status.
@@ -308,8 +320,8 @@
             </span>
         </div>
         <div class="col-md-3">
-            <label for="MRP_nationality" class="form-label h6">Nationality</label>
-            <input type="text" class="form-control" id="MRP_nationality" name="MRP_nationality" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_nationality" class="form-label h6">Nationality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_nationality') is-invalid @enderror" id="MRP_nationality" name="MRP_nationality" value="{{ old('MRP_nationality') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your nationality.
             </div>
@@ -320,8 +332,8 @@
             </span>
         </div>
         <div class="col-md-3">
-            <label for="MRP_religion" class="form-label h6">Religion</label>
-            <input type="text" class="form-control" id="MRP_religion" name="MRP_religion" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_religion" class="form-label h6">Religion<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_religion') is-invalid @enderror" id="MRP_religion" name="MRP_religion" value="{{ old('MRP_religion') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your religion.
             </div>
@@ -332,8 +344,8 @@
             </span>
         </div>
         <div class="col-md-10">
-            <label for="MRP_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control" id="MRP_address" name="MRP_address" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_address" class="form-label h6">Home Address<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_address') is-invalid @enderror" id="MRP_address" name="MRP_address" value="{{ old('MRP_address') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your address.
             </div>
@@ -344,8 +356,8 @@
             </span>
         </div>
         <div class="col-md-2">
-            <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
-            <input type="number" class="form-control" placeholder="09XXXXXXXXX" id="MRP_personnelContactNumber" name="MRP_personnelContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <label for="MRP_personnelContactNumber" class="form-label h6">Contact Number<span class="text-danger">*</span></label>
+            <input type="number" class="form-control @error('MRP_personnelContactNumber') is-invalid @enderror" value="{{ old('MRP_personnelContactNumber') }}" placeholder="09XXXXXXXXX" id="MRP_personnelContactNumber" name="MRP_personnelContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback">
                 Please enter your contact number.
             </div>
@@ -357,8 +369,8 @@
         </div>
         <h5 class="pt-2">Contact Person in case of Emergency:</h5>
         <div class="col-md-6">
-            <label for="MRP_emergencyContactName" class="form-label h6">Name</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactName" name="MRP_emergencyContactName" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_emergencyContactName" class="form-label h6">Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_emergencyContactName') is-invalid @enderror" id="MRP_emergencyContactName" name="MRP_emergencyContactName" value="{{ old('MRP_emergencyContactName') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter the name of your emergency contact person.
             </div>
@@ -369,8 +381,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_emergencyContactNumber" class="form-label h6">Contact No.</label>
-            <input type="number" class="form-control" placeholder="09XXXXXXXXX" id="MRP_emergencyContactNumber" name="MRP_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <label for="MRP_emergencyContactNumber" class="form-label h6">Contact Number<span class="text-danger">*</span></label>
+            <input type="number" class="form-control @error('MRP_emergencyContactNumber') is-invalid @enderror" value="{{ old('MRP_emergencyContactNumber') }}" placeholder="09XXXXXXXXX" id="MRP_emergencyContactNumber" name="MRP_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback">
                 Please enter the contact number of your emergency contact person.
             </div>
@@ -381,8 +393,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_emergencyContactOccupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactOccupation" name="MRP_emergencyContactOccupation" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_emergencyContactOccupation" class="form-label h6">Occupation<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_emergencyContactOccupation') is-invalid @enderror" value="{{ old('MRP_emergencyContactOccupation') }}" id="MRP_emergencyContactOccupation" name="MRP_emergencyContactOccupation" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter the occupation of your emergency contact person.
             </div>
@@ -393,8 +405,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MRP_emergencyContactRelationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactRelationship" name="MRP_emergencyContactRelationship" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_emergencyContactRelationship" class="form-label h6">Relationship<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_emergencyContactRelationship') is-invalid @enderror" value="{{ old('MRP_emergencyContactRelationship') }}" id="MRP_emergencyContactRelationship" name="MRP_emergencyContactRelationship" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your relationship with your emergency contact person.
             </div>
@@ -405,8 +417,8 @@
             </span>
         </div>
         <div class="col-md-12">
-            <label for="MRP_emergencyContactAddress" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control" id="MRP_emergencyContactAddress" name="MRP_emergencyContactAddress" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MRP_emergencyContactAddress" class="form-label h6">Work/Home Address<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MRP_emergencyContactAddress') is-invalid @enderror" value="{{ old('MRP_emergencyContactAddress') }}" id="MRP_emergencyContactAddress" name="MRP_emergencyContactAddress" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter the address of your emergency contact person.
             </div>
@@ -434,42 +446,42 @@
                     <div class="col-md-4 p-2">
                         <div class="form-check">
                             <input type="hidden" value="0" name="FHP_cancer">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_cancer">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_cancer" {{ old('FHP_cancer') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_cancer">
                                     Cancer
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" value="0" name="FHP_heartDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_heartDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_heartDisease" {{ old('FHP_heartDisease') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_heartDisease">
                                     Heart Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" value="0" name="FHP_hypertension">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hypertension">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hypertension" {{ old('FHP_hypertension') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_hypertension">
                                     Hypertension
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" value="0" name="FHP_thyroidDisease">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_thyroidDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_thyroidDisease" {{ old('FHP_thyroidDisease') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_thyroidDisease">
                                     Thyroid Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_tuberculosis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_tuberculosis">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_tuberculosis" {{ old('FHP_tuberculosis') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_hivAids" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hivAids">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hivAids" {{ old('FHP_hivAids') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_hivAids">
                                     HIV/AIDS
                                 </label>
@@ -478,43 +490,43 @@
                     <div class="col-md-4 p-2">
                         <div class="form-check">
                             <input type="hidden" value="0" name="FHP_diabetesMelittus">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_diabetesMelittus">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_diabetesMelittus" {{ old('FHP_diabetesMelittus') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_diabetesMelittus">
                                     Diabetes Melittus
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_mentalDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_mentalDisorder">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_mentalDisorder" {{ old('FHP_mentalDisorder') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_mentalDisorder">
                                     Mental Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_asthma" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_asthma">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_asthma" {{ old('FHP_asthma') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_asthma">
                                     Asthma
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_convulsions" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_convulsions">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_convulsions" {{ old('FHP_convulsions') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_convulsions">
                                     Convulsions
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia" {{ old('FHP_bleedingDyscrasia') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_bleedingDyscrasia">
                                     Bleeding Dyscrasia
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FHP_bleedingDyscrasia" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_bleedingDyscrasia">
-                                <label class="form-check-label" for="FHP_bleedingDyscrasia">
+                            <input type="hidden" name="FHP_arthritis" value="0">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_arthritis" {{ old('FHP_arthritis') == 1 ? 'checked' : '' }}>
+                                <label class="form-check-label" for="FHP_arthritis">
                                     Arthritis
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
@@ -522,35 +534,35 @@
                     <div class="col-md-4 p-2">
                         <div class="form-check">
                             <input type="hidden" name="FHP_eyeDisorder" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_eyeDisorder">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_eyeDisorder" {{ old('FHP_eyeDisorder') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_eyeDisorder">
                                     Eye Disorder
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_skinProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_skinProblems">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_skinProblems" {{ old('FHP_skinProblems') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_skinProblems">
                                     Skin Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_kidneyProblems" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_kidneyProblems">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_kidneyProblems" {{ old('FHP_kidneyProblems') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_kidneyProblems">
                                     Kidney Problems
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_gastroDisease" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease">
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_gastroDisease" {{ old('FHP_gastroDisease') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_gastroDisease">
                                     Gastrointestinal Disease
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
                             <input type="hidden" name="FHP_hepatitis" value="0">
-                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hepatitis"   >
+                            <input class="form-check-input" type="checkbox" value="1" name="FHP_hepatitis" {{ old('FHP_hepatitis') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="FHP_hepatitis">
                                     Hepatitis
                                 </label>
@@ -560,12 +572,12 @@
             <div class="form-row align-items-center">
                 <div class="col p-2">
                     <input type="hidden" name="FHP_others" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="FHP_others" name="FHP_others">
+                    <input class="form-check-input" type="checkbox" value="1" id="FHP_others" name="FHP_others" {{ old('FHP_others') == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="FHP_others" style="display: contents!important;">
                             Others
                         </label>
                             <input type="hidden" name="FHP_othersDetails" value="N/A">
-                            <input type="text" class="form-control input-sm" id="FHP_othersDetails" name="FHP_othersDetails" placeholder="separate with comma(,) if multiple" disabled>
+                            <input type="text" class="form-control input-sm @error('FHP_othersDetails') is-invalid @enderror" value="{{ old('FHP_othersDetails') }}" id="FHP_othersDetails" name="FHP_othersDetails" placeholder="separate with comma(,) if multiple" {{ old('FHP_others') == 1 ? '' : 'disabled' }}>
                             <span class="text-danger"> 
                                 @error('FHP_othersDetails') 
                                   {{ $message }} 
@@ -604,31 +616,38 @@
                 <h6>Personal Social History</h6>
                     <div class="form-check">
                     <input type="hidden" name="PPSH_smoking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_smoking" name="PPSH_smoking">
+                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_smoking" name="PPSH_smoking" {{ old('PPSH_smoking') == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="PPSH_smoking" style="display: contents!important;">
                             Smoking
                         </label>
                             <br>
                             <div class="d-flex align-items-center">
-                            ( <input type="text" class="form-control col-sm-2 mx-1" style="width: 10%;" id="PPSH_smoking_amount" name="PPSH_smoking_amount" disabled> 
+                            ( <input type="text" class="form-control col-sm-2 mx-1 @error('PPSH_smoking_amount') is-invalid @enderror" value="{{ old('PPSH_smoking_amount') }}" style="width: 10%;" id="PPSH_smoking_amount" name="PPSH_smoking_amount" {{ old('PPSH_smoking') == 1 ? '' : 'disabled' }}> 
+                            <div class="invalid-feedback">
+                                Please enter the amount of sticks you smoke per/day.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PPSH_smoking_amount') 
                                   {{ $message }} 
                                 @enderror
-                              </span>  
+                            </span>  
                             sticks/day for 
-                            <input type="text" class="form-control col-sm-2 mx-1" style="width: 10%;" id="PPSH_smoking_freq" name="PPSH_smoking_freq" disabled> year/s )
+                            <input type="text" class="form-control col-sm-2 mx-1 @error('PPSH_smoking_freq') is-invalid @enderror" value="{{ old('PPSH_smoking_freq') }}" style="width: 10%;" id="PPSH_smoking_freq" name="PPSH_smoking_freq" {{ old('PPSH_smoking') == 1 ? '' : 'disabled' }}>
+                            year/s )
+                            <div class="invalid-feedback">
+                                Please enter how many years you've been smoking.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PPSH_smoking_freq') 
                                   {{ $message }} 
                                 @enderror
-                              </span>
+                            </span>
                             </div>
                         
                     </div>
                     <div class="form-check mt-3">
                         <input type="hidden" name="PPSH_eCig" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_eCig" name="PPSH_eCig">
+                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_eCig" name="PPSH_eCig" {{ old('PPSH_eCig') == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="PPSH_eCig" style="display: contents!important;">
                             E-Cigarette
                         </label>
@@ -640,7 +659,7 @@
                     </div>
                     <div class="form-check">
                         <input type="hidden" name="PPSH_vape" value="0">
-                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_vape" name="PPSH_vape">
+                        <input class="form-check-input" type="checkbox" value="1" id="PPSH_vape" name="PPSH_vape" {{ old('PPSH_vape') == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="PPSH_vape" style="display: contents!important;">
                             Vape
                         </label>
@@ -655,12 +674,15 @@
 
                 <div class="form-check mt-3">
                     <input type="hidden" name="PPSH_drinking" value="0">
-                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_drinking" name="PPSH_drinking">
+                    <input class="form-check-input" type="checkbox" value="1" id="PPSH_drinking" name="PPSH_drinking" {{ old('PPSH_drinking') == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="PPSH_drinking" style="display: contents!important;">
                             Liquor Consumption:
                             <br>
                             How often?
-                            <input type="text" class="form-control col-sm-10" id="PPSH_drinkingDetails" name="PPSH_drinkingDetails" disabled/>
+                            <input type="text" class="form-control col-sm-10 @error('PPSH_drinkingDetails') is-invalid @enderror" value="{{ old('PPSH_drinkingDetails') }}" id="PPSH_drinkingDetails" name="PPSH_drinkingDetails" oninput="this.value = this.value.toUpperCase()" {{ old('PPSH_drinking') == 1 ? '' : 'disabled' }}/>
+                            <div class="invalid-feedback">
+                                Please enter how often you drink liqour.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PPSH_drinkingDetails') 
                                   {{ $message }} 
@@ -676,14 +698,14 @@
                         $('#PPSH_smoking').change(function() {
                             $('#PPSH_smoking_amount').prop('disabled', !this.checked);
                             $('#PPSH_smoking_freq').prop('disabled', !this.checked);
+                            $('#PPSH_smoking_amount').prop('required', this.checked);
+                            $('#PPSH_smoking_freq').prop('required', this.checked);
                         });
                         
                         /* DRINKING */
                         $('#PPSH_drinking').change(function() {
-                            $('#PPSH_drinking_amountOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfBeer').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_amountofShots').prop('disabled', !this.checked);
-                            $('#PPSH_drinking_freqOfShots').prop('disabled', !this.checked);
+                            $('#PPSH_drinkingDetails').prop('disabled', !this.checked);
+                            $('#PPSH_drinkingDetails').prop('required', this.checked);
                         });
                     });
 
@@ -702,70 +724,70 @@
                         <div class="mx-auto row row-cols-xl-1 row-cols-md-2 row-cols-sm-2 mt-2 ">
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_hypertension" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hypertension">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hypertension" {{ old('PMC_hypertension') == 1 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="PMC_hypertension">
                                     Hypertension
                                 </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_asthma" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_asthma">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_asthma" {{ old('PMC_asthma') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_asthma">
                                         Asthma
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_diabetes" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_diabetes">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_diabetes" {{ old('PMC_diabetes') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_diabetes">
                                         Diabetes
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_arthritis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_arthritis">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_arthritis" {{ old('PMC_arthritis') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_arthritis">
                                         Arthritis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_chickenPox">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_chickenPox" {{ old('PMC_chickenPox') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_dengue" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_dengue">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_dengue" {{ old('PMC_dengue') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_dengue">
                                         Dengue
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_tuberculosis" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_tuberculosis">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_tuberculosis" {{ old('PMC_tuberculosis') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_tuberculosis">
                                         Tuberculosis
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_pneumonia" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_pneumonia">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_pneumonia" {{ old('PMC_pneumonia') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_pneumonia">
                                         Pneumonia
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_covid19" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_covid19">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_covid19" {{ old('PMC_covid19') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_covid19">
                                         Covid-19
                                     </label>
                             </div><!-- END OF CHECKBOX DIV -->
                             <div class="col mb-2">
                                 <input type="hidden" name="PMC_hivAids" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hivAids">
+                                <input class="form-check-input" type="checkbox" value="1" name="PMC_hivAids" {{ old('PMC_hivAids') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="PMC_hivAids">
                                         HIV/AIDS
                                     </label>
@@ -778,10 +800,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_hepatitis" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_hepatitis" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_hepatitis" style="margin-right: -10px;" {{ old('PMC_hepatitis') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Hepatitis: </span>
-                                <input type="text" class="form-control" id="PMC_hepatitisDetails" name="PMC_hepatitisDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_hepatitisDetails') is-invalid @enderror" id="PMC_hepatitisDetails" name="PMC_hepatitisDetails" value="{{ old('PMC_hepatitisDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_hepatitis') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_hepatitisDetails') 
@@ -793,10 +818,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_thyroidDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_thyroidDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_thyroidDisorder" style="margin-right: -10px;" {{ old('PMC_thyroidDisorder') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Thyroid Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_thyroidDisorderDetails" name="PMC_thyroidDisorderDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_thyroidDisorderDetails') is-invalid @enderror" id="PMC_thyroidDisorderDetails" name="PMC_thyroidDisorderDetails" value="{{ old('PMC_thyroidDisorderDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_thyroidDisorder') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_thyroidDisorderDetails') 
@@ -808,10 +836,14 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_eyeDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_eyeDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_eyeDisorder" style="margin-right: -10px;" {{ old('PMC_eyeDisorder') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Eye Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_eyeDisorderDetails" name="PMC_eyeDisorderDetails" disabled>                                </div>
+                                <input type="text" class="form-control @error('PMC_eyeDisorderDetails') is-invalid @enderror" id="PMC_eyeDisorderDetails" name="PMC_eyeDisorderDetails" value="{{ old('PMC_eyeDisorderDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_eyeDisorder') == 1 ? '' : 'disabled' }}>        
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
+                            </div>
                             <span class="text-danger"> 
                                 @error('PMC_eyeDisorderDetails') 
                                 {{  $message }} 
@@ -822,10 +854,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_mentalDisorder" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_mentalDisorder" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_mentalDisorder" style="margin-right: -10px;" {{ old('PMC_mentalDisorder') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Mental Disorder: </span>
-                                <input type="text" class="form-control" id="PMC_mentalDisorderDetails" name="PMC_mentalDisorderDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_mentalDisorderDetails') is-invalid @enderror" id="PMC_mentalDisorderDetails" name="PMC_mentalDisorderDetails" value="{{ old('PMC_mentalDisorderDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_mentalDisorder') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_mentalDisorderDetails') 
@@ -837,10 +872,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_gastroDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_gastroDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_gastroDisease" style="margin-right: -10px;" {{ old('PMC_gastroDisease') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Gastrointestinal Disease: </span>
-                                <input type="text" class="form-control" id="PMC_gastroDiseaseDetails" name="PMC_gastroDiseaseDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_gastroDiseaseDetails') is-invalid @enderror" id="PMC_gastroDiseaseDetails" name="PMC_gastroDiseaseDetails" value="{{ old('PMC_gastroDiseaseDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_gastroDisease') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_gastroDiseaseDetails') 
@@ -852,11 +890,14 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_kidneyDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_kidneyDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_kidneyDisease" style="margin-right: -10px;" {{ old('PMC_kidneyDisease') == 1 ? 'checked' : '' }}>
                                 </div>
                                  <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Kidney Disease: </span>
-                                 <input type="text" class="form-control" id="PMC_kidneyDiseaseDetails" name="PMC_kidneyDiseaseDetails" disabled>
+                                 <input type="text" class="form-control @error('PMC_kidneyDiseaseDetails') is-invalid @enderror" id="PMC_kidneyDiseaseDetails" name="PMC_kidneyDiseaseDetails" value="{{ old('PMC_kidneyDiseaseDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_kidneyDisease') == 1 ? '' : 'disabled' }}>
                              </div>
+                             <div class="invalid-feedback">
+                                Please enter some details.
+                            </div>
                              <span class="text-danger"> 
                                 @error('PMC_kidneyDiseaseDetails') 
                                 {{  $message }} 
@@ -869,10 +910,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_heartDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_heartDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_heartDisease" style="margin-right: -10px;" {{ old('PMC_heartDisease') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Heart Disease: </span>
-                                <input type="text" class="form-control" id="PMC_heartDiseaseDetails" name="PMC_heartDiseaseDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_heartDiseaseDetails') is-invalid @enderror" id="PMC_heartDiseaseDetails" name="PMC_heartDiseaseDetails" value="{{ old('PMC_heartDiseaseDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_heartDisease') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_heartDiseaseDetails') 
@@ -884,10 +928,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_skinDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_skinDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_skinDisease" style="margin-right: -10px;" {{ old('PMC_skinDisease') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Skin Disease: </span>
-                                <input type="text" class="form-control" id="PMC_skinDiseaseDetails" name="PMC_skinDiseaseDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_skinDiseaseDetails') is-invalid @enderror" id="PMC_skinDiseaseDetails" name="PMC_skinDiseaseDetails" value="{{ old('PMC_skinDiseaseDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_skinDisease') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_skinDiseaseDetails') 
@@ -899,10 +946,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_earDisease" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_earDisease" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_earDisease" style="margin-right: -10px;" {{ old('PMC_earDisease') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Ear Disease: </span>
-                                <input type="text" class="form-control" id="PMC_earDiseaseDetails" name="PMC_earDiseaseDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_earDiseaseDetails') is-invalid @enderror" id="PMC_earDiseaseDetails" name="PMC_earDiseaseDetails" value="{{ old('PMC_earDiseaseDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_earDisease') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_earDiseaseDetails') 
@@ -914,10 +964,13 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_cancer" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_cancer" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_cancer" style="margin-right: -10px;" {{ old('PMC_cancer') == 1 ? 'checked' : '' }}>
                                 </div>
                                 <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Cancer: </span>
-                                <input type="text" class="form-control" id="PMC_cancerDetails" name="PMC_cancerDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_cancerDetails') is-invalid @enderror" id="PMC_cancerDetails" name="PMC_cancerDetails" value="{{ old('PMC_cancerDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_cancer') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_cancerDetails') 
@@ -929,10 +982,13 @@
                             <div class="input-group mb-3">
                             <div class="input-group-text bg-light border-0">
                                     <input type="hidden" name="PMC_others" value="0">
-                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_others" style="margin-right: -10px;">
+                                    <input class="form-check-input mt-0" type="checkbox" value="1" name="PMC_others" style="margin-right: -10px;" {{ old('PMC_others') == 1 ? 'checked' : '' }}>
                                 </div>
                             <span class="input-group-text bg-light border-0" style="margin-left: -1px;">Others: </span>
-                                <input type="text" class="form-control" id="PMC_othersDetails" name="PMC_othersDetails" disabled>
+                                <input type="text" class="form-control @error('PMC_othersDetails') is-invalid @enderror" id="PMC_othersDetails" name="PMC_othersDetails" value="{{ old('PMC_othersDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('PMC_others') == 1 ? '' : 'disabled' }}>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter some details.
                             </div>
                             <span class="text-danger"> 
                                 @error('PMC_othersDetails') 
@@ -952,15 +1008,13 @@
                 <div class="d-flex flex-row">
                     <div class="col-sm">
                         <div class="form-check form-switch">
-                            <input class="form-check-input border-dark @error('hospitalization') is-invalid @enderror" type="checkbox" role="switch" name="hospitalization" id="hospitalization" value="0" {{ old('hospitalization') == '1' ? 'checked' : '' }} required/>
+                            <input type="hidden" name="hospitalization" value="0">
+                            <input class="form-check-input border-dark @error('hospitalization') is-invalid @enderror" type="checkbox" role="switch" name="hospitalization" id="hospitalization" value="1" {{ old('hospitalization') == '1' ? 'checked' : '' }}/>
                             <label class="form-check-label fw-bold" for="hospitalization">
                                 Do you have history of hospitalization for serious illness, operation, fracture or injury?
                             </label>
                         </div><!-- END OF YES DIV -->
-                        <div class="invalid-feedback">
-                            Please select one.
-                        </div>
-                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" disabled/>
+                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('hospitalization') == 1 ? '' : 'disabled' }}/>
                         <div class="invalid-feedback">
                             Please enter the details of your hospitalization for serious illness, operation, fracture or injury.
                         </div>
@@ -974,11 +1028,9 @@
                                 $(document).ready(function() {
                                     $('#hospitalization').change(function() {
                                         if ($('#hospitalization').is(':checked')) {
-                                            $('#hospitalization').val(1);
                                             $('#hospitalizationDetails').prop('disabled', false);
                                             $('#hospitalizationDetails').prop('required', true);
                                         } else {
-                                            $('#hospitalization').val(0);
                                             $('#hospitalizationDetails').prop('disabled', true);
                                             $('#hospitalizationDetails').prop('required', false);
                                         }
@@ -993,15 +1045,13 @@
                 <div class="d-flex flex-row pt-2">
                     <div class="col-sm">
                         <div class="form-check form-switch">
-                           <input class="form-check-input border-dark @error('regMeds') is-invalid @enderror" type="checkbox" role="switch" name="regMeds" id="regMeds" value="0" {{ old('regMeds') == '1' ? 'checked' : '' }} required/>
-                           <label class="form-check-label fw-bold" for="regMeds">
-                                Are you taking any medicine regularly?
-                           </label>
+                            <input type="hidden" name="regMeds" value="0">
+                            <input class="form-check-input border-dark @error('regMeds') is-invalid @enderror" type="checkbox" role="switch" name="regMeds" id="regMeds" value="1" {{ old('regMeds') == '1' ? 'checked' : '' }}/>
+                            <label class="form-check-label fw-bold" for="regMeds">
+                                    Are you taking any medicine regularly?
+                            </label>
                         </div><!-- END OF YES DIV -->
-                        <div class="invalid-feedback">
-                            Please select one.
-                        </div>
-                        <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" disabled/>
+                        <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('regMeds') == 1 ? '' : 'disabled' }}/>
                         <div class="invalid-feedback">
                             Please enter the details of the medicine/s you regularly take.
                         </div>
@@ -1015,11 +1065,9 @@
                                $(document).ready(function() {
                                    $('#regMeds').change(function() {
                                        if ($('#regMeds').is(':checked')) {
-                                            $('#regMeds').val(1);
                                             $('#regMedsDetails').prop('disabled', false);
                                             $('#regMedsDetails').prop('required', true);
                                        } else {
-                                            $('#regMeds').val(0);
                                             $('#regMedsDetails').prop('disabled', true);
                                             $('#regMedsDetails').prop('required', false);
                                        }
@@ -1034,15 +1082,13 @@
             <div class="d-flex flex-row pt-2">
                 <div class="col-sm" required>
                     <div class="form-check form-switch">
-                       <input class="form-check-input border-dark @error('allergy') is-invalid @enderror" type="checkbox" role="switch" name="allergy" id="allergy" value="0" {{ old('allergy') == '1' ? 'checked' : '' }} required/>
-                       <label class="form-check-label fw-bold" for="allergy">
+                        <input type="hidden" name="allergy" value="0">
+                        <input class="form-check-input border-dark @error('allergy') is-invalid @enderror" type="checkbox" role="switch" name="allergy" id="allergy" value="1" {{ old('allergy') == '1' ? 'checked' : '' }}/>
+                        <label class="form-check-label fw-bold" for="allergy">
                             Are you allergic to any food or medicine?
-                       </label>
+                        </label>
                     </div><!-- END OF YES DIV -->                    
-                    <div class="invalid-feedback">
-                        Please select one.
-                    </div>
-                    <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" disabled/>
+                    <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" oninput="this.value = this.value.toUpperCase()" {{ old('allergy') == 1 ? '' : 'disabled' }}/>
                     <div class="invalid-feedback">
                         Please enter the details of the food and/or medicine that you are alergic to.
                     </div>
@@ -1056,11 +1102,9 @@
                            $(document).ready(function() {
                                $('#allergy').change(function() {
                                    if ($('#allergy').is(':checked')) {
-                                        $('#allergy').val(0);
                                         $('#allergyDetails').prop('disabled', false);
                                         $('#allergyDetails').prop('required', true);
                                    } else {
-                                        $('#allergy').val(0);
                                         $('#allergyDetails').prop('disabled', true);
                                         $('#allergyDetails').prop('required', false);
                                    }
@@ -1083,49 +1127,55 @@
                             <div class="col-sm-4 p-2">
                                 <input type="hidden" name="IH_bcg" value="0">
                                 <input class="form-check-input" type="checkbox" value="1" name="IH_bcg">
-                                    <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin">
+                                    <label class="form-check-label" for="IH_bcg" data-toggle="tooltip" data-placement="top" title="Bacille Calmette-Guerin" {{ old('IH_bcg') == 1 ? 'checked' : '' }}>
                                         BCG
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
                                 <input type="hidden" name="IH_polio" value="0">
-                                <input class="form-check-input" type="checkbox" value="1"name="IH_polio">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_polio" {{ old('IH_polio') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="IH_polio">
                                         Polio I, II, II, Booster Dose
                                     </label>
                             </div>
                             <div class="col-sm-4 p-2">
                                 <input type="hidden" name="IH_chickenPox" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_chickenPox" {{ old('IH_chickenPox') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="IH_chickenPox">
                                         Chicken Pox
                                     </label>
                             </div>
                             <div class="col-sm-8 p-2">
                                 <input type="hidden" name="IH_dpt" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" name="IH_dpt">
+                                <input class="form-check-input" type="checkbox" value="1" name="IH_dpt" {{ old('IH_dpt') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="IH_dpt">
                                         DPT I, II, III, Booster Dose
                                     </label>
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-sm-1 align-items-center">
-                            <div class="col-sm-12 p-2">
+                            <div class="col-sm-12 d-flex align-items-center p-2">
                                 <input type="hidden" name="IH_covidVacc" value="0">
-                                <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_covidVacc" name="IH_covidVacc">
-                                    <label class="form-check-label" for="IH_covidVacc">
+                                <input class="form-check-input mb-1" style="margin-top:6px;" type="checkbox" value="1" id="IH_covidVacc" name="IH_covidVacc" {{ old('IH_covidVacc') == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label mx-1" for="IH_covidVacc">
                                         Covid-19 Vaccine I, II
                                     </label>
-                                    <input type="text" class="col-sm-2" id="IH_covidVaccName" name="IH_covidVaccName" disabled>
-                                    <span class="text-danger"> 
-                                        @error('IH_covidVaccName') 
-                                        {{  $message }} 
-                                        @enderror
-                                    </span>
-                                    <label class="form-check-label" for="IH_dpt">
-                                        Booster I, II
-                                    </label>
-                                    <input type="text" class="col-sm-2" id="IH_covidBooster" name="IH_covidBooster" disabled>
+                                        <input type="text" class="form-control @error('IH_covidVaccName') is-invalid @enderror" style="width: 20%;" id="IH_covidVaccName" name="IH_covidVaccName" value="{{ old('IH_covidVaccName') }}" oninput="this.value = this.value.toUpperCase()" {{ old('IH_covidVacc') == 1 ? '' : 'disabled' }}>
+                                        <div class="invalid-feedback">
+                                            Please enter the name of your covid vaccine.
+                                        </div>
+                                        <span class="text-danger"> 
+                                            @error('IH_covidVaccName') 
+                                            {{  $message }} 
+                                            @enderror
+                                        </span>
+                                        <label class="form-check-label mx-1" for="IH_dpt">
+                                            Booster I, II
+                                        </label>
+                                        <input type="text" class="form-control @error('IH_covidBoosterName') is-invalid @enderror" style="width: 20%;" id="IH_covidBoosterName" name="IH_covidBoosterName" value="{{ old('IH_covidBoosterName') }}" oninput="this.value = this.value.toUpperCase()" {{ old('IH_covidVacc') == 1 ? '' : 'disabled' }}>
+                                        <div class="invalid-feedback">
+                                            Please enter the name of your booster.
+                                        </div>
                                         <span class="text-danger"> 
                                             @error('IH_covidBoosterName') 
                                             {{  $message }} 
@@ -1135,7 +1185,9 @@
                                             $(document).ready(function() {
                                                 $('#IH_covidVacc').change(function() {
                                                     $('#IH_covidVaccName').prop('disabled', !this.checked);
-                                                    $('#IH_covidBooster').prop('disabled', !this.checked);
+                                                    $('#IH_covidBoosterName').prop('disabled', !this.checked);
+                                                    $('#IH_covidVaccName').prop('required', this.checked);
+                                                    $('#IH_covidBoosterName').prop('required', this.checked);
                                                 });
                                             });
                                         </script>
@@ -1147,63 +1199,63 @@
                         <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-sm-3 align-items-center">
                                 <div class="col-4 p-2">
                                     <input type="hidden" name="IH_typhoid" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_typhoid">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_typhoid" {{ old('IH_typhoid') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_typhoid">
                                             Typhoid
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_mumps" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_mumps">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_mumps" {{ old('IH_mumps') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_mumps">
                                             Mumps
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_hepatitisA" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisA">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisA" {{ old('IH_hepatitisA') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_hepatitisA">
                                             Hepatitis A
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
                                     <input type="hidden" name="IH_measles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_measles">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_measles" {{ old('IH_measles') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_measles">
                                             Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_germanMeasles" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_germanMeasles" {{ old('IH_germanMeasles') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_germanMeasles">
                                             German Measles
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_hepatitisB" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hepatitisB" {{ old('IH_hepatitisB') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_hepatitisB">
                                             Hepatitis B
                                         </label>
                                 </div>
                                 <div class="col-4 p-2">
                                     <input type="hidden" name="IH_pneumococcal" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_pneumococcal">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_pneumococcal" {{ old('IH_pneumococcal') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_pneumococcal">
                                             Pneumococcal
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_influenza" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_influenza">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_influenza" {{ old('IH_influenza') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_influenza">
                                             Influenza
                                         </label>
                                 </div>
                                 <div class="col-4 ps-lg-3 p-2">
                                     <input type="hidden" name="IH_hpv" value="0">
-                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hpv">
+                                    <input class="form-check-input" type="checkbox" value="1" name="IH_hpv" {{ old('IH_hpv') == 1 ? 'checked' : '' }}>
                                         <label class="form-check-label" for="IH_hpv">
                                             HPV
                                         </label>
@@ -1212,13 +1264,16 @@
                     </div>
                 </div>
                 <div class="my-auto pt-2 row row-cols-1 align-items-center" style="margin-left: 5%;">
-                    <div class="col-sm-12 p-2">
+                    <div class="form-group align-items-center col-sm-12 d-flex p-2">
                         <input type="hidden" name="IH_others" value="0">
-                        <input class="form-check-input" style="margin-top:6px;" type="checkbox" value="1" id="IH_others" name="IH_others">
-                            <label class="form-check-label" for="IH_others">
+                        <input class="form-check-input mb-1" type="checkbox" value="1" id="IH_others" name="IH_others" {{ old('IH_others') == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label mx-1" for="IH_others">
                                 Others
                             </label>
-                        <input type="text" class="col-sm-10" id="IH_othersDetails" name="IH_othersDetails" disabled>
+                        <input type="text" class="form-control @error('IH_othersDetails') is-invalid @enderror" value="{{ old('IH_othersDetails') }}" style="width: 90%;" id="IH_othersDetails" name="IH_othersDetails" {{ old('IH_others') == 1 ? '' : 'disabled' }}>
+                        <div class="invalid-feedback">
+                            Please enter the details of your other immunization/s.
+                        </div>
                         <span class="text-danger"> 
                             @error('IH_othersDetails') 
                             {{ $message }} 
@@ -1227,7 +1282,8 @@
                     </div>
                     <script>
                         document.getElementById('IH_others').onchange = function() {
-                        document.getElementById('IH_othersDetails').disabled = !this.checked;
+                            document.getElementById('IH_othersDetails').disabled = !this.checked;
+                            document.getElementById('IH_othersDetails').required = this.checked;
                         };
                     </script>
                 </div>
@@ -1241,20 +1297,32 @@
             <div class="flex justify-content-center">
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center" >
-                        <label for="MRP_chestXray" class="form-label fw-bold">Chest X-Ray Findings</label>
+                        <label for="MRP_chestXray" class="form-label fw-bold @error('MRP_chestXray') is-invalid @enderror">Chest X-Ray Findings<span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="MRP_chestXray" name="MRP_chestXray" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_cbcresults" class="form-label fw-bold">CBC Results</label>
+                        <label for="MRP_cbcresults" class="form-label fw-bold @error('MRP_cbcresults') is-invalid @enderror">CBC Results<span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="MRP_cbcresults" name="MRP_cbcresults" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                       </div>                      
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_hepaBscreening" class="form-label fw-bold">Hepatitis B Screening</label>
+                        <label for="MRP_hepaBscreening" class="form-label fw-bold @error('MRP_hepaBscreening') is-invalid @enderror">Hepatitis B Screening<span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="MRP_hepaBscreening" name="MRP_hepaBscreening" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
-                        <label for="MRP_bloodtype" class="form-label fw-bold">Blood Type</label>
+                        <label for="MRP_bloodtype" class="form-label fw-bold @error('MRP_bloodtype') is-invalid @enderror">Blood Type<span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="MRP_bloodtype" name="MRP_bloodtype" accept="image/jpeg, image/png" required>
+                        <div class="invalid-feedback">
+                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                        </div>
                     </div>
                 </div>
                     <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
@@ -1284,8 +1352,14 @@
                                             </label>
                                             <button type="button" class="btn btn-sm btn-light ms-5" style="margin-bottom: 5px; "margin-left: 200px;" onclick="removeResult('${nextResultId}')">&times;</button>
                                         </div>
-                                        <input type="text" class="form-control my-1" id="MRP_additionalResult${nextResultId}" name="MRP_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG">
-                                        <input type="file" class="form-control my-1" id="MRP_additionalUpload${nextResultId}" name="MRP_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
+                                        <input type="text" class="form-control my-1 @error('MRP_additionalResult${nextResultId}') is-invalid @enderror" id="MRP_additionalResult${nextResultId}" name="MRP_additionalResult${nextResultId}" placeholder="e.g. Urinalisys, Diabetes, ECG" oninput="this.value = this.value.toUpperCase()" required>
+                                        <div class="invalid-feedback">
+                                            Please enter the name of your additional results and findings.
+                                        </div>
+                                        <input type="file" class="form-control my-1 @error('MRP_additionalUpload${nextResultId}') is-invalid @enderror" id="MRP_additionalUpload${nextResultId}" name="MRP_additionalUpload${nextResultId}" accept="image/jpeg, image/png" required>
+                                        <div class="invalid-feedback">
+                                            Please select a valid image(.jpeg, .jpg, .png) with maximum size of 5mb.
+                                        </div>
                                     `;
                                     container.appendChild(resultDiv);
                                     currentResults++;
@@ -1317,6 +1391,7 @@
             <button type="button" id="addResultButton" class="btn btn-primary" onclick="addResult()">Add Result</button>
         </div>
     </div>
+    <input type="hidden" name="certify" id="certify" value="0">
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
             <button type="submit" class="btn btn-lg btn-primary btn-login fw-bold mb-2" id="submitButton">
@@ -1333,8 +1408,8 @@
                     $('#passwordInput').removeClass('is-invalid');
                     $('#radioCertify').removeClass('is-invalid');
                     var a = '';
-                    var b = $('#MR_form')[0].checkValidity();
-                    if ($('#MR_form')[0].checkValidity()) {
+                    var b = $('#MRP_form')[0].checkValidity();
+                    if ($('#MRP_form')[0].checkValidity()) {
                         event.preventDefault();
                         $('#radioCertify').prop('checked', false);
                         $('#radioCertify').val('0');
@@ -1352,7 +1427,7 @@
                         });
                     } else {
                         // If not all required fields are filled, focus on the first one
-                        $('#MR_form :input[required]:visible').each(function() {
+                        $('#MRP_form :input[required]:visible').each(function() {
                             if ($(this).val() == '') {
                                 $(this).focus();
                                 a = this;
@@ -1362,8 +1437,6 @@
                             }
                         });
                     }
-                    console.log(a);
-                    console.log(b);
                 });
             });
         </script>
@@ -1384,13 +1457,16 @@
                         <hr>
                         <div class="input-group ms-3">
                             <div class="input-group-text bg-white border-0">
-                                <input class="form-check-input" type="radio" name="radioCertify" id="radioCertify" value="0"/>
+                                <input class="form-check-input @error('radioCertify') is-invalid @enderror" type="radio" name="radioCertify" id="radioCertify" value="0"/>
                             </div>
-                            <label for="certify" class="fs-5 text-center mt-1">
-                                I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.
+                            <label for="radioCertify" class="fs-5 text-center mt-1">
+                                I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.<span class="text-danger">*</span>
                             </label>
+                            <div class="invalid-feedback">
+                                Please tick the button, certifying that your foregoing answers are true and complete, and to the best of your knowledge.
+                            </div>
                             <span class="text-danger" id="certifySpan"> 
-                                @error('certify') 
+                                @error('radioCertify') 
                                   {{ $message }} 
                                 @enderror
                             </span>
@@ -1399,8 +1475,8 @@
                     <div class="modal-footer align-items-center mb-3">
                         <div class="d-flex align-items-center my-auto mx-auto">
                             <div class="input-group">
-                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password:</label>
-                                <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                                <label for="passwordInput" class="form-label h6 mt-2 me-2">Password<span class="text-danger">*</span>:</label>
+                                <input type="password" class="form-control @error('passwordInput') is-invalid @enderror" id="passwordInput" name="passwordInput">
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                     <div style="margin-top: -5px;">
                                         <span class="bi bi-eye-fill" aria-hidden="true"></span>
@@ -1450,7 +1526,7 @@
         (() => {
             'use strict'
 
-            // Fetch all the forms to apply validation styles to
+            // Fetch all forms to apply validation styles to
             const forms = document.querySelectorAll('.needs-validation')
 
             // Loop and prevent submission
@@ -1471,32 +1547,65 @@
                 }, false)
             })
         })()
-    </script>
-    <!-- AJAX to prevent refresh 
-    <script>
-        document.getElementById('myForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // prevent default form submission behavior
-            const password = document.getElementById('passwordInput').value;
-            const url = '/check-password'; // replace with the URL that checks the password
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        // password is correct, submit the form
-                        document.getElementById('myForm').submit();
-                    } else {
-                        // password is incorrect, display an error message
-                        alert('Incorrect password');
-                    }
-                }
-            };
-            xhr.send(JSON.stringify({ password }));
-        });
 
-    </script>-->
+        document.getElementById("radioCertify").addEventListener("change", function() {
+            if (this.checked) {
+                this.value = 1;
+                document.getElementById('certify').value = 1;
+            }
+        });
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('#medFormSubmitButton').on('click', function(event) {
+                event.preventDefault(); // prevent default form submission behavior
+                let certify = $('#radioCertify').val();
+                
+                $('#certifySpan').text('');
+                $('#radioCertify').removeClass('is-invalid');
+
+                if(certify != 1){
+                    $('#radioCertify').addClass('is-invalid');
+                    $('#certifySpan').text('Please certify that the foregoing answers are true and complete.');
+                    return false;
+                }
+                // If student is an old student (has student id number)
+                let password = $('#passwordInput').val();
+                $('#passwordSpan').text('');
+                $('#passwordInput').removeClass('is-invalid');
+                if(password == ""){
+                    $('#passwordInput').addClass('is-invalid');
+                    $('#passwordSpan').text('Please provide your password');
+                    return false;
+                }
+                $.ajax({
+                    url: '/medical-record-check-auth',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        password: password
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.success) {
+                            // password is correct, submit the form
+                            $('#MRP_form').submit();
+                        } else {
+                            // password is incorrect, display an error message
+                            $('#passwordInput').addClass('is-invalid');
+                            $('#passwordSpan').text('Incorrect password');
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
     
 </form>
 @endsection

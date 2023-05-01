@@ -154,17 +154,14 @@
                 display: none;
             }
         }
-    
         a.inactive {
             color: #007bff;
             transition: color 0.3s ease;
         }
-    
         a.inactive:hover{
             color: #f1731f;
         }
-        
-        a.nav-link.active {
+                a.nav-link.active {
             color: #f1731f !important;
             border-bottom: 2px solid #f1731f;
         }   
@@ -175,7 +172,6 @@
             position: relative;
             top: -4px; /* adjust the value as needed */
         }
-
         .pillars-bg{
             background-repeat: no-repeat; 
             background-size:100%;
@@ -218,17 +214,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                       </div>
                     <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
-                        <li class="nav-item pe-1">
+                        <li class="nav-item">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'home' ? 'active' : 'inactive' }}" href="{{ route('home') }}">HOME</a>
                         </li>
-                        <li class="nav-item pe-1">
+                        <li class="nav-item">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="{{ route('setAppointment.show') }}">SET APPOINTMENT</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'personnel.medicalForm.show' ? 'active' : 'inactive' }}" href="{{ route('personnel.medicalForm.show') }}">SUBMIT MEDICAL RECORD</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'personnel.medicalForm.show' ? 'active' : 'inactive' }}" href="{{ route('personnel.medicalForm.show') }}" style="{{ Auth::guard('employee')->user()->hasMedRecord == 1 ? 'display: none;' : '' }}">SUBMIT MEDICAL RECORD</a>
                         </li>
                         <li class="pt-2 mt-1">
-                            <div class="vr pt-4 pe-1"></div>
+                            <div class="vr pt-4"></div>
+                            <div class="vr pt-4"></div>
+                            <div class="vr pt-4"></div>
                         </li>
                         <li class="nav-item dropdown">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-row">

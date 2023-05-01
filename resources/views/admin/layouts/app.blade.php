@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap-print.min.css') }}" media="print">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link href="{{ asset('css/lightbox.min.css') }}" rel="stylesheet" />
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
@@ -31,11 +32,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    
-    <!--style-->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/design.css') }}">
-    @vite(['resources/sass/app.scss'])
+    <script src="{{ asset('js/lightbox.min.js') }}"></script>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true
+        })
+    </script>
     <!--style-->
     @vite(['resources/sass/app.scss'])
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -60,7 +63,18 @@
             -webkit-appearance: none;
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
         }
-
+        .dropdown-toggle{
+            color: #f1731f !important;
+        }
+        div.divForResults{
+            width:500px;
+            height:500px;
+            overflow:hidden;
+        }
+        div.divForResults img {
+            max-width: 100%;
+            max-height: 100%;
+        }
         input[type=number] {
             -moz-appearance:textfield; /* Firefox */
         }
@@ -243,7 +257,7 @@
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.home' ? 'active' : 'inactive' }}" href="{{ route('admin.home') }}">HOME</a>
                         </li>
                         <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'setAppointment.show' ? 'active' : 'inactive' }}" href="{{ route('admin.ClinicSideAppointments') }}">SET APPOINTMENT</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.appointments.show' ? 'active' : 'inactive' }}" href="{{ route('admin.appointments.show') }}">APPOINTMENTS</a>
                         </li>
                         <li class="nav-item mr-4">
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : (Route::currentRouteName() === 'admin.patientMedForm.show' ? 'active' : 'inactive') }}" href="{{ route('admin.patientMedFormList.show') }}">HEALTH RECORDS</a>
@@ -253,17 +267,19 @@
                         </li>
                         <li class="pt-2 mt-1">
                             <div class="vr pt-4"></div>
+                            <div class="vr pt-4"></div>
+                            <div class="vr pt-4"></div>
                         </li>
                         <li class="nav-item dropdown">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-row">
                                 <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle fs-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap; color: #007bff;">
-                                            {{ Auth::guard('admin')->user()->first_name }}
-                                            <i class="bi bi-clipboard-plus-fill" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="BU-Care Staff"></i>
-                                        </a>
+                                    <a class="nav-link dropdown-toggle fs-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap; color: #007bff;">
+                                        {{ Auth::guard('admin')->user()->first_name }}
+                                        <i class="bi bi-clipboard-plus-fill" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="BU-Care Staff"></i>
+                                    </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="#">Profile</a>
+                                        <a class="dropdown-item" href="#">Admin Dashboard</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">Appointments</a>

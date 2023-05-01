@@ -33,16 +33,6 @@ class AppointmentsController extends Controller
             // if the entries is empty, don't pass any data 
             return response()->json([]);
         }
-        // Count the appointment entries for each day
-        $counts = [];
-        foreach ($entries as $entry) {
-            $entryDate = $entry->appointmentDate;
-            if (isset($counts[$entryDate])) {
-                $counts[$entryDate]++;
-            } else {
-                $counts[$entryDate] = 1;
-            }
-        }
         if(Auth::user()){
             $user = Auth::user();
             $user_type = 'student_id';
@@ -117,7 +107,7 @@ class AppointmentsController extends Controller
 */
 
     public function appointmentStore(Request $request) {
-        if(Auth::user()->student_id_number){
+        if(Auth::guard('employee')->user() || Auth::user()->student_id_number){
             $request->validate([
                 'appointmentDate' => 'required',
                 'appointmentTime' => 'required',
@@ -453,7 +443,7 @@ class AppointmentsController extends Controller
     }
 
 
-    public function ClinicSideAppointments()
+    public function showAdminAppointments()
     {
             $dateToday = date('Y-m-d');
         
@@ -515,8 +505,11 @@ class AppointmentsController extends Controller
                 $patient = UserPersonnel::where('personnel_id_number', $request->input('patientID'))->first();
             }
             catch(ModelNotFoundException $e){
-                return redirect()->back()->with('fail', 'personne;l ID Number '.$request->input('patientID').' not found.');
+                return redirect()->back()->with('fail', 'Personnel ID Number '.$request->input('patientID').' not found.');
             }
+        }
+        else{
+            return redirect()->back()->with('fail', 'Personnel ID Number '.$request->input('patientID').' not found.');
         }
 
         $appointClinicSide->patientID = $patient->id;

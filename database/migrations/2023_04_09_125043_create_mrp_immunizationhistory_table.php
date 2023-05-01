@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('dpt');
             $table->boolean('covidVacc');
             $table->string('covidVaccName', 50);
-            $table->boolean('covidBooster');
             $table->string('covidBoosterName', 50);
             $table->boolean('typhoid');
             $table->boolean('mumps');
