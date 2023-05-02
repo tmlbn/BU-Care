@@ -107,7 +107,7 @@
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 <form method="POST" action="{{ route('medicalForm.store') }}" id="MR_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4 needs-validation" novalidate>
     @csrf
     <div class="container">
@@ -313,8 +313,8 @@
             </span>
         </div>
         <div class="col-md-4">
-            <label for="MR_dateOfBirth" class="form-label h6 @error('MR_dateOfBirth') is-invalid @enderror">Date of Birth<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
+            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_dateOfBirth') is-invalid @enderror" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
             <div class="invalid-feedback">
                 Please enter your date of birth.
             </div>
@@ -462,7 +462,7 @@
         </div>
         <div class="col-md-6">
             <label for="MR_parentGuardianContactNumber" class="form-label h6 @error('MR_parentGuardianContactNumber') is-invalid @enderror">Parent's/Guardian's Contact No.<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" maxlength="11" name="MR_parentGuardianContactNumber" required>
+            <input type="number" class="form-control" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" onKeyPress="if(this.value.length==11) return false;" name="MR_parentGuardianContactNumber" required>
             <div class="invalid-feedback">
                 Please enter your parent's or guardian's contact number.
             </div>
@@ -486,7 +486,7 @@
         </div>
         <div class="col-md-6">
             <label for="MR_studentContactNumber" class="form-label h6 @error('MR_studentContactNumber') is-invalid @enderror">Student's Contact No.<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" maxlength="11" required>
+            <input type="number" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback" id="studentContactFeedback">
                 Please enter your contact number.
             </div>
@@ -592,7 +592,7 @@
         </div>
         <div class="col-md-6">
             <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" maxlength="11" required>
+            <input type="number" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback">
                 Please enter the contact number of your emergency contact person.
             </div>

@@ -77,6 +77,15 @@
 
 </style>
 <!-- Header -->
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 <div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes d-print-inline-block">
     @if($patient->hasValidatedRecord)
           <!-- HAS VALIDATED MEDICAL RECORD -->
@@ -124,7 +133,7 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-2 d-print-inline-block">
+<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-2 d-print-inline-block needs-validation" novalidate>
     @csrf     
     <div class="container d-print-inline-block">
         <input type="hidden" class="form-control" id="studentID" name="studentID" value="{{ $patient->id }}">
@@ -268,23 +277,23 @@
         </section>
         <div class="col-md-6">
             <p class="h6 me-2">In case of emergency, contact:</p>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactName" value="{{ $patient->medicalRecord->emergencyContactName }}" name="MR_emergencyContactName" required>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactName" value="{{ $patient->medicalRecord->emergencyContactName }}" name="MR_emergencyContactName" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_emergencyContactOccupation" class="form-label h6">Occupation</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactOccupation" value="{{ $patient->medicalRecord->emergencyContactOccupation }}" name="MR_emergencyContactOccupation" required>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactOccupation" value="{{ $patient->medicalRecord->emergencyContactOccupation }}" name="MR_emergencyContactOccupation" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_emergencyContactRelationship" class="form-label h6">Relationship</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactRelationship" value="{{ $patient->medicalRecord->emergencyContactRelationship }}" name="MR_emergencyContactRelationship" required>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactRelationship" value="{{ $patient->medicalRecord->emergencyContactRelationship }}" name="MR_emergencyContactRelationship" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_emergencyContactNumber" class="form-label h6">Contact Number</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactNumber" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" name="MR_emergencyContactNumber" required>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactNumber" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" name="MR_emergencyContactNumber" readonly>
         </div>
         <div class="col-md-12">
             <label for="MR_emergencyContactAddress" class="form-label h6">Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactAddress" value="{{ $patient->medicalRecord->emergencyContactAddress }}" name="MR_emergencyContactAddress" required>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactAddress" value="{{ $patient->medicalRecord->emergencyContactAddress }}" name="MR_emergencyContactAddress" readonly>
         </div>
         
         
@@ -328,7 +337,7 @@
                                 </label>
                         </div><!-- END OF CHECKBOX DIV -->
                         <div class="form-check">
-                            <input type="hidden" name="FH_tuberculosis" value="0">
+                            <input type="hidden" name="FH_tuberculosis" value="others">
                             <input class="form-check-input" type="checkbox" name="FH_tuberculosis" {{ $patient->medicalRecord->familyHistory->tuberculosis == 1 ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
                                 <label class="form-check-label" for="FH_tuberculosis">
                                     Tuberculosis
@@ -688,29 +697,12 @@
             <div class="col-md-12 p-2 border border-dark">  
                 <div class="d-flex flex-row">
                     <div class="col-sm">
-                     Do you have history of hospitalization for serious illness, operation, fracture or injury?
-                        (<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_YES" onclick="return false;"/>
-                            <label class="form-check-label" for="hospitalization_YES" style="margin-right: -15px; margin-left:-5px">
-                            yes
+                        <div class="form-check form-switch">
+                            <input class="form-check-input border-dark @error('hospitalization') is-invalid @enderror" type="checkbox" role="switch" name="hospitalization" id="hospitalization" value="1" {{ $patient->medicalRecord->hospitalization == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                            <label class="form-check-label fw-bold" for="hospitalization">
+                                Do you have history of hospitalization for serious illness, operation, fracture or injury?<span class="text-danger">*</span>
                             </label>
                         </div><!-- END OF YES DIV -->
-                        &nbsp;
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="hospitalization" id="hospitalization_NO" onclick="return false;"/>
-                            <label class="form-check-label" for="hospitalization_NO" style="margin-right: -15px; margin-left:-5px">
-                            no
-                            </label>
-                            <!-- SCRIPT TO SHOW IF YES OR NO -->
-                            <script>
-                                if ({{ $patient->medicalRecord->hospitalization }} == 1) {
-                                    document.getElementById("hospitalization_YES").checked = true;
-                                } else {
-                                    document.getElementById("hospitalization_NO").checked = true;
-                                }
-                            </script>
-                        </div>)<!-- END OF NO DIV -->
-                        If yes, please give details:
                         <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="hospitalizationDetails" name="hospitalizationDetails" value="{{ $patient->medicalRecord->hospDetails }}" {{ $patient->medicalRecord->hospDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                     </div><!-- END OF COL DIV -->
                 </div><!-- END OF ROW DIV -->
@@ -718,61 +710,25 @@
                 <!-- REGULAR MEDICINES -->
                 <div class="d-flex flex-row pt-2">
                     <div class="col-sm">
-                        Are you taking any medicine regularly?
-                           (<div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_YES" onclick="return false;"/>
-                               <label class="form-check-label" for="regMeds_YES" style="margin-right: -15px; margin-left:-5px">
-                               yes
-                               </label>
-                           </div><!-- END OF YES DIV -->
-                           &nbsp;
-                           <div class="form-check form-check-inline">
-                               <input class="form-check-input" type="radio" name="regMeds" id="regMeds_NO" onclick="return false;"/>
-                               <label class="form-check-label" for="regMeds_NO" style="margin-right: -15px; margin-left:-5px">
-                               no
-                               </label>
-                           </div>)<!-- END OF NO DIV -->
-                           If yes, name of drug/s:
-                           <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="regMedsDetails" name="regMedsDetails"  value="{{ $patient->medicalRecord->medsDetails }}" {{ $patient->medicalRecord->medsDetails == 'N/A' ? 'disabled' : 'readonly' }}>
-                               <!-- SCRIPT TO SHOW IF YES OR NO -->
-                               <script>
-                                if ({{ $patient->medicalRecord->takingMedsRegularly }} == 1) {
-                                    document.getElementById("regMeds_YES").checked = true;
-                                } else {
-                                    document.getElementById("regMeds_NO").checked = true;
-                                }
-                            </script>
-                               <!-- END OF SCRIPT --> 
+                        <div class="form-check form-switch">
+                            <input class="form-check-input border-dark @error('regMeds') is-invalid @enderror" type="checkbox" role="switch" name="regMeds" id="regMeds" value="1" {{ old('takingMedsRegularly') == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                            <label class="form-check-label fw-bold" for="regMeds">
+                                    Are you taking any medicine regularly?<span class="text-danger">*</span>
+                            </label>
+                        </div><!-- END OF YES DIV -->
+                        <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="regMedsDetails" name="regMedsDetails" value="{{ $patient->medicalRecord->medsDetails }}" {{ $patient->medicalRecord->medsDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                        </div><!-- END OF COL DIV -->
                    </div><!-- END OF ROW DIV -->
 
                    <!-- ALLERGIES -->
                    <div class="col-sm">
-                    Are you allergic to any food or medicine?
-                       (<div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="allergy" id="allergy_YES" onclick="return false;"/>
-                           <label class="form-check-label" for="allergy_YES" style="margin-right: -15px; margin-left:-5px">
-                           yes
-                           </label>
-                       </div><!-- END OF YES DIV -->
-                       &nbsp;
-                       <div class="form-check form-check-inline">
-                           <input class="form-check-input" type="radio" name="allergy" id="allergy_NO" onclick="return false;"/>
-                           <label class="form-check-label" for="allergy_NO" style="margin-right: -15px; margin-left:-5px">
-                           no
-                           </label>
-                       </div>)<!-- END OF NO DIV -->
-                       If yes, specify:
-                       <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="allergyDetails" name="allergyDetails" value="{{ $patient->medicalRecord->allergyDetails }}" {{ $patient->medicalRecord->allergyDetails == 'N/A' ? 'disabled' : 'readonly' }}>
-                        <!-- SCRIPT TO SHOW IF YES OR NO -->
-                        <script>
-                            if ({{ $patient->medicalRecord->allergic }} == 1) {
-                                document.getElementById("allergy_YES").checked = true;
-                            } else {
-                                document.getElementById("allergy_NO").checked = true;
-                            }
-                            </script>
-                           <!-- END OF SCRIPT --> 
+                    <div class="form-check form-switch">
+                        <input class="form-check-input border-dark @error('allergy') is-invalid @enderror" type="checkbox" role="switch" name="allergy" id="allergy" value="1" {{ old('allergic') == '1' ? 'checked' : '' }} onclick="this.checked=!this.checked;"/>
+                        <label class="form-check-label fw-bold" for="allergy">
+                                Are you allergic to any food or medicine?<span class="text-danger">*</span>
+                        </label>
+                    </div><!-- END OF YES DIV -->     
+                    <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold input-sm" id="allergyDetails" name="allergyDetails" value="{{ $patient->medicalRecord->allergyDetails }}" {{ $patient->medicalRecord->allergyDetails == 'N/A' ? 'disabled' : 'readonly' }}>
                    </div><!-- END OF COL DIV -->
                </div><!-- END OF ROW DIV -->    
 
@@ -867,35 +823,45 @@
                 <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_studentSignature" class="form-label fw-bold">Chest X-Ray Findings</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
-                            <img src="{{ asset('storage/'.$patient->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings">
-                        </div>
+                        <a href="{{ asset('storage/'.$patient->medicalRecord->chestXray) }}" data-lightbox="Chest X-Ray Findings" data-title="Chest X-Ray Findings">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecord->chestXray) }}" alt="Chest X-Ray Findings" style="">
+                            </div>
+                        </a>
                     </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
-                            <img src="{{ asset('storage/'.$patient->medicalRecord->CBCResults) }}" alt="CBC Results">
-                        </div>
+                            <a href="{{ asset('storage/'.$patient->medicalRecord->CBCResults) }}" data-lightbox="CBC Results" data-title="CBC Results">
+                                <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">  
+                                    <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecord->CBCResults) }}" alt="CBC Results">
+                                </div>
+                            </a>
                       </div>
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
-                            <img src="{{ asset('storage/'.$patient->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
-                        </div>
+                        <a href="{{ asset('storage/'.$patient->medicalRecord->hepaBscreening) }}" data-lightbox="Hepatitis B Screening" data-title="Hepatitis B Screening">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecord->hepaBscreening) }}" alt="Hepatitis B Screening">
+                            </div>
+                        </a>
                     </div> 
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
-                        <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">  
-                            <img src="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
-                        </div>
+                        <a href="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" data-lightbox="Blood Type" data-title="Blood Type">
+                            <div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">
+                                <img class="img-fluid" src="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" alt="Blood Type">
+                            </div>
+                        </a>
                     </div>
                     @php
                         for($i=1; $patient->medicalRecord->{'resultName' . $i} != NULL; $i++){
                             echo    '<div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">';
                             echo        '<label for="MR_parentGuardianSignature" class="form-label fw-bold">'. $patient->medicalRecord->{'resultName' . $i} .'</label>';
-                            echo        '<div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults">';
-                            echo            '<img src="' . asset("storage/" .$patient->medicalRecord->{'resultImage' . $i}) . '" alt="Blood Type">';
-                            echo        '</div>';
+                            echo        '<a href="' . asset("storage/" .$patient->medicalRecord->{'resultImage' . $i}) . '" data-lightbox="'. $patient->medicalRecord->{'resultName' . $i} .'" data-title="'. $patient->medicalRecord->{'resultName' . $i} .'">';
+                            echo            '<div class="mb-3 col-6 signature-container d-flex justify-content-center align-items-center divForResults border border-dark rounded-1">';
+                            echo                '<img class="img-fluid" src="' . asset("storage/" .$patient->medicalRecord->{'resultImage' . $i}) . '" alt="'. $patient->medicalRecord->{'resultName' . $i} .'">';
+                            echo            '</div>';
+                            echo        '</a>';
                             echo    '</div>';
                         }
                     @endphp
@@ -905,18 +871,11 @@
     </div>
         <!--Signatures-->
         <div class="mx-auto row row-cols-lg-1 mt-2">
-            <div class="col-md-12 p-1 border border-dark">
-                <p class="fs-5 fst-italic text-center">I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.</p>
-                <div class="flex justify-content-center">
-                    <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
-                            <label for="MR_studentSignature" class="form-label">Signature of student over printed name</label>
-                        </div>
-                        <div class="mb-3 col-6 d-flex flex-column justify-content-center align-items-center">
-                            <label for="MR_parentGuardianSignature" class="form-label">Signature of parent/guardian over printed name</label>
-                        </div>                              
-                    </div>
-                </div>
+            <div class="form-check d-flex border border-dark align-items-center text-center justify-content-center">
+                <input class="form-check-input my-5 me-1" type="radio" {{ $patient->medicalRecord->signed == 1 ? 'checked' : '' }} onclick="return false;" name="certify">
+                <label class="form-check-label fs-5 fst-italic text-center" for="certify">
+                    I hereby certify that the foregoing answers are true and complete, and to the best of my knowledge.
+                </label>
             </div>
         </div>
 
@@ -934,157 +893,173 @@
         <div class="mx-auto row row-cols-lg-1 mt-2">
             <div class="col-md-12 p-1 border border-dark">
                 <div class="container">
-                    <p class="fs-4">VITAL SIGNS:ANTHROPOMETRICS</p>
-                    <div class="row row-cols-xl-3 row-cols-sm-1 justify-content-center">
-                        <!-- Col 1 (BASELINE) -->
-                        <div class="col-xl-3">
-                            <div class="form-group d-flex">
-                                <label for="VS_bloodPressure" class="form-label h6 my-auto me-1" style="white-space: nowrap;">BP:&nbsp;</label>
-                                <div class="d-flex align-items-center ms-4"style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_bp_systolic" name="VS_bp_systolic"  maxlength="3" style="width:31.7%;" required>
-                                        <span class="text-danger"> 
-                                            @error('VS_bp_systolic') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                    <span class="fs-6">/</span>
-                                    <input type="text" class="form-control ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" maxlength="3" style="width:31.7%;" required> 
-                                    <p class="pt-3" style="margin-left: 4px;">mmHg</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_bp_diastolic') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
-                            </div>                   
-                            <div class="form-group d-flex">
-                                <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR:&nbsp;</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" maxlength="4" required>
-                                    <p class="pt-3" style="margin-left: 4px;">/minute</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_pulseRate') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
-                            </div>                 
-                            <div class="form-group d-flex">
-                                <label for="VS_respirationRate" class="form-label h6 my-auto me-1">RR:&nbsp;</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" maxlength="4" required>
-                                    <p class="pt-3" style="margin-left: 4px;">/minute</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_respirationRate') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
+                    <p class="fs-5 fw-bold">VITAL SIGNS:ANTHROPOMETRICS</p>
+                <div class="row row-cols-xl-3 row-cols-sm-1 justify-content-center">
+                    <!-- Col 1 (BASELINE) -->
+                    <div class="col-xl-3">
+                        <div class="form-group d-flex">
+                            <label for="VS_bloodPressure" class="form-label h6 my-auto me-1" style="white-space: nowrap;">BP<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
+                            <div class="d-flex align-items-center ms-4"style="margin-top:-1%;">
+                                <input type="number" step="1" min="0" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_systolic') is-invalid @enderror me-1" id="VS_bp_systolic" name="VS_bp_systolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ?: old('VS_bp_systolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required>
+                                <span class="fs-6">/</span>
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_diastolic') is-invalid @enderror ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ?: old('VS_bp_diastolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required> 
+                                <p class="pt-3" style="margin-left: 4px;">mmHg</p>
                             </div>
-                            <div class="form-group d-flex">
-                                <label for="VS_temp" class="form-label h6 my-auto me-1">Temp:</label>
-                                <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control me-1" id="VS_temp" name="VS_temp" maxlength="4" style="margin-left: 1px; width:90%;" required>
-                                    <p class="pt-3" style="margin-left: 4px;">°C</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_temp') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
+                        </div>                   
+                        <div class="form-group d-flex">
+                            <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_pulseRate') is-invalid @enderror me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ?: old('VS_pulseRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
                             </div>
-                        </div> 
-                        <!-- Col 2 (HEIGHT, WEIGHT, BMI) -->
-                        <div class="col-xl-3 mx-4">
-                            <div class="form-group d-flex">
-                                <label for="VS_height" class="form-label h6 my-auto me-1">Height:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1 ms-1" id="VS_height" name="VS_height" maxlength="4" required>
-                                    <p class="pt-3" style="margin-left: 4px;">meters</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_height') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
-                            </div>  
-                            <div class="form-group d-flex">
-                                <label for="VS_weight" class="form-label h6 my-auto me-1">Weight:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_weight" name="VS_weight" maxlength="4" required>
-                                    <p class="pt-3" style="margin-left: 4px;">kgs</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_weight') 
-                                            {{ $message }} 
-                                             @enderror
-                                        </span>
-                                </div>
-                            </div>  
-                            <div class="form-group d-flex">
-                                <label for="VS_bmi" class="form-label h6 my-auto me-1">BMI:&nbsp;</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1 ms-4" id="VS_bmi" name="VS_bmi" maxlength="4" required>
-                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
-                                        <span class="text-danger">
-                                            @error('VS_bmi')
-                                            {{ $message }}
-                                            @enderror
-                                        </span>
-                                </div>
+                        </div>                 
+                        <div class="form-group d-flex">
+                            <label for="VS_respirationRate" class="form-label h6 my-auto me-1">RR<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_respirationRate') is-invalid @enderror me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ?: old('VS_respirationRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <p class="pt-3" style="margin-left: 4px;">/minute</p>
+
                             </div>
                         </div>
-                        <!-- Col 3 (FINDINGS) -->
-                        <div class="col-xl-5">
-                            <div class="form-group d-flex">
-                                <label for="VS_xrayFindings" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CHEST X-RAY FINDINGS:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_xrayFindings" name="VS_xrayFindings" maxlength="4" style="width:310px;" required>
-                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_xrayFindings') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
-                            </div>                   
-                            <div class="form-group d-flex">
-                                <label for="VS_cbcResults" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CBC Results:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_cbcResults" name="VS_cbcResults" maxlength="4" style="width:310px; margin-left: 86px;" required>
-                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_cbcResults') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
-                            </div>               
-                            <div class="form-group d-flex">
-                                <label for="VS_hepaBscreening" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Hepatitis B Screening:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" maxlength="4" style="margin-left: 12px; width:310px;" required>
-                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_hepaBscreening') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
+                        <div class="form-group d-flex">
+                            <label for="VS_temp" class="form-label h6 my-auto me-1">Temp<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center">
+                                <input type="number" placeholder="e.g. 36.5" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_temp') is-invalid @enderror me-1" id="VS_temp" name="VS_temp" onKeyPress="if(this.value.length==4) return false;" step="0.01" min="0" lang="en" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ?: old('VS_temp') }}" style="margin-left: 1px; width:90%;" required>
+                                <p class="pt-3" style="margin-left: 4px;">°C</p>
+                                
                             </div>
-                            <div class="form-group d-flex">
-                                <label for="VS_bloodType" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Blood Type:</label>
-                                <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                    <input type="text" class="form-control me-1" id="VS_bloodType" name="VS_bloodType" maxlength="4" style="margin-left: 94px; width:310px;" required>
-                                    <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
-                                        <span class="text-danger"> 
-                                            @error('VS_bloodType') 
-                                            {{ $message }} 
-                                            @enderror
-                                        </span>
-                                </div>
+                        </div>    
+                    </div> 
+                    <!-- Col 2 (HEIGHT, WEIGHT, BMI) -->
+                    <div class="col-xl-3 mx-4">
+                        <div class="form-group d-flex">
+                            <label for="VS_height" class="form-label h6 my-auto me-1">Height<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="number" placeholder="e.g. 1.7" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_height') is-invalid @enderror me-1 ms-1" step="0.1" min="0" lang="en" id="VS_height" name="VS_height" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ?: old('VS_height') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
+                                <p class="pt-3" style="margin-left: 4px;">meters</p>
                             </div>
-                        </div>   
-                     </div>
+                        </div>  
+                        <div class="form-group d-flex">
+                            <label for="VS_weight" class="form-label h6 my-auto me-1">Weight<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="number" placeholder="e.g. 75" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_weight') is-invalid @enderror me-1" id="VS_weight" name="VS_weight" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ?: old('VS_weight') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <p class="pt-3" style="margin-left: 4px;">kg</p>
+                            </div>
+                        </div>  
+                        <div class="form-group d-flex">
+                            <label for="VS_bmi" class="form-label h6 my-auto me-1">BMI<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="number" placeholder="AUTO" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bmi') is-invalid @enderror me-1 ms-4" id="VS_bmi" name="VS_bmi" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ?: old('VS_bmi') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
+                                <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Col 3 (FINDINGS) -->
+                    <div class="col-xl-5">
+                        <div class="form-group d-flex">
+                            <label for="VS_xrayFindings" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CHEST X-RAY FINDINGS<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_xrayFindings') is-invalid @enderror me-1" id="VS_xrayFindings" name="VS_xrayFindings" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ?: old('VS_xrayFindings') }}" style="width: 100%;" required>
+                                <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                               
+                            </div>
+                        </div>                   
+                        <div class="form-group d-flex">
+                            <label for="VS_cbcResults" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CBC Results<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_cbcResults') is-invalid @enderror me-1" id="VS_cbcResults" name="VS_cbcResults" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ?: old('VS_cbcResults') }}" style="width: 100%; margin-left: 86px;" required>
+                                <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                
+                            </div>
+                        </div>               
+                        <div class="form-group d-flex">
+                            <label for="VS_hepaBscreening" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Hepatitis B Screening<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_hepaBscreening') is-invalid @enderror me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ?: old('VS_hepaBscreening') }}" style="margin-left: 12px; width: 100%;" required>
+                                <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label for="VS_bloodType" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Blood Type<span class="text-danger" style="user-select: none;">*</span>:</label>
+                            <div class="d-flex align-items-center" style="margin-top:-1%;">
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bloodType') is-invalid @enderror me-1" id="VS_bloodType" name="VS_bloodType" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ?: old('VS_bloodType') }}" style="margin-left: 94px; width: 100%;" required>
+                                <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <span class="text-danger"> 
+                        @error('VS_bp_systolic') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_bp_diastolic') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_pulseRate') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_respirationRate') 
+                        {{ $message }} 
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_temp') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_height') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_weight') 
+                            {{ $message }} 
+                         @enderror
+                    </span>
+                    <span class="text-danger">
+                        @error('VS_bmi')
+                            {{ $message }}
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_xrayFindings') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_cbcResults') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_hepaBscreening') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
+                    <span class="text-danger"> 
+                        @error('VS_bloodType') 
+                            {{ $message }}
+                            <br/>
+                        @enderror
+                    </span>
                 </div>
             </div>
         </div>
@@ -1101,162 +1076,202 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">1. General Appearance</p>
+                        <p class="pt-4 fs-5 mx-auto">1. General Appearance<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_GenAppearance_Okay">
+                            <label class="form-check-label fw-bold" for="PE_GenAppearance_Okay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_Okay" value="1" {{ old('PE_GenAppearance') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->generalAppearance == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others" value="0">
-                            <label class="form-check-label" for="PE_GenAppearance_others">
+                            <label class="form-check-label fw-bold" for="PE_GenAppearance_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_GenAppearance_textbox" name="PE_GenAppearance" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others" value="2" {{ old('PE_GenAppearance') == '2' ? 'checked' : '' }}>
+                            <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_GenAppearance') is-invalid @enderror" id="PE_GenAppearanceDetails" name="PE_GenAppearanceDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->generalAppearanceDetails ?: old('PE_GenAppearanceDetails') }}" {{ old('PE_GenAppearanceDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_GenAppearance') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">2. HEENT</p>
+                        <p class="pt-4 fs-5 mx-auto">2. HEENT<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_HEENT_Okay">
+                            <label class="form-check-label fw-bold" for="PE_HEENT_Okay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_Okay" value="1" {{ old('PE_HEENT') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->HEENT == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others" value="0">
-                            <label class="form-check-label" for="PE_HEENT_others">
+                            <label class="form-check-label fw-bold" for="PE_HEENT_others">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_HEENT_textbox" name="PE_HEENT" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others" value="2" {{ old('PE_HEENT') == '2' ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_HEENT') is-invalid @enderror" id="PE_HEENTDetails" name="PE_HEENTDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->HEENTDetails ?: old('PE_HEENTDetails') }}" {{ old('PE_HEENTDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_HEENT') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">3. Chest & Lungs</p>
+                        <p class="pt-4 fs-5 mx-auto">3. Chest & Lungs<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_ChestLungs" id="PE_ChestLungsOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_ChestLungsOkay">
+                            <label class="form-check-label fw-bold" for="PE_ChestLungsOkay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_ChestLungs" id="PE_ChestLungsOkay" value="1" {{ old('PE_ChestLungs') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestLungs == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_ChestLungs" id="PE_ChestLungsothers" value="0">
-                            <label class="form-check-label" for="PE_ChestLungsothers">
+                            <label class="form-check-label fw-bold" for="PE_ChestLungsothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_ChestLungs_textbox" name="PE_ChestLungs" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_ChestLungs" id="PE_ChestLungsothers" value="2" {{ old('PE_ChestLungs') == '2' ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_ChestLungs') is-invalid @enderror" id="PE_ChestLungsDetails" name="PE_ChestLungsDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestLungsDetails ?: old('PE_ChestLungsDetails') }}" {{ old('PE_ChestLungsDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_ChestLungs') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">4. Cardiovascular</p>
+                        <p class="pt-4 fs-5 mx-auto">4. Cardiovascular<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_CardioOkay">
+                            <label class="form-check-label fw-bold" for="PE_CardioOkay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_CardioOkay" value="1" {{ old('PE_Cardio') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardio == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers" value="0">
-                            <label class="form-check-label" for="PE_Cardioothers">
+                            <label class="form-check-label fw-bold" for="PE_Cardioothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Cardio_textbox" name="PE_Cardio" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers" value="2" {{ old('PE_Cardio') == '2' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardio == 2 ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_Cardio') is-invalid @enderror" id="PE_CardioDetails" name="PE_CardioDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardioDetails ?: old('PE_CardioDetails') }}" {{ old('PE_CardioDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_Cardio') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">5. Abdomen</p>
+                        <p class="pt-4 fs-5 mx-auto">5. Abdomen<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_AbdomenOkay">
+                            <label class="form-check-label fw-bold" for="PE_AbdomenOkay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_AbdomenOkay" value="1" {{ old('PE_Abdomen') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomen == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers" value="0">
-                            <label class="form-check-label" for="PE_Abdomenothers">
+                            <label class="form-check-label fw-bold" for="PE_Abdomenothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Abdomen_textbox" name="PE_Abdomen" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers" value="2" {{ old('PE_Abdomen') == '2' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomen == 2 ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_Abdomen') is-invalid @enderror" id="PE_AbdomenDetails" name="PE_AbdomenDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomenDetails ?: old('PE_AbdomenDetails') }}" {{ old('PE_AbdomenDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_Abdomen') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">6. Genito urinary</p>
+                        <p class="pt-4 fs-5 mx-auto">6. Genito Urinary<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_GenitoOkay">
+                            <label class="form-check-label fw-bold" for="PE_GenitoOkay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_GenitoOkay" value="1" {{ old('PE_Genito') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genito == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers" value="0">
-                            <label class="form-check-label" for="PE_Genitoothers">
+                            <label class="form-check-label fw-bold" for="PE_Genitoothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Genito_textbox" name="PE_Genito" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers" value="2" {{ old('PE_Genito') == '2' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genito == 2 ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_Genito') is-invalid @enderror" id="PE_GenitoDetails" name="PE_GenitoDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genitoDetails ?: old('PE_GenitoDetails') }}" {{ old('PE_GenitoDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_Genito') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">7. Musculoskeletal</p>
+                        <p class="pt-4 fs-5 mx-auto">7. Musculoskeletal<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_MusculoskeletalOkay">
+                            <label class="form-check-label fw-bold" for="PE_MusculoskeletalOkay">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_MusculoskeletalOkay" value="1" {{ old('PE_Musculoskeletal') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletal == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers" value="0">
-                            <label class="form-check-label" for="PE_Musculoskeletalothers">
+                            <label class="form-check-label fw-bold" for="PE_Musculoskeletalothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_Musculoskeletal_textbox" name="PE_Musculoskeletal" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers" value="2" {{ old('PE_Musculoskeletal') == '2' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletal == 2 ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_Musculoskeletal') is-invalid @enderror" id="PE_MusculoskeletalDetails" name="PE_MusculoskeletalDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletalDetails ?: old('PE_MusculoskeletalDetails') }}" {{ old('PE_MusculoskeletalDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_Musculoskeletal') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 p-1 border-bottom border-start border-dark">
-                        <p class="pt-4 fs-5 mx-auto">8. Nervous System</p>
+                        <p class="pt-4 fs-5 mx-auto">8. Nervous System<span class="text-danger">*</span></p>
                     </div>
                     <div class="col-md-8 p-1 border border-top-0 border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay" value="Essentially Normal" required>
-                            <label class="form-check-label" for="PE_NervousSystem">
+                            <label class="form-check-label fw-bold" for="PE_NervousSystem">
                                 Normal
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemOkay" value="1" {{ old('PE_NervousSystem') == '1' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystem == 1 ? 'checked' : '' }} required>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers" value="0">
-                            <label class="form-check-label" for="PE_NervousSystemothers">
+                            <label class="form-check-label fw-bold" for="PE_NervousSystemothers">
                                 Other findings
-                                <input type="text" class="form-control" id="PE_NervousSystem_textbox" name="PE_NervousSystem" size="90" disabled>
                             </label>
+                            <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers" value="2" {{ old('PE_NervousSystem') == '2' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystem == 2 ? 'checked' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_NervousSystem') is-invalid @enderror" id="PE_NervousSystemDetails" name="PE_NervousSystemDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystemDetails ?: old('PE_NervousSystemDetails') }}" {{ old('PE_NervousSystemDetails') ? '' : 'disabled' }}>
                         </div>
+                        <span class="text-danger"> 
+                            @error('PE_NervousSystem') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
                 <div class="row">
@@ -1265,7 +1280,7 @@
                     </div>
                     <div class="col-md-8 p-1 border-start border-end border-dark">
                         <div class="form-group">
-                            <textarea class="form-control mt-1 mx-auto" id="PE_otherSignificantFindings" name="PE_otherSignificantFindings" style="resize: none; overflow: hidden; width:95%;"></textarea>
+                            <textarea oninput="this.value = this.value.toUpperCase()" class="form-control @error('PE_otherSignificantFindings') is-invalid @enderror mt-1 mx-auto" id="PE_otherSignificantFindings" name="PE_otherSignificantFindings" style="resize: none; overflow: hidden; width:95%;">{{ old('PE_otherSignificantFindings') }}</textarea>
                         <script>
                             var textarea = document.getElementById('PE_otherSignificantFindings');
 
@@ -1274,117 +1289,167 @@
                                 this.style.height = this.scrollHeight + 'px';
                             });
                         </script>
-                        </div>
+                        <span class="text-danger"> 
+                            @error('PE_otherSignificantFindings') 
+                                {{ $message }} 
+                            @enderror
+                        </span>
                     </div>
                 </div>
+            </div>
 
                 <script>
                     $(document).ready(function(){
                         $('#PE_GenAppearance_others').click(function(){
-                            $('#PE_GenAppearance_textbox').prop('disabled', false);
+                            $('#PE_GenAppearanceDetails').prop('disabled', false);
+                            $('#PE_GenAppearanceDetails').prop('required', true);
                         });
                         $('#PE_GenAppearance_Okay').click(function(){
-                            $('#PE_GenAppearance_textbox').prop('disabled', true);
+                            $('#PE_GenAppearanceDetails').prop('disabled', true);
+                            $('#PE_GenAppearanceDetails').prop('required', false);
                         });
 
                         $('#PE_HEENT_others').click(function(){
-                            $('#PE_HEENT_textbox').prop('disabled', false);
+                            $('#PE_HEENTDetails').prop('disabled', false);
+                            $('#PE_HEENTDetails').prop('required', true);
                         });
                         $('#PE_HEENT_Okay').click(function(){
-                            $('#PE_HEENT_textbox').prop('disabled', true);
+                            $('#PE_HEENTDetails').prop('disabled', true);
+                            $('#PE_HEENTDetails').prop('required', false);
                         });
 
                         $('#PE_ChestLungsothers').click(function(){
-                            $('#PE_ChestLungs_textbox').prop('disabled', false);
+                            $('#PE_ChestLungsDetails').prop('disabled', false);
+                            $('#PE_ChestLungsDetails').prop('required', true);
                         });
                         $('#PE_ChestLungsOkay').click(function(){
-                            $('#PE_ChestLungs_textbox').prop('disabled', true);
+                            $('#PE_ChestLungsDetails').prop('disabled', true);
+                            $('#PE_ChestLungsDetails').prop('required', false);
                         });
 
                         $('#PE_Cardioothers').click(function(){
-                            $('#PE_Cardio_textbox').prop('disabled', false);
+                            $('#PE_CardioDetails').prop('disabled', false);
+                            $('#PE_CardioDetails').prop('required', true);
                         });
                         $('#PE_CardioOkay').click(function(){
-                            $('#PE_Cardio_textbox').prop('disabled', true);
+                            $('#PE_CardioDetails').prop('disabled', true);
+                            $('#PE_CardioDetails').prop('required', false);
                         });
 
                         $('#PE_Abdomenothers').click(function(){
-                            $('#PE_Abdomen_textbox').prop('disabled', false);
+                            $('#PE_AbdomenDetails').prop('disabled', false);
+                            $('#PE_AbdomenDetails').prop('required', true);
                         });
                         $('#PE_AbdomenOkay').click(function(){
-                            $('#PE_Abdomen_textbox').prop('disabled', true);
+                            $('#PE_AbdomenDetails').prop('disabled', true);
+                            $('#PE_AbdomenDetails').prop('required', false);
                         });
 
                         $('#PE_Genitoothers').click(function(){
-                            $('#PE_Genito_textbox').prop('disabled', false);
+                            $('#PE_GenitoDetails').prop('disabled', false);
+                            $('#PE_GenitoDetails').prop('required', true);
                         });
                         $('#PE_GenitoOkay').click(function(){
-                            $('#PE_Genito_textbox').prop('disabled', true);
+                            $('#PE_GenitoDetails').prop('disabled', true);
+                            $('#PE_GenitoDetails').prop('required', false);
                         });
 
                         $('#PE_Musculoskeletalothers').click(function(){
-                            $('#PE_Musculoskeletal_textbox').prop('disabled', false);
+                            $('#PE_MusculoskeletalDetails').prop('disabled', false);
+                            $('#PE_MusculoskeletalDetails').prop('required', true);
                         });
                         $('#PE_MusculoskeletalOkay').click(function(){
-                            $('#PE_Musculoskeletal_textbox').prop('disabled', true);
+                            $('#PE_MusculoskeletalDetails').prop('disabled', true);
+                            $('#PE_MusculoskeletalDetails').prop('required', false);
                         });
 
                         $('#PE_NervousSystemothers').click(function(){
-                            $('#PE_NervousSystem_textbox').prop('disabled', false);
+                            $('#PE_NervousSystemDetails').prop('disabled', false);
+                            $('#PE_NervousSystemDetails').prop('required', true);
                         });
                         $('#PE_NervousSystemOkay').click(function(){
-                            $('#PE_NervousSystem_textbox').prop('disabled', true);
+                            $('#PE_NervousSystemDetails').prop('disabled', true);
+                            $('#PE_NervousSystemDetails').prop('required', false);
                         });
-
-                        $('.printMe').click(function(){
-                            window.print();
-                        });
-
                     });
                 </script>
-<button class="printMe">print</button>
             </div>
                 <div class="p-3 border border-dark">
-                    <h5 class="pl-6">FITNESS CERTIFICATION</h5>
-                    <div class="row row-cols-lg-4 rol-cols-md-2 row-cols-sm-1">
-                        <div class="col-lg-2 col-md-6 col-sm-12 form-check">
-                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="fit" onclick="disableReasonInput()">
-                            <label class="form-check-label ms-1" for="fitness_Fit">
+                    <h5 class="pl-6">FITNESS CERTIFICATION<span class="text-danger">*</span></h5>
+                    <div class="d-flex justify-content-evenly mt-3">
+                        <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
+                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="fit" onclick="disableReasonInput()" required>
+                            <label class="form-check-label ms-1 fw-bold" for="fitness_Fit">
                                 Fit for Enrollment
                             </label>
                         </div>
-                        <div class="col-lg-2 col-md-6 col-sm-12 form-check mx-4">
+                        <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
                             <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="notFit" onclick="enableReasonInput()">
-                            <label class="form-check-label" for="fitness_notFit">
+                            <label class="form-check-label fw-bold" for="fitness_notFit">
                                 Not Fit for Enrollment
                             </label>
                         </div>
-                        <div class="col-lg-2 col-md-6 col-sm-12 form-check">
+                        <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
                             <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="pending" onclick="enableReasonInput()">
-                            <label class="form-check-label" for="fitness_Pending">
+                            <label class="form-check-label fw-bold" for="fitness_Pending">
                                 Pending
                             </label>
                         </div>
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-md-5 d-flex">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex">
                             <label for="fit_Reason" class="form-label me-1">Reason:</label>
-                            <input type="text" id="fit_Reason" name="fit_reason" class="form-control" placeholder="For not fit and pending" style="margin-top: -6px;" disabled>
+                            <input type="text" id="fit_Reason" name="fit_reason" class="form-control @error('fit_reason') is-invalid @enderror" placeholder="For 'not fit' and 'pending'" style="margin-top: -6px;" disabled>
+                        </div>
+                        <div class="invalid-feedback">
+                            This field is required. Please fill up this field.
                         </div>
                     </div>
+
                     
                     <script>
+                        $(document).ready(function() {
+                            // Select height and weight input fields and BMI output field
+                            var heightInput = $('#VS_height');
+                            var weightInput = $('#VS_weight');
+                            var bmiOutput = $('#VS_bmi');
+
+                            // Attach event listener to height and weight input
+                            heightInput.on('input', calculateBMI);
+                            weightInput.on('input', calculateBMI);
+
+                            // Define function to calculate the BMI
+                            function calculateBMI() {
+                                // Get values from the height and weight input
+                                var height = parseFloat(heightInput.val());
+                                var weight = parseInt(weightInput.val());
+
+                                // Calculate BMI
+                                var bmi = weight / (height * height);
+
+                                // Round BMI to 2 decimal places
+                                bmi = bmi.toFixed(2);
+
+                                // Update BMI output field with the calculated value
+                                bmiOutput.val(bmi);
+                            }
+                        });
+
                         function disableReasonInput() {
                             document.getElementById("fit_Reason").disabled = true;
+                            document.getElementById("fit_Reason").required = false;
                         }
                     
                         function enableReasonInput() {
                             document.getElementById("fit_Reason").disabled = false;
+                            document.getElementById("fit_Reason").required = true;
                         }
                     </script>
                 </div>
                 <!-- Recommendations -->
-                <div class="pt-3 border border-top-0 border-bottom-0 border-dark pb-2">
-                    <h5>Recommendations</h5>
-                    <textarea class="form-control" id="MRA_recommendations" name="MRA_recommendations" style="resize: none; overflow: hidden;"></textarea>
+                <div class="pt-3 border border-top-0 border-dark pb-2">
+                    <h5>Impression/Recommendations</h5>
+                    <textarea class="form-control" id="MRA_recommendations" name="MRA_recommendations" style="resize: none; overflow: hidden;">{{ old('MRA_recommendations') }}</textarea>
                         <script>
                             var textarea = document.getElementById('MRA_recommendations');
 
@@ -1394,30 +1459,7 @@
                             });
                         </script>
                 </div>
-            <!-- SIGNATURES -->
-                <div class="col-md-12 p-3 border border-dark">
-                    <div class="flex-row justify-content-center">
-                        <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                            <div class="mb-3 col-md-2">
-                                <label for="MRA_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
-                                <input type="file" class="form-control" id="MRA_physicianSignature" name="MRA_physicianSignature" accept="image/jpeg, image/png" required>
-                            </div>
-                            <div class="col-md-3 pt-2">
-                                <label for="MRA_licenseNumber">License Number</label>
-                                <input type="text" class="form-control" id="signatures" name="MRA_LicenseNumber">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="MRA_PTRNumber">PTR Number</label>
-                                <input type="text" class="form-control" id="signatures" name="MRA_PTRNumber">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="MRA_DateofExam">Date of Examination</label>
-                                <input type="text" class="form-control" id="signatures" name="MRA_DateofExam">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
+            </div>
 
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">
@@ -1432,27 +1474,46 @@
                 <!-- LINE BREAK -->
             </header>
         </section>
-
+        @php
+            $date = date('Y F d');
+        @endphp
         <div class="col-md-12 p-3 border border-dark">
             <div class="flex-row justify-content-center">
                 <p class="fs-5 fst-italic text-center">The above findings are certified correct and are based on the physical examination, diagnostic results available, and the disclosure of the student's/parent's pertinent medical history at the time and date of examination </p>
-                <div class="row row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
-                    <div class="mb-3 col-md-2">
-                        <label for="MR_physicianSignature" class="form-label">Signature over Printed Name of Attending Physician</label>
-                        <input type="file" class="form-control" id="MR_physicianSignature" name="MR_physicianSignature" accept="image/jpeg, image/png" required>
+                <div class="row row-cols-xl-3 row-cols-lg-1 row-cols-md-1 row-cols-sm-1 my-auto p-5">
+                    <div class="col-md-4">
+                        <label class="form-label h6" for="MRA_licenseNumber">License Number</label>
+                        <input type="text" class="form-control @error('MRA_licenseNumber') is-invalid @enderror" id="signatures" name="MRA_licenseNumber" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid license number.
+                        </div>
                     </div>
-                    <div class="col-md-3 pt-2">
-                        <label for="MR_licenseNumber">License Number</label>
-                        <input type="text" class="form-control" id="signatures">
+                    <div class="col-md-4">
+                        <label class="form-label h6" for="MRA_PTRNumber">PTR Number</label>
+                        <input type="text" class="form-control @error('MRA_PTRNumber') is-invalid @enderror" id="signatures" name="MRA_PTRNumber" required>
+                        <div class="invalid-feedback">
+                            Please enter your a valid PTR Number.
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="MR_PTRNumber">PTR Number</label>
-                        <input type="text" class="form-control" id="signatures">
+                    <div class="col-md-4">
+                        <label for="MRA_dateOfExamination" class="form-label h6">Date of Examination<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('MRA_dateOfExamination') is-invalid @enderror" id="MRA_dateOfExamination" name="MRA_dateOfExamination" value="{{ old('MRA_dateOfExamination') ?: $date }}" onkeydown="return false;" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid date.
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="MR_DateofExam">Date of Examination</label>
-                        <input type="text" class="form-control" id="signatures">
-                    </div>
+                    <script>
+                    $(document).ready(function() {
+                            $("#MRA_dateOfExamination").datepicker({
+                                changeMonth: true,
+                                changeYear: true,
+                                dateFormat: 'yy MM dd',
+                                showButtonPanel: true,
+                                yearRange: "1900:c",
+                                showAnim: 'slideDown',
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -1463,6 +1524,32 @@
             <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
         </div>
     </div>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms to apply validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+
+                    // Get all the invalid input fields
+                    const invalidInputs = form.querySelectorAll(':invalid')
+
+                    // Focus on the first invalid input field
+                    invalidInputs[0].focus()
+                }
+
+                form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </div> 
 </form>
 @endsection

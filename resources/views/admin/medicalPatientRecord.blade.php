@@ -24,6 +24,15 @@
                     </header>    
                 </div>
             </div>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
             <div class="col-md-3">
                 <p class="h6">Course/Grade/Year</p>
                 <input type="text" class="form-control" id="campusSelect" name="MPR_campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
@@ -114,36 +123,38 @@
         <div class="mt-3 row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
             <div class="col-lg-12 p-2 border border-dark"> 
                 <span class="fs-4">Illness</span> 
+                <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
+                    @csrf
                 <!--Column 1-->    
                 <div class="d-flex flex-row">
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="hypertension">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="hypertension" name="hypertension">
+                                <label class="form-check-label" for="hypertension">
                                     Hypertension
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="diabetes">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="diabetes" name="diabetes">
+                                <label class="form-check-label" for="diabetes">
                                     Diabetes
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="Kidney_disease">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="kidneyDisease" name="kidneyDisease">
+                                <label class="form-check-label" for="kidneyDisease">
                                     Kidney Disease
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="measles">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="measles" name="measles">
+                                <label class="form-check-label" for="measles">
                                     Measles
                                 </label>
                         </div>
                             <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="diphteria">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="diphteria" name="diphteria">
+                                <label class="form-check-label" for="diphteria">
                                      Diphteria
                                 </label>
                         </div>
@@ -151,33 +162,33 @@
                     <!--Column 2-->
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="asthma">
-                            <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="asthma" name="asthma">
+                            <label class="form-check-label" for="asthma">
                                 Asthma
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="rheumatic_fever">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="rheumaticFever" name="rheumaticFever">
+                                <label class="form-check-label" for="rheumaticFever">
                                     Rheumatic Fever
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="seizure_disorder">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="seizureDisorder" name="seizureDisorder">
+                                <label class="form-check-label" for="seizureDisorder">
                                     Seizure Disorder
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="hepatitis">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="hepatitis" name="hepatitis">
+                                <label class="form-check-label" for="hepatitis">
                                     Hepatitis
                                 </label>
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="allergy"/>
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="1" id="allergy" name="allergy"/>
+                                <label class="form-check-label" for="allergy">
                                        Allergy 
                                 </label>
                                 <input type="text" class="form-control form-control-sm">
@@ -187,36 +198,36 @@
                     <!--Column 3--> 
                     <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="mumps">
-                                 <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="mumps" name="mumps">
+                                 <label class="form-check-label" for="mumps">
                                     Mumps
                                    </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="cardiac_disease">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="cardiacDisease" name="cardiacDisease">
+                                <label class="form-check-label" for="cardiacDisease">
                                     Cardiac Disease
                                 </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="chicken_pox">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="1" id="chickenPox" name="chickenPox">
+                                <label class="form-check-label" for="chickenPox">
                                         Chicken Pox
                                 </label>
                         </div>
                         <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="tuberculosis">
-                                <label class="form-check-label" for="flexCheckDefault">
+                               <input class="form-check-input" type="checkbox" value="1" id="tuberculosis" name="tuberculosis">
+                                <label class="form-check-label" for="tuberculosis">
                                     Tuberculosis
                                 </label>
                         </div>
                         <div class="col-md-9">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="others" />
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="1" id="others" name="others" />
+                                <label class="form-check-label" for="others">
                                     Others 
                                 </label>
-                                <input type="text" class="form-control form-control-sm" value="">
+                                <input type="text" class="form-control form-control-sm" name="othersDetails">
                             </div>
                         </div>
                     </div>
@@ -238,8 +249,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
-                @csrf
+            
             <table id="data_table" name="data_table" class="table table-striped table-bordered border-dark table-hover">       
                 <caption>Medical Patient Record of {{ $patient->medicalRecord->first_name }} {{ $patient->medicalRecord->middle_name }} {{ $patient->medicalRecord->last_name }}</caption>       
                 <thead>
@@ -259,11 +269,11 @@
                         <tr>
                             <td contenteditable="false" >{{ date('d-F-Y', strtotime($record->date)) }}</td>
                             <td contenteditable="false">{{ $record->temperature }}</td>
-                            <td contenteditable="false">{{ $record->blood_pressure }}</td>
+                            <td contenteditable="false">{{ $record->bloodPressure }}</td>
                             <td contenteditable="false">{{ $record->weight }}</td>
                             <td contenteditable="false">{{ $record->height }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ $record->historyPhysical_examinations }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ $record->physician_directions }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ $record->historyAndPhysicalExamination }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ $record->physicianDirections }}</td>
                         </tr>
                         @endforeach
 
@@ -280,7 +290,8 @@
                 </tbody>
             </table>
 
-            <input type="hidden" id="studentID" name="studentID" value="{{ $patient->id }}">
+            <input type="hidden" id="patientID" name="patientID" value="{{ $patient->id }}">
+            <input type="hidden" id="patientType" name="patientType" value="{{ $patient->user_type }}">
             <input type="hidden" id="date" name="date">
             <input type="hidden" id="temperature" name="temperature">
             <input type="hidden" id="bloodPressure" name="bloodPressure">
@@ -290,7 +301,7 @@
             <input type="hidden" id="physicianDirections" name="physicianDirections">
         </div>
         <span class="text-danger"> 
-            @error('studentID') 
+            @error('patientID') 
               {{ $message }}<br>
             @enderror
         </span>

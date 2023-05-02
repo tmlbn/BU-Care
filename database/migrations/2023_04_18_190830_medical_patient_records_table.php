@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('medicalpatientrecords', function (Blueprint $table) {
             $table->bigIncrements('MPR_id')->unique();
-            $table->unsignedBigInteger('student_id')->unique()->nullable()->default(null);
-            $table->unsignedBigInteger('personnel_id')->unique()->nullable()->default(null);
-            $table->unsignedBigInteger('MPR_illnessID')->unique()->nullable();
+            $table->unsignedBigInteger('student_id')->nullable()->default(null);
+            $table->unsignedBigInteger('personnel_id')->nullable()->default(null);
+            $table->unsignedBigInteger('MPR_illnessID')->unique()->nullable()->default(null);
             $table->date('date');
             $table->float('temperature', 8, 2);
-            $table->string('bloodPressure', 7);
+            $table->string('bloodPressure');
             $table->string('weight');
             $table->string('height');
             $table->text('historyAndPhysicalExamination');

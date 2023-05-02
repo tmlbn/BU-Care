@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use App\Models\UserStudent;
 use App\Models\UserPersonnel;
 use App\Models\MedicalRecord;
@@ -16,6 +17,7 @@ use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
 use App\Models\MedicalPatientRecord;
+use App\Models\MPR_Illness;
 use Session;
 use Hash;
 use DB;
@@ -72,6 +74,7 @@ class MedicalPatientRecordsController extends Controller
     public function storeMedicalPatientRecord (Request $request){
             $request->validate([
                 'patientID' => 'required|int',
+                'patientType' => 'required',
                 'date' => 'required|date_format:d-F-Y',
                 'temperature' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
                 'bloodPressure' => 'required|regex:/^\d+\/\d+$/',
@@ -81,31 +84,55 @@ class MedicalPatientRecordsController extends Controller
                 'physicianDirections' => 'required|string',
             ]);
 
-            try {
+                $new_mpr_illness = new MPR_Illness();
+                    $new_mpr_illness->hypertension = $request->filled('hypertension') ?: '0';
+                    $new_mpr_illness->asthma = $request->filled('asthma') ?: '0';
+                    $new_mpr_illness->mumps = $request->filled('mumps') ?: '0';
+                    $new_mpr_illness->diabetes = $request->filled('diabetes') ?: '0';
+                    $new_mpr_illness->rheumatic_fever = $request->filled('rheumaticFever') ?: '0';
+                    $new_mpr_illness->cardiac_disease = $request->filled('cardiacDisease') ?: '0';
+                    $new_mpr_illness->kidney_disease = $request->filled('kidneyDisease') ?: '0';
+                    $new_mpr_illness->seizure_disorder = $request->filled('seizureDisorder') ?: '0';
+                    $new_mpr_illness->chicken_pox = $request->filled('chickenPox') ?: '0';
+                    $new_mpr_illness->measles = $request->filled('measles') ?: '0';
+                    $new_mpr_illness->hepatitis = $request->filled('hepatitis') ?: '0';
+                    $new_mpr_illness->tuberculosis = $request->filled('tuberculosis') ?: '0';
+                    $new_mpr_illness->diphteria = $request->filled('diphteria') ?: '0';
+                    $new_mpr_illness->allergy = $request->filled('allergy') ?: '0';
+                    $new_mpr_illness->allergyDetails = $request->filled('allergyDetails') ?: 'N/A';
+                    $new_mpr_illness->others = $request->filled('others') ?: '0';
+                    $new_mpr_illness->othersDetails = $request->filled('othersDetails') ?: 'N/A';
+                $res = $new_mpr_illness->save();
+
                 $new_mpr = new MedicalPatientRecord();
-                    $new_mpr->student_id = filter_var($request->studentID,  FILTER_SANITIZE_NUMBER_INT);
+                try{
+                    if($request->patientType == 'PATIENT/PERSONNEL'){
+                        $patient = UserPersonnel::where('id', $request->patientID)->first();
+                        $new_mpr->personnel->id = $patient->id;
+                    }
+                    elseif($request->patientType == 'PATIENT/STUDENT'){
+                        $patient = UserStudent::where('id', $request->patientID)->first();
+                        $new_mpr->student_id = $patient->id;
+                    }
+                } 
+                catch (ModelNotFoundException $e) {
+                    $message = 'Patient not found.';
+                    return redirect()->route('admin.patientMedFormList.show')->with('fail', $message);
+                }
+                    $new_mpr->MPR_illnessID = $new_mpr_illness->MPR_illnessID ;
                     $new_mpr->date = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y-m-d');
                     $new_mpr->temperature = filter_var($request->temperature, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $new_mpr->blood_pressure = filter_var($request->bloodPressure, FILTER_SANITIZE_STRING);
+                    $new_mpr->bloodPressure = filter_var($request->bloodPressure, FILTER_SANITIZE_STRING);
                     $new_mpr->weight = filter_var($request->weight, FILTER_SANITIZE_STRING);
                     $new_mpr->height = html_entity_decode(filter_var($request->height, FILTER_SANITIZE_STRING));
-                    $new_mpr->historyPhysical_examinations = filter_var($request->historyAndPhysicalExamination, FILTER_SANITIZE_STRING);
-                    $new_mpr->physician_directions = filter_var($request->physicianDirections, FILTER_SANITIZE_STRING);
+                    $new_mpr->historyAndPhysicalExamination = filter_var($request->historyAndPhysicalExamination, FILTER_SANITIZE_STRING);
+                    $new_mpr->physicianDirections = filter_var($request->physicianDirections, FILTER_SANITIZE_STRING);
                 $res = $new_mpr->save();
-                
-                
-                if($res){
-                    return back()->with('success','Medical Patient Record form submitted.');
-                } else {
-                    // Log error and display user-friendly message
-                    Log::error('Failed to submit.');
-                    return back()->with('fail','Failed to submit. Please try again later.');
-                }
-                
-            } catch (\Throwable $th) {
-                // Log error and display user-friendly message
-                Log::error('Failed to submit: ' . $th->getMessage());
-                return back()->with('fail','Failed to submit. Please try again later');
-            }
+
+                $new_mpr_illness->MPR_id = $new_mpr->MPR_id;
+                $new_mpr_illness->save();
+
+                return redirect()->back()->with('success', 'Medical Patient Record successfully saved.');
+
     }
 }

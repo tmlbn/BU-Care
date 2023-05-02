@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MedicalPatientRecord extends Model
 {
@@ -13,26 +14,15 @@ class MedicalPatientRecord extends Model
 
     protected $primaryKey = 'MPR_id';
 
-    protected $fillable = [
-        'student_id',
-        'personnel_id',
-        'MPR_illnessID',
-        'date',
-        'temperature',
-        'bloodPressure',
-        'weight',
-        'height',
-        'historyAndPhysicalExamination',
-        'physicianDirections',
-        'created_at',
-        'updated_at'
-    ];
-
     public function MPRstudent(){
         return $this->belongsTo(UserStudent::class, 'student_id');
     }    
 
     public function MPRpersonnel(){
         return $this->belongsTo(UserStudent::class, 'personnel_id');
-    } 
+    }
+
+    public function mpr_illness(){
+        return $this->hasOne(MPR_Illness::class, 'MPR_illnessID');
+    }
 }
