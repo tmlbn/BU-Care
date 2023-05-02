@@ -900,23 +900,23 @@
                         <div class="form-group d-flex">
                             <label for="VS_bloodPressure" class="form-label h6 my-auto me-1" style="white-space: nowrap;">BP<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
                             <div class="d-flex align-items-center ms-4"style="margin-top:-1%;">
-                                <input type="number" step="1" min="0" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_systolic') is-invalid @enderror me-1" id="VS_bp_systolic" name="VS_bp_systolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ?: old('VS_bp_systolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required>
+                                <input type="number" step="1" min="0" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_systolic') is-invalid @enderror me-1" id="VS_bp_systolic" name="VS_bp_systolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_systolic ? $patient->medicalRecordAdmin->bp_systolic : old('VS_bp_systolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required>
                                 <span class="fs-6">/</span>
-                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_diastolic') is-invalid @enderror ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ?: old('VS_bp_diastolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required> 
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bp_diastolic') is-invalid @enderror ms-2" id="VS_bp_diastolic" name="VS_bp_diastolic" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bp_diastolic ? $patient->medicalRecordAdmin->bp_diastolic : old('VS_bp_diastolic') }}" onKeyPress="if(this.value.length==3) return false;" style="width:31.7%;" required> 
                                 <p class="pt-3" style="margin-left: 4px;">mmHg</p>
                             </div>
                         </div>                   
                         <div class="form-group d-flex">
                             <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_pulseRate') is-invalid @enderror me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ?: old('VS_pulseRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_pulseRate') is-invalid @enderror me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->pulseRate ? $patient->medicalRecordAdmin->pulseRate : old('VS_pulseRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
                                 <p class="pt-3" style="margin-left: 4px;">/minute</p>
                             </div>
                         </div>                 
                         <div class="form-group d-flex">
                             <label for="VS_respirationRate" class="form-label h6 my-auto me-1">RR<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_respirationRate') is-invalid @enderror me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ?: old('VS_respirationRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <input type="number" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_respirationRate') is-invalid @enderror me-1 ms-4" id="VS_respirationRate" name="VS_respirationRate" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->respirationRate ? $patient->medicalRecordAdmin->respirationRate : old('VS_respirationRate') }}" onKeyPress="if(this.value.length==4) return false;" required>
                                 <p class="pt-3" style="margin-left: 4px;">/minute</p>
 
                             </div>
@@ -924,7 +924,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_temp" class="form-label h6 my-auto me-1">Temp<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center">
-                                <input type="number" placeholder="e.g. 36.5" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_temp') is-invalid @enderror me-1" id="VS_temp" name="VS_temp" onKeyPress="if(this.value.length==4) return false;" step="0.01" min="0" lang="en" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ?: old('VS_temp') }}" style="margin-left: 1px; width:90%;" required>
+                                <input type="number" placeholder="e.g. 36.5" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_temp') is-invalid @enderror me-1" id="VS_temp" name="VS_temp" onKeyPress="if(this.value.length==4) return false;" step="0.01" min="0" lang="en" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->temp ? $patient->medicalRecordAdmin->temp : old('VS_temp') }}" style="margin-left: 1px; width:90%;" required>
                                 <p class="pt-3" style="margin-left: 4px;">°C</p>
                                 
                             </div>
@@ -935,21 +935,21 @@
                         <div class="form-group d-flex">
                             <label for="VS_height" class="form-label h6 my-auto me-1">Height<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" placeholder="e.g. 1.7" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_height') is-invalid @enderror me-1 ms-1" step="0.1" min="0" lang="en" id="VS_height" name="VS_height" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ?: old('VS_height') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
+                                <input type="number" placeholder="e.g. 1.7" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_height') is-invalid @enderror me-1 ms-1" step="0.1" min="0" lang="en" id="VS_height" name="VS_height" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? $patient->medicalRecordAdmin->height : old('VS_height') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
                                 <p class="pt-3" style="margin-left: 4px;">meters</p>
                             </div>
                         </div>  
                         <div class="form-group d-flex">
                             <label for="VS_weight" class="form-label h6 my-auto me-1">Weight<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" placeholder="e.g. 75" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_weight') is-invalid @enderror me-1" id="VS_weight" name="VS_weight" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ?: old('VS_weight') }}" onKeyPress="if(this.value.length==4) return false;" required>
+                                <input type="number" placeholder="e.g. 75" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_weight') is-invalid @enderror me-1" id="VS_weight" name="VS_weight" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->weight ? $patient->medicalRecordAdmin->weight : old('VS_weight') }}" onKeyPress="if(this.value.length==4) return false;" required>
                                 <p class="pt-3" style="margin-left: 4px;">kg</p>
                             </div>
                         </div>  
                         <div class="form-group d-flex">
                             <label for="VS_bmi" class="form-label h6 my-auto me-1">BMI<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" placeholder="AUTO" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bmi') is-invalid @enderror me-1 ms-4" id="VS_bmi" name="VS_bmi" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ?: old('VS_bmi') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
+                                <input type="number" placeholder="AUTO" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bmi') is-invalid @enderror me-1 ms-4" id="VS_bmi" name="VS_bmi" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bmi ? $patient->medicalRecordAdmin->bmi : old('VS_bmi') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" required>
                                 <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
                                 
                             </div>
@@ -960,7 +960,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_xrayFindings" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CHEST X-RAY FINDINGS<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_xrayFindings') is-invalid @enderror me-1" id="VS_xrayFindings" name="VS_xrayFindings" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ?: old('VS_xrayFindings') }}" style="width: 100%;" required>
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_xrayFindings') is-invalid @enderror me-1" id="VS_xrayFindings" name="VS_xrayFindings" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestXrayFinding ? $patient->medicalRecordAdmin->chestXrayFinding : old('VS_xrayFindings') }}" style="width: 100%;" required>
                                 <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
                                
                             </div>
@@ -968,7 +968,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_cbcResults" class="form-label h6 my-auto me-1" style="white-space: nowrap;">CBC Results<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_cbcResults') is-invalid @enderror me-1" id="VS_cbcResults" name="VS_cbcResults" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ?: old('VS_cbcResults') }}" style="width: 100%; margin-left: 86px;" required>
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_cbcResults') is-invalid @enderror me-1" id="VS_cbcResults" name="VS_cbcResults" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->CBCResults ? $patient->medicalRecordAdmin->CBCResults : old('VS_cbcResults') }}" style="width: 100%; margin-left: 86px;" required>
                                 <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
                                 
                             </div>
@@ -976,7 +976,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_hepaBscreening" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Hepatitis B Screening<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_hepaBscreening') is-invalid @enderror me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ?: old('VS_hepaBscreening') }}" style="margin-left: 12px; width: 100%;" required>
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_hepaBscreening') is-invalid @enderror me-1" id="VS_hepaBscreening" name="VS_hepaBscreening" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->hepatitisBscreeningResults ? $patient->medicalRecordAdmin->hepatitisBscreeningResults : old('VS_hepaBscreening') }}" style="margin-left: 12px; width: 100%;" required>
                                 <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
                                 
                             </div>
@@ -984,7 +984,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_bloodType" class="form-label h6 my-auto me-1" style="white-space: nowrap;">Blood Type<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bloodType') is-invalid @enderror me-1" id="VS_bloodType" name="VS_bloodType" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ?: old('VS_bloodType') }}" style="margin-left: 94px; width: 100%;" required>
+                                <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_bloodType') is-invalid @enderror me-1" id="VS_bloodType" name="VS_bloodType" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->bloodtype ? $patient->medicalRecordAdmin->bloodtype : old('VS_bloodType') }}" style="margin-left: 94px; width: 100%;" required>
                                 <p class="pt-3" style="margin-left: 4px;">&nbsp;</p>
                                 
                             </div>

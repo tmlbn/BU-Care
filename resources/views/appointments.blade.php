@@ -877,7 +877,7 @@
                                             <div class="row row-cols-lg-5 row-cols-md-2 row-cols-sm-1">
                                                 <div class="col-lg-4">
                                                     <label for="applicantIDinput" class="form-label h6 mt-2 me-2">Applicant ID Number:</label>
-                                                    <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput" required>
+                                                    <input type="text" class="form-control" id="applicantIDinput" name="applicantIDinput">
                                                     <span class="text-danger" id="applicantIDSpan"> 
                                                         @error('applicantIDinput') 
                                                         {{ $message }} 
@@ -886,7 +886,7 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <label for="applicantBirthYear" class="form-label h6 mt-2 me-2">Birth Year:</label>
-                                                    <input type="text" class="form-control" id="applicantBirthYearDelete" name="applicantBirthYearDelete" maxlength="4" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
+                                                    <input type="text" class="form-control" id="applicantBirthYear" name="applicantBirthYear" maxlength="4" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
                                                     <span class="text-danger" id="birthYearSpan"> 
                                                         @error('applicantBirthYear') 
                                                         {{ $message }} 
