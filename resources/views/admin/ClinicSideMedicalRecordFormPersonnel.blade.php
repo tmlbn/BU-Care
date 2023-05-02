@@ -878,7 +878,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_pulseRate" class="form-label h6 my-auto me-1">PR<span class="text-danger" style="user-select: none;">*</span>:&nbsp;</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" class="{{ $patient->medicalRecord_admin && $patient->medicalRecord_admin->pulseRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_pulseRate') is-invalid @enderror me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" value="{{ $patient->medicalRecord_admin && $patient->medicalRecord_admin->pulseRate ? $patient->medicalRecord_admin && $patient->medicalRecord_admin->pulseRate : old('VS_pulseRate') }}" onKeyPress="if(this.value.length==4) return false;" {{ $patient->medicalRecord_admin ? 'readonly' : 'required' }}>
+                                <input type="number" class="{{ $patient->medicalRecord_admin && $patient->medicalRecord_admin->pulseRate ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_pulseRate') is-invalid @enderror me-1 ms-4" id="VS_pulseRate" name="VS_pulseRate" value="{{ $patient->medicalRecord_admin && $patient->medicalRecord_admin->pulseRate ? $patient->medicalRecord_admin->pulseRate : old('VS_pulseRate') }}" onKeyPress="if(this.value.length==4) return false;" {{ $patient->medicalRecord_admin ? 'readonly' : 'required' }}>
                                 <p class="pt-3" style="margin-left: 4px;">/minute</p>
                                 
                             </div>

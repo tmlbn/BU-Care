@@ -26,8 +26,13 @@ use DateTime;
 class MedicalPatientRecordsController extends Controller
 {
     public function showMedicalPatientRecordList(){
-        $medicalPatientRecords = MedicalPatientRecord::all();
-        return view('admin.medicalPatientRecordList')->with(compact('medicalPatientRecords'));
+        $medicalPatientRecordsStudents = MedicalPatientRecord::whereNotNull('student_id')->get();
+        $medicalPatientRecordsPersonnel = MedicalPatientRecord::whereNotNull('personnel_id')->get();
+        return view('admin.medicalPatientRecordList')
+        ->with([
+            'medicalPatientRecordsStudents' => $medicalPatientRecordsStudents,
+            'medicalPatientRecordsPersonnel' => $medicalPatientRecordsPersonnel
+        ]);
     }
 
     public function showMedicalPatientRecord($patientID){

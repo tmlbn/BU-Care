@@ -91,6 +91,28 @@
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
+    <div class="col-xl-2 col-lg-12 my-2">
+        <label for="listType" class="form-label h6">Select Table</label>
+        <select id="listType" name="listType" class="form-select" required>
+            <option value="STUDENTS" selected="selected">Students</option>
+            <option value="PERSONNEL" class="alternate">Personnel</option>
+        </select>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#listType').on('change', function(){
+                if($('#listType').val() == 'STUDENTS'){
+                    $('#studentsList').show();
+                    $('#personnelList').hide();
+                }
+                else{
+                    $('#studentsList').hide();
+                    $('#personnelList').show();
+                }
+            })
+        })
+    </script>
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">
@@ -152,14 +174,13 @@
         }
     </script>
       
-        <table id="data_table" name="data_table" class="table table-striped table-bordered border-dark table-hover">       
+        <table id="studentsList" name="studentsList" class="table table-striped table-bordered border-dark table-hover">       
             <caption>Medical Patient Records</caption>       
             <thead>
                 <tr>
                     <th>Date</th>
                     <th>Name</th>
                     <th>Course</th>
-                    <th>Complaint/s</th>
                     <th>Temperature</th>
                     <th>Blood Pressure</th>
                     <th>Diagnosis</th>
@@ -167,16 +188,43 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($medicalPatientRecords as $record)
+                @foreach($medicalPatientRecordsStudents as $record)
                     <tr class="hover" onclick="window.location.href='{{ route('admin.medicalPatientRecord.show', ['patientID' => $record->MPRstudent->student_id_number ? $record->MPRstudent->student_id_number : $record->MPRstudent->applicant_id_number]) }}';">
                         <td contenteditable="false" style="max-width: 120px;">{{ date('d-F-Y', strtotime($record->date)) }}</td>
                         <td contenteditable="false" style="max-width: 140px;">{{ $record->MPRstudent->first_name }} {{ $record->MPRstudent->middle_name }} {{ $record->MPRstudent->last_name }}</td>
                         <td contenteditable="false" style="max-width: 120px;">{{ $record->MPRstudent->medicalRecord->course }}</td>
-                        <td contenteditable="false" style="max-width: 120px;">Complaints</td>
                         <td contenteditable="false" style="max-width: 40px;">{{ $record->temperature }}</td>
-                        <td contenteditable="false" style="max-width: 40px;">{{ $record->blood_pressure }}</td>
-                        <td contenteditable="false" style="max-width: 200px;">{{ $record->historyPhysical_examinations }}</td>
-                        <td contenteditable="false" style="max-width: 200px;">{{ $record->physician_directions }}</td>
+                        <td contenteditable="false" style="max-width: 40px;">{{ $record->bloodPressure }}</td>
+                        <td contenteditable="false" style="max-width: 200px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
+                        <td contenteditable="false" style="max-width: 200px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <table id="personnelList" name="personnelList" class="table table-striped table-bordered border-dark table-hover" style="display: none;">       
+            <caption>Medical Patient Records</caption>       
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Temperature</th>
+                    <th>Blood Pressure</th>
+                    <th>Diagnosis</th>
+                    <th>Treatment/Medications</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($medicalPatientRecordsPersonnel as $record)
+                    <tr class="hover" onclick="window.location.href='{{ route('admin.medicalPatientRecord.show', ['patientID' => $record->MPRstudent->student_id_number ? $record->MPRstudent->student_id_number : $record->MPRstudent->applicant_id_number]) }}';">
+                        <td contenteditable="false" style="max-width: 120px;">{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                        <td contenteditable="false" style="max-width: 140px;">{{ $record->MPRstudent->first_name }} {{ $record->MPRstudent->middle_name }} {{ $record->MPRstudent->last_name }}</td>
+                        <td contenteditable="false" style="max-width: 120px;">{{ $record->MPRstudent->medicalRecord->course }}</td>
+                        <td contenteditable="false" style="max-width: 40px;">{{ $record->temperature }}</td>
+                        <td contenteditable="false" style="max-width: 40px;">{{ $record->bloodPressure }}</td>
+                        <td contenteditable="false" style="max-width: 200px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
+                        <td contenteditable="false" style="max-width: 200px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
                     </tr>
                 @endforeach
             </tbody>

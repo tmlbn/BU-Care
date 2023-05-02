@@ -272,8 +272,8 @@
                             <td contenteditable="false">{{ $record->bloodPressure }}</td>
                             <td contenteditable="false">{{ $record->weight }}</td>
                             <td contenteditable="false">{{ $record->height }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ $record->historyAndPhysicalExamination }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ $record->physicianDirections }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
+                            <td contenteditable="false" style="max-width: 100px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
                         </tr>
                         @endforeach
 
