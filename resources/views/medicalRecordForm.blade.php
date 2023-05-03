@@ -284,6 +284,38 @@
                 @enderror
             </span>
         </div>
+        <div class="col-md-3">
+            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_dateOfBirth') is-invalid @enderror" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
+            <div class="invalid-feedback">
+                Please enter your date of birth.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_dateOfBirth') 
+                    {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <script>
+        $(document).ready(function() {
+                $("#MR_dateOfBirth").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'yy MM d',
+                    showButtonPanel: true,
+                    yearRange: "1900:c",
+                    showAnim: 'slideDown',
+                });
+                // Calculate age when birthdate changes
+                $('#MR_dateOfBirth').change(function() {
+                    var birthdate = $(this).datepicker('getDate');
+                    if (birthdate) {
+                    var age = Math.floor((new Date() - birthdate) / (365.25 * 24 * 60 * 60 * 1000));
+                    $('#MR_age').val(age);
+                    }
+                });
+            });
+        </script>
         <div class="col-md-1">
             <label for="MR_age" class="form-label h6">Age<span class="text-danger">*</span></label>
             <input type="number" class="form-control @error('MR_age') is-invalid @enderror" id="MR_age" name="MR_age" value="{{ old('MR_age') }}" onKeyPress="if(this.value.length==2) return false;" required>
@@ -312,30 +344,6 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-4">
-            <label for="MR_dateOfBirth" class="form-label h6">Date of Birth<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_dateOfBirth') is-invalid @enderror" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
-            <div class="invalid-feedback">
-                Please enter your date of birth.
-            </div>
-            <span class="text-danger"> 
-                @error('MR_dateOfBirth') 
-                    {{ $message }} 
-                @enderror
-            </span>
-        </div>
-        <script>
-        $(document).ready(function() {
-                $("#MR_dateOfBirth").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: 'yy MM d',
-                    showButtonPanel: true,
-                    yearRange: "1900:c",
-                    showAnim: 'slideDown',
-                });
-            });
-        </script>
         <div class="col-md-2">
             <label for="MR_civilStatus" class="form-label h6 @error('MR_civilStatus') is-invalid @enderror">Civil Status<span class="text-danger">*</span></label>
             <select id="MR_civilStatus" name="MR_civilStatus" class="form-select" required>
@@ -367,7 +375,7 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="MR_religion" class="form-label h6 @error('MR_religion') is-invalid @enderror">Religion<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="MR_religion" name="MR_religion" value="{{ old('MR_religion') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
