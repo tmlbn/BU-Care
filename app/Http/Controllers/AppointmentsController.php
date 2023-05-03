@@ -55,7 +55,7 @@ class AppointmentsController extends Controller
                                         $query->where($user_type, '=', $userID);
                                     })
                                     ->where('appointmentDate', '>=', $dateToday)
-                                    ->orderBy('appointmentDateTime', 'asc')
+                                    ->orderBy('created_at', 'desc')
                                     ->get();
 
         return view('appointments')->with([
@@ -573,22 +573,26 @@ class AppointmentsController extends Controller
        
        $tPID = $patient->id;
 
-   $res = $adminAppointment->save();
+        $res = $adminAppointment->save();
 
-   if(!$res){
-       return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
-   }
-   $tAPID = $adminAppointment->id;
-   // E-Ticket
-   $e_ticket = $tDate . '-' . $tTime . '-'. $tAPID . $tPID . $temp;
-   $adminAppointment->ticket_id = $e_ticket;
-   $res = $adminAppointment->save();
+        if(!$res){
+            return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+        }
+        $tAPID = $adminAppointment->id;
+        // E-Ticket
+        $e_ticket = $tDate . '-' . $tTime . '-'. $tAPID . $tPID . $temp;
+        $adminAppointment->ticket_id = $e_ticket;
+        $res = $adminAppointment->save();
 
-   if(!$res){
-       return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
-   }
-   
-   return redirect()->route('admin.appointments.show')->with('success', 'Your Appointment Ticket# is: ' . $e_ticket);
+        if(!$res){
+            return redirect()->route('admin.appointments.show')->with('fail', 'Failed to reserve appointment. Please try again later.'); 
+        }
+        
+        return redirect()->route('admin.appointments.show')->with('success', 'Your Appointment Ticket# is: ' . $e_ticket);
+
+    }
+
+    public function adminShowMedRecordFromAppointment($patientID){
 
     }
 }   

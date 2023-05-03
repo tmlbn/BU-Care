@@ -36,7 +36,19 @@ class MedicalRecordFormController extends Controller
         if(Auth::check()){
             /* VALIDATION STATEMENT/METHOD TO SEE IF USER ALREADY HAS SUBMITTED MEDICAL FORM */
                 if(Auth::user()->hasMedRecord == 0){
-                    return view('medicalRecordForm');
+                    $user = Auth::user();
+                    $birthYear = $user->birth_year;
+                    $birthMonth = $user->birth_month;
+                    $birthDate = $user->birth_date;
+
+                    $dateString = $birthYear . '-' . $birthMonth . '-' . $birthDate;
+                    $date = date_create($dateString);
+
+                    $formattedBirthDate = $date->format('Y F d');
+                    return view('medicalRecordForm')->with([
+                        'user' => $user,
+                        'birthDate' => $formattedBirthDate
+                    ]);
                 }
             return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');
         }
@@ -608,7 +620,22 @@ class MedicalRecordFormController extends Controller
     #--- FUNCTIONS FOR PERSONNEL MED RECORD---#
     public function personnelMedicalRecordFormReg(){
         if(Auth::guard('employee')->user()->hasMedRecord == 0){
-            return view('personnel.medicalRecordFormPersonnel');
+            $user = Auth::guard('employee')->user();
+
+            $birthYear = $user->birth_year;
+            $birthMonth = $user->birth_month;
+            $birthDate = $user->birth_date;
+
+            $dateString = $birthYear . '-' . $birthMonth . '-' . $birthDate;
+            $date = date_create($dateString);
+
+            $formattedBirthDate = $date->format('Y F d');
+
+            return view('personnel.medicalRecordFormPersonnel')
+            ->with([
+                'user' => $user,
+                'birthDate' => $formattedBirthDate
+            ]);
         }
         else{
             return redirect()->back()->with('warning', 'You have already submitted your Medical Form!');

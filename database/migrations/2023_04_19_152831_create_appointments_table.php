@@ -27,6 +27,20 @@ return new class extends Migration
             $table->string('status')->default('ACTIVE');
             $table->timestamps();
         });
+
+        Schema::table('appointments', function (Blueprint $table) {
+            $table->foreign('student_id')
+                ->references('id')
+                ->on('users_students')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('personnel')
+                ->references('id')
+                ->on('users_personnel')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
     }
 
     /**

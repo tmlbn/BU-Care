@@ -177,7 +177,27 @@
                             echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
                             echo '</p>';
                             echo '<p class="m-0">';
+                            echo '<a href="{{ route(\'admin.med-record-from-appointment.show\') }}" target="_blank" class=" fs-5 text-black">';
                             echo 'Ticket# '. $appointment->ticket_id;
+                            echo '</a>';
+                            echo '</p>';
+                            echo '<p class="m-0">';
+                            if(Auth::user()){
+                                echo 'Patient: '. $appointment->usersStudent->last_name.', '. $appointment->usersStudent->first_name.' '. $appointment->usersStudent->middle_name;
+                                if(Auth::user()->student_id_number){
+                                    echo '<p class="m-0">';
+                                    echo 'Student ID: '. $appointment->usersStudent->student_id_number;
+                                }
+                                else{
+                                    echo '<p class="m-0">';
+                                    echo 'Applicant ID: '. $appointment->usersStudent->applicant_id_number;
+                                }
+                            }
+                            else{
+                                echo 'Patient: '. $appointment->usersPersonnel->last_name;
+                                echo '<p class="m-0">';
+                                echo 'Personnel ID: '. $appointment->usersPersonnel->personnel_id_number;
+                            }
                             echo '</p>';
                             echo '<p class="m-0">';
                             echo 'Service: ' . ($appointment->services ?: $appointment->others);

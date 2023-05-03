@@ -49,6 +49,7 @@ class MedicalPatientRecordsController extends Controller
                 ->where('student_id_number', $patientID)
                 ->where('hasMedRecord', 1)
                 ->firstOrFail();
+                
             } catch (ModelNotFoundException $e) {
                 try {
                     // If it still fails, try to find a patient with the specified ID as peronnelID
@@ -62,18 +63,19 @@ class MedicalPatientRecordsController extends Controller
                     return redirect()->route('admin.medPatientRecordList.show')->with('fail', $message);
                 }
             }
-            // Display the patient form with the found user data
-            $patientID = $patient->id;
-            if($patient->user_type == 'PATIENT/STUDENT'){
-                $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)->get();
-            }elseif($patient->user_type == 'PATIENT/PERSONNEL'){
-                $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
-            }
-            
-            return view('admin.medicalPatientRecord')
-                    ->with('patient', $patient)
-                    ->with('medicalPatientRecords', $medicalPatientRecords);
         }
+        // Display the patient form with the found user data
+        $patientID = $patient->id;
+            
+        if($patient->user_type == 'PATIENT/STUDENT'){
+            $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)->get();
+        }elseif($patient->user_type == 'PATIENT/PERSONNEL'){
+            $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
+        }
+        
+        return view('admin.medicalPatientRecord')
+                ->with('patient', $patient)
+                ->with('medicalPatientRecords', $medicalPatientRecords);
     }
 
     public function storeMedicalPatientRecord (Request $request){

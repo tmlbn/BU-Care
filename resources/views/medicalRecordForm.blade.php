@@ -210,6 +210,12 @@
                                     }
                                 });
                             });
+                            // Auto School Year
+                            const yearStart = new Date().getFullYear();
+                            const yearEnd = yearStart + 1;
+
+                            $('#schoolYearStart').val(yearStart);
+                            $('#schoolYearEnd').val(yearEnd);
                         });
                     </script>
                 </select>
@@ -250,7 +256,7 @@
     </div>   
         <div class="col-md-3">
             <label for="MR_lastName" class="form-label h6">Last Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_lastName') is-invalid @enderror" id="MR_lastName" name="MR_lastName" value="{{ old('MR_lastName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control @error('MR_lastName') is-invalid @enderror" id="MR_lastName" name="MR_lastName" value="{{ old('MR_lastName') ?:  $user->last_name }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your last name.
             </div>
@@ -262,7 +268,7 @@
         </div>
         <div class="col-md-3">
             <label for="MR_firstName" class="form-label h6">First Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_firstName') is-invalid @enderror" id="MR_firstName" name="MR_firstName" value="{{ old('MR_firstName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="text" class="form-control @error('MR_firstName') is-invalid @enderror" id="MR_firstName" name="MR_firstName" value="{{ old('MR_firstName') ?:  $user->first_name }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your first name.
             </div>
@@ -274,7 +280,7 @@
         </div>
         <div class="col-md-3">
             <label for="MR_middleName" class="form-label h6">Middle Name</label>
-            <input type="text" class="form-control @error('MR_middleName') is-invalid @enderror" id="MR_middleName" name="MR_middleName" value="{{ old('MR_middleName') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MR_middleName') is-invalid @enderror" id="MR_middleName" name="MR_middleName" value="{{ old('MR_middleName') ?:  $user->middle_name }}" oninput="this.value = this.value.toUpperCase()">
             <div class="invalid-feedback">
                 Please enter your middle name.
             </div>
@@ -286,7 +292,7 @@
         </div>
         <div class="col-md-3">
             <label for="MR_dateOfBirth" class="form-label h6">Date of Birth<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_dateOfBirth') is-invalid @enderror" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') }}" onkeydown="return false;" required>
+            <input type="text" class="form-control @error('MR_dateOfBirth') is-invalid @enderror" id="MR_dateOfBirth" name="MR_dateOfBirth" value="{{ old('MR_dateOfBirth') ?: $birthDate }}" onkeydown="return false;" required>
             <div class="invalid-feedback">
                 Please enter your date of birth.
             </div>
@@ -298,23 +304,28 @@
         </div>
         <script>
         $(document).ready(function() {
-                $("#MR_dateOfBirth").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: 'yy MM d',
-                    showButtonPanel: true,
-                    yearRange: "1900:c",
-                    showAnim: 'slideDown',
-                });
-                // Calculate age when birthdate changes
-                $('#MR_dateOfBirth').change(function() {
-                    var birthdate = $(this).datepicker('getDate');
-                    if (birthdate) {
+            var initialBirthDate = new Date("<?php echo $birthDate; ?>");
+            var age = Math.floor((new Date() - initialBirthDate) / (365.25 * 24 * 60 * 60 * 1000));
+            $('#MR_age').val(age);
+
+            $("#MR_dateOfBirth").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy MM dd',
+                showButtonPanel: true,
+                yearRange: "1900:c",
+                showAnim: 'slideDown',
+                defaultDate: initialBirthDate // Set the initial date value here
+            });
+            // Calculate age when birthdate changes
+            $('#MR_dateOfBirth').change(function() {
+                var birthdate = $(this).datepicker('getDate');
+                if (birthdate) {
                     var age = Math.floor((new Date() - birthdate) / (365.25 * 24 * 60 * 60 * 1000));
                     $('#MR_age').val(age);
-                    }
-                });
+                }
             });
+        });
         </script>
         <div class="col-md-1">
             <label for="MR_age" class="form-label h6">Age<span class="text-danger">*</span></label>
@@ -387,14 +398,62 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-12">
-            <label for="MR_address" class="form-label h6 @error('MR_address') is-invalid @enderror">Home Address<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_address" name="MR_address" value="{{ old('MR_address') }}" oninput="this.value = this.value.toUpperCase()" required>
+        <div class="col-md-2">
+            <label for="MR_addressRegion" class="form-label h6 @error('MR_addressRegion') is-invalid @enderror">Region<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="MR_addressRegion" name="MR_addressRegion" value="{{ old('MR_addressRegion') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
-                Please enter your home address.
+                Please enter your Region.
             </div>
             <span class="text-danger"> 
-                @error('MR_address') 
+                @error('MR_addressRegion') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label for="MR_addressProvince" class="form-label h6 @error('MR_addressProvince') is-invalid @enderror">Province<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="MR_addressProvince" name="MR_addressProvince" value="{{ old('MR_addressProvince') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your Province.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_addressProvince') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label for="MR_addressCityMunicipality" class="form-label h6 @error('MR_addressCityMunicipality') is-invalid @enderror">City/Municipality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="MR_addressCityMunicipality" name="MR_addressCityMunicipality" value="{{ old('MR_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your City/Municipality.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_addressCity') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="MR_addressBrgySubdVillage" class="form-label h6 @error('MR_adressbrgySubdVillage') is-invalid @enderror">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="MR_addressBrgySubdVillage" name="MR_addressBrgySubdVillage" value="{{ old('MR_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your Barangay.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_addressBrgySubdVillage') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="MR_addressHouseNoStreet" class="form-label h6 @error('MR_addressHouseNoStreet') is-invalid @enderror">House No./Street Name</label>
+            <input type="text" class="form-control" id="MR_addressHouseNoStreet" name="MR_addressHouseNoStreet" value="{{ old('MR_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <div class="invalid-feedback">
+                Please enter your House No./Street Name.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_addressHouseNoStreet') 
                   {{ $message }} 
                 @enderror
             </span>
@@ -1544,6 +1603,61 @@
                         </span>
                     </div>
                 </div>
+                <!-- Validation for Image only uploads -->
+                <script>
+                    const xrayInput = document.getElementById('MR_chestXray');
+                    const cbcInput = document.getElementById('MR_cbcresults');
+                    const hepaInput = document.getElementById('MR_hepaBscreening');
+                    const bloodtypeInput = document.getElementById('MR_bloodtype'); 
+                  
+                    xrayInput.addEventListener('change', function() {
+                        let file = this.files[0];
+                        let fileType = file.type;
+                    
+                      if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+                            this.classList.add('is-invalid');
+                            this.value = '';
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+
+                    cbcInput.addEventListener('change', function() {
+                        let file = this.files[0];
+                        let fileType = file.type;
+                    
+                      if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+                            this.classList.add('is-invalid');
+                            this.value = '';
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+
+                    hepaInput.addEventListener('change', function() {
+                        let file = this.files[0];
+                        let fileType = file.type;
+                    
+                      if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+                            this.classList.add('is-invalid');
+                            this.value = '';
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+
+                    bloodtypeInput.addEventListener('change', function() {
+                        let file = this.files[0];
+                        let fileType = file.type;
+                    
+                      if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+                            this.classList.add('is-invalid');
+                            this.value = '';
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+                  </script>
                     <div id="resultsContainer" class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 my-auto px-5 py-4">
                         <script>
                             let maxResults = 8;
