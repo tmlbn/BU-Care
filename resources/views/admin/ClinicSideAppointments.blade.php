@@ -249,38 +249,71 @@
                                 $('#appointmentTime').val('');
                                 //loop through the data
                                 let counter = 0;
+                                let patientID = '';
                                 $.each(entries, function(index, appointment) {
-                                    counter++;
-                                //get the time of appointments
-                                    var appt_time = appointment.appointmentTime;
-                                    var formatted_time = moment(appt_time, 'HH:mm:ss').format('h:mm A');
-                                    
-                                    //loop through each table cell and check if it matches the appointment date and time
-                                    $('#time-slots tr').each(function() {
-                                        
-                                        var cell_time = $(this).find('#timeSlot').text();
-                                        if (formatted_time == cell_time) {
-                                        //if there is a match, add a class to the table cell that corresponds to the appointment status
-                                            if (appointment.booked_slots == 2) {
-                                                $(this).addClass('booked');
-                                                $(this).find('#timeSlot').addClass('pointer-events-none');
-                                                $(this).find('#numberOfSlots').addClass('pointer-events-none').text('FULL');
-                                            } else if (appointment.booked_slots == 1) {
-                                                $(this).addClass('lastOne');
-                                                $(this).find('#numberOfSlots').text('1');
+                                    if(appointment.patient_type == 'PATIENT-STUDENT'){
+                                        patientID = appointment.student_id;
+                                    }
+                                    else{
+                                        patientID = appointment.personnel_id;
+                                    }
+                                    $.ajax({
+                                        url: '/admin/getUserOfAppointment',
+                                        method: 'GET',
+                                        data: {
+                                            patientType: appointment.patient_type,
+                                            patientID: patientID
+                                        },
+                                        success: function(user) {
+                                            let userInfoHTML = '';
+                                            patient = user.user;
+                                            if (patient) {
+                                                patientInfoHTML = `
+                                                <p class="m-0 fw-bold">PATIENT:&nbsp;&nbsp;${patient.first_name} ${patient.last_name}</p>
+                                                `;
                                             }
+                                            counter++;
+                                            //get the time of appointments
+                                            var appt_time = appointment.appointmentTime;
+                                            var formatted_time = moment(appt_time, 'HH:mm:ss').format('h:mm A');
                                             
-                                            // Create DateTime objects
-                                            let formatted_date = moment(appointment.appointmentDate).format('YYYY-MM-DD');
+                                            //loop through each table cell and check if it matches the appointment date and time
+                                            $('#time-slots tr').each(function() {
+                                            
+                                                var cell_time = $(this).find('#timeSlot').text();
+                                                if (formatted_time == cell_time) {
+                                                //if there is a match, add a class to the table cell that corresponds to the appointment status
+                                                    if (appointment.booked_slots == 2) {
+                                                        $(this).addClass('booked');
+                                                        $(this).find('#timeSlot').addClass('pointer-events-none');
+                                                        $(this).find('#numberOfSlots').addClass('pointer-events-none').text('FULL');
+                                                    } else if (appointment.booked_slots == 1) {
+                                                        $(this).addClass('lastOne');
+                                                        $(this).find('#numberOfSlots').text('1');
+                                                    }
+                                                    
+                                                    // Create DateTime objects
+                                                    let formatted_date = moment(appointment.appointmentDate).format('YYYY-MM-DD');
 
-                                            // Append the HTML to a div
-                                            $('#daily-appointments-div').append(`
-                                                <div class="col-12 col-xl-3 col-md-6">
-                                                    <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
-                                                    <p class="m-0">Ticket# ${appointment.ticket_id}</p>
-                                                    <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
-                                                </div>
-                                            `);
+                                                    // Append the HTML to a div
+                                                    $('#daily-appointments-div').append(`
+                                                        <div class="col-12 col-xl-3 col-md-6">
+                                                            <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
+                                                            <a class="fw-bold text-primary-subtle"></a>
+                                                            ${patientInfoHTML}
+                                                            <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
+                                                        </div>
+                                                    `);
+
+                                                    var appointmentLink = $('#daily-appointments-div').find('.col-md-6').last().find('a');
+                                                    appointmentLink.attr('href', "{{ route('admin.med-record-from-appointment.show', ['patientType' => ':patientType', 'patientID' => ':patientID']) }}".replace(':patientType', appointment.patient_type).replace(':patientID', appointment.student_id || appointment.personnel_id));
+                                                    appointmentLink.attr('target', '_blank');
+                                                    appointmentLink.append(`<p class="m-0">Ticket# ${appointment.ticket_id}</p>`);
+                                                }
+                                            })
+                                        },
+                                        error: function(user) {
+                                            console.log(user.userJSON.error);
                                         }
                                     });
                                 });

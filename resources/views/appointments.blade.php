@@ -180,9 +180,19 @@
                             echo 'Ticket# '. $appointment->ticket_id;
                             echo '</p>';
                             echo '<p class="m-0">';
+                            if(Auth::user()){
+                                echo 'PATIENT: '. $appointment->usersStudent->first_name.' '.$appointment->usersStudent->middle_name.' '.$appointment->usersStudent->last_name;
+                            }
+                            elseif(Auth::guard('employee')->user()){
+                                echo 'PATIENT: '. $appointment->usersPersonnel->first_name.' '.$appointment->usersPersonnel->middle_name.' '.$appointment->usersPersonnel->last_name;
+                            }
+                            echo '</p>';
+                            echo '<p class="m-0">';
                             echo 'Service: ' . ($appointment->services ?: $appointment->others);
                             echo '<br style="user-select: none;">';
-                            echo 'Description: ' . $appointment->appointmentDescription;
+                            if($appointment->appointmentDescription){
+                                echo 'Description: ' . $appointment->appointmentDescription;
+                            }
                             echo '</p>';
                             echo '<hr class="mx-auto " style="width:300px;">';
                         }
@@ -854,7 +864,7 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;" required></textarea>
+                                        <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
                                     </div>  
                                     <script>
                                         var textarea = document.getElementById('appointmentDescription');

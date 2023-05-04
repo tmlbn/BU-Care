@@ -67,9 +67,9 @@ class MedicalPatientRecordsController extends Controller
         // Display the patient form with the found user data
         $patientID = $patient->id;
             
-        if($patient->user_type == 'PATIENT/STUDENT'){
+        if($patient->user_type == 'PATIENT-STUDENT'){
             $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)->get();
-        }elseif($patient->user_type == 'PATIENT/PERSONNEL'){
+        }elseif($patient->user_type == 'PATIENT-PERSONNEL'){
             $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
         }
         
@@ -113,11 +113,11 @@ class MedicalPatientRecordsController extends Controller
 
                 $new_mpr = new MedicalPatientRecord();
                 try{
-                    if($request->patientType == 'PATIENT/PERSONNEL'){
+                    if($request->patientType == 'PATIENT-PERSONNEL'){
                         $patient = UserPersonnel::where('id', $request->patientID)->first();
                         $new_mpr->personnel->id = $patient->id;
                     }
-                    elseif($request->patientType == 'PATIENT/STUDENT'){
+                    elseif($request->patientType == 'PATIENT-STUDENT'){
                         $patient = UserStudent::where('id', $request->patientID)->first();
                         $new_mpr->student_id = $patient->id;
                     }

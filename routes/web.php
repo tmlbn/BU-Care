@@ -134,4 +134,5 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::post('admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
 	Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
     Route::get('/admin/appointment/medical-record/{patientType}/{patientID}', [AppointmentsController::class, 'adminShowMedRecordFromAppointment'])->name('admin.med-record-from-appointment.show');
+    Route::get('/admin/getUserOfAppointment', [AppointmentsController::class, 'getUserOfAppointment'])->name('admin.UserOfAppointment.get');
 });

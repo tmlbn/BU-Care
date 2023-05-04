@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('MRPA_id')->unique()->nullable()->default(null);
             $table->boolean('hasMedRecord')->nullable()->default(false);
             $table->boolean('hasValidatedRecord')->nullable()->default(false);
-            $table->string('user_type', 17)->default('PATIENT/PERSONNEL');
+            $table->string('user_type', 17)->default('PATIENT-PERSONNEL');
             $table->rememberToken();
             $table->timestamps();
         });

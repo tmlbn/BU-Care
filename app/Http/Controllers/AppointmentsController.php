@@ -71,7 +71,9 @@ class AppointmentsController extends Controller
         $date = DateTime::createFromFormat('Y-F-d', $requestDate);
         $formattedDate = $date->format('Y-m-d');
         // Retrieve the appointment entries for the date
-        $appointments = Appointment::whereDate('appointmentDate', $formattedDate)->get();
+        $appointments = Appointment::whereDate('appointmentDate', $formattedDate)
+                                    ->orderByDesc('created_at')
+                                    ->get();
 
         return response()->json($appointments);
     }
@@ -602,10 +604,55 @@ class AppointmentsController extends Controller
         }
         
         return redirect()->route('admin.appointments.show')->with('success', 'Your Appointment Ticket# is: ' . $e_ticket);
-
     }
 
-    public function adminShowMedRecordFromAppointment($patientID){
+    public function getUserOfAppointment(Request $request){
+        $patientType = $request->input('patientType');
+        $patientID = $request->input('patientID');
 
+        if($patientType == 'PATIENT-STUDENT') {
+            $user = UserStudent::where('id', $patientID)->first();
+            if($user->hasMedRecord){
+                return response()->json(['user' => $user]);
+            }
+            else{
+                // handle error case when $patientType is neither 'PATIENT-STUDENT' nor 'PATIENT-PERSONNEL'
+                return redirect()->route('admin.appointments.show')->with('fail', 'Invalid patient type. Please contact a BU-Care admin.');
+            }
+        }
+        elseif($patientType == 'PATIENT-PERSONNEL'){
+            $user = UserPersonnel::where('id', $patientID)->first();
+            if($user->hasMedRecord){
+                return response()->json(['user' => $user]);
+            }
+            else{
+                // handle error case when $patientType is neither 'PATIENT-STUDENT' nor 'PATIENT-PERSONNEL'
+                return redirect()->route('admin.appointments.show')->with('fail', 'Invalid patient type. Please contact a BU-Care admin.');
+            }
+        }
+    }
+
+    public function adminShowMedRecordFromAppointment($patientType, $patientID){
+        dd($patientType, $patientID);
+        if($patientType == 'PATIENT-STUDENT') {
+            $user = UserStudent::where('id', $patientID)->first();
+            if($user->hasMedRecord){
+                return view('ClinicSideMedicalRecordForm')
+                ->with('patient', $user)
+                ->with('fromAppointment', 1);
+            }
+        }
+        elseif($patientType == 'PATIENT-PERSONNEL'){
+            $user = UserPersonnel::where('id', $patientID)->first();
+            if($user->hasMedRecord){
+                return view('ClinicSideMedicalRecordFormPersonnel')
+                ->with('patient', $user)
+                ->with('fromAppointment', 1);
+            }
+        }
+        else{
+            // handle error case when $patientType is neither 'PATIENT-STUDENT' nor 'PATIENT-PERSONNEL'
+            return redirect()->route('admin.appointments.show')->with('fail', 'Invalid patient type. Please contact a BU-Care admin.');
+        }
     }
 }   

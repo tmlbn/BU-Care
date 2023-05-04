@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('first_name', 50);
             $table->string('middle_name', 50)->nullable();
             $table->date('date_of_birth');
-            $table->string('user_type', 12)->default('ADMIN/CLINIC');
+            $table->string('user_type', 12)->default('ADMIN-CLINIC');
             $table->rememberToken();
             $table->timestamps();
         });
