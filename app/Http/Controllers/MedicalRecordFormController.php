@@ -1087,4 +1087,6 @@ class MedicalRecordFormController extends Controller
         // Display the patient form with the found user data
         return view('admin.ClinicSideMedicalRecordFormPersonnel')->with('patient', $patient);
     }
+
+    
 }

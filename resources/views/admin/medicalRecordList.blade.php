@@ -156,6 +156,7 @@
                         <div class="col-sm-5">
                             <select id="campusFilter" name="campusFilter" class="form-select" required>
                                 <option selected="selected" disabled="disabled" value="">CAMPUS</option>
+                                <option value="all">All</option>
                                 <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
                                 <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
                                 <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
@@ -173,14 +174,15 @@
                                 <option value="Tabaco Campus">Tabaco Campus</option>
                             </select>
                         </div>
+                       
                         <div class="col-sm-5">
                             <input type="text" class="form-control" id="course" name="course" value="{{ request()->input('course') }}" placeholder="Filter by course...">
                         </div>
                     </div>
                 </div>
         </form>
-        <div class="table-responsive" id="studentsList">
-            <table class="table table-bordered table-sm">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="studentsList">
                 <caption style="user-select: none;">End of Student Health Records List</caption>
                 <thead>
                     <tr class="text-center">
@@ -228,29 +230,6 @@
             </table>
         </div>
         
-
-    <div class="table-responsive" id="personnelList" style="display: none;">
-        <table class="table table-bordered table-sm">
-            <caption style="user-select: none;">End of Personnel Health Records List</caption>
-            <thead>
-                <tr class="text-center">
-                    <th class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
-                        <span class="fs-4 font-monospace fw-bold">ID</span>
-                    </th>
-                    <th class="col-md-4 col-sm-3 border border-dark border-end-0">
-                        <span class="fs-4 font-monospace fw-bold">NAME</span>
-                    </th>
-                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
-                        <span class="fs-4 font-monospace fw-bold">DESIGNATION</span>
-                    </th>
-                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
-                        <span class="fs-4 font-monospace fw-bold">UNIT/DEPARTMENT</span>
-                    </th>
-                    <th class="col-md-2 col-sm-3 border border-dark">
-                        <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
-                    </th>
-                </tr>
-            </thead>
             <tbody class="table-group-divider">
                 @foreach ($personnel as $personnel)
                     <tr class="text-center divHover" onClick="window.open('{{ route('admin.personnelMedForm.show', ['patientID' => $personnel->personnel_id_number ]) }}', '_blank'); return false;">
