@@ -633,11 +633,10 @@ class AppointmentsController extends Controller
     }
 
     public function adminShowMedRecordFromAppointment($patientType, $patientID){
-        dd($patientType, $patientID);
         if($patientType == 'PATIENT-STUDENT') {
             $user = UserStudent::where('id', $patientID)->first();
             if($user->hasMedRecord){
-                return view('ClinicSideMedicalRecordForm')
+                return view('admin.ClinicSideMedicalRecordForm')
                 ->with('patient', $user)
                 ->with('fromAppointment', 1);
             }
@@ -645,7 +644,7 @@ class AppointmentsController extends Controller
         elseif($patientType == 'PATIENT-PERSONNEL'){
             $user = UserPersonnel::where('id', $patientID)->first();
             if($user->hasMedRecord){
-                return view('ClinicSideMedicalRecordFormPersonnel')
+                return view('admin.ClinicSideMedicalRecordFormPersonnel')
                 ->with('patient', $user)
                 ->with('fromAppointment', 1);
             }
