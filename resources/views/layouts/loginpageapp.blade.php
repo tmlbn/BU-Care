@@ -12,6 +12,7 @@
     <title>{{ config('app.name', 'BU-Care') }}</title>
 
     <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     
@@ -27,7 +28,31 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-
+<style>
+    html{
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        width: 100%;
+    }
+    body {
+        font-family: 'Nunito', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        width: 100%;
+    }
+    .was-validated .form-control:valid {
+        background-image: none;
+        padding-right: 0.75em;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+</style>
 </head>
 
 <body>

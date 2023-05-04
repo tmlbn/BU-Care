@@ -71,15 +71,39 @@
                                               @enderror
                                             </span>
                                         </div>
-                                        <div class="form-floating mb-3">
-                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="current-password">
+
+                                        <div class="input-group mb-3">
+                                          <div class="form-floating">
+                                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" placeholder="Password" required autocomplete="current-password">
                                             <label for="floatingInput">Password</label>
-                                            <span class="text-danger"> 
+                                          </div>
+                                          <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <div style="margin-top: -5px; width: 40px;">
+                                              <span class="bi bi-eye-fill" aria-hidden="false"></span>
+                                            </div>
+                                          </button>
+                                          <div class="invalid-feedback">
+                                            Please input your password.
+                                          </div>
+                                          <span class="text-danger"> 
                                               @error('password') 
-                                                {{ $message }} 
+                                              {{ $message }} 
                                               @enderror
-                                            </span>
-                                        </div>
+                                          </span>
+                                      </div>
+                                      
+                                      <script>
+                                        const password = document.getElementById('password');
+                                        const togglePassword = document.getElementById('togglePassword');
+                                        togglePassword.addEventListener('click', function() {
+                                            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                            password.setAttribute('type', type);
+                                            togglePassword.querySelector('span').classList.toggle('bi-eye-fill');
+                                            togglePassword.querySelector('span').classList.toggle('bi-eye-slash-fill');
+                                            togglePassword.classList.toggle('active');
+                                        });
+                                    </script>
+
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
                                             <label class="form-check-label" for="rememberPasswordCheck">
