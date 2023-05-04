@@ -173,8 +173,11 @@ class MedicalRecordFormController extends Controller
             'MR_dateOfBirth' => 'required',
             'MR_civilStatus' => 'required|string',
             'MR_nationality' => 'required|string',
-            'MR_religion' => 'required|string',
-            'MR_address' => 'required|string',
+            'MR_addressRegion' => 'required|string',
+            'MR_addressProvince' => 'required|string',
+            'MR_addressCityMunicipality' => 'required|string',
+            'MR_addressBrgySubdVillage' => 'required|string',
+            'MR_addressHouseNoStreet' => 'required|string',
             'MR_fatherName' => 'required|string',
             'MR_fatherOccupation' => 'nullable',
             'MR_fatherOffice' => 'nullable',
@@ -460,7 +463,13 @@ class MedicalRecordFormController extends Controller
 
                 $medRecord->dateOfBirth = $formattedDate;
                 $medRecord->civilStatus = filter_var($request->input('MR_civilStatus'), FILTER_SANITIZE_STRING);
-                $medRecord->homeAddress = filter_var($request->input('MR_address'), FILTER_SANITIZE_STRING);
+
+                $medRecord->region = filter_var($request->input('MR_addressRegion'), FILTER_SANITIZE_STRING);
+                $medRecord->province = filter_var($request->input('MR_addressProvince'), FILTER_SANITIZE_STRING);
+                $medRecord->cityMunicipality = filter_var($request->input('MR_addressCityMunicipality'), FILTER_SANITIZE_STRING);
+                $medRecord->barangaySubdVillage = filter_var($request->input('MR_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+                $medRecord->houseNumberStName = filter_var($request->input('MR_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
+
                 $medRecord->nationality = filter_var($request->input('MR_nationality'), FILTER_SANITIZE_STRING);
                 $medRecord->religion = filter_var($request->input('MR_religion'), FILTER_SANITIZE_STRING);
                 $medRecord->fatherName = filter_var($request->input('MR_fatherName'), FILTER_SANITIZE_STRING);

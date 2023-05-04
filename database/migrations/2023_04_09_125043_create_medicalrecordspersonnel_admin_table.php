@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text('bloodtype');
             $table->text('recommendations');
             $table->text('physician');
+            $table->boolean('released')->default(0);
             $table->timestamps();
         });
     }

@@ -51,6 +51,7 @@ return new class extends Migration
             $table->text('licenseNumber');
             $table->text('PTRnumber');
             $table->date('dateOfExam');
+            $table->boolean('released')->default(0);
             $table->timestamps();
         });
     }

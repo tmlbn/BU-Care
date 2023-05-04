@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('height');
             $table->text('historyAndPhysicalExamination');
             $table->text('physicianDirections');
+            $table->text('status');
             $table->timestamps();
         });
     }

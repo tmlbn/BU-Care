@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('appointmentDescription');
             $table->integer('booked_slots')->default(0);
             $table->string('status')->default('ACTIVE');
+            $table->boolean('released')->default(0);
             $table->timestamps();
         });
 
@@ -35,7 +36,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('personnel')
+            $table->foreign('personnel_id')
                 ->references('id')
                 ->on('users_personnel')
                 ->cascadeOnDelete()

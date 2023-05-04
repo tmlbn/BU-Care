@@ -91,13 +91,23 @@
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
-    <form action="{{ route('import.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('import.store.new') }}" method="post" enctype="multipart/form-data">
         @csrf
-        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_file').click()">Choose File</button>
-        <input type="file" name="csv_file" id="csv_file" accept=".csv" style="display: none" onchange="document.getElementById('file-name').textContent = this.files[0].name; document.getElementById('import-btn').style.display = this.files.length ? 'inline-block' : 'none'">
-        <span id="file-name"></span>
-        <button id="import-btn" class="btn btn-success mb-1" style="display: none">Import</button>
-    </form>
+        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_new').click()">Choose File</button>
+          <input type="file" name="csv_new" id="csv_new" accept=".csv" style="display: none" onchange="document.getElementById('file-name-new').textContent = this.files[0].name; document.getElementById('import-btn-new').style.display = this.files.length ? 'inline-block' : 'none'">
+          <span id="file-name-new"></span>
+        <button id="import-btn-new" class="btn btn-success mb-1" style="display: none">Import</button>
+      </form>
+    </div>
+    <div>
+      <form action="{{ route('import.store.old') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_old').click()">Choose File</button>
+          <input type="file" name="csv_old" id="csv_old" accept=".csv" style="display: none" onchange="document.getElementById('file-name-old').textContent = this.files[0].name; document.getElementById('import-btn-old').style.display = this.files.length ? 'inline-block' : 'none'">
+          <span id="file-name-old"></span>
+        <button id="import-btn-old" class="btn btn-success mb-1" style="display: none">Import</button>
+      </form>
+    </div>
     <div class="col-xl-2 col-lg-12 my-2">
         <label for="listType" class="form-label h6">Select Table</label>
         <select id="listType" name="listType" class="form-select" required>
