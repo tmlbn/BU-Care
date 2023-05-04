@@ -398,9 +398,38 @@
                 @enderror
             </span>
         </div>
+        <!-- ADDRESS -->
+        @php
+            $regions = [
+                ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+            ];
+        @endphp
         <div class="col-md-2">
-            <label for="MR_addressRegion" class="form-label h6 @error('MR_addressRegion') is-invalid @enderror">Region<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_addressRegion" name="MR_addressRegion" value="{{ old('MR_addressRegion') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+            <select class="form-select  @error('MR_addressRegion') is-invalid @enderror" id="MR_addressRegion" name="MR_addressRegion" required>
+                <option selected="selected" disabled="disabled" value="">SELECT</option>
+                @foreach ($regions as $region)
+                    <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                        {{ $region['number'] }} - {{ $region['name'] }}
+                    </option>
+                @endforeach
+            </select>
             <div class="invalid-feedback">
                 Please enter your Region.
             </div>
@@ -411,8 +440,10 @@
             </span>
         </div>
         <div class="col-md-2">
-            <label for="MR_addressProvince" class="form-label h6 @error('MR_addressProvince') is-invalid @enderror">Province<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_addressProvince" name="MR_addressProvince" value="{{ old('MR_addressProvince') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+                <select class="form-select  @error('MR_addressProvince') is-invalid @enderror" id="MR_addressProvince" name="MR_addressProvince" required>
+                    <option selected="selected" disabled="disabled" value="">SELECT</option>
+                </select>
             <div class="invalid-feedback">
                 Please enter your Province.
             </div>
@@ -422,21 +453,72 @@
                 @enderror
             </span>
         </div>
+        <script>
+            var provinces={
+                "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SOROSGON"],
+                "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+            };
+
+            $(document).ready(function() {
+                // get the selected region
+                var region = $('#MR_addressRegion').val();
+                // get the corresponding provinces from the provinces object
+                var selectedProvinces = provinces[region];
+                // update the list of provinces in the dropdown
+                var $provincesDropdown = $('#MR_addressProvince');
+                $provincesDropdown.empty();
+                $.each(selectedProvinces, function(i, province) {
+                    $provincesDropdown.append($('<option>').text(province).attr('value', province));
+                });
+            
+
+                // when the region selection changes, update the list of provinces
+                $('#MR_addressRegion').on('change', function() {
+                    var region = $(this).val();
+                    var selectedProvinces = provinces[region];
+                    var $provincesDropdown = $('#MR_addressProvince');
+                    $provincesDropdown.empty();
+                    $.each(selectedProvinces, function(i, province) {
+                        $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                    });
+                    // update the selected province if it's still in the list of available provinces
+                    var selectedProvince = $provincesDropdown.val();
+                        if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                            $provincesDropdown.val(selectedProvinces[0]);
+                        }
+                });
+            });
+        </script>
         <div class="col-md-2">
-            <label for="MR_addressCityMunicipality" class="form-label h6 @error('MR_addressCityMunicipality') is-invalid @enderror">City/Municipality<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_addressCityMunicipality" name="MR_addressCityMunicipality" value="{{ old('MR_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_addressCityMunicipality') is-invalid @enderror" id="MR_addressCityMunicipality" name="MR_addressCityMunicipality" value="{{ old('MR_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your City/Municipality.
             </div>
             <span class="text-danger"> 
-                @error('MR_addressCity') 
+                @error('MR_addressCityMunicipality') 
                   {{ $message }} 
                 @enderror
             </span>
         </div>
         <div class="col-md-3">
-            <label for="MR_addressBrgySubdVillage" class="form-label h6 @error('MR_adressbrgySubdVillage') is-invalid @enderror">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_addressBrgySubdVillage" name="MR_addressBrgySubdVillage" value="{{ old('MR_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <label for="MR_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_adressbrgySubdVillage') is-invalid @enderror" id="MR_addressBrgySubdVillage" name="MR_addressBrgySubdVillage" value="{{ old('MR_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your Barangay.
             </div>
@@ -447,8 +529,8 @@
             </span>
         </div>
         <div class="col-md-3">
-            <label for="MR_addressHouseNoStreet" class="form-label h6 @error('MR_addressHouseNoStreet') is-invalid @enderror">House No./Street Name</label>
-            <input type="text" class="form-control" id="MR_addressHouseNoStreet" name="MR_addressHouseNoStreet" value="{{ old('MR_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_addressHouseNoStreet" class="form-label h6">House No./Street Name</label>
+            <input type="text" class="form-control @error('MR_addressHouseNoStreet') is-invalid @enderror" id="MR_addressHouseNoStreet" name="MR_addressHouseNoStreet" value="{{ old('MR_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
             <div class="invalid-feedback">
                 Please enter your House No./Street Name.
             </div>
@@ -459,8 +541,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherName" class="form-label h6 @error('MR_fatherName') is-invalid @enderror">Father's Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_fatherName" name="MR_fatherName" value="{{ old('MR_fatherName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_fatherName" class="form-label h6">Father's Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_fatherName') is-invalid @enderror" id="MR_fatherName" name="MR_fatherName" value="{{ old('MR_fatherName') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your father's name.
             </div>
@@ -471,8 +553,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherName" class="form-label h6 @error('MR_motherName') is-invalid @enderror">Mother's Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_motherName" name="MR_motherName" value="{{ old('MR_motherName') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_motherName" class="form-label h6">Mother's Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_motherName') is-invalid @enderror" id="MR_motherName" name="MR_motherName" value="{{ old('MR_motherName') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
                 Please enter your mother's name.
             </div>
@@ -483,8 +565,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOccupation" class="form-label h6 @error('MR_fatherOccupation') is-invalid @enderror">Father's Occupation<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ old('MR_fatherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_fatherOccupation" class="form-label h6">Father's Occupation<span class="text-danger">*</span></label>
+            <input type="text" class="form-control h6 @error('MR_fatherOccupation') is-invalid @enderror" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ old('MR_fatherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
                 @error('MR_fatherOccupation') 
                   {{ $message }} 
@@ -492,8 +574,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherOccupation" class="form-label h6 @error('MR_motherOccupation') is-invalid @enderror">Mother's Occupation<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ old('MR_motherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_motherOccupation" class="form-label h6">Mother's Occupation<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_motherOccupation') is-invalid @enderror" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ old('MR_motherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
                 @error('MR_motherOccupation') 
                   {{ $message }} 
@@ -501,8 +583,8 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOffice" class="form-label h6 @error('MR_fatherOffice') is-invalid @enderror">Office Address of Father<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ old('MR_fatherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_fatherOffice" class="form-label h6">Office Address of Father<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_fatherOffice') is-invalid @enderror" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ old('MR_fatherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
                 @error('MR_fatherOffice') 
                   {{ $message }}
@@ -510,8 +592,8 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_motherOffice" class="form-label h6 @error('MR_motherOffice') is-invalid @enderror">Office Address of Mother<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_motherOffice" name="MR_motherOffice" value="{{ old('MR_motherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <label for="MR_motherOffice" class="form-label h6">Office Address of Mother<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MR_motherOffice') is-invalid @enderror" id="MR_motherOffice" name="MR_motherOffice" value="{{ old('MR_motherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
                 @error('MR_motherOffice') 
                   {{ $message }} 
@@ -519,8 +601,8 @@
               </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_guardian" class="form-label h6 @error('MR_guardian') is-invalid @enderror">Guardian's Name</label>
-            <input type="text" class="form-control" id="MR_guardian" name="MR_guardianName" value="{{ old('MR_guardianName') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
+            <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
+            <input type="text" class="form-control @error('MR_guardian') is-invalid @enderror" id="MR_guardian" name="MR_guardianName" value="{{ old('MR_guardianName') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
             <span class="text-danger">
                 @error('MR_guardianName') 
                   {{ $message }} 
@@ -528,8 +610,8 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_parentGuardianContactNumber" class="form-label h6 @error('MR_parentGuardianContactNumber') is-invalid @enderror">Parent's/Guardian's Contact No.<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" onKeyPress="if(this.value.length==11) return false;" name="MR_parentGuardianContactNumber" required>
+            <label for="MR_parentGuardianContactNumber" class="form-label h6">Parent's/Guardian's Contact No.<span class="text-danger">*</span></label>
+            <input type="number" class="form-control @error('MR_parentGuardianContactNumber') is-invalid @enderror" placeholder="09123456789" value="{{ old('MR_parentGuardianContactNumber') }}" id="MR_parentGuardianContactNumber" onKeyPress="if(this.value.length==11) return false;" name="MR_parentGuardianContactNumber" required>
             <div class="invalid-feedback">
                 Please enter your parent's or guardian's contact number.
             </div>
@@ -818,7 +900,7 @@
                         <label class="form-check-label" for="FH_others" style="display: contents!important;">
                             Others
                         </label>
-                            <input type="text" class="form-control input-sm @error('FH_othersDetails') is-invalid @enderror" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('FH_others') == '1' ? '' : 'disabled' }}>
+                            <input type="text" class="form-control input-sm @error('FH_othersDetails') is-invalid @enderror" id="FH_othersDetails" name="FH_othersDetails" value="{{ old('FH_othersDetails') }}" oninput="this.value = this.value.toUpperCase()" placeholder="separate with comma(,) if multiple" {{ old('FH_others') == '1' ? '' : 'disabled' }}>
                             <div class="invalid-feedback">
                                 Please enter the details of the other illnesses or diseases in your family history.
                             </div>
@@ -1280,7 +1362,7 @@
                         <label class="form-check-label" for="PI_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm @error('PI_othersDetails') is-invalid @enderror" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('PI_others') == '1' ? '' : 'disabled' }}>
+                        <input type="text" class="form-control input-sm @error('PI_othersDetails') is-invalid @enderror" id="PI_othersDetails" name="PI_othersDetails" value="{{ old('PI_othersDetails') }}" oninput="this.value = this.value.toUpperCase()" placeholder="separate with comma(,) if multiple" {{ old('PI_others') == '1' ? '' : 'disabled' }}>
                         <div class="invalid-feedback">
                             Please enter your other present illness/es.
                         </div>
@@ -1317,7 +1399,7 @@
                         <div class="invalid-feedback">
                             Please select one.
                         </div>
-                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" disabled/>
+                        <input type="text" class="form-control col-sm-10 @error('hospitalizationDetails') is-invalid @enderror" id="hospitalizationDetails" name="hospitalizationDetails" oninput="this.value = this.value.toUpperCase()" placeholder="If yes, please give details:" value="{{ old('hospitalizationDetails') }}" disabled/>
                         <div class="invalid-feedback">
                             Please enter the details of your hospitalization for serious illness, operation, fracture or injury.
                         </div>
@@ -1357,7 +1439,7 @@
                             <div class="invalid-feedback">
                                 Please select one.
                             </div>
-                            <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" disabled/>
+                            <input type="text" class="form-control col-sm-10 @error('regMedsDetails') is-invalid @enderror" id="regMedsDetails" name="regMedsDetails" oninput="this.value = this.value.toUpperCase()" placeholder="If yes, name of drug/s:" value="{{ old('regMedsDetails') }}" disabled/>
                             <div class="invalid-feedback">
                                 Please enter the details of the medicine/s you regularly take.
                             </div>
@@ -1396,7 +1478,7 @@
                         <div class="invalid-feedback">
                             Please select one.
                         </div>
-                        <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" disabled/>
+                        <input type="text" class="form-control col-sm-10 @error('allergyDetails') is-invalid @enderror" id="allergyDetails" name="allergyDetails" oninput="this.value = this.value.toUpperCase()" placeholder="If yes, specify:" value="{{ old('allergyDetails') }}" disabled/>
                         <div class="invalid-feedback">
                             Please enter the details of the food and/or medicine that you are alergic to.
                         </div>
@@ -1528,7 +1610,7 @@
                         <label class="form-check-label" for="IH_others" style="display: contents!important;">
                             <span class="h6">Others</span>
                         </label>
-                        <input type="text" class="form-control input-sm @error('IH_othersDetails') is-invalid @enderror" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" placeholder="separate with comma(,) if multiple" {{ old('IH_others') == '1' ? '' : 'disabled' }}>
+                        <input type="text" class="form-control input-sm @error('IH_othersDetails') is-invalid @enderror" id="IH_othersDetails" name="IH_othersDetails" value="{{ old('IH_othersDetails') }}" oninput="this.value = this.value.toUpperCase()" placeholder="separate with comma(,) if multiple" {{ old('IH_others') == '1' ? '' : 'disabled' }}>
                         <div class="invalid-feedback">
                             Please enter the details of other immunization you you've taken.
                         </div>

@@ -29,7 +29,11 @@ return new class extends Migration
             $table->string('civilStatus', 20);
             $table->string('nationality', 20);
             $table->string('religion', 50);
-            $table->text('homeAddress');
+            $table->string('region');
+            $table->string('province');
+            $table->string('cityMunicipality');
+            $table->string('barangaySubdVillage');
+            $table->string('houseNumberStName');
             $table->unsignedBigInteger('contactNumber');
             $table->string('emergencyContactName', 100);
             $table->unsignedBigInteger('emergencyContactNumber');

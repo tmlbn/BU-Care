@@ -107,18 +107,21 @@ class AppointmentsController extends Controller
 */
 
     public function appointmentStore(Request $request) {
+        //dd($request);
         if(Auth::guard('employee')->user() || Auth::user()->student_id_number){
             $request->validate([
                 'appointmentDate' => 'required',
                 'appointmentTime' => 'required',
-                'services' => 'required_if:othersInput,null',
-                'othersInput' => 'required_if:services,null',
+           //   'services' => 'required_if:othersInput,null',
+                'servicesAvail' => 'required',
+                'othersInput' => 'required_if:servicesAvail,others',
                 'appointmentDescription' => 'required',
                 'passwordInput' => 'required'
             ],[
                 'appointmentDate.required' => 'Appointment Date is required',
                 'appointmentTime.required' => 'Appointment Time is required',
-                'services.required_if' => 'Services is required',
+           //   'services.required_if' => 'Services is required',
+                'servicesAvail.required' => 'Services is required',
                 'othersInput.required_if' => 'Please input details.',
                 'appointmentDescription.required' => 'appointmentDescription is required',
                 'passwordInput.required' => 'Please input your password.'
@@ -134,8 +137,10 @@ class AppointmentsController extends Controller
             $request->validate([
                 'appointmentDate' => 'required',
                 'appointmentTime' => 'required',
-                'services' => 'required_if:othersInput,null',
-                'othersInput' => 'required_if:services,null',
+            //  'services' => 'required_if:othersInput,null',
+                'servicesAvail' => 'required',
+                'othersInput' => 'required_if:servicesAvail,others',
+            //  'othersInput' => 'required_if:services,null',
                 'appointmentDescription' => 'required',
                 'applicantIDinput' => 'required',
                 'applicantBirthYear' => 'required',
@@ -144,8 +149,10 @@ class AppointmentsController extends Controller
             ],[
                 'appointmentDate.required' => 'Appointment Date is required',
                 'appointmentTime.required' => 'Appointment Time is required',
-                'services.required_if' => 'Services is required',
-                'othersInput.required_if' => 'Please input details.',
+            //  'services.required_if' => 'Services is required',
+                'servicesAvail.required' => 'required',
+                'othersInput.required_if' => 'required_if:servicesAvail,null',
+            //  'othersInput.required_if' => 'Please input details.',
                 'appointmentDescription.required' => 'appointmentDescription is required',
                 'applicantIDinput.required' => 'Please input your Applicant ID Number.',
                 'applicantBirthYear.required' => 'Please input your birth year.',
@@ -207,9 +214,9 @@ class AppointmentsController extends Controller
             $appointment->appointmentDateTime = $formattedDateTime;
             $appointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
                 
-            $request->services == 'others'
+            $request->servicesAvail == 'others'
                                 ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
-                                : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+                                : $appointment->services = filter_var($request->input('servicesAvail'), FILTER_SANITIZE_STRING);
 
             // Determine if booked_slots should be 1 or 2
             if($appointmentLatestEntry == NULL){
@@ -308,8 +315,10 @@ class AppointmentsController extends Controller
             $request->validate([
                 'appointmentDate' => 'required',
                 'appointmentTime' => 'required',
-                'services' => 'required_if:othersInput,null',
-                'othersInput' => 'required_if:services,null',
+            //  'services' => 'required_if:othersInput,null',
+                'servicesAvail' => 'required',
+                'othersInput' => 'required_if:servicesAvail,others',
+            //  'othersInput' => 'required_if:services,null',
                 'appointmentDescription' => 'required',
                 'applicantIDinput' => 'required',
                 'applicantBirthYear' => 'required',
@@ -318,8 +327,10 @@ class AppointmentsController extends Controller
             ],[
                 'appointmentDate.required' => 'Appointment Date is required',
                 'appointmentTime.required' => 'Appointment Time is required',
-                'services.required_if' => 'Services is required',
-                'othersInput.required_if' => 'Please input details.',
+            //  'services.required_if' => 'Services is required',
+                'servicesAvail' => 'required',
+                'othersInput' => 'required_if:servicesAvail,others',
+            //  'othersInput.required_if' => 'Please input details.',
                 'appointmentDescription.required' => 'appointmentDescription is required',
                 'applicantIDinput.required' => 'Please input your Applicant ID Number.',
                 'applicantBirthYear.required' => 'Please input your birth year.',
@@ -358,9 +369,9 @@ class AppointmentsController extends Controller
         $appointment->appointmentDate = $formattedDate;
         $appointment->appointmentTime = $formattedTime;
         $appointment->appointmentDatetime = $formattedDateTime;
-        $request->services == 'others'
-                ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
-                : $appointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+        $request->servicesAvail == 'others'
+                ? $appointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING) 
+                : $appointment->services = filter_var($request->input('servicesAvail'), FILTER_SANITIZE_STRING);
         $appointment->appointmentDescription = filter_var($request->input('appointmentDescription'), FILTER_SANITIZE_STRING);
 
         $res = $appointment->save();
@@ -476,8 +487,10 @@ class AppointmentsController extends Controller
             'patientType' => 'required',
             'appointmentDate' => 'required',
             'appointmentTime' => 'required',
-            'services' => 'required_if:othersInput,null',
-            'othersInput' => 'required_if:services,null',
+        //  'services' => 'required_if:othersInput,null',
+            'servicesAvail' => 'required',
+            'othersInput' => 'required_if:servicesAvail,null',
+        //  'othersInput' => 'required_if:services,null',
             'appointmentDescription' => 'required',
         ]);
 
@@ -545,9 +558,9 @@ class AppointmentsController extends Controller
        $adminAppointment->appointmentDateTime = $formattedDateTime;
        $adminAppointment->appointmentDescription = filter_var($request->appointmentDescription, FILTER_SANITIZE_STRING);
            
-       $request->services == 'others'
+       $request->servicesAvail == 'others'
                            ? $adminAppointment->others = filter_var($request->input('othersInput'), FILTER_SANITIZE_STRING)
-                           : $adminAppointment->services = filter_var($request->input('services'), FILTER_SANITIZE_STRING);
+                           : $adminAppointment->services = filter_var($request->input('servicesAvail'), FILTER_SANITIZE_STRING);
 
        // Determine if booked_slots should be 1 or 2
        if($appointmentLatestEntry == NULL){

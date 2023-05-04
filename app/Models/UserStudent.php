@@ -25,6 +25,8 @@ class UserStudent extends Authenticatable
     
     protected $fillable = [
         'applicant_id_number',
+        'student_id_number',
+        'email',
         'last_name',
         'first_name',
         'middle_name',
@@ -34,7 +36,6 @@ class UserStudent extends Authenticatable
     ];
 
     protected $guarded = [
-        'student_id_number',
         'MR_id',
         'MRA_id',
         'hasMedRecord',

@@ -177,27 +177,7 @@
                             echo $counter . '.&nbsp;&nbsp;'. $formattedDate . ' @ ' . $formattedTime;
                             echo '</p>';
                             echo '<p class="m-0">';
-                            echo '<a href="{{ route(\'admin.med-record-from-appointment.show\') }}" target="_blank" class=" fs-5 text-black">';
                             echo 'Ticket# '. $appointment->ticket_id;
-                            echo '</a>';
-                            echo '</p>';
-                            echo '<p class="m-0">';
-                            if(Auth::user()){
-                                echo 'Patient: '. $appointment->usersStudent->last_name.', '. $appointment->usersStudent->first_name.' '. $appointment->usersStudent->middle_name;
-                                if(Auth::user()->student_id_number){
-                                    echo '<p class="m-0">';
-                                    echo 'Student ID: '. $appointment->usersStudent->student_id_number;
-                                }
-                                else{
-                                    echo '<p class="m-0">';
-                                    echo 'Applicant ID: '. $appointment->usersStudent->applicant_id_number;
-                                }
-                            }
-                            else{
-                                echo 'Patient: '. $appointment->usersPersonnel->last_name;
-                                echo '<p class="m-0">';
-                                echo 'Personnel ID: '. $appointment->usersPersonnel->personnel_id_number;
-                            }
                             echo '</p>';
                             echo '<p class="m-0">';
                             echo 'Service: ' . ($appointment->services ?: $appointment->others);
@@ -783,35 +763,57 @@
                                             <input type="text" class="form-control fw-bold" name="appointmentTime" id="appointmentTime" placeholder="Select Time" required readonly>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-12 p-2 border-lg-end-0">
                                         <p class="fs-5 fw-bold mt-1">Service to Avail<span class="text-danger">*</span></p>
-                                        <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
-                                            <div class="col-lg-6 col-md-12 p-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services" id="medcert" required>
-                                                        <label class="form-check-label" for="medcert">
-                                                            Medical Certificate
-                                                        </label>    
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="OPD Consultant" name="services" id="opd">
-                                                        <label class="form-check-label" for="opd">
-                                                            OPD Consultant
-                                                        </label>
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="others" id="others" name="services">
-                                                        <label class="form-check-label" for="others">
-                                                            Others
-                                                        </label>
-                                                        <div class="form-check">
-                                                            <label for="othersInput" class="form-check-label">
-                                                                <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled>
+                                        <div class="row row-cols-lg-2 row-cols-md-1 checkboxes d-flex">
+                                            <div class="col-lg-6 col-md-12">
+
+                                                <div class="form-group">
+                                                    
+                                                                    <select id="servicesAvail" name="servicesAvail" class="form-select" required>
+                                                                        <option value="" selected disabled>SELECT</option>
+                                                                        <option value="medcert">Medical Certificate</option>
+                                                                        <option value="opd">OPD Consultant</option>
+                                                                        <option value="others">Others</option>
+                                                                    @if(Auth::guard('employee')->check())               
+                                                                        <option value="reinstatement">Reinstatement</option>
+                                                                        <option value="sickleave">Sick Leave</option>
+                                                                        <option value="newlyhired">Newly Hired</option>
+                                                                    @endif
+                                                                    </select>
+
+                                                </div> <!-- END OF CHECKBOX -->
+                                                <div class="col-lg-12 col-md-12" id="ojt" style="70 px;">
+                                                    <div class="col" id="textbox-container" style="display:none">
+                                                            <label class="form-check-label h6" for="othersInput">
+                                                                Reason:
                                                             </label>
-                                                        </div>
-                                                       
-                                                </div><!-- END OF CHECKBOX DIV -->
-                                            </div>
+                                                            <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled style="width: 500px;">
+                                                               
+                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                </div>               
+                                                <script>
+                                                var firstMenu = document.getElementById("patientType");
+                                                var secondMenu = document.getElementById("servicesAvail");
+                                                var textboxContainer = document.getElementById("textbox-container");
+                                                var othersInput = document.getElementById("othersInput");
+                                                    
+                                                // Selection for services avail
+                                                    secondMenu.addEventListener("change", function() {
+                                                        if (secondMenu.value === "others") {
+                                                        textboxContainer.style.display = ""; // show the textbox container
+                                                        othersInput.required = true;
+                                                        othersInput.disabled = false;
+                                                        } else {
+                                                        textboxContainer.style.display = "none"; // hide the textbox container
+                                                        othersInput.required = false;
+                                                        othersInput.disabled = true;
+                                                        }
+                                                    });
+                                                
+                                                </script>
+                                         <!--   </div>
                                                 <div class="col-lg-6 col-md-12 p-2">
                                                 @if(Auth::guard('employee')->check())
                                                     <div class="form-check">
@@ -819,20 +821,20 @@
                                                             <label class="form-check-label" for="reinstatement">
                                                                 Reinstatement
                                                             </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                    <div class="form-check">
+                                                    </div> END OF CHECKBOX DIV -->
+                                              <!--       <div class="form-check">
                                                         <input class="form-check-input" type="radio" value="Sick Leave" name="services" id="sickleave">
                                                             <label class="form-check-label" for="sickleave">
                                                                 Sick Leave
                                                             </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                    <div class="form-check">
+                                                    </div> END OF CHECKBOX DIV -->
+                                                <!--    <div class="form-check">
                                                         <input class="form-check-input" type="radio" value="Newly Hired" name="services" id="newlyhired">
                                                             <label class="form-check-label" for="newlyhired">
                                                                 Newly Hired
                                                             </label>
-                                                    </div><!-- END OF CHECKBOX DIV -->
-                                                @endif
+                                                    </div> END OF CHECKBOX DIV 
+                                                @endif-->
                                                 <script>
                                                     $(document).ready(function(){
                                                         $('input[name="services"]').change(function(){

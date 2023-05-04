@@ -64,6 +64,37 @@
   <section class="text-gray-600 body-font">
     <div class="container px-5 py-5 mx-auto">
       <div class="row mb-5 flex-column justify-content-center align-items-center">
+
+        <!-- BUTTONS FOR IMPORT -->
+        <div>
+          <form action="{{ route('import.store.new') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_new').click()">Choose File</button>
+              <input type="file" name="csv_new" id="csv_new" accept=".csv" style="display: none" onchange="document.getElementById('file-name-new').textContent = this.files[0].name; document.getElementById('import-btn-new').style.display = this.files.length ? 'inline-block' : 'none'">
+              <span id="file-name-new"></span>
+            <button id="import-btn-new" class="btn btn-success mb-1" style="display: none">Import New Students</button>
+          </form>
+        </div>
+        <div>
+          <form action="{{ route('import.store.old') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_old').click()">Choose File</button>
+              <input type="file" name="csv_old" id="csv_old" accept=".csv" style="display: none" onchange="document.getElementById('file-name-old').textContent = this.files[0].name; document.getElementById('import-btn-old').style.display = this.files.length ? 'inline-block' : 'none'">
+              <span id="file-name-old"></span>
+            <button id="import-btn-old" class="btn btn-success mb-1" style="display: none">Import Old Students</button>
+          </form>
+        </div>
+        <div>
+          <form action="{{ route('import.store.personnel') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_personnel').click()">Choose File</button>
+              <input type="file" name="csv_personnel" id="csv_personnel" accept=".csv" style="display: none" onchange="document.getElementById('file-name-personnel').textContent = this.files[0].name; document.getElementById('import-btn-personnel').style.display = this.files.length ? 'inline-block' : 'none'">
+              <span id="file-name-personnel"></span>
+            <button id="import-btn-personnel" class="btn btn-success mb-1" style="display: none">Import Personnel</button>
+          </form>
+        </div>
+
+        
         <p class="sm-text-3xl text-2xl font-medium title-font fs-2 mb-2 text-center">Health Services Offered</h1>
         <p class="col-lg-12 col-12 text-center leading-relaxed text-muted">Providing accessible and comprehensive healthcare for all students, faculty, and staff.</p>
       </div>

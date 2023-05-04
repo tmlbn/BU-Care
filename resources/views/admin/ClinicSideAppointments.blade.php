@@ -474,60 +474,37 @@
                                                         <h5>Service to Avail</h5>
                                                         <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
                                                             <div class="col-lg-6 col-md-12 p-2">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="Medical Certificate" name="services" required>
-                                                                        <label class="form-check-label" for="services">
-                                                                            Medical Certificate
-                                                                        </label>    
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="OPD Consultant" name="services">
-                                                                        <label class="form-check-label" for="services">
-                                                                            OPD Consultant
-                                                                        </label>
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="others" id="others" name="services">
-                                                                        <label class="form-check-label" for="others">
-                                                                            Others
-                                                                        </label>
-                                                                        <div class="form-check">
-                                                                            <label for="othersInput" class="form-check-label">
-                                                                                <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled>
+                                                                <div class="form-group col-lg-6 col-md-12">
+                                                                    <select id="servicesAvail" name="servicesAvail" class="form-select" required disabled>
+                                                                        <option value="" selected disabled>SELECT</option>
+                                                                        <option value="medcert">Medical Certificate</option>
+                                                                        <option value="opd">OPD Consultant</option>
+                                                                        <option value="others">Others</option>
+                                                                        <option value="reinstatement">Reinstatement</option>
+                                                                        <option value="sickleave">Sick Leave</option>
+                                                                        <option value="newlyhired">Newly Hired</option>
+                                                                    </select>
+                                                                </div><!-- END OF DIV -->
+
+                                                                <div class="col-lg-6 col-md-12 p-2" id="ojt">
+                                                                    <div class="col-lg-40 col-md-12 p-2" id="textbox-container" style="display:none">
+                                                                            <label class="form-check-label" for="others">
+                                                                                Other Reason 
                                                                             </label>
-                                                                        </div>
+                                                                            <div class="form-check" id="otherInput">
+                                                                                <label for="othersInput" class="form-check-label">
+                                                                                    <input type ="text" class="form-control" name="othersInput" id="othersInput" enable>
+                                                                                </label>
+                                                                            </div>       
+                                                                    </div><!-- END OF CHECKBOX DIV -->
+                                                                </div>
+
+                                                            
+                                                           
+                                                                
+                                                             <script>
+                                                              /*  $(document).ready(function(){
                                                                     
-                                                                </div><!-- END OF CHECKBOX DIV -->     
-                                                            </div>
-                                                            <div class="hidden col-lg-6 col-md-12 p-2" id="ojt">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="OJT" name="services">
-                                                                    <label class="form-check-label" for="OJT">
-                                                                        OJT Medical Certificate
-                                                                    </label>
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                            </div>
-                                                             <div class="hidden col-lg-6 col-md-12 p-2" id="Personnel">  
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="Reinstatement" name="services">
-                                                                        <label class="form-check-label" for="Reinstatement">
-                                                                            Reinstatement
-                                                                        </label>
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="Sick Leave" name="services">
-                                                                        <label class="form-check-label" for="Sick Leave">
-                                                                            Sick Leave
-                                                                        </label>
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio" value="Newly Hired" name="services">
-                                                                        <label class="form-check-label" for="newlyhired">
-                                                                            Newly Hired
-                                                                        </label>
-                                                                </div><!-- END OF CHECKBOX DIV -->
-                                                            <script>
-                                                                $(document).ready(function(){
                                                                     $('input[name="services"]').change(function(){
                                                                         if($('#others').is(':checked')){
                                                                             $('#othersInput').prop('disabled', false);
@@ -537,7 +514,36 @@
                                                                             $('#othersInput').attr('required', true);
                                                                         }
                                                                     });
-                                                                });
+                                                                }); */
+                                                var firstMenu = document.getElementById("patientType");
+                                                var secondMenu = document.getElementById("servicesAvail");
+                                                var textboxContainer = document.getElementById("textbox-container");
+
+                                                    secondMenu.addEventListener("change", function() {
+                                                        if (secondMenu.value === "others") {
+                                                        textboxContainer.style.display = ""; // show the textbox container
+                                                        } else {
+                                                        textboxContainer.style.display = "none"; // hide the textbox container
+                                                        }
+                                                    });
+
+                                                    firstMenu.addEventListener("change", function() {
+                                                        if (firstMenu.value === "NewStudent" || firstMenu.value === "OldStudent") {
+                                                        for (var i = 4; i <= 6; i++) {
+                                                            secondMenu.options[i].style.display = "none";
+                                                        }
+                                                        if (secondMenu.selectedIndex >= 3 && secondMenu.selectedIndex <= 6) {
+                                                            secondMenu.selectedIndex = 0;
+                                                            textboxContainer.style.display = "none"; // hide the textbox container
+                                                        }
+                                                        } else {
+                                                        for (var i = 0; i < secondMenu.options.length; i++) {
+                                                            secondMenu.options[i].style.display = "";
+                                                        }
+                                                        }
+                                                        secondMenu.disabled = false;
+                                                    });
+                                                                  
                                                             </script>
                                                         </div>
                                                     </div>

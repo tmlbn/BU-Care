@@ -26,7 +26,11 @@ return new class extends Migration
             $table->string('sex', 10);
             $table->date('dateOfBirth');
             $table->string('civilStatus', 20);
-            $table->string('homeAddress');
+            $table->string('region');
+            $table->string('province');
+            $table->string('cityMunicipality');
+            $table->string('barangaySubdVillage');
+            $table->string('houseNumberStName');
             $table->string('nationality', 20);
             $table->string('religion', 50);
             $table->string('fatherName', 100);
