@@ -12,11 +12,16 @@ use DateTime;
 use Session;
 use Hash;
 use DB;
-use App\Models\MedicalRecordPersonnel;
+
 use App\Models\UserPersonnel;
+use App\Models\UserStudent;
+use App\Models\MedicalRecordPersonnel;
+use App\Models\MedicalRecord;
 use App\Models\MedicalRecordsPersonnel_Admin;
 use App\Models\MedicalRecord_Admin;
-use App\Models\UserStudent;
+
+use App\Models\Appointment;
+
 
 class MedicalRecordsAdminController extends Controller
 {
@@ -100,8 +105,8 @@ class MedicalRecordsAdminController extends Controller
         /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
         
         $medRecordAdmin = new MedicalRecord_Admin();
-            $medRecordAdmin->MR_id = filter_var($request->input('studentID'),FILTER_SANITIZE_NUMBER_INT);
-            $medRecordAdmin->student_id = filter_var($request->input('medRecID'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->MR_id = filter_var($request->input('medRecID'),FILTER_SANITIZE_NUMBER_INT);
+            $medRecordAdmin->student_id = filter_var($request->input('studentID'),FILTER_SANITIZE_NUMBER_INT);
             $medRecordAdmin->bp_systolic = filter_var($request->input('VS_bp_systolic'),FILTER_SANITIZE_NUMBER_INT);
             $medRecordAdmin->bp_diastolic = filter_var($request->input('VS_bp_diastolic'),FILTER_SANITIZE_NUMBER_INT);
             $medRecordAdmin->pulseRate = filter_var($request->input( 'VS_pulseRate'),FILTER_SANITIZE_NUMBER_INT);
@@ -154,7 +159,26 @@ class MedicalRecordsAdminController extends Controller
             $patient->hasValidatedRecord = intval('1');
             $patient->MRA_id =  $medRecordAdmin->MRA_id;
             $patient->save();
-            return redirect('/')->with('success', 'Medical record saved successfully');
+            if($request->input('fromAppointment') == 1){
+                try{
+                    $ticketID = $request->input('ticketID');
+                    $userAppointment = Appointment::where('ticket_id', $ticketID)->first();
+                    $userAppointment->status = 'SUCCESS';
+                    $userAppointment->save();
+                    return redirect('/')
+                            ->with('MedicalRecordSuccess', 'Medical record saved successfully')
+                            ->with('userTicketID', $ticketID);
+                }
+                catch (\Throwable $e) {
+                // handle $e
+                    return redirect('/')->with('fail', 'An error occured. Please Try again later.');
+                }
+            }
+            elseif($request->input('fromAppointment') == 0){
+                return redirect('/')
+                        ->with('MedicalRecordSuccess', 'Medical record saved successfully')
+                        ->with('patientID', $patient->id);
+            }
         }
         } 
         catch (QueryException $ex) {
@@ -268,5 +292,26 @@ class MedicalRecordsAdminController extends Controller
             ])->withInput();
             Log::error('Error from '.$user->id.': '. $ex->getMessage());
         }
+    }
+
+    public function releaseMedCertFromAppointment($userTicketID){
+        $userAppointment = Appointment::where('ticket_id', $userTicketID)->first();
+        $userAppointment->released = intval('1');
+        $userAppointment->save();
+
+        $userMRA = MedicalRecord_Admin::where('student_id', $userAppointment->student_id)->first();
+        $userMRA->released = intval('1');
+        $userMRA->save();
+
+        return redirect('/')->with('success', 'Appointment done and Medical Certificate Released.');
+    }
+
+    public function releaseMedCert($patientID){
+        $user = UserStudent::where('id', $patientID)->first();
+        $user->released = intval('1');
+        $user->save();
+        $userMRA = MedicalRecord_Admin::where('student_id', $patientID->id)->first();
+        $userMRA->released = intval('1');
+        $userMRA->save();
     }
 }

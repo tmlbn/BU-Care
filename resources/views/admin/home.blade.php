@@ -4,12 +4,10 @@
 @if(session('MedicalRecordSuccess'))
         <script>
           $(document).ready(function(){
-              if('{{ session('MedicalRecordSuccess') }}') {
-                  $('#successModal').modal("show");
-              }
+              $('#successModal').modal("show");
           });          
         </script>
-            <div class="modal modal-lg" id="successModal" tabindex="-1">
+            <div class="modal fade modal-lg" id="successModal" tabindex="-1">
                 <div class="modal-dialog">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -17,18 +15,32 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body text-center">
-                        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                        <div class="alert alert-success fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
                           <svg class="bi flex-shrink-0 me-2" fill="#61ff61" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
                           <div class="text-center mt-3">
                             <p class="alert-heading fs-5 p-2">Your medical record was successfully submitted!</p>
                           </div>
                         </div>
                           
-                        <p class="fs-5">Would you like to set an appointment now?</p>
+                        <p class="fs-5">Release Medical Ceriticate?</p>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('setAppointment.show') }}'">Yes</button>
+                        @if(session('userTicketID'))
+                          <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('releaseMedCertFromAppointment').submit();">
+                            Yes
+                          </button>
+                          <form id="releaseMedCertFromAppointment" action="{{ route('admin.releaseMedCertFromAppointment', ['userTicketID' => session('userTicketID')]) }}" method="POST" class="d-none">
+                              @csrf
+                          </form>
+                        @endif
+                        @if(session('patientID'))
+                          <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('releaseMedCert').submit();">
+                            Yes
+                          </button>
+                          <form id="releaseMedCert" action="{{ route('admin.releaseMedCert', ['patientID' => session('patientID')]) }}" method="POST" class="d-none">
+                              @csrf
+                          </form>
+                        @endif
                       </div>
                   </div>
                 </div>
@@ -39,7 +51,7 @@
         <img class="" src="{{ asset('media/BU-CareText.png') }}" style="width: 20%;"></h1>
         <div class="col-md-4 border-bottom border-white border-4">
             <span>&nbsp;</span>
-        </div>
+        </div>        
         <div class="d-flex flex-column text-white mt-5">
             <h1 class="text-uppercase text-responsive fw-bold fs-3vw fs-md-5vw">Bicol University Health Services</h1>
             <p class="text-xl mt-2 md:mt-4 font-weight-normal text-responsive">Main Campus</p>
