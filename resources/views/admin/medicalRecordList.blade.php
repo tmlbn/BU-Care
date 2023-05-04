@@ -34,7 +34,6 @@
     .lessBottomMargin{
         margin-bottom: -1%;
     }
-
     input.signa{
         display: inline-block;
         width: 6em;
@@ -42,7 +41,6 @@
         top: -3em;
         margin-bottom: 10px;
     }
-
     label.signa{
         display: inline-block;
         width: 6em;
@@ -52,7 +50,6 @@
     .no-gutters {
         margin-right: 0;
         margin-left: 0;
-
         > .col,
         > [class*="col-"] {
             padding-right: 0;
@@ -62,7 +59,6 @@
     .custom-col-id {
         padding: 0%;
     }
-
     @media (min-width: 768px) {
         .custom-col-id {
             flex-basis: 12.5%;
@@ -85,29 +81,11 @@
     .bg-custom{
         background-color:#f0faff;
     }
-
 </style>
 
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
-    <form action="{{ route('import.store.new') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_new').click()">Choose File</button>
-          <input type="file" name="csv_new" id="csv_new" accept=".csv" style="display: none" onchange="document.getElementById('file-name-new').textContent = this.files[0].name; document.getElementById('import-btn-new').style.display = this.files.length ? 'inline-block' : 'none'">
-          <span id="file-name-new"></span>
-        <button id="import-btn-new" class="btn btn-success mb-1" style="display: none">Import</button>
-      </form>
-    </div>
-    <div>
-      <form action="{{ route('import.store.old') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <button type="button" class="btn btn-primary mb-1" onclick="document.getElementById('csv_old').click()">Choose File</button>
-          <input type="file" name="csv_old" id="csv_old" accept=".csv" style="display: none" onchange="document.getElementById('file-name-old').textContent = this.files[0].name; document.getElementById('import-btn-old').style.display = this.files.length ? 'inline-block' : 'none'">
-          <span id="file-name-old"></span>
-        <button id="import-btn-old" class="btn btn-success mb-1" style="display: none">Import</button>
-      </form>
-    </div>
     <div class="col-xl-2 col-lg-12 my-2">
         <label for="listType" class="form-label h6">Select Table</label>
         <select id="listType" name="listType" class="form-select" required>
@@ -166,7 +144,6 @@
                         <div class="col-sm-5">
                             <select id="campusFilter" name="campusFilter" class="form-select" required>
                                 <option selected="selected" disabled="disabled" value="">CAMPUS</option>
-                                <option value="all">All</option>
                                 <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
                                 <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
                                 <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
@@ -184,15 +161,19 @@
                                 <option value="Tabaco Campus">Tabaco Campus</option>
                             </select>
                         </div>
-                       
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="course" name="course" value="{{ request()->input('course') }}" placeholder="Filter by course...">
+                            <select id="timeFilter" name="timeFilter" class="form-select" required>
+                                <option selected="selected" disabled="disabled" value="">Select</option>
+                                <option value="This Week">This Week</option>
+                                <option value="Month" class="alternate">Month</option>
+                                <option value="Year">Year</option>
+                            </select>
                         </div>
                     </div>
                 </div>
         </form>
-        <div class="table-responsive">
-            <table class="table table-bordered table-sm" id="studentsList">
+        <div class="table-responsive" id="studentsList">
+            <table class="table table-bordered table-sm">
                 <caption style="user-select: none;">End of Student Health Records List</caption>
                 <thead>
                     <tr class="text-center">
@@ -240,6 +221,29 @@
             </table>
         </div>
         
+
+    <div class="table-responsive" id="personnelList" style="display: none;">
+        <table class="table table-bordered table-sm">
+            <caption style="user-select: none;">End of Personnel Health Records List</caption>
+            <thead>
+                <tr class="text-center">
+                    <th class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">ID</span>
+                    </th>
+                    <th class="col-md-4 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">NAME</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">DESIGNATION</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">UNIT/DEPARTMENT</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark">
+                        <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
+                    </th>
+                </tr>
+            </thead>
             <tbody class="table-group-divider">
                 @foreach ($personnel as $personnel)
                     <tr class="text-center divHover" onClick="window.open('{{ route('admin.personnelMedForm.show', ['patientID' => $personnel->personnel_id_number ]) }}', '_blank'); return false;">

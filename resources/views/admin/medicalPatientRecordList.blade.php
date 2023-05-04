@@ -161,7 +161,12 @@
                             </select>
                         </div>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="course" name="course" value="{{ request()->input('course') }}" placeholder="Filter by course...">
+                            <select id="timeFilter" name="timeFilter" class="form-select" required>
+                                <option selected="selected" disabled="disabled" value="">Select</option>
+                                <option value="This Week">This Week</option>
+                                <option value="Month" class="alternate">Month</option>
+                                <option value="Year">Year</option>
+                            </select>
                         </div>
                     </div>
                 </div>
