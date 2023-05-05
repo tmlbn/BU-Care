@@ -128,6 +128,15 @@
     }
 
 </style>
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div class="container-flui  d pt-3">
         <div class="d-flex row-flex">
             <div class="col-sm text-center mt-5">
@@ -545,7 +554,7 @@
                                 }
                             });
                         });
-                        if(date.format('YYYY-MM-DD') <= (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
+                        if(/*date.format('YYYY-MM-DD') <=*/ (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
                             if(countValue > 0 && countValue < 25){
                                 cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #8deb8d;">' + (maxAppointment - countValue) + '</p>');
                             }

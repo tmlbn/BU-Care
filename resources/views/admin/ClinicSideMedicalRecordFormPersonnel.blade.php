@@ -149,6 +149,13 @@
 
 <form method="POST" action="{{ route('medicalFormAdminPersonnel.store') }}" id="MRP_form" enctype="multipart/form-data" class="row g-3 pt-5 px-4 needs-validation" novalidate>
     @csrf
+    @php
+    if(isset($fromAppointment)){
+        '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
+        '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
+    }
+    @endphp
+    
     @if($errors->any())
     <div class="alert alert-danger">
         <ul>

@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class ReportsController extends Controller
 {
     public function Reports(){
-        return view('Reports');
+        return view('admin.reports');
     }
 }

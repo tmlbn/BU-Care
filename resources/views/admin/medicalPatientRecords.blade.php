@@ -127,38 +127,19 @@
             <option value="PERSONNEL" class="alternate">Personnel</option>
         </select>
     </div>
-
-    <script>
-        $(document).ready(function(){
-            $('#listType').on('change', function(){
-                if($('#listType').val() == 'STUDENTS'){
-                    $('#studentsList').show();
-                    $('#bannerStudent').show()
-                    $('#personnelList').hide();
-                    $('#bannerPersonnel').hide()
-                }
-                else{
-                    $('#studentsList').hide();
-                    $('#bannerStudent').hide()
-                    $('#personnelList').show();
-                    $('#bannerPersonnel').show()
-                }
-            })
-        })
-    </script>
+    
     <div class="d-flex flex-row">
         <div class="col-sm border p-3 border-dark">
             <header class="text-center">
                 <h5 class="display-7 pt-3">
                     <p class="fs-2 fw-bold">Bicol University Health Services</p>
-                    <p class="fs-4 fw-normal" id="bannerStudent">Student Health Records List</p>
-                    <p class="fs-4 fw-normal" id="bannerPersonnel" style="display: none;">Personnel Health Records List</p>
+                    <p class="fs-4 fw-normal" id="bannerStudent">Medical Patient Records List</p>
             </header>
         </div>
     </div>
 
     <!-- Search function -->
-        <form method="GET" action="{{ route('admin.patientMedFormList.show') }}" id="searchForm">
+        <form method="GET" action="{{ route('admin.medPatientRecords.show') }}" id="searchForm">
                 <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2" style="margin-right: -3%;">
                     <div class="row align-items-center">
                         <div class="col-sm">
@@ -169,7 +150,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-end mt-2">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 ">
                             <p class="fs-5 fw-light float-end pt-1">
                                 Filter by:
                             </p>
@@ -194,82 +175,9 @@
                                 <option value="Tabaco Campus" {{ old('campusSelect') == 'Tabaco Campus' ? 'selected' : '' }}>Tabaco Campus</option>
                             </select>
                         </div>
-                    
-                        <!--div class="col-lg-5">
-                        <select id="courseSelect" name="courseSelect" class="form-select">
-                            <option selected="selected" disabled="disabled" value="">COURSE</option>
-                        </select>
-
-                        <script>
-                            var courses= {
-                                "College of Social Science and Philosophy": ["AB Peace Studies","AB Philosophy","AB Political Science","AB Sociology","BS Psychology","BS Social Work"],
-                                "College of Business, Entrepreneurship, and Management": ["BS Accountancy","BS Economics","BS Entrepreneurship","BSBA Major in Financial Management","BSBA Major in Human Resource Management","BS Management","BSBA Major in Marketing Management","BSBA Microfinance","BSBA Major in Operations Management"],
-                                "College of Education": ["B Early Childhood Education","B Elementary Education","B Secondary Education","Bachelor of Culture and Arts Education"],
-                                "College of Arts and Letters": ["BA Broadcasting","BA Communication","BA English Language","BA Journalism","BA Performing Arts (BPeA) Theater","BA Literature"],
-                                "College of Nursing": ["BS Nursing"],
-                                "College of Science": ["BS Biology","BS Chemistry","BS Computer Science","BS Information Technology","BS Meteorology"],
-                                "Institute of Physical Education, Sports, and Recreation": ["BS in Exercise & Sports Sciences","Bachelor of Physical Education"],
-                                "College of Engineering": ["BS Chemical Engineering","BS Civil Engineering","BS Electrical Engineering","BS Geodetic Engineering","BS Mechanical Engineering","BS Mining Engineering"],
-                                "Institute of Design and Architecture": ["BS Architecture"],
-                                "College of Industrial Technology": ["BS Automotive Technology","BS Civil Technology","BS Electrical Technology","BS Electronics Technology","BS Mechanical Technology","BS Food Technology","B Industrial Design","B Technical - Vocational Teacher Educ. Major in Drafting Technology","B Technical - Vocational Teacher Educ. Major in Electrical Technology","AB Technical - Vocational Teacher Educ. Major in Food Service Management","B Technical - Vocational Teacher Educ. Major in Garments Fashion and Design"],
-                                "College of Agriculture and Forestry": ["B Agricultural Technology","BS Agribusiness","BS Agricultural & Biosystems Engineering","BS Agriculture","BS Forestry","B Technical - Vocational Teacher Educ. Major in Animal Production","B Technical - Vocational Teacher Educ. Major in Agricultural Crop Production","Doctor of Veterinary Medicine"],
-                                "Tabaco Campus": ["B Secondary Education (Science & Math)","BS Entrepreneurship","BS Fisheries","BS Food Technology","BS Nursing","BS Social Work"],
-                                "College of Medicine": ["Doctor of Medicine"],
-                                "Gubat Campus": ["B Elementary Education","B Secondary Education (Filipino & Social Studies)","BS Agricultural Technology (Ladderized)","BS Entrepreneurship","BSBA Major in Microfinance"],
-                                "Polangui Campus": ["B Elementary Education","B Secondary Education Major in English","B Secondary Education Major in Math","BS Automotive Technology","BS Computer Engineering","BS Computer Science","BS Electronics Engineering","BS Electronics Technology","BS Entrepreneurship","BS Food Technology","BS Information System","BS Information Technology","BS Information Technology (Animation)","BS Nursing","B Technology and Livelihood Education (BTLed-ICT)"]
-                            };
-    
-                            $(document).ready(function() {
-                                // get the selected campus
-                                var selectedCampus = $('#campusSelect').val();
-                                // get the corresponding courses from the JSON object
-                                var selectedCampusCourses = courses[selectedCampus];
-                                // counter for class alternate
-                                var counter = 0;
-                                // clear the current options in the courseSelect element
-                                if(selectedCampus != null){
-                                    $('#courseSelect').empty();
-                                    // add the new options based on the selected campus
-                                    $.each(selectedCampusCourses, function(index, value) {
-                                        counter++;
-                                        var option = $('<option>').text(value).attr('value', value);
-                                        if (value == "{{ old('courseSelect') }}") {
-                                            option.attr('selected', 'selected');
-                                        }
-                                        if(counter % 2 == 1){
-                                            $('#courseSelect').append(option.addClass('alternate'));
-                                        }else{
-                                            $('#courseSelect').append(option);
-                                        }
-                                    });
-                                }
-                                
-                                $('#campusSelect').on('change', function() {
-                                    // get the selected campus
-                                    var selectedCampus = $(this).val();
-                                    // get the corresponding courses from the JSON object
-                                    var selectedCampusCourses = courses[selectedCampus];
-                                    // counter for class alternate
-                                    var counter = 0;
-                                    // clear the current options in the courseSelect element
-                                    $('#courseSelect').empty();
-                                    // add the new options based on the selected campus
-                                    $.each(selectedCampusCourses, function(index, value) {
-                                        counter++;
-                                        var option = $('<option>').text(value).attr('value', value);
-                                        if(counter % 2 == 1){
-                                            $('#courseSelect').append(option.addClass('alternate'));
-                                        }else{
-                                            $('#courseSelect').append(option);
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
-                        </div-->
                     </div>
                 </div>
-            </form>
+        </form>
         <div class="table-responsive" id="studentsList">
             <table class="table table-bordered table-sm">
                 <caption style="user-select: none;">End of Student Health Records List</caption>
@@ -289,33 +197,33 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="table-body" class="table-group-divider">
+                <tbody class="table-group-divider">
                     @foreach ($students as $student)
-                    <tr class="text-center divHover">
-                      <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
-                        <div class="d-flex flex-row justify-content-center">
-                          <div class="col-sm">
-                            <p class="fs-5 fw-normal lessBottomMargin">{{ $student->applicant_id_number }}</p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row border-dark">
-                          <div class="col-sm">
-                            <p class="fs-5 fw-normal lessBottomMargin">{{ $student->student_id_number }}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="col-md-4 col-sm-3 border border-dark border-end-0">
-                        <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</p>
-                      </td>
-                      <td class="col-md-3 col-sm-3 border border-dark border-end-0">
-                        <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->campus }}</p>
-                      </td>
-                      <td class="col-md-3 col-sm-3 border border-dark">
-                        <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->course }}</p>
-                      </td>
-                    </tr>
+                        <tr class="text-center divHover" onClick="window.open('{{ route('admin.medicalPatientRecord.show', ['patientID' => $student->student_id_number ? $student->student_id_number : $student->applicant_id_number]) }}', '_blank'); return false;">
+                            <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="col-sm">
+                                        <p class="fs-5 fw-normal lessBottomMargin">{{ $student->applicant_id_number }}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row border-dark">
+                                    <div class="col-sm">
+                                        <p class="fs-5 fw-normal lessBottomMargin">{{ $student->student_id_number }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-md-4 col-sm-3 border border-dark border-end-0">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</p>
+                            </td>
+                            <td class="col-md-3 col-sm-3 border border-dark border-end-0">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->campus }}</p>
+                            </td>
+                            <td class="col-md-3 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->course }}</p>
+                            </td>
+                        </tr>
                     @endforeach
-                  </tbody>
+                </tbody>
             </table>
         </div>
         
@@ -366,7 +274,6 @@
             </tbody>
         </table>
     </div>
-
     <script>
         const filterSelect = document.querySelector('#campusSelect');
         filterSelect.addEventListener('change', filterTable);
@@ -375,73 +282,4 @@
             $('#searchForm').submit();
         }
     </script>
-    <!--script>
-        const filterSelect = document.querySelector('#campusSelect');
-        filterSelect.addEventListener('change', filterTable);
-
-        function filterTable() {
-            const selectedValue = document.querySelector('#campusSelect').value;
-
-            fetch(`/filter-table?criteria=${selectedValue}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                const arr = Object.values(data);
-                console.log(arr);
-                const tableBody = document.querySelector('#table-body');
-                tableBody.innerHTML = '';
-
-                arr.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.classList.add('text-center', 'divHover');
-                    tr.setAttribute('onClick', `window.open('${row.url}', '_blank'); return false;`);
-
-                    const td1 = document.createElement('td');
-                    td1.classList.add('col-md-2', 'col-sm-3', 'border', 'border-dark', 'border-end-0', 'custom-col-id');
-                    const div1 = document.createElement('div');
-                    div1.classList.add('d-flex', 'flex-row', 'justify-content-center');
-                    const div1Child = document.createElement('div');
-                    div1Child.classList.add('col-sm');
-                    const p1 = document.createElement('p');
-                    p1.classList.add('fs-5', 'fw-normal', 'lessBottomMargin');
-                    p1.textContent = row.id_number;
-                    div1Child.appendChild(p1);
-                    div1.appendChild(div1Child);
-                    const div2 = document.createElement('div');
-                    div2.classList.add('d-flex', 'flex-row', 'border-dark');
-                    const div2Child = document.createElement('div');
-                    div2Child.classList.add('col-sm');
-                    const p2 = document.createElement('p');
-                    p2.classList.add('fs-5', 'fw-normal', 'lessBottomMargin');
-                    p2.textContent = row.student_id_number;
-                    div2Child.appendChild(p2);
-                    div2.appendChild(div2Child);
-                    td1.appendChild(div1);
-                    td1.appendChild(div2);
-
-                    const td2 = document.createElement('td');
-                    td2.classList.add('col-md-4', 'col-sm-3', 'border', 'border-dark', 'border-end-0');
-                    const p3 = document.createElement('p');
-                    p3.classList.add('fs-5', 'fw-normal', 'mt-2');
-                    p3.textContent = row.medicalRecord?.campus;
-                    td2.appendChild(p3);
-
-                    const td4 = document.createElement('td');
-                    td4.classList.add('col-md-3', 'col-sm-3', 'border', 'border-dark', 'border-end-0');
-                    const p4 = document.createElement('p');
-                    p4.classList.add('fs-5', 'fw-normal', 'mt-2');
-                    p4.textContent = row.medicalRecord.course;
-                    td4.appendChild(p4);
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    tr.appendChild(td4);
-
-                    tableBody.appendChild(tr);
-                });
-            });
-        }
-
-    </script-->
 @endsection

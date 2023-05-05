@@ -264,10 +264,7 @@
                             <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.appointments.show' ? 'active' : 'inactive' }}" href="{{ route('admin.appointments.show') }}">APPOINTMENTS</a>
                         </li>
                         <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'active' : (Route::currentRouteName() === 'admin.patientMedForm.show' ? 'active' : 'inactive') }}" href="{{ route('admin.patientMedFormList.show') }}">HEALTH RECORDS</a>
-                        </li>
-                        <li class="nav-item mr-4">
-                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'active' : (Route::currentRouteName() === 'admin.medicalPatientRecord.show' ? 'active' : 'inactive') }}" href="{{ route('admin.medPatientRecordList.show') }}">DAILY CONSULTATIONS</a>
+                            <a class="nav-link fs-5 {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Route::currentRouteName() === 'admin.medPatientRecords.show' || Route::currentRouteName() === 'admin.medPatientRecordList.show' || Route::currentRouteName() === 'admin.reports' ? 'active' : 'inactive' }}" href="{{ route('admin.patientMedFormList.show') }}">REPORTS</a>
                         </li>
                         <li class="pt-2 mt-1">
                             <div class="vr pt-4"></div>

@@ -119,7 +119,7 @@
                                                   togglePassword.classList.toggle('active');
                                               });
                                           </script>
-                                          </div>
+                                          
 
                                             <div class="md:mb-0">
                                                 <center>
@@ -128,6 +128,7 @@
                                                         </a>
                                                 </center>
                                             </div>
+                                          </div>
                                             @if($errors->any())
                                               <h4>{{$errors->first()}}</h4>
                                             @endif
@@ -152,6 +153,7 @@
                                 </form>
 
                                 <!-- new student login form -->
+                                <div class="col-md-10 col-lg-10 col-sm-12 mx-auto my-auto">
                                 <form method="POST" action="{{ route('BUCare.login') }}" class="rounded bg-light p-4 fluid" id="newStudentLoginForm" style="display:none;">
                                     @csrf
                                     <!-- APPLICATION ID NUMBER INPUT -->
@@ -287,7 +289,8 @@
                                                   $('#password').attr('required',true);
                                           });
                                           </script>
-                                </form>
+                                  </form>
+                              </div>
                         </div>
                     </div>  
               </div>

@@ -81,19 +81,20 @@ class ImportController extends Controller{
         array_shift($rows);
         foreach ($rows as $row) {
             try{
-                if (empty($row)) {
+                /*if (empty($row)) {
                     // end of file
                     break;
                 }
                 if(count($row) !== count($header)){
                     continue; // skip this row if number of elements is different
-                }
+                }*/
                 $data = array_combine($header, $row);
                 // Check for duplicate personnel ID
                 $personnel = UserPersonnel::where('personnel_id_number', $data['personnel_id_number'])->first();
                 if ($personnel) {
                     continue;
                 }
+                $data['password'] = bcrypt($data['password']);
                 UserPersonnel::create($data);
             } catch (\ErrorException $e) {
                 // Handle the exception here

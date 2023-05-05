@@ -1,4 +1,6 @@
 @extends('admin.layouts.app')
+
+@section('content')
 <style>
      body{
         background-repeat: no-repeat;
@@ -125,122 +127,8 @@
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_emergencyContact" name="MPR_emergencyContact" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" readonly>
             </div>
         </div>
-        <!--Illness-->
-        <div class="mt-3 row row-cols-lg-2 row-cols-md-1"><!-- START DIV FOR FAMILY HISTORY AND PSH -->
-            <div class="col-lg-12 p-2 border border-dark"> 
-                <span class="fs-4">Illness</span> 
-                <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
-                    @csrf
-                <!--Column 1-->    
-                <div class="d-flex flex-row">
-                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="hypertension" name="hypertension">
-                                <label class="form-check-label" for="hypertension">
-                                    Hypertension
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="diabetes" name="diabetes">
-                                <label class="form-check-label" for="diabetes">
-                                    Diabetes
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="kidneyDisease" name="kidneyDisease">
-                                <label class="form-check-label" for="kidneyDisease">
-                                    Kidney Disease
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="measles" name="measles">
-                                <label class="form-check-label" for="measles">
-                                    Measles
-                                </label>
-                        </div>
-                            <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="diphteria" name="diphteria">
-                                <label class="form-check-label" for="diphteria">
-                                     Diphteria
-                                </label>
-                        </div>
-                    </div>    
-                    <!--Column 2-->
-                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="asthma" name="asthma">
-                            <label class="form-check-label" for="asthma">
-                                Asthma
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="rheumaticFever" name="rheumaticFever">
-                                <label class="form-check-label" for="rheumaticFever">
-                                    Rheumatic Fever
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="seizureDisorder" name="seizureDisorder">
-                                <label class="form-check-label" for="seizureDisorder">
-                                    Seizure Disorder
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="hepatitis" name="hepatitis">
-                                <label class="form-check-label" for="hepatitis">
-                                    Hepatitis
-                                </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="allergy" name="allergy"/>
-                                <label class="form-check-label" for="allergy">
-                                       Allergy 
-                                </label>
-                                <input type="text" class="form-control form-control-sm">
-                            </div>
-                        </div>
-                     </div> 
-                    <!--Column 3--> 
-                    <div class="col-md-4 p-2 align-items-center justify-content-center ms-lg-3 ms-sm-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="mumps" name="mumps">
-                                 <label class="form-check-label" for="mumps">
-                                    Mumps
-                                   </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="cardiacDisease" name="cardiacDisease">
-                                <label class="form-check-label" for="cardiacDisease">
-                                    Cardiac Disease
-                                </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="chickenPox" name="chickenPox">
-                                <label class="form-check-label" for="chickenPox">
-                                        Chicken Pox
-                                </label>
-                        </div>
-                        <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="1" id="tuberculosis" name="tuberculosis">
-                                <label class="form-check-label" for="tuberculosis">
-                                    Tuberculosis
-                                </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="others" name="others" />
-                                <label class="form-check-label" for="others">
-                                    Others 
-                                </label>
-                                <input type="text" class="form-control form-control-sm" name="othersDetails">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>    
-        </div>
-
+            <form method="POST" action="{{ route('admin.medicalPatientRecord.store') }}" enctype="multipart/form-data">
+             @csrf
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">
                 <!-- LINE BREAK -->
@@ -279,13 +167,13 @@
                         $counter++;
                     @endphp
                         <tr>
-                            <td contenteditable="false" >{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y', strtotime($record->date)) }}</td>
-                            <td contenteditable="false">{{ $record->temperature }}</td>
-                            <td contenteditable="false">{{ $record->bloodPressure }}</td>
-                            <td contenteditable="false">{{ $record->weight }}</td>
-                            <td contenteditable="false">{{ $record->height }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
-                            <td contenteditable="false" style="max-width: 100px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $record->temperature }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $record->bloodPressure }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $record->weight }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $record->height }}</td>
+                            <td contenteditable="false" class="table-success border border-dark" style="max-width: 100px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
+                            <td contenteditable="false" class="table-success border border-dark" style="max-width: 100px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
                         </tr>
                         @endforeach
                         @php
@@ -293,12 +181,21 @@
                         @endphp
                     <tr id="newData" class="table-info border border-dark">
                         <td contenteditable="true" id="table_date" name="table_date" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="{{ date("D, d F y") }}">{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y') }}</td>
-                        <td contenteditable="true" id="table_temperature" name="table_temperature"></td>
+                        <td contenteditable="true" id="table_temperature" name="table_temperature" onkeypress="return isNumeric(event)"></td>
                         <td contenteditable="true" id="table_bloodPressure" name="table_bloodPressure"></td>
-                        <td contenteditable="true" id="table_weight" name="table_weight"></td>
-                        <td contenteditable="true" id="table_height" name="table_height"></td>
+                        <td contenteditable="true" id="table_weight" name="table_weight" onkeypress="return isNumeric(event)"></td>
+                        <td contenteditable="true" id="table_height" name="table_height" onkeypress="return isNumeric(event)"></td>
                         <td contenteditable="true" id="table_historyAndPhysicalExamination" name="table_historyAndPhysicalExamination" style="max-width: 100px;"></td>
                         <td contenteditable="true" id="table_physicianDirections" name="table_physicianDirections" style="max-width: 100px;"></td>
+                        <script>
+                            function isNumeric(evt) {
+                                var charCode = (evt.which) ? evt.which : event.keyCode;
+                                if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                                    return false;
+                                }
+                                return true;
+                            }
+                        </script>
                     </tr>
                 </tbody>
             </table>

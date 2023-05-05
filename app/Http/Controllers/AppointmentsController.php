@@ -52,7 +52,7 @@ class AppointmentsController extends Controller
         }
         $userID = $user->id;
         // Get current user's appointment entries
-        $myAppointments = Appointment::where('status', '=', 'Active')
+        $myAppointments = Appointment::where('status', '=', 'ACTIVE')
                                     ->where(function($query) use ($userID, $user_type){
                                         $query->where($user_type, '=', $userID);
                                     })
@@ -635,6 +635,10 @@ class AppointmentsController extends Controller
     }
 
     public function adminShowMedRecordFromAppointment($patientType, $patientID, $ticketID){
+        $appointmentEntry = Appointment::where('ticket_id', $ticketID)->first();
+        if($appointmentEntry->status == 'SUCCESS'){
+            return redirect()->back()->with('warning', 'Appointment #'.$ticketID.' is already done!');
+        }
         if($patientType == 'PATIENT-STUDENT') {
             $user = UserStudent::where('id', $patientID)->first();
             if($user->hasMedRecord){
@@ -655,10 +659,18 @@ class AppointmentsController extends Controller
         elseif($patientType == 'PATIENT-PERSONNEL'){
             $user = UserPersonnel::where('id', $patientID)->first();
             if($user->hasMedRecord){
+                if($user->hasValidatedRecord){
+                    $medicalPatientRecords = MedicalPatientRecord::where('personnel', $user->id)->get();
+                    return view('admin.medicalPatientRecord')
+                    ->with('medicalPatientRecords', $medicalPatientRecords)
+                    ->with('patient', $user)
+                    ->with('fromAppointment', 1)
+                    ->with('ticketID', $ticketID);
+                }
                 return view('admin.ClinicSideMedicalRecordFormPersonnel')
-                ->with('patient', $user)
-                ->with('fromAppointment', 1)
-                ->with('ticketID', $ticketID);
+                    ->with('patient', $user)
+                    ->with('fromAppointment', 1)
+                    ->with('ticketID', $ticketID);
             }
         }
         else{

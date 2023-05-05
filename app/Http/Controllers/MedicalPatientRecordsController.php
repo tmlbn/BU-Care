@@ -34,6 +34,29 @@ class MedicalPatientRecordsController extends Controller
             'medicalPatientRecordsPersonnel' => $medicalPatientRecordsPersonnel
         ]);
     }
+    
+    public function showMedicalPatientRecordsList(Request $request){
+        $searchQuery = $request->search;
+        $filterByCampus = $request->campusSelect;
+        $filterByCourse = $request->courseSelect;
+
+        if (!isset($filterByCampus)) {
+            $filterByCampus = 'College of Science';
+        }
+
+        $studentsList = UserStudent::whereHas('medicalRecord', function ($query) use ($filterByCampus) {
+            $query->where('campus', $filterByCampus);
+        })->get();
+
+        $personnelList = UserPersonnel::whereHas('medicalRecordPersonnel', function ($query) use ($filterByCampus) {
+            $query->where('campus', $filterByCampus);
+        })->get();
+
+        return view('admin.medicalPatientRecords', [
+            'students' => $studentsList,
+            'personnel' => $personnelList,
+        ]);
+    }
 
     public function showMedicalPatientRecord($patientID){
         try {

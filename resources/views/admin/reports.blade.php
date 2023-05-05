@@ -2,13 +2,41 @@
 
 @section('content')
 
-
+<div class="container-fluid bg-custom text-dark p-5">
+  <div class="col-md-12 p-3 text-decoration-none">    
+      <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
+        <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToPatientMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'checked' : '' }}>
+        <label class="btn btn-outline-primary" for="btnradio1">HEALTH RECORDS</label>
+    
+        <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
+        <label class="btn btn-outline-primary" for="btnradio2">MEDICAL PATIENT RECORDS</label>
+      
+        <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
+        <label class="btn btn-outline-primary" for="btnradio3">DAILY CONSULTATIONS</label>
+      
+        <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
+        <label class="btn btn-outline-primary" for="btnradio4">REPORTS</label>
+      </div>
+    </div>
   
+  <script>
+    function redirectToPatientMedFormList() {
+        window.location.href = "{{ route('admin.patientMedFormList.show') }}";
+    }
 
-<div class="col-md-12 p-3">    
-    <div class="col-md-12 p-1">
-        
-        <button onclick="toggleView()" class="btn btn-primary">Toggle View</button>
+    function redirectToMedPatientRecords() {
+        window.location.href = "{{ route('admin.medPatientRecords.show') }}";
+    }
+    
+    function redirectToDailyConsultations() {
+        window.location.href = "{{ route('admin.medPatientRecordList.show') }}";
+    }
+
+    function redirectToReports() {
+        window.location.href = "{{ route('admin.reports') }}";
+    }
+  </script>
+  <button onclick="toggleView()" class="btn btn-primary">Toggle View</button>
             
     <!-- Search function -->
         <form method="GET" action="{{ route('admin.patientMedFormList.show') }}" id="searchForm">

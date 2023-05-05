@@ -43,7 +43,7 @@ class MedicalRecordFormController extends Controller
 
                     $dateString = $birthYear . '-' . $birthMonth . '-' . $birthDate;
                     $date = date_create($dateString);
-
+                    
                     $formattedBirthDate = $date->format('Y F d');
                     return view('medicalRecordForm')->with([
                         'user' => $user,
@@ -57,20 +57,44 @@ class MedicalRecordFormController extends Controller
         }
     }
 
-    public function showPatientMedFormList(){
-        $searchQuery = request()->search;
-        $filterByCampus = request()->campus;
-        $filterByCourse = request()->course;
-    
-        $studentsList = UserStudent::has('medicalRecord')
-            ->get();
-        
-        $personnelList = UserPersonnel::has('medicalRecordPersonnel')
-            ->get();
-    
+    public function showPatientMedFormList(Request $request)
+    {
+        $searchQuery = $request->search;
+        $filterByCampus = $request->campusSelect;
+        $filterByCourse = $request->courseSelect;
+
+        if (!isset($filterByCampus)) {
+            $filterByCampus = 'College of Science';
+        }
+
+        $studentsList = UserStudent::whereHas('medicalRecord', function ($query) use ($filterByCampus) {
+            $query->where('campus', $filterByCampus);
+        })->get();
+
+        $personnelList = UserPersonnel::whereHas('medicalRecordPersonnel', function ($query) use ($filterByCampus) {
+            $query->where('campus', $filterByCampus);
+        })->get();
+
         return view('admin.medicalRecordList', [
             'students' => $studentsList,
             'personnel' => $personnelList,
+        ]);
+    }
+
+    public function filterTable(){
+        $selectedCriteria = request()->input('criteria');
+        $filteredStudents = UserStudent::whereHas('medicalRecord', function ($query) use ($selectedCriteria) {
+            $query->where('campus', $selectedCriteria);
+        })->get();
+
+        $filteredPersonnel = UserPersonnel::whereHas('medicalRecordPersonnel', function ($query) use ($selectedCriteria) {
+            $query->where('campus', $selectedCriteria);
+        })->get();
+
+        return response()
+        ->json([
+            'filteredStudents' => $filteredStudents,
+            'filteredPersonnel' => $filteredPersonnel
         ]);
     }
 
@@ -135,7 +159,7 @@ class MedicalRecordFormController extends Controller
 
         #####---MEDICAL RECORD FORM SUBMISSION---#####
     public function medFormSubmit(Request $request){
-       //dd($request);
+        //dd($request);
                 /* PHONE NUMBER */
         $rules = [
             'MR_parentGuardianContactNumber' => ['required', 'regex:/^(\\+63|0)\\d{10}$/'],
@@ -173,12 +197,11 @@ class MedicalRecordFormController extends Controller
             'MR_dateOfBirth' => 'required',
             'MR_civilStatus' => 'required|string',
             'MR_nationality' => 'required|string',
-            'MR_religion' => 'required|string',
             'MR_addressRegion' => 'required|string',
             'MR_addressProvince' => 'required|string',
             'MR_addressCityMunicipality' => 'required|string',
             'MR_addressBrgySubdVillage' => 'required|string',
-            'MR_addressHouseNoStreet' => 'required|string',
+            'MR_addressHouseNoStreet' => 'nullable|string',
             'MR_fatherName' => 'required|string',
             'MR_fatherOccupation' => 'nullable',
             'MR_fatherOffice' => 'nullable',
@@ -464,11 +487,13 @@ class MedicalRecordFormController extends Controller
 
                 $medRecord->dateOfBirth = $formattedDate;
                 $medRecord->civilStatus = filter_var($request->input('MR_civilStatus'), FILTER_SANITIZE_STRING);
+
                 $medRecord->region = filter_var($request->input('MR_addressRegion'), FILTER_SANITIZE_STRING);
                 $medRecord->province = filter_var($request->input('MR_addressProvince'), FILTER_SANITIZE_STRING);
                 $medRecord->cityMunicipality = filter_var($request->input('MR_addressCityMunicipality'), FILTER_SANITIZE_STRING);
                 $medRecord->barangaySubdVillage = filter_var($request->input('MR_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
-                $medRecord->houseNumberStName = filter_var($request->input('MR_address'), FILTER_SANITIZE_STRING);
+                $medRecord->houseNumberStName = filter_var($request->input('MR_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
+
                 $medRecord->nationality = filter_var($request->input('MR_nationality'), FILTER_SANITIZE_STRING);
                 $medRecord->religion = filter_var($request->input('MR_religion'), FILTER_SANITIZE_STRING);
                 $medRecord->fatherName = filter_var($request->input('MR_fatherName'), FILTER_SANITIZE_STRING);
@@ -679,11 +704,11 @@ class MedicalRecordFormController extends Controller
             'MRP_civilStatus' => 'required|string',
             'MRP_nationality' => 'required|string',
             'MRP_religion' => 'required|string',
-            'MR_addressRegion' => 'required|string',
-            'MR_addressProvince' => 'required|string',
-            'MR_addressCityMunicipality' => 'required|string',
-            'MR_addressBrgySubdVillage' => 'required|string',
-            'MR_addressHouseNoStreet' => 'required|string',
+            'MRP_addressRegion' => 'required|string',
+            'MRP_addressProvince' => 'required|string',
+            'MRP_addressCityMunicipality' => 'required|string',
+            'MRP_addressBrgySubdVillage' => 'required|string',
+            'MRP_addressHouseNoStreet' => 'nullable|string',
             'MRP_emergencyContactName' => 'required|string',
             'MRP_emergencyContactOccupation' => 'required|string',
             'MRP_emergencyContactRelationship' => 'required|string',
@@ -952,12 +977,11 @@ class MedicalRecordFormController extends Controller
             $medRecordPersonnel->civilStatus = filter_var($request->input('MRP_civilStatus'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->nationality = filter_var($request->input('MRP_nationality'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->religion = filter_var($request->input('MRP_religion'), FILTER_SANITIZE_STRING);
-            
-            $medRecordPersonnel->region = filter_var($request->input('MR_addressRegion'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->province = filter_var($request->input('MR_addressProvince'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->cityMunicipality = filter_var($request->input('MR_addressCityMunicipality'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->barangaySubdVillage = filter_var($request->input('MR_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->houseNumberStName = filter_var($request->input('MR_address'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->region = filter_var($request->input('MRP_addressRegion'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->province = filter_var($request->input('MRP_addressProvince'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->cityMunicipality = filter_var($request->input('MRP_addressCityMunicipality'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->barangaySubdVillage = filter_var($request->input('MRP_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->houseNumberStName = filter_var($request->input('MRP_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->contactNumber = filter_var(ltrim($request->input('MRP_personnelContactNumber'), '0'), FILTER_VALIDATE_INT);
             $medRecordPersonnel->emergencyContactName = filter_var($request->input('MRP_emergencyContactName'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->emergencyContactNumber = filter_var(ltrim($request->input('MRP_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
@@ -1104,7 +1128,7 @@ class MedicalRecordFormController extends Controller
         // Display the patient form with the found user data
         return view('admin.ClinicSideMedicalRecordFormPersonnel')->with('patient', $patient);
     }
-
+    
     public function showWalkInHealthRecord(){
         return view('admin.walkInMedicalRecordForm');
     }
@@ -2099,4 +2123,4 @@ class MedicalRecordFormController extends Controller
                 
             } // END OF medFormSubmit FUNCTION
         
-  }
+}

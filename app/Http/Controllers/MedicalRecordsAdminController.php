@@ -154,7 +154,7 @@ class MedicalRecordsAdminController extends Controller
             // Log error and display user-friendly message
             Log::error('Failed to register user.');
             return back()->with('fail','Failed to register. Please try again later.');
-        }else{
+        }
             $patient = UserStudent::where('id', $request->input('studentID'))->first();
             $patient->hasValidatedRecord = intval('1');
             $patient->MRA_id =  $medRecordAdmin->MRA_id;
@@ -179,7 +179,7 @@ class MedicalRecordsAdminController extends Controller
                         ->with('MedicalRecordSuccess', 'Medical record saved successfully')
                         ->with('patientID', $patient->id);
             }
-        }
+        
         } 
         catch (QueryException $ex) {
             // Handle the SQL error here
@@ -281,8 +281,26 @@ class MedicalRecordsAdminController extends Controller
             if(!$res){
                 return redirect()->back()->with('fail', 'An error occured. Please try again later.');
             }
-            // Success
-            return redirect()->back()->with('success', 'Medical Record successfully submitted.');
+            if($request->input('fromAppointment') == 1){
+                try{
+                    $ticketID = $request->input('ticketID');
+                    $userAppointment = Appointment::where('ticket_id', $ticketID)->first();
+                    $userAppointment->status = 'SUCCESS';
+                    $userAppointment->save();
+                    return redirect('/')
+                            ->with('MedicalRecordSuccess', 'Medical record saved successfully')
+                            ->with('userTicketID', $ticketID);
+                }
+                catch (\Throwable $e) {
+                // handle $e
+                    return redirect('/')->with('fail', 'An error occured. Please Try again later.');
+                }
+            }
+            elseif($request->input('fromAppointment') == 0){
+                return redirect('/')
+                        ->with('MedicalRecordSuccess', 'Medical record saved successfully')
+                        ->with('patientID', $patient->id);
+            }
         }
         catch (Exception $ex) {
             // Handle error here

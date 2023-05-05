@@ -182,7 +182,7 @@
                                     }
                                 });
                             });
-                            if(date.format('YYYY-MM-DD') <= (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
+                            if(/*date.format('YYYY-MM-DD') <=*/ (moment(currentLoopedAppointmentDate).format('YYYY-MM-DD')) && !(date.isoWeekday() === 6 || date.isoWeekday() === 7)){
                                 if(countValue > 0 && countValue < 25){
                                     cell.append('<p class="appointment-count mt-5 text-center" style="background-color: #8deb8d;">' + (maxAppointment - countValue) + '</p>');
                                 }
