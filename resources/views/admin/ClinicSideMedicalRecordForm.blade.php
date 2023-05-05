@@ -234,7 +234,7 @@
             </div>
         <div class="col-md-12">
             <label for="MR_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->region }}, {{ $patient->medicalRecord->province }}, {{ $patient->medicalRecord->cityMunicipality }}, {{ $patient->medicalRecord->barangaySubdVillage }}, {{ $patient->medicalRecord->houseNumberStName }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_fatherName" class="form-label h6">Father's Name</label>
@@ -254,11 +254,11 @@
             </div>
         <div class="col-md-6">
             <label for="MR_fatherOffice" class="form-label h6">Office Address of Father</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->fatherOfficeAddress) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_motherOffice" class="form-label h6">Office Address of Mother</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->motherOfficeAddress) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardian" class="form-label h6">Guardian's Name</label>

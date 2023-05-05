@@ -99,7 +99,7 @@
             </div>
             <div class="col-md-4">
                 <label for="MPR_fatherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->fatherOfficeAddress) }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_fatherContact" class="form-label">Contact Number</label>
@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-4">
                 <label for="MPR_motherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->motherOfficeAddress) }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_motherContact" class="form-label">Contact Number</label>

@@ -291,7 +291,7 @@
                 </thead>
                 <tbody id="table-body" class="table-group-divider">
                     @foreach ($students as $student)
-                    <tr class="text-center divHover">
+                    <tr class="text-center divHover" onClick="window.open('{{ route('admin.studentMedForm.show', ['patientID' => $student->student_id_number ? $student->student_id_number : $student->applicant_id_number]) }}', '_blank'); return false;">
                       <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
                         <div class="d-flex flex-row justify-content-center">
                           <div class="col-sm">
