@@ -105,6 +105,9 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     // POST for Importing CSV File (users_personnel table) //
     Route::post('/admin/import-personnel', [ImportController::class, 'importPersonnel'])->name('import.store.personnel');
 
+    Route::get('/admin/walk-in/student-health-record',[MedicalRecordFormController::class, 'showWalkInHealthRecord'])->name('admin.walkInHealthRecord.show');
+    Route::get('/admin/walk-in/personnel-health-record',[MedicalRecordFormController::class, 'showWalkInHealthRecordPersonnel'])->name('admin.walkInHealthRecordPersonnel.show');
+
     /* STUDENT FORMS */
     Route::get('/admin/medical-record',[MedicalRecordFormController::class, 'showPatientMedFormList'])->name('admin.patientMedFormList.show');
     Route::get('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'showPatientForm'])->name('admin.studentMedForm.show');
