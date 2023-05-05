@@ -17,6 +17,8 @@ use App\Models\ImmunizationHistory;
 use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
+use App\Models\MedicalPatientRecord;
+
 use Carbon\Carbon;
 use Session;
 use DateTime;
@@ -632,13 +634,22 @@ class AppointmentsController extends Controller
         }
     }
 
-    public function adminShowMedRecordFromAppointment($patientType, $patientID){
+    public function adminShowMedRecordFromAppointment($patientType, $patientID, $ticketID){
         if($patientType == 'PATIENT-STUDENT') {
             $user = UserStudent::where('id', $patientID)->first();
             if($user->hasMedRecord){
+                if($user->hasValidatedRecord){
+                    $medicalPatientRecords = MedicalPatientRecord::where('student_id', $user->id)->get();
+                    return view('admin.medicalPatientRecord')
+                    ->with('medicalPatientRecords', $medicalPatientRecords)
+                    ->with('patient', $user)
+                    ->with('fromAppointment', 1)
+                    ->with('ticketID', $ticketID);
+                }
                 return view('admin.ClinicSideMedicalRecordForm')
                 ->with('patient', $user)
-                ->with('fromAppointment', 1);
+                ->with('fromAppointment', 1)
+                ->with('ticketID', $ticketID);
             }
         }
         elseif($patientType == 'PATIENT-PERSONNEL'){
@@ -646,7 +657,8 @@ class AppointmentsController extends Controller
             if($user->hasMedRecord){
                 return view('admin.ClinicSideMedicalRecordFormPersonnel')
                 ->with('patient', $user)
-                ->with('fromAppointment', 1);
+                ->with('fromAppointment', 1)
+                ->with('ticketID', $ticketID);
             }
         }
         else{

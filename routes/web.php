@@ -136,6 +136,8 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/appointments', [AppointmentsController::class, 'showAdminAppointments'])->name('admin.appointments.show');
     Route::post('admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
 	Route::post('admin/appointments-store', [AppointmentsController::class, 'adminAppointmentsStore'])->name('admin.appointments.store');
-    Route::get('/admin/appointment/medical-record/{patientType}/{patientID}', [AppointmentsController::class, 'adminShowMedRecordFromAppointment'])->name('admin.med-record-from-appointment.show');
+    Route::get('/admin/appointment/medical-record/{patientType}/{patientID}/{ticketID}', [AppointmentsController::class, 'adminShowMedRecordFromAppointment'])->name('admin.med-record-from-appointment.show');
     Route::get('/admin/getUserOfAppointment', [AppointmentsController::class, 'getUserOfAppointment'])->name('admin.UserOfAppointment.get');
+    Route::post('/admin/release-medical-certificate/{userTicketID}', [MedicalRecordsAdminController::class, 'releaseMedCertFromAppointment'])->name('admin.releaseMedCertFromAppointment');
+    Route::post('/admin/release-medical-certificate/{patientID}', [MedicalRecordsAdminController::class, 'releaseMedCert'])->name('admin.releaseMedCert');
 });

@@ -33,90 +33,96 @@
             </ul>
         </div>
     @endif
+    @php
+        if(isset($fromAppointment)){
+            echo  '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
+            echo  '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
+        }
+    @endphp
             <div class="col-md-3">
-                <p class="h6">Course/Grade/Year</p>
-                <input type="text" class="form-control" id="campusSelect" name="MPR_campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
+                <p class="h6">Campus</p>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="campusSelect" name="MPR_campusSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
             </div>
             <div class="col-md-3">
-                <p class="h6">Unit</p>
-                <input type="text" class="form-control" id="courseSelect" name="MPR_courseSelect" value="{{ $patient->medicalRecord->campus }}" readonly>
+                <p class="h6">Course</p>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="courseSelect" name="MPR_courseSelect" value="{{ $patient->medicalRecord->course }}" readonly>
             </div> 
         
             <div class="d-flex flex-row">
             </div>
             <div class="col-md-3">
                 <label for="MPR_lastName" class="form-label h6">Last Name</label>
-                <input type="text" class="form-control" id="MPR_lastName" name="MPR_lastName" value="{{ $patient->medicalRecord->last_name }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_lastName" name="MPR_lastName" value="{{ $patient->medicalRecord->last_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_firstName" class="form-label h6">First Name</label>
-                <input type="text" class="form-control" id="MPR_firstName" name="MPR_firstName" value="{{ $patient->medicalRecord->first_name }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_firstName" name="MPR_firstName" value="{{ $patient->medicalRecord->first_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_middleName" class="form-label h6">Middle Name</label>
-                <input type="text" class="form-control" id="MPR_middleName" name="MPR_middleName" value="{{ $patient->medicalRecord->middle_name }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_middleName" name="MPR_middleName" value="{{ $patient->medicalRecord->middle_name }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_birthday" class="form-label h6">Birthday</label>
-                <input type="text" class="form-control" id="MPR_birthday" name="MPR_birthday" value="{{ $patient->birth_month }}/{{ $patient->birth_date }}/{{ $patient->birth_year }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_birthday" name="MPR_birthday" value="{{ $patient->birth_month }}/{{ $patient->birth_date }}/{{ $patient->birth_year }}" readonly>
             </div>
             <div class="col-md-9">
                 <label for="MPR_address" class="form-label h6">Address</label>
-                <input type="text" class="form-control" id="MPR_address" name="MPR_address" value="{{ $patient->medicalRecord->homeAddress }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_address" name="MPR_address" value="{{ $patient->medicalRecord->houseNumberStName }}, {{ $patient->medicalRecord->barangaySubdVillage }}, {{ $patient->medicalRecord->cityMunicipality }}, {{ $patient->medicalRecord->province }}, {{ $patient->medicalRecord->region }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_religion" class="form-label h6">Religion</label>
-                <input type="text" class="form-control" id="MPR_religion" name="MPR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_religion" name="MPR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_contact" class="form-label">Contact Number(s)</label>
-                <input type="text" class="form-control" id="contact" name="contact" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="contact" name="contact" value="0{{ $patient->medicalRecord->studentContactNumber }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_civilStatus" class="form-label">Civil Status</label>
-                <input type="text" class="form-control" id="MPR_civilStatus" name="MPR_civilStatus" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_civilStatus" name="MPR_civilStatus" value="{{ $patient->medicalRecord->civilStatus }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_sex" class="form-label">Sex</label>
-                <input type="text" class="form-control" id="MPR_sex" name="MPR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_sex" name="MPR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="MPR_age" class="form-label">Age</label>
-                <input type="text" class="form-control" id="MPR_age" name="MPR_age" value="{{ $patient->medicalRecord->age }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_age" name="MPR_age" value="{{ $patient->medicalRecord->age }}" readonly>
             </div>
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Parents</span>
             <div class="col-md-4">
                 <label for="MPR_fatherName" class="form-label">Father's Name</label>
-                <input type="text" class="form-control" id="MPR_fatherName" name="MPR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherName" name="MPR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_fatherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ $patient->medicalRecord->fatherOfficeAddress }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_fatherContact" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MPR_fatherContact" name="MPR_fatherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherContact" name="MPR_fatherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_motherName" class="form-label">Mother's Name</label>
-                <input type="text" class="form-control" id="MPR_motherName" name="MPR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherName" name="MPR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_motherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ $patient->medicalRecord->motherOfficeAddress }}" readonly>
             </div>
             <div class="col-md-4">
                 <label for="MPR_motherContact" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MPR_motherContact" name="MPR_motherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherContact" name="MPR_motherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Incase of Emergency please notify</span>
             <div class="col-md-6">
                 <label for="MPR_emergencyName" class="form-label">Name</label>
-                <input type="text" class="form-control" id="MPR_emergencyName" name="MPR_emergencyName" value="{{ $patient->medicalRecord->emergencyContactName }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_emergencyName" name="MPR_emergencyName" value="{{ $patient->medicalRecord->emergencyContactName }}" readonly>
             </div>
             <div class="col-md-6">
                 <label for="MPR_emergencyContact" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="MPR_emergencyContact" name="MPR_emergencyContact" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_emergencyContact" name="MPR_emergencyContact" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" readonly>
             </div>
         </div>
         <!--Illness-->
@@ -265,9 +271,15 @@
                 </thead>
                 <tbody>
                     <!-- Need loop to print every record of the patient -->
+                    @php
+                        $counter = 0;
+                    @endphp
                     @foreach($medicalPatientRecords as $record)
+                    @php
+                        $counter++;
+                    @endphp
                         <tr>
-                            <td contenteditable="false" >{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                            <td contenteditable="false" >{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y', strtotime($record->date)) }}</td>
                             <td contenteditable="false">{{ $record->temperature }}</td>
                             <td contenteditable="false">{{ $record->bloodPressure }}</td>
                             <td contenteditable="false">{{ $record->weight }}</td>
@@ -276,10 +288,11 @@
                             <td contenteditable="false" style="max-width: 100px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
                         </tr>
                         @endforeach
-
-                    
+                        @php
+                            $counter++;
+                        @endphp
                     <tr id="newData" class="table-info border border-dark">
-                        <td contenteditable="true" id="table_date" name="table_date" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="{{ date("D, d F y") }}">{{ date('d-F-Y') }}</td>
+                        <td contenteditable="true" id="table_date" name="table_date" data-toggle="tooltip" data-container="body" data-bs-placement="bottom" title="{{ date("D, d F y") }}">{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y') }}</td>
                         <td contenteditable="true" id="table_temperature" name="table_temperature"></td>
                         <td contenteditable="true" id="table_bloodPressure" name="table_bloodPressure"></td>
                         <td contenteditable="true" id="table_weight" name="table_weight"></td>

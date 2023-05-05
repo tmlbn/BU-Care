@@ -257,19 +257,21 @@
                                     else{
                                         patientID = appointment.personnel_id;
                                     }
+                                    let appointmentTicket = appointment.ticket_id;
                                     $.ajax({
                                         url: '/admin/getUserOfAppointment',
                                         method: 'GET',
                                         data: {
                                             patientType: appointment.patient_type,
-                                            patientID: patientID
+                                            patientID: patientID,
+                                            appointmentTicket: appointmentTicket
                                         },
                                         success: function(user) {
                                             let userInfoHTML = '';
                                             patient = user.user;
                                             if (patient) {
                                                 patientInfoHTML = `
-                                                <p class="m-0 fw-bold">PATIENT:&nbsp;&nbsp;${patient.first_name} ${patient.last_name}</p>
+                                                <p id="ticketUserInfo" class="m-0 fw-bold">PATIENT:&nbsp;&nbsp;${patient.first_name} ${patient.last_name}</p>
                                                 `;
                                             }
                                             counter++;
@@ -279,7 +281,6 @@
                                             
                                             //loop through each table cell and check if it matches the appointment date and time
                                             $('#time-slots tr').each(function() {
-                                            
                                                 var cell_time = $(this).find('#timeSlot').text();
                                                 if (formatted_time == cell_time) {
                                                 //if there is a match, add a class to the table cell that corresponds to the appointment status
@@ -294,21 +295,21 @@
                                                     
                                                     // Create DateTime objects
                                                     let formatted_date = moment(appointment.appointmentDate).format('YYYY-MM-DD');
-
                                                     // Append the HTML to a div
                                                     $('#daily-appointments-div').append(`
-                                                        <div class="col-12 col-xl-3 col-md-6">
-                                                            <p class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
+                                                        <div class="col-12 col-xl-3 col-md-6 ${(appointment.status == 'SUCCESS') ? 'text-success' : ''}">
+                                                            <p id="ticketDateInfo" class="m-0 fw-bold">${counter}.&nbsp;&nbsp;${formatted_date} @ ${formatted_time}</p>
                                                             <a class="fw-bold text-primary-subtle"></a>
-                                                            ${patientInfoHTML}
-                                                            <p class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
+                                                                ${patientInfoHTML}
+                                                            <p id="ticketServicesInfo" class="m-0">Service: ${(appointment.services) ? appointment.services : appointment.others}<br style="user-select: none;">Description: ${appointment.appointmentDescription}</p>
                                                         </div>
                                                     `);
 
                                                     var appointmentLink = $('#daily-appointments-div').find('.col-md-6').last().find('a');
-                                                    appointmentLink.attr('href', "{{ route('admin.med-record-from-appointment.show', ['patientType' => ':patientType', 'patientID' => ':patientID']) }}".replace(':patientType', appointment.patient_type).replace(':patientID', appointment.student_id || appointment.personnel_id));
+                                                    appointmentLink.attr('href', "{{ route('admin.med-record-from-appointment.show', ['patientType' => ':patientType', 'patientID' => ':patientID', 'ticketID' => ':ticketID']) }}".replace(':patientType', appointment.patient_type).replace(':patientID', appointment.student_id || appointment.personnel_id).replace(':ticketID', appointment.ticket_id));
                                                     appointmentLink.attr('target', '_blank');
                                                     appointmentLink.append(`<p class="m-0">Ticket# ${appointment.ticket_id}</p>`);
+             
                                                 }
                                             })
                                         },
