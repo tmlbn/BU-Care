@@ -655,13 +655,9 @@ class MedicalRecordFormController extends Controller
         if(Auth::guard('employee')->user()->hasMedRecord == 0){
             $user = Auth::guard('employee')->user();
 
-            $birthYear = $user->birth_year;
-            $birthMonth = $user->birth_month;
-            $birthDate = $user->birth_date;
-
-            $dateString = $birthYear . '-' . $birthMonth . '-' . $birthDate;
+            $dateString = $user->date_of_birth;
             $date = date_create($dateString);
-
+            
             $formattedBirthDate = $date->format('Y F d');
 
             return view('personnel.medicalRecordFormPersonnel')

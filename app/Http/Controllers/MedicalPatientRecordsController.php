@@ -95,6 +95,9 @@ class MedicalPatientRecordsController extends Controller
         }elseif($patient->user_type == 'PATIENT-PERSONNEL'){
             $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
         }
+
+        // $dateofExam = $medicalPatientRecords->date_of_exam;
+        // dd($medicalPatientRecords[0]->date_of_exam);
         
         return view('admin.medicalPatientRecord')
                 ->with('patient', $patient)
@@ -113,6 +116,10 @@ class MedicalPatientRecordsController extends Controller
                 'historyAndPhysicalExamination' => 'required|string',
                 'physicianDirections' => 'required|string',
             ]);
+
+                // $month_of_exam = <code to extract month from $request->date>
+                // $year_of_exam = <code to extract year from $request->date> example: $year_of_exam = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y');
+                // dd($month_of_exam, $year_of_exam);
 
                 $new_mpr_illness = new MPR_Illness();
                     $new_mpr_illness->hypertension = $request->filled('hypertension') ?: '0';
@@ -150,7 +157,8 @@ class MedicalPatientRecordsController extends Controller
                     return redirect()->route('admin.patientMedFormList.show')->with('fail', $message);
                 }
                     $new_mpr->MPR_illnessID = $new_mpr_illness->MPR_illnessID ;
-                    $new_mpr->date = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y-m-d');
+                    $new_mpr->date_of_exam = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y-m-d');
+                    // SAVE MONTH AND YEAR OF EXAM HER
                     $new_mpr->temperature = filter_var($request->temperature, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $new_mpr->bloodPressure = filter_var($request->bloodPressure, FILTER_SANITIZE_STRING);
                     $new_mpr->weight = filter_var($request->weight, FILTER_SANITIZE_STRING);

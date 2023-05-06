@@ -84,10 +84,10 @@ class ImportController extends Controller{
                 /*if (empty($row)) {
                     // end of file
                     break;
-                }
+                }*/
                 if(count($row) !== count($header)){
                     continue; // skip this row if number of elements is different
-                }*/
+                }
                 $data = array_combine($header, $row);
                 // Check for duplicate personnel ID
                 $personnel = UserPersonnel::where('personnel_id_number', $data['personnel_id_number'])->first();

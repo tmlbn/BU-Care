@@ -213,8 +213,15 @@
         </div>
         <div class="col-md-1">
             <label for="MRP_age" class="form-label h6">Age</label>
-            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_age" name="MRP_age" value="{{ $patient->medicalRecordPersonnel->age }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_age" name="MRP_age" value="" readonly>
         </div>
+        <script>
+            $(document).ready(function() {
+                var birthdate = new Date("<?php echo $date; ?>");
+                var age = Math.floor((new Date() - birthdate) / (365.25 * 24 * 60 * 60 * 1000));
+                $('#MRP_age').val(age);
+            });
+        </script>
         <div class="col-md-1">
             <label for="MRP_sex" class="form-label h6">Sex</label>
             <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_sex" name="MRP_sex" value="{{ $patient->medicalRecordPersonnel->sex }}" readonly>

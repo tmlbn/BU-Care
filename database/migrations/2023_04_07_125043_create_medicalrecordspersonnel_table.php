@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('MRPA_id')->unique()->nullable()->default(null);
             $table->unsignedBigInteger('personnel_id')->unique();
             $table->string('designation');
-            $table->unsignedSmallInteger('unitDepartment');
+            $table->text('unitDepartment');
             $table->string('campus');
             $table->string('last_name', 50);
             $table->string('first_name', 50);

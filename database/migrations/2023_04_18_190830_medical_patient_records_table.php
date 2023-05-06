@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id')->nullable()->default(null);
             $table->unsignedBigInteger('personnel_id')->nullable()->default(null);
             $table->unsignedBigInteger('MPR_illnessID')->unique()->nullable()->default(null);
-            $table->date('date');
+            $table->date('date_of_exam');
             $table->float('temperature', 8, 2);
             $table->string('bloodPressure');
             $table->string('weight');
