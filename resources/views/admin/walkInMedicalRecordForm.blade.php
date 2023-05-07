@@ -115,25 +115,25 @@
         <div class="mx-auto row row-cols-lg-4 row-cols-md-2 mt-2">
         
             <div class="col-xl-3 col-lg-6">
-                <label for="applicant_ID" class="form-label h6">Applicant ID Number<span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('applicant_ID') is-invalid @enderror" id="applicant_id" name="applicant_id" value="" oninput="this.value = this.value.toUpperCase()" required>
+                <label for="applicant_id" class="form-label h6">Applicant ID Number<span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('applicant_id') is-invalid @enderror" id="applicant_id" name="applicant_id" value="" oninput="this.value = this.value.toUpperCase()" required>
                 <div class="invalid-feedback">
                     Please enter your Applicant ID.
                 </div>
                 <span class="text-danger">
-                    @error('applicant_ID') 
+                    @error('applicant_id') 
                       {{ $message }} 
                     @enderror
                 </span>                
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6">
-                <label for="student_ID" class="form-label h6">Personnel ID Number<span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('student_ID') is-invalid @enderror" id="student_ID" name="student_ID" value="" oninput="this.value = this.value.toUpperCase()" required>
+                <label for="student_id" class="form-label h6">Personnel ID Number<span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('student_id') is-invalid @enderror" id="student_id" name="student_id" value="" oninput="this.value = this.value.toUpperCase()" required>
                 <div class="invalid-feedback">
                     Please enter your Student ID.
                 </div>
                 <span class="text-danger">
-                    @error('student_ID') 
+                    @error('student_id') 
                       {{ $message }} 
                     @enderror
                 </span>                

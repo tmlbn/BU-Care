@@ -117,9 +117,11 @@ class MedicalPatientRecordsController extends Controller
                 'physicianDirections' => 'required|string',
             ]);
 
-                // $month_of_exam = <code to extract month from $request->date>
-                // $year_of_exam = <code to extract year from $request->date> example: $year_of_exam = DateTime::createFromFormat('d-F-Y', $request->date)->format('Y');
-                // dd($month_of_exam, $year_of_exam);
+                // Extracting of Dates                 
+                $new_mpr_date = DateTime::createFromFormat('d-F-Y', $request->date);
+                $year = $new_mpr_date->format('Y');
+                $month = $new_mpr_date->format('F');
+                
 
                 $new_mpr_illness = new MPR_Illness();
                     $new_mpr_illness->hypertension = $request->filled('hypertension') ?: '0';

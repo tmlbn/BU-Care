@@ -527,7 +527,7 @@
                                                                             </label>
                                                                             <div class="form-check" id="otherInput">
                                                                                 <label for="othersInput" class="form-check-label">
-                                                                                    <input type ="text" class="form-control" name="othersInput" id="othersInput" enable>
+                                                                                    <input type ="text" class="form-control" name="othersInput" id="othersInput" style="width: 350px;">
                                                                                 </label>
                                                                             </div>       
                                                                     </div><!-- END OF CHECKBOX DIV -->
@@ -536,49 +536,38 @@
                                                             
                                                            
                                                                 
-                                                             <script>
-                                                              /*  $(document).ready(function(){
-                                                                    
-                                                                    $('input[name="services"]').change(function(){
-                                                                        if($('#others').is(':checked')){
-                                                                            $('#othersInput').prop('disabled', false);
-                                                                            $('#othersInput').attr('required', true);
-                                                                        }else{
-                                                                            $('#othersInput').prop('disabled', true);
-                                                                            $('#othersInput').attr('required', true);
+                                                                <script>
+                                                                
+                                                                var firstMenu = document.getElementById("patientType");
+                                                                var secondMenu = document.getElementById("servicesAvail");
+                                                                var textboxContainer = document.getElementById("textbox-container");
+
+                                                                secondMenu.addEventListener("change", function() {
+                                                                    if (secondMenu.value === "others") {
+                                                                    textboxContainer.style.display = ""; // show the textbox container
+                                                                    } else {
+                                                                    textboxContainer.style.display = "none"; // hide the textbox container
+                                                                    }
+                                                                });
+
+                                                                    firstMenu.addEventListener("change", function() {
+                                                                        if (firstMenu.value === "NewStudent" || firstMenu.value === "OldStudent") {
+                                                                        for (var i = 4; i <= 6; i++) {
+                                                                            secondMenu.options[i].style.display = "none";
                                                                         }
+                                                                        if (secondMenu.selectedIndex >= 3 && secondMenu.selectedIndex <= 6) {
+                                                                            secondMenu.selectedIndex = 0;
+                                                                            textboxContainer.style.display = "none"; // hide the textbox container
+                                                                        }
+                                                                        } else {
+                                                                        for (var i = 0; i < secondMenu.options.length; i++) {
+                                                                            secondMenu.options[i].style.display = "";
+                                                                        }
+                                                                        }
+                                                                        secondMenu.disabled = false;
                                                                     });
-                                                                }); */
-                                                var firstMenu = document.getElementById("patientType");
-                                                var secondMenu = document.getElementById("servicesAvail");
-                                                var textboxContainer = document.getElementById("textbox-container");
-
-                                                    secondMenu.addEventListener("change", function() {
-                                                        if (secondMenu.value === "others") {
-                                                        textboxContainer.style.display = ""; // show the textbox container
-                                                        } else {
-                                                        textboxContainer.style.display = "none"; // hide the textbox container
-                                                        }
-                                                    });
-
-                                                    firstMenu.addEventListener("change", function() {
-                                                        if (firstMenu.value === "NewStudent" || firstMenu.value === "OldStudent") {
-                                                        for (var i = 4; i <= 6; i++) {
-                                                            secondMenu.options[i].style.display = "none";
-                                                        }
-                                                        if (secondMenu.selectedIndex >= 3 && secondMenu.selectedIndex <= 6) {
-                                                            secondMenu.selectedIndex = 0;
-                                                            textboxContainer.style.display = "none"; // hide the textbox container
-                                                        }
-                                                        } else {
-                                                        for (var i = 0; i < secondMenu.options.length; i++) {
-                                                            secondMenu.options[i].style.display = "";
-                                                        }
-                                                        }
-                                                        secondMenu.disabled = false;
-                                                    });
                                                                   
-                                                            </script>
+                                                                </script>
                                                         </div>
                                                     </div>
                                                 </div>

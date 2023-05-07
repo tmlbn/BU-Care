@@ -784,71 +784,50 @@
                                     </div>
 
                                     <div class="col-lg-12 p-2 border-lg-end-0">
-                                        <p class="fs-5 fw-bold mt-1">Service to Avail<span class="text-danger">*</span></p>
-                                        <div class="row row-cols-lg-2 row-cols-md-1 checkboxes d-flex">
-                                            <div class="col-lg-6 col-md-12">
+                                        <h5>Service to Avail</h5>
+                                        <div class="row row-cols-lg-2 row-cols-md-1 checkboxes">
+                                            <div class="col-lg-6 col-md-12 p-2">
+                                                <div class="form-group col-lg-6 col-md-12">
+                                                    <select id="servicesAvail" name="servicesAvail" class="form-select" required>
+                                                        <option value="" selected disabled>SELECT</option>
+                                                        <option value="medcert">Medical Certificate</option>
+                                                        <option value="opd">OPD Consultant</option>
+                                                        <option value="others">Others</option>
+                                                        @if(Auth::guard('employee')->check())
+                                                        <option value="reinstatement">Reinstatement</option>
+                                                        <option value="sickleave">Sick Leave</option>
+                                                        <option value="newlyhired">Newly Hired</option>
+                                                        @endif
+                                                    </select>
+                                                </div><!-- END OF DIV -->
 
-                                                <div class="form-group">
-                                                    
-                                                                    <select id="servicesAvail" name="servicesAvail" class="form-select" required>
-                                                                        <option value="" selected disabled>SELECT</option>
-                                                                        <option value="Medical Certificate">Medical Certificate</option>
-                                                                        <option value="OPD Consultant">OPD Consultant</option>
-                                                                        <option value="Others">Others</option>
-                                                                    @if(Auth::guard('employee')->check())               
-                                                                        <option value="Reinstatement">Reinstatement</option>
-                                                                        <option value="Sick Leave">Sick Leave</option>
-                                                                        <option value="Newly Hired">Newly Hired</option>
-                                                                    @endif
-                                                                    </select>
-
-                                                </div> <!-- END OF CHECKBOX -->
-                                                <div class="col-lg-12 col-md-12" id="ojt" style="70 px;">
-                                                    <div class="col" id="textbox-container" style="display:none">
-                                                            <label class="form-check-label h6" for="othersInput">
-                                                                Reason:
+                                                <div class="col-lg-6 col-md-12 p-2" id="ojt">
+                                                    <div class="col-lg-40 col-md-12 p-2" id="textbox-container" style="display:none">
+                                                            <label class="form-check-label" for="others">
+                                                                Other Reason 
                                                             </label>
-                                                            <input type ="text" class="form-control" name="othersInput" id="othersInput" disabled style="width: 500px;">
-                                                               
+                                                            <div class="form-check" id="otherInput">
+                                                                <label for="othersInput" class="form-check-label">
+                                                                    <input type ="text" class="form-control" name="othersInput" id="othersInput" style="width: 350px;">
+                                                                </label>
+                                                            </div>       
                                                     </div><!-- END OF CHECKBOX DIV -->
-                                                </div>               
+                                                </div>                                                                                                                           
                                                 <script>
-                                                var firstMenu = document.getElementById("patientType");
-                                                var secondMenu = document.getElementById("servicesAvail");
-                                                var textboxContainer = document.getElementById("textbox-container");
-                                                var othersInput = document.getElementById("othersInput");
-                                                    
-                                                // Selection for services avail
+                                                    var firstMenu = document.getElementById("patientType");
+                                                    var secondMenu = document.getElementById("servicesAvail");
+                                                    var textboxContainer = document.getElementById("textbox-container");
+
                                                     secondMenu.addEventListener("change", function() {
                                                         if (secondMenu.value === "others") {
                                                         textboxContainer.style.display = ""; // show the textbox container
-                                                        othersInput.required = true;
-                                                        othersInput.disabled = false;
                                                         } else {
                                                         textboxContainer.style.display = "none"; // hide the textbox container
-                                                        othersInput.required = false;
-                                                        othersInput.disabled = true;
                                                         }
-                                                    });
-                                                
-                                                </script>
-                                                <script>
-                                                    $(document).ready(function(){
-                                                        $('input[name="services"]').change(function(){
-                                                            if($('#others').is(':checked')){
-                                                                $('#othersInput').prop('disabled', false);
-                                                                $('#othersInput').attr('required', true);
-                                                            }else{
-                                                                $('#othersInput').prop('disabled', true);
-                                                                $('#othersInput').attr('required', true);
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                            </div>
+                                                    });                                                  
+                                            </script>
                                         </div>
-                                        
-                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="appointmentDescription" class="col-form-label">Description:</label>
                                         <textarea class="form-control" name="appointmentDescription" id="appointmentDescription" style="resize: none; overflow: hidden;"></textarea>
