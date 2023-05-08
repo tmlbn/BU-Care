@@ -229,7 +229,11 @@
                         @endif
                       </td>
                       <td class="col-md-3 col-sm-3 border border-dark border-end-0">
-                        <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</p>
+                        <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}
+                            @if ($student->hasValidatedRecord)
+                                <i class="bi bi-person-check icon fs-4" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+                            @endif
+                        </p>
                       </td>
                       @if(isset($student->medicalRecord->campus))
                         <td class="col-md-3 col-sm-3 border border-dark border-end-0">

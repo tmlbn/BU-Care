@@ -221,7 +221,10 @@
                             <p class="fs-5 fw-normal lessBottomMargin">{{ $prof->personnel_id_number }}</p>
                         </td>
                         <td class="col-md-4 col-sm-3 border border-dark border-end-0">
-                            <p class="fs-5 fw-normal mt-2">{{ $prof->first_name }} {{ $prof->middle_name }} {{ $prof->last_name }}</p>
+                            <p class="fs-5 fw-normal mt-2">{{ $prof->first_name }} {{ $prof->middle_name }} {{ $prof->last_name }}
+                            @if ($prof->hasValidatedRecord)
+                                <i class="bi bi-person-check icon fs-4" style="color:#007bff;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+                            @endif</p>
                         </td>
                         @if(isset($prof->medicalRecordPersonnel->designation))
                             <td class="col-md-2 col-sm-3 border border-dark">

@@ -168,7 +168,7 @@
                         $counter++;
                     @endphp
                         <tr>
-                            <td contenteditable="false" class="table-success border border-dark">{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                            <td contenteditable="false" class="table-success border border-dark">{{ $counter }}.&nbsp;&nbsp;{{ date('d-F-Y', strtotime($record->date_of_exam)) }}</td>
                             <td contenteditable="false" class="table-success border border-dark">{{ $record->temperature }}</td>
                             <td contenteditable="false" class="table-success border border-dark">{{ $record->bloodPressure }}</td>
                             <td contenteditable="false" class="table-success border border-dark">{{ $record->weight }}</td>

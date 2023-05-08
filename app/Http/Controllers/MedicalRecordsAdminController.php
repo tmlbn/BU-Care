@@ -253,7 +253,7 @@ class MedicalRecordsAdminController extends Controller
                 $medRecordPersonnelAdmin->bmi = filter_var($request->input('VS_bmi'),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $medRecordPersonnelAdmin->chestXrayFinding = filter_var($request->input('VS_xrayFindings'),FILTER_SANITIZE_STRING);
                 $medRecordPersonnelAdmin->CBCResults = filter_var($request->input('VS_cbcResults'),FILTER_SANITIZE_STRING);
-                $medRecordPersonnelAdmin->hepatitsBscreeningResults = filter_var($request->input('VS_hepaBscreening'),FILTER_SANITIZE_STRING);
+                $medRecordPersonnelAdmin->hepatitisBscreeningResults = filter_var($request->input('VS_hepaBscreening'),FILTER_SANITIZE_STRING);
                 $medRecordPersonnelAdmin->bloodtype = filter_var($request->input('VS_bloodType'),FILTER_SANITIZE_STRING);
                 $medRecordPersonnelAdmin->recommendations = filter_var($request->input('MRA_recommendations'),FILTER_SANITIZE_STRING);
                 $medRecordPersonnelAdmin->physician = $user->last_name.' '.$user->first_name.' '.$user->middle_name.'-'.$user->id;
@@ -299,7 +299,7 @@ class MedicalRecordsAdminController extends Controller
             elseif($request->input('fromAppointment') == 0){
                 return redirect('/')
                         ->with('MedicalRecordSuccess', 'Medical record saved successfully')
-                        ->with('patientID', $patient->id);
+                        ->with('patientID', $userPersonnel->id);
             }
         }
         catch (Exception $ex) {
@@ -313,6 +313,7 @@ class MedicalRecordsAdminController extends Controller
     }
 
     public function releaseMedCertFromAppointment($userTicketID){
+        dd($userTicketID);
         $userAppointment = Appointment::where('ticket_id', $userTicketID)->first();
         $userAppointment->released = intval('1');
         $userAppointment->save();

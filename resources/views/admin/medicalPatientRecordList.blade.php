@@ -274,10 +274,10 @@
             </thead>
             <tbody>
                 @foreach($medicalPatientRecordsPersonnel as $record)
-                    <tr class="hover" onclick="window.location.href='{{ route('admin.medicalPatientRecord.show', ['patientID' => $record->MPRstudent->student_id_number ? $record->MPRstudent->student_id_number : $record->MPRstudent->applicant_id_number]) }}';">
-                        <td contenteditable="false" style="max-width: 120px;">{{ date('d-F-Y', strtotime($record->date)) }}</td>
-                        <td contenteditable="false" style="max-width: 140px;">{{ $record->MPRstudent->first_name }} {{ $record->MPRstudent->middle_name }} {{ $record->MPRstudent->last_name }}</td>
-                        <td contenteditable="false" style="max-width: 120px;">{{ $record->MPRstudent->medicalRecord->course }}</td>
+                    <tr class="hover" onclick="window.location.href='{{ route('admin.medicalPatientRecord.show', ['patientID' => $record->MPRpersonnel->student_id_number ? $record->MPRpersonnel->student_id_number : $record->MPRpersonnel->applicant_id_number]) }}';">
+                        <td contenteditable="false" style="max-width: 120px;">{{ date('d-F-Y', strtotime($record->date_of_exam)) }}</td>
+                        <td contenteditable="false" style="max-width: 140px;">{{ $record->MPRpersonnel->first_name }} {{ $record->MPRpersonnel->middle_name }} {{ $record->MPRpersonnel->last_name }}</td>
+                        <td contenteditable="false" style="max-width: 120px;">{{ $record->MPRpersonnel->medicalRecord->course }}</td>
                         <td contenteditable="false" style="max-width: 40px;">{{ $record->temperature }}</td>
                         <td contenteditable="false" style="max-width: 40px;">{{ $record->bloodPressure }}</td>
                         <td contenteditable="false" style="max-width: 200px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>

@@ -201,7 +201,7 @@
         </form>
         <div class="table-responsive" id="studentsList">
             <table class="table table-bordered table-sm">
-                <caption style="user-select: none;">End of Student Health Records List</caption>
+                <caption style="user-select: none;">Student Health Records List</caption>
                 <thead>
                     <tr class="text-center">
                         <th class="col-md-3 col-sm-3 custom-col-id border border-dark border-end-0">
@@ -262,7 +262,7 @@
 
     <div class="table-responsive" id="personnelList" style="display: none;">
         <table class="table table-bordered table-sm">
-            <caption style="user-select: none;">End of Personnel Health Records List</caption>
+            <caption style="user-select: none;">Personnel Health Records List</caption>
             <thead>
                 <tr class="text-center">
                     <th class="col-md-2 col-sm-3 custom-col-id border border-dark border-end-0">

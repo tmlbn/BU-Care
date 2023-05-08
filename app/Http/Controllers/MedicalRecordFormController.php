@@ -91,7 +91,7 @@ class MedicalRecordFormController extends Controller
         $students = UserStudent::with(['medicalRecord' => function ($query) use ($filterByCampus) {
             $query->where('campus', $filterByCampus);
         }])
-            ->select('id', 'applicant_id_number', 'student_id_number', 'last_name', 'first_name', 'middle_name', 'MR_id')
+            ->select('id', 'applicant_id_number', 'student_id_number', 'last_name', 'first_name', 'middle_name', 'MR_id', 'hasValidatedRecord')
             ->whereHas('medicalRecord', function ($query) use ($filterByCampus) {
                 if ($filterByCampus != 'ALL') {
                     $query->where('campus', $filterByCampus);
@@ -137,7 +137,7 @@ class MedicalRecordFormController extends Controller
                     $query->where('campus', $filterByCampus);
                 }                
             }])
-            ->select('id', 'personnel_id_number', 'last_name', 'first_name', 'middle_name', 'MRP_id')
+            ->select('id', 'personnel_id_number', 'last_name', 'first_name', 'middle_name', 'MRP_id', 'hasValidatedRecord')
             ->whereHas('medicalRecordPersonnel')
             ->where(function ($query) use ($filterByCampus) {
                 if ($filterByCampus != 'ALL') {

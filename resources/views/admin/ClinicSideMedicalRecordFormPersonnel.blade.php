@@ -151,8 +151,8 @@
     @csrf
     @php
     if(isset($fromAppointment)){
-        '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
-        '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
+        echo '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
+        echo '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
     }
     @endphp
     
@@ -256,7 +256,7 @@
         </div>
         <div class="col-md-10">
             <label for="MRP_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_address" name="MRP_address" value="{{ $patient->medicalRecordPersonnel->homeAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_address" name="MRP_address" value="{{ $patient->medicalRecordPersonnel->region }}, {{ $patient->medicalRecordPersonnel->province }}, {{ $patient->medicalRecordPersonnel->cityMunicipality }}, {{ $patient->medicalRecordPersonnel->barangaySubdVillage }}, {{ $patient->medicalRecordPersonnel->houseNumberStName }}" readonly>
         </div>
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
