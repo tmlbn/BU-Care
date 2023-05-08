@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use App\Models\UserStudent;
 use App\Models\UserPersonnel;
 use App\Models\MedicalRecord;
+use App\Models\MedicalRecordPersonnel;
 use App\Models\FamilyHistory;
 use App\Models\ImmunizationHistory;
 use App\Models\PastIllness;
@@ -34,28 +35,160 @@ class MedicalPatientRecordsController extends Controller
             'medicalPatientRecordsPersonnel' => $medicalPatientRecordsPersonnel
         ]);
     }
+/*
+    public function getMedicalPatientRecordsList(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $filterByCampus = $request->input('campusSelect');
+        $filterByCourse = $request->input('courseSelect');
+
+        if ($filterByCampus == 'ALL'){
+            $studentsList = UserStudent::select('id', 'applicant_id_number', 'student_id_number', 'last_name', 'first_name', 'middle_name')
+                                        ->whereHas('medicalRecord', function($query) {
+                                            $query->select('campus', 'course');
+                                        })
+                                        ->paginate(15);
+            $personnelList = UserPersonnel::select('id', 'personnel_id_number', 'last_name', 'first_name', 'middle_name')
+                                        ->whereHas('medicalRecordPersonnel', function($query) {
+                                            $query->select('campus', 'designation', 'unitDepartment');
+                                        })
+                                        ->paginate(15);
+
+        }
+        else{
+            $studentsList = UserStudent::with(['medicalRecord' => function ($query) use ($filterByCampus) {
+                        $query->select('campus', 'course')->where('campus', $filterByCampus);
+                    }])
+                    ->select('id', 'applicant_id_number', 'student_id_number', 'last_name', 'first_name', 'middle_name')
+                    ->whereHas('medicalRecord', function ($query) use ($filterByCampus) {
+                        $query->where('campus', $filterByCampus);
+                    })
+                    ->paginate(15);
+
+        
+            $personnelList = UserPersonnel::with(['medicalRecordPersonnel' => function ($query) use ($filterByCampus) {
+                        $query->select('campus', 'designation', 'unitDepartment')->where('campus', $filterByCampus);
+                    }])
+                    ->select('id', 'personnel_id_number', 'last_name', 'first_name', 'middle_name')
+                    ->whereHas('medicalRecordPersonnel', function ($query) use ($filterByCampus) {
+                        $query->where('campus', $filterByCampus);
+                    })
+                    ->paginate(15);  
+        }
+            foreach($studentsList as $student){
+                $student->medical_form_url = route('admin.studentMedForm.show', [
+                    'patientID' => $student->student_id_number ?: $student->applicant_id_number
+                ]);
+
+                $patientID = $student->id;
+                $medical_record = MedicalRecord::where('student_id', $patientID)->first();
+                
+                $student->campus = $medical_record->campus;
+                $student->course = $medical_record->course;
+            }
+            
+            foreach($personnelList as $personnel){
+                $personnel->medical_form_url = route('admin.personnelMedForm.show', [
+                    'patientID' => $personnel->personnel_id_number
+                ]);
+            }
+        
+        return response()->json([
+            'students' => $studentsList,
+            'personnel' => $personnelList,
+            'filterByCampus' => $filterByCampus
+        ]);
     
+    }
+    */
     public function showMedicalPatientRecordsList(Request $request){
-        $searchQuery = $request->search;
-        $filterByCampus = $request->campusSelect;
-        $filterByCourse = $request->courseSelect;
+        $filterByCampus = $request->input('campusSelect');
+        $searchQuery = $request->input('search');
 
         if (!isset($filterByCampus)) {
             $filterByCampus = 'College of Science';
         }
 
-        $studentsList = UserStudent::whereHas('medicalRecord', function ($query) use ($filterByCampus) {
+        $students = UserStudent::with(['medicalRecord' => function ($query) use ($filterByCampus) {
             $query->where('campus', $filterByCampus);
-        })->get();
+        }])
+            ->select('id', 'applicant_id_number', 'student_id_number', 'last_name', 'first_name', 'middle_name', 'MR_id')
+            ->whereHas('medicalRecord', function ($query) use ($filterByCampus) {
+                if ($filterByCampus != 'ALL') {
+                    $query->where('campus', $filterByCampus);
+                }
+            })
+            ->when($searchQuery, function ($query, $searchQuery) {
+                $query->where(function ($query) use ($searchQuery) {
+                    $query->where('applicant_id_number', 'like', '%' . $searchQuery . '%')
+                        ->orWhere('student_id_number', 'like', '%' . $searchQuery . '%')
+                        ->orWhere(DB::raw("CONCAT(first_name, ' ', middle_name, ' ', last_name)"), 'like', '%' . $searchQuery . '%');
+                });
+            })
+            ->paginate(15);
+            $students->appends(request()->query()); // Append query string parameters to pagination links
 
-        $personnelList = UserPersonnel::whereHas('medicalRecordPersonnel', function ($query) use ($filterByCampus) {
-            $query->where('campus', $filterByCampus);
-        })->get();
+            foreach($students as $student){
+                $student->medical_form_url = route('admin.studentMedForm.show', [
+                    'patientID' => $student->student_id_number ?: $student->applicant_id_number
+                ]);
+
+                $patientID = $student->id;
+                $medical_record = MedicalRecord::where('student_id', $patientID)->first();
+                
+                $student->campus = $medical_record->campus;
+                $student->course = $medical_record->course;
+            }
+
+            $personnel = UserPersonnel::with(['medicalRecordPersonnel' => function ($query) use ($filterByCampus) {
+                $query->select('campus', 'designation', 'unitDepartment');
+                if ($filterByCampus !== 'ALL') {
+                    $query->where('campus', $filterByCampus);
+                }                
+            }])
+            ->select('id', 'personnel_id_number', 'last_name', 'first_name', 'middle_name', 'MRP_id')
+            ->whereHas('medicalRecordPersonnel')
+            ->where(function ($query) use ($filterByCampus) {
+                if ($filterByCampus != 'ALL') {
+                    $query->whereHas('medicalRecordPersonnel', function ($query) use ($filterByCampus) {
+                        $query->where('campus', $filterByCampus);
+                    });
+                }
+            })
+            
+            ->when($searchQuery, function ($query, $searchQuery) {
+                $query->where(function ($query) use ($searchQuery) {
+                    $query->where('personnel_id_number', 'like', '%' . $searchQuery . '%')
+                        ->orWhere(DB::raw("CONCAT(first_name, ' ', middle_name, ' ', last_name)"), 'like', '%' . $searchQuery . '%');
+                });
+            })
+            ->paginate(15);
+            $personnel->appends(request()->query());
+
+            foreach($personnel as $person){
+                $person->medical_form_url = route('admin.personnelMedForm.show', [
+                    'patientID' => $person->personnel_id_number
+                ]);
+                
+                $patientID = $person->id;
+                $medical_record = MedicalRecordPersonnel::where('personnel_id', $patientID)->first();
+
+                if ($medical_record) {
+                    $person->campus = $medical_record->campus;
+                    $person->designation = $medical_record->designation;
+                    $person->unitDepartment = $medical_record->unitDepartment;
+                }
+            }
 
         return view('admin.medicalPatientRecords', [
-            'students' => $studentsList,
-            'personnel' => $personnelList,
+            'students' => $students,
+            'personnel' => $personnel,
         ]);
+    }
+
+    public function filterDate(Request $request){
+        $dateToFilter = $request->input('date');
+        dd($dateToFilter);
     }
 
     public function showMedicalPatientRecord($patientID){

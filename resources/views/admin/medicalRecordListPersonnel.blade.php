@@ -88,21 +88,21 @@
 <div class="container-fluid bg-custom text-dark p-5">
     <div class="col-md-12 p-3 text-decoration-none">    
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
-
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToPersonnelMedFormList()" {{ Route::currentRouteName() === 'admin.personnelMedFormList.show' || Str::contains(url()->current(), '/admin/personnelMedFormList/') ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio2">PERSONNEL HEALTH RECORDS</label>
-      
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio3">MEDICAL PATIENT RECORDS</label>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
+  
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToPersonnelMedFormList()" {{ Route::currentRouteName() === 'admin.personnelMedFormList.show' || Str::contains(url()->current(), '/admin/personnelMedFormList/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio2">PERSONNEL HEALTH RECORDS</label>
         
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio4">DAILY CONSULTATIONS</label>
-        
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio5" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio5">REPORTS</label>
-        </div>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio3">MEDICAL PATIENT RECORDS</label>
+          
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio4">DAILY CONSULTATIONS</label>
+          
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio5" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio5">REPORTS</label>
+          </div>
       </div>
     
     <script>
@@ -126,27 +126,26 @@
           window.location.href = "{{ route('admin.reports') }}";
       }
     </script>
+<form method="GET" action="{{ route('admin.personnelMedFormList.index') }}" id="searchForm">
+
     <div class="col-12">      
         <div class="d-flex flex-row">
             <div class="col-sm border p-3 border-dark">
                 <header class="text-center">
                     <h5 class="display-7 pt-3">
-                        <p class="fs-2 fw-bold">Bicol University Health Services</p>
-                        <p class="fs-4 fw-normal" id="bannerStudent">Student Health Records List</p>
-                        <p class="fs-4 fw-normal" id="bannerPersonnel" style="display: none;">Personnel Health Records List</p>
-                </header>
-            </div>
+                    <p class="fs-2 fw-bold">Bicol University Health Services</p>
+                    <p class="fs-4 fw-normal" id="bannerPersonnel">Personnel Health Records List</p>
+            </header>
         </div>
-
+    </div>
 
     <!-- Search function -->
-    <form method="GET" action="{{ route('admin.patientMedFormList.index') }}" id="searchForm">
+
             <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2" style="margin-right: -3%;">
                     <div class="row align-items-center">
                         <div class="col-sm">
                             <input type="text" class="form-control border-dark fw-bold" placeholder="Search by ID number or name" name="search">    
                         </div>
-                
                         <div class="col-sm">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
@@ -192,64 +191,63 @@
                     </div>
                 </div>
             </form>
-        <div class="table-responsive" id="studentsList">
-            <table class="table table-bordered table-sm" id="studentsTable">
-                <caption style="user-select: none;">Student Health Records List</caption>
-                <thead>
-                    <tr class="text-center">
-                        <th class="col-md-3 col-sm-3 custom-col-id border border-dark border-end-0">
-                            <span class="fs-4 font-monospace fw-bold">ID</span>
-                        </th>
-                        <th class="col-md-3 col-sm-3 border border-dark border-end-0">
-                            <span class="fs-4 font-monospace fw-bold">NAME</span>
-                        </th>
-                        <th class="col-md-3 col-sm-3 border border-dark border-end-0">
-                            <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
-                        </th>
-                        <th class="col-md-3 col-sm-3 border border-dark">
-                            <span class="fs-4 font-monospace fw-bold">COURSE</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="studentsTableBody" class="table-group-divider">
-                    @foreach ($students as $student)
-                    <tr class="text-center divHover" onClick="window.open('{{ route('admin.studentMedForm.show', ['patientID' => $student->student_id_number ? $student->student_id_number : $student->applicant_id_number]) }}', '_blank'); return false;">
-                      <td class="col-md-3 col-sm-3 border border-dark border-end-0 custom-col-id">
-                        <div class="d-flex flex-row justify-content-center">
-                          <div class="col-sm">
-                            <p class="fs-5 fw-normal lessBottomMargin"><span class="font-monospace">AID: </span>{{ $student->applicant_id_number }}</p>
-                          </div>
-                        </div>
-                        @if($student->student_id_number)
-                            <div class="d-flex flex-row border-dark">
-                                <div class="col-sm">
-                                    <p class="fs-5 fw-normal lessBottomMargin"><span class="font-monospace">SID: </span>{{ $student->student_id_number }}</p>
-                                </div>
-                            </div>
+
+    <div class="table-responsive" id="personnelList">
+        <table class="table table-bordered table-sm" id="personnelTable">
+            <caption style="user-select: none;">Personnel Health Records List</caption>
+            <thead>
+                <tr class="text-center">
+                    <th class="col-md-1 col-sm-3 custom-col-id border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">ID</span>
+                    </th>
+                    <th class="col-md-4 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">NAME</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">DESIGNATION</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark border-end-0">
+                        <span class="fs-4 font-monospace fw-bold">UNIT/DEPARTMENT</span>
+                    </th>
+                    <th class="col-md-2 col-sm-3 border border-dark">
+                        <span class="fs-4 font-monospace fw-bold">CAMPUS</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider" id="personnelTableBody">
+                @foreach ($personnel as $prof)
+                    <tr class="text-center divHover" onClick="window.open('{{ route('admin.personnelMedForm.show', ['patientID' => $prof->personnel_id_number ]) }}', '_blank'); return false;">
+                        <td class="col-md-2 col-sm-3 border border-dark border-end-0 custom-col-id">
+                            <p class="fs-5 fw-normal lessBottomMargin">{{ $prof->personnel_id_number }}</p>
+                        </td>
+                        <td class="col-md-4 col-sm-3 border border-dark border-end-0">
+                            <p class="fs-5 fw-normal mt-2">{{ $prof->first_name }} {{ $prof->middle_name }} {{ $prof->last_name }}</p>
+                        </td>
+                        @if(isset($prof->medicalRecordPersonnel->designation))
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->medicalRecordPersonnel->designation }}</p>
+                            </td>
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->medicalRecordPersonnel->unitDepartment }}</p>
+                            </td>
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->medicalRecordPersonnel->campus }}</p>
+                            </td>
+                        @else
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->designation }}</p>
+                            </td>
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->unitDepartment }}</p>
+                            </td>
+                            <td class="col-md-2 col-sm-3 border border-dark">
+                                <p class="fs-5 fw-normal mt-2">{{ $prof->campus }}</p>
+                            </td>
                         @endif
-                      </td>
-                      <td class="col-md-3 col-sm-3 border border-dark border-end-0">
-                        <p class="fs-5 fw-normal mt-2">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</p>
-                      </td>
-                      @if(isset($student->medicalRecord->campus))
-                        <td class="col-md-3 col-sm-3 border border-dark border-end-0">
-                            <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->campus }}</p>
-                        </td>
-                        <td class="col-md-3 col-sm-3 border border-dark">
-                            <p class="fs-5 fw-normal mt-2">{{ $student->medicalRecord->course }}</p>
-                        </td>
-                      @else
-                        <td class="col-md-3 col-sm-3 border border-dark border-end-0">
-                            <p class="fs-5 fw-normal mt-2">{{ $student->campus }}</p>
-                        </td>
-                        <td class="col-md-3 col-sm-3 border border-dark">
-                            <p class="fs-5 fw-normal mt-2">{{ $student->course }}</p>
-                        </td>
-                      @endif
                     </tr>
-                    @endforeach
-                  </tbody>
-            </table>
-        {{ $students->links() }}
+                @endforeach
+            </tbody>
+        </table>
+            {{ $personnel->links() }}
     </div>
 @endsection

@@ -33,6 +33,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     <script src="{{ asset('js/lightbox.min.js') }}"></script>
+
     <script>
         lightbox.option({
             'resizeDuration': 200,

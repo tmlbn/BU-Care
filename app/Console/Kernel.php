@@ -12,7 +12,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            // Get all appointments that are scheduled to start 1 hour ago
+            $expiredAppointments = Appointment::where('appointmentTime', '<=', Carbon::now()->subHour())
+                ->where('status', '!=', 'EXPIRED') // exclude previously expired appointments
+                ->where('status', '!=', 'SUCCESS')
+                ->get();
+    
+            // Update status of expired appointments
+            foreach ($expiredAppointments as $appointment) {
+                $appointment->status = 'Expired';
+                $appointment->save();
+            }
+        })->everyOneHour();
     }
 
     /**

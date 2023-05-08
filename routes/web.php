@@ -114,6 +114,8 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editMedRecord'])->name('admin.medRecord.edit');
     Route::patch('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'updateMedRecord'])->name('admin.medRecord.update');
     Route::delete('/admin/medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyMedRecord'])->name('admin.medRecord.destroy');
+    Route::get('/admin/studentMedFormList/index',[MedicalRecordFormController::class, 'searchStudentMedForm'])->name('admin.patientMedFormList.index');
+    Route::get('/admin/personnelMedFormList/index',[MedicalRecordFormController::class, 'searchPersonnelMedForm'])->name('admin.personnelMedFormList.index');
 
     /* PERSONNEL FORMS */
     Route::get('/admin/personnel-medical-record',[MedicalRecordFormController::class, 'showPersonnelMedFormList'])->name('admin.personnelMedFormList.show');
@@ -121,6 +123,8 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/personnel-medical-record/{patientID}/edit',[MedicalRecordFormController::class, 'editPersonnelMedRecord'])->name('admin.personnelMedRecord.edit');
     Route::patch('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'updatePersonnelMedRecord'])->name('admin.personnelMedRecord.update');
     Route::delete('/admin/personnel-medical-record/{patientID}',[MedicalRecordFormController::class, 'destroyPersonnelMedRecord'])->name('admin.personnelMedRecord.destroy');
+    Route::get('/admin/getMedicalRecordsList/index',[MedicalRecordFormController::class, 'getMedicalRecordsList'])->name('medicalRecordList');
+    Route::get('/admin/getMedicalPatientRecordsList',[MedicalPatientRecordsController::class, 'getMedicalPatientRecordsList'])->name('medicalPatientRecordList');
 
     Route::post('admin/submit-medical-form', [MedicalRecordsAdminController::class, 'medFormSubmitAdmin'])->name('medicalFormAdmin.store');
     Route::post('admin/personnel-submit-medical-form', [MedicalRecordsAdminController::class, 'medicalRecordsPersonnelAdmin'])->name('medicalFormAdminPersonnel.store');
@@ -133,7 +137,8 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/medical-patient-record/{patientID}/edit', [MedicalPatientRecordsController::class, 'editMedicalPatientRecord'])->name('admin.medicalPatientRecord.edit');
     Route::patch('admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'updateMedicalPatientRecord'])->name('admin.medicalPatientRecord.update');
     Route::delete('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'destroyMedicalPatientRecord'])->name('admin.medicalPatientRecord.destroy');
-	
+	Route::get('/admin/medical-patient-record/date-filter', [MedicalPatientRecordsController::class, 'filterDate'])->name('admin.medicalPatientRecord.filterDate');
+    
 	Route::get('/admin/reports', [AdminReportsController::class, 'reports'])->name('admin.reports');
     Route::get('/admin/appointments', [AppointmentsController::class, 'showAdminAppointments'])->name('admin.appointments.show');
     Route::post('admin/check-password', [AdminAuthController::class, 'checkPassword'])->name('admin.checkPassword');
@@ -142,4 +147,5 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/getUserOfAppointment', [AppointmentsController::class, 'getUserOfAppointment'])->name('admin.UserOfAppointment.get');
     Route::post('/admin/release-medical-certificate/{userTicketID}', [MedicalRecordsAdminController::class, 'releaseMedCertFromAppointment'])->name('admin.releaseMedCertFromAppointment');
     Route::post('/admin/release-medical-certificate/{patientID}', [MedicalRecordsAdminController::class, 'releaseMedCert'])->name('admin.releaseMedCert');
+
 });

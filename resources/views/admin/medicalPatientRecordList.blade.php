@@ -92,25 +92,32 @@
 <div class="container-fluid bg-custom text-dark p-5">
     <div class="col-md-12 p-3 text-decoration-none">    
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToPatientMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio1">HEALTH RECORDS</label>
-      
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio2">MEDICAL PATIENT RECORDS</label>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
+    
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToPersonnelMedFormList()" {{ Route::currentRouteName() === 'admin.personnelMedFormList.show' || Str::contains(url()->current(), '/admin/personnelMedFormList/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio2">PERSONNEL HEALTH RECORDS</label>
         
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio3">DAILY CONSULTATIONS</label>
-        
-          <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
-          <label class="btn btn-outline-primary" for="btnradio4">REPORTS</label>
-        </div>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio3">MEDICAL PATIENT RECORDS</label>
+          
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio4">DAILY CONSULTATIONS</label>
+          
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio5" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio5">REPORTS</label>
+          </div>
       </div>
     
     <script>
-      function redirectToPatientMedFormList() {
+      function redirectToStudentMedFormList() {
           window.location.href = "{{ route('admin.patientMedFormList.show') }}";
       }
-
+    
+      function redirectToPersonnelMedFormList() {
+          window.location.href = "{{ route('admin.personnelMedFormList.show') }}";
+      }
+    
       function redirectToMedPatientRecords() {
           window.location.href = "{{ route('admin.medPatientRecords.show') }}";
       }
@@ -118,7 +125,7 @@
       function redirectToDailyConsultations() {
           window.location.href = "{{ route('admin.medPatientRecordList.show') }}";
       }
-
+    
       function redirectToReports() {
           window.location.href = "{{ route('admin.reports') }}";
       }
@@ -173,36 +180,49 @@
                             </p>
                         </div>
                         <div class="col-sm-5">
-                            <select id="campusFilter" name="campusFilter" class="form-select" required>
-                                <option selected="selected" disabled="disabled" value="">CAMPUS</option>
-                                <option value="College of Agriculture and Forestry">College of Agriculture and Forestry</option>
-                                <option value="College of Arts and Letters" class="alternate">College of Arts and Letters</option>
-                                <option value="Entrepreneurship, and Management">College of Business, Entrepreneurship, and Management</option>
-                                <option value="College of Education" class="alternate">College of Education</option>
-                                <option value="College of Engineering">College of Engineering</option>
-                                <option value="College of Industrial Technology" class="alternate">College of Industrial Technology</option>
-                                <option value="College of Medicine">College of Medicine</option>
-                                <option value="College of Nursing" class="alternate">College of Nursing</option>
-                                <option value="College of Science">College of Science</option>
-                                <option value="College of Social Science and Philosoph" class="alternate">College of Social Science and Philosophy</option>
-                                <option value="Institute of Design and Architecture">Institute of Design and Architecture</option>
-                                <option value="Institute of Physical Education, Sports, and Recreation" class="alternate">Institute of Physical Education, Sports, and Recreation</option>
-                                <option value="Gubat Campus">Gubat Campus</option>
-                                <option value="Polangui Campus" class="alternate">Polangui Campus</option>
-                                <option value="Tabaco Campus">Tabaco Campus</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-5">
-                            <select id="timeFilter" name="timeFilter" class="form-select" required>
-                                <option selected="selected" disabled="disabled" value="">Select</option>
-                                <option value="This Week">This Week</option>
-                                <option value="Month" class="alternate">Month</option>
-                                <option value="Year">Year</option>
+                            <select id="campusFilter" name="campusFilter" class="form-select">
+                                <option value="TODAY">Today</option>
+                                <option value="MOTNH" class="alternate">Month</option>
+                                <option value="YEAR">Year</option>
                             </select>
                         </div>
                     </div>
+                </form>
+                <form method="GET" action="{{ route('admin.medicalPatientRecord.filterDate') }}" id="filterByDate">
+                    <div class="row align-items-center">
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="date" name="date" onkeydown="return false;">
+                        </div>
+                        <div class="col-sm">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
                 </div>
-        </form>
+            </form>
+                    <script>
+                       $(document).ready(function() {
+                            let today = new Date();
+                            let year = today.getFullYear().toString();
+                            let month = today.toLocaleString('default', { month: 'short' });
+                            let day = today.getDate().toString().padStart(2, '0');
+                            let formatted_today = year + ' ' + month + ' ' + day;
+                            $("#date").val(formatted_today);
+
+                            console.log(formatted_today);
+
+                            $("#date").datepicker({
+                                changeMonth: true,
+                                changeYear: true,
+                                dateFormat: 'yy MM dd',
+                                showButtonPanel: true,
+                                yearRange: "2023:c",
+                                showAnim: 'slideDown',
+                                defaultDate: formatted_today // Set the initial date value here
+                            });
+                        });
+                    </script>
+                    
+        
 
     <script>
         $searchQuery = '';
@@ -227,7 +247,7 @@
             <tbody>
                 @foreach($medicalPatientRecordsStudents as $record)
                     <tr class="hover" onclick="window.location.href='{{ route('admin.medicalPatientRecord.show', ['patientID' => $record->MPRstudent->student_id_number ? $record->MPRstudent->student_id_number : $record->MPRstudent->applicant_id_number]) }}';">
-                        <td contenteditable="false" style="max-width: 120px;">{{ date('d-F-Y', strtotime($record->date)) }}</td>
+                        <td contenteditable="false" style="max-width: 120px;">{{ $loop->count }}. &nbsp;{{ date('d-F-Y', strtotime($record->date_of_exam)) }}</td>
                         <td contenteditable="false" style="max-width: 140px;">{{ $record->MPRstudent->first_name }} {{ $record->MPRstudent->middle_name }} {{ $record->MPRstudent->last_name }}</td>
                         <td contenteditable="false" style="max-width: 120px;">{{ $record->MPRstudent->medicalRecord->course }}</td>
                         <td contenteditable="false" style="max-width: 40px;">{{ $record->temperature }}</td>
