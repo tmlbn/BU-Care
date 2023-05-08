@@ -313,7 +313,6 @@ class MedicalRecordsAdminController extends Controller
     }
 
     public function releaseMedCertFromAppointment($userTicketID){
-        dd($userTicketID);
         $userAppointment = Appointment::where('ticket_id', $userTicketID)->first();
         $userAppointment->released = intval('1');
         $userAppointment->save();

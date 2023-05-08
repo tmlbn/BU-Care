@@ -254,10 +254,113 @@
             <label for="MRP_religion" class="form-label h6">Religion</label>
             <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_religion" name="MRP_religion" value="{{ $patient->medicalRecordPersonnel->religion }}" readonly>
         </div>
-        <div class="col-md-10">
-            <label for="MRP_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_address" name="MRP_address" value="{{ $patient->medicalRecordPersonnel->region }}, {{ $patient->medicalRecordPersonnel->province }}, {{ $patient->medicalRecordPersonnel->cityMunicipality }}, {{ $patient->medicalRecordPersonnel->barangaySubdVillage }}, {{ $patient->medicalRecordPersonnel->houseNumberStName }}" readonly>
-        </div>
+
+         <!--personnel ADDRESS-->
+         <label for="ClinicSide_personnel" class="form-label h6">Personnel Address</label>
+        
+         @php
+             $regions = [
+                 ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                 ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                 ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                 ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                 ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                 ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                 ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                 ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                 ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                 ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                 ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                 ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                 ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                 ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                 ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                 ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                 ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+             ];
+         @endphp
+         <div class="col-md-2">
+             <label for="ClinicSidePersonnel_addressRegion" class="form-label h6">Region</label>
+             <select class="form-select" id="ClinicSidePersonnel_addressRegion" name="ClinicSidePersonnel_addressRegion" value="{{  }}" readonly>
+                 <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 @foreach ($regions as $region)
+                     <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                         {{ $region['number'] }} - {{ $region['name'] }}
+                     </option>
+                 @endforeach
+             </select>
+     
+         </div>
+         <div class="col-md-2">
+             <label for="ClinicSidePersonnel_addressProvince" class="form-label h6">Province</label>
+                 <select class="form-select" id="ClinicSidePersonnel_addressProvince" name="ClinicSidePersonnel_addressProvince" value="{{  }}" readonly>
+                     <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 </select>
+         </div>
+         <script>
+             var provinces={
+                 "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                 "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                 "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                 "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                 "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                 "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+                 "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                 "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                 "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                 "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                 "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                 "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                 "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                 "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                 "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                 "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                 "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+             };
+ 
+             $(document).ready(function() {
+                 // get the selected region
+                 var region = $('#ClinicSidePersonnel_addressRegion').val();
+                 // get the corresponding provinces from the provinces object
+                 var selectedProvinces = provinces[region];
+                 // update the list of provinces in the dropdown
+                 var $provincesDropdown = $('#ClinicSidePersonnel_addressProvince');
+                 $provincesDropdown.empty();
+                 $.each(selectedProvinces, function(i, province) {
+                     $provincesDropdown.append($('<option>').text(province).attr('value', province));
+                 });
+             
+ 
+                 // when the region selection changes, update the list of provinces
+                 $('#ClinicSidePersonnel_addressRegion').on('change', function() {
+                     var region = $(this).val();
+                     var selectedProvinces = provinces[region];
+                     var $provincesDropdown = $('#ClinicSidePersonnel_addressProvince');
+                     $provincesDropdown.empty();
+                     $.each(selectedProvinces, function(i, province) {
+                         $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                     });
+                     // update the selected province if it's still in the list of available provinces
+                     var selectedProvince = $provincesDropdown.val();
+                         if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                             $provincesDropdown.val(selectedProvinces[0]);
+                         }
+                 });
+             });
+         </script>
+         <div class="col-md-2">
+             <label for="ClinicSidePersonnel_addressCityMunicipality" class="form-label h6">City/Municipality</label>
+             <input type="text" class="form-control" id="ClinicSidePersonnel_addressCityMunicipality" name="ClinicSidePersonnel_addressCityMunicipality" value="{{  }}" readonly>
+         </div>
+         <div class="col-md-3">
+             <label for="ClinicSidePersonnel_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village</label>
+             <input type="text" class="form-control" id="ClinicSidePersonnel_addressBrgySubdVillage" name="ClinicSidePersonnel_addressBrgySubdVillage" value="{{  }}" readonly>
+         </div>
+         <div class="col-md-3">
+             <label for="ClinicSidePersonnel_addressHouseNoStreet" class="form-label h6">House No./Street Name</label>
+             <input type="text" class="form-control" id="ClinicSidePersonnel_addressHouseNoStreet" name="ClinicSidePersonnel_addressHouseNoStreet" value="{{  }}" readonly>
+         </div>
+
         <div class="col-md-2">
             <label for="MRP_personnelContactNumber" class="form-label h6">Contact No.</label>
             <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" placeholder="09123456789" id="MRP_personnelContactNumber" name="MR_personnelContactNumber" value="0{{ $patient->medicalRecordPersonnel->contactNumber }}" readonly>
@@ -279,10 +382,111 @@
             <label for="MRP_relationship" class="form-label h6">Relationship</label>
             <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_relationship" name="MRP_relationship" value="{{ $patient->medicalRecordPersonnel->emergencyContactRelationship }}" readonly>
         </div>
-        <div class="col-md-12">
-            <label for="MRP_OfficeAdd" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{ $patient->medicalRecordPersonnel->emergencyContactAddress }}" readonly>
-        </div>
+         <!--personnel ADDRESS-->
+         <label for="ClinicSideContact_personnel" class="form-label h6">Personnel Address</label>
+        
+         @php
+             $regions = [
+                 ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                 ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                 ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                 ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                 ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                 ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                 ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                 ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                 ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                 ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                 ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                 ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                 ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                 ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                 ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                 ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                 ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+             ];
+         @endphp
+         <div class="col-md-2">
+             <label for="ClinicSideContact_addressRegion" class="form-label h6">Region</label>
+             <select class="form-select" id="ClinicSideContact_addressRegion" name="ClinicSideContact_addressRegion" value="{{  }}" readonly>
+                 <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 @foreach ($regions as $region)
+                     <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                         {{ $region['number'] }} - {{ $region['name'] }}
+                     </option>
+                 @endforeach
+             </select>
+     
+         </div>
+         <div class="col-md-2">
+             <label for="ClinicSideContact_addressProvince" class="form-label h6">Province</label>
+                 <select class="form-select" id="ClinicSideContact_addressProvince" name="ClinicSideContact_addressProvince" value="{{  }}" readonly>
+                     <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 </select>
+         </div>
+         <script>
+             var provinces={
+                 "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                 "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                 "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                 "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                 "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                 "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+                 "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                 "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                 "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                 "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                 "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                 "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                 "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                 "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                 "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                 "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                 "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+             };
+ 
+             $(document).ready(function() {
+                 // get the selected region
+                 var region = $('#ClinicSideContact_addressRegion').val();
+                 // get the corresponding provinces from the provinces object
+                 var selectedProvinces = provinces[region];
+                 // update the list of provinces in the dropdown
+                 var $provincesDropdown = $('#ClinicSideContact_addressProvince');
+                 $provincesDropdown.empty();
+                 $.each(selectedProvinces, function(i, province) {
+                     $provincesDropdown.append($('<option>').text(province).attr('value', province));
+                 });
+             
+ 
+                 // when the region selection changes, update the list of provinces
+                 $('#ClinicSideContact_addressRegion').on('change', function() {
+                     var region = $(this).val();
+                     var selectedProvinces = provinces[region];
+                     var $provincesDropdown = $('#ClinicSideContact_addressProvince');
+                     $provincesDropdown.empty();
+                     $.each(selectedProvinces, function(i, province) {
+                         $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                     });
+                     // update the selected province if it's still in the list of available provinces
+                     var selectedProvince = $provincesDropdown.val();
+                         if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                             $provincesDropdown.val(selectedProvinces[0]);
+                         }
+                 });
+             });
+         </script>
+         <div class="col-md-2">
+             <label for="ClinicSideContact_addressCityMunicipality" class="form-label h6">City/Municipality</label>
+             <input type="text" class="form-control" id="ClinicSideContact_addressCityMunicipality" name="ClinicSideContact_addressCityMunicipality" value="{{  }}" readonly>
+         </div>
+         <div class="col-md-3">
+             <label for="ClinicSideContact_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village</label>
+             <input type="text" class="form-control" id="ClinicSideContact_addressBrgySubdVillage" name="ClinicSideContact_addressBrgySubdVillage" value="{{  }}" readonly>
+         </div>
+         <div class="col-md-3">
+             <label for="ClinicSideContact_addressHouseNoStreet" class="form-label h6">House No./Street Name</label>
+             <input type="text" class="form-control" id="ClinicSideContact_addressHouseNoStreet" name="ClinicSideContact_addressHouseNoStreet" value="{{  }}" readonly>
+         </div>
         
         
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">

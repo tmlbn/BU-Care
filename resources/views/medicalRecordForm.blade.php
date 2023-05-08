@@ -540,6 +540,11 @@
                 @enderror
             </span>
         </div>
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
         <div class="col-md-6">
             <label for="MR_fatherName" class="form-label h6">Father's Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('MR_fatherName') is-invalid @enderror" id="MR_fatherName" name="MR_fatherName" value="{{ old('MR_fatherName') }}" oninput="this.value = this.value.toUpperCase()" required>
@@ -552,6 +557,169 @@
                 @enderror
             </span>
         </div>
+        
+        <div class="col-md-6">
+            <label for="MR_fatherOccupation" class="form-label h6">Father's Occupation<span class="text-danger">*</span></label>
+            <input type="text" class="form-control h6 @error('MR_fatherOccupation') is-invalid @enderror" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ old('MR_fatherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
+            <span class="text-danger"> 
+                @error('MR_fatherOccupation') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        
+
+        <!-- FATHER OFFICE ADDRESS -->
+        <label for="MR_fatherOffice" class="form-label h6">Office Address of Father<span class="text-danger">*</span></label>
+        
+        @php
+            $regions = [
+                ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+            ];
+        @endphp
+        <div class="col-md-2">
+            <label for="FO_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+            <select class="form-select  @error('FO_addressRegion') is-invalid @enderror" id="FO_addressRegion" name="FO_addressRegion">
+                <option selected="selected" disabled="disabled" value="">SELECT</option>
+                @foreach ($regions as $region)
+                    <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                        {{ $region['number'] }} - {{ $region['name'] }}
+                    </option>
+                @endforeach
+            </select>
+            <div class="invalid-feedback">
+                Please enter your Region.
+            </div>
+            <span class="text-danger"> 
+                @error('FO_addressRegion') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-2">
+            <label for="FO_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+                <select class="form-select  @error('FO_addressProvince') is-invalid @enderror" id="FO_addressProvince" name="FO_addressProvince">
+                    <option selected="selected" disabled="disabled" value="">SELECT</option>
+                </select>
+            <div class="invalid-feedback">
+                Please enter your Province.
+            </div>
+            <span class="text-danger"> 
+                @error('FO_addressProvince') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <script>
+            var provinces={
+                "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+                "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+            };
+
+            $(document).ready(function() {
+                // get the selected region
+                var region = $('#FO_addressRegion').val();
+                // get the corresponding provinces from the provinces object
+                var selectedProvinces = provinces[region];
+                // update the list of provinces in the dropdown
+                var $provincesDropdown = $('#FO_addressProvince');
+                $provincesDropdown.empty();
+                $.each(selectedProvinces, function(i, province) {
+                    $provincesDropdown.append($('<option>').text(province).attr('value', province));
+                });
+            
+
+                // when the region selection changes, update the list of provinces
+                $('#FO_addressRegion').on('change', function() {
+                    var region = $(this).val();
+                    var selectedProvinces = provinces[region];
+                    var $provincesDropdown = $('#FO_addressProvince');
+                    $provincesDropdown.empty();
+                    $.each(selectedProvinces, function(i, province) {
+                        $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                    });
+                    // update the selected province if it's still in the list of available provinces
+                    var selectedProvince = $provincesDropdown.val();
+                        if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                            $provincesDropdown.val(selectedProvinces[0]);
+                        }
+                });
+            });
+        </script>
+        <div class="col-md-2">
+            <label for="FO_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('FO_addressCityMunicipality') is-invalid @enderror" id="FO_addressCityMunicipality" name="FO_addressCityMunicipality" value="{{ old('FO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your City/Municipality.
+            </div>
+            <span class="text-danger"> 
+                @error('FO_addressCityMunicipality') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="FO_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('FO_addressBrgySubdVillage') is-invalid @enderror" id="FO_addressBrgySubdVillage" name="FO_addressBrgySubdVillage" value="{{ old('FO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your Barangay.
+            </div>
+            <span class="text-danger"> 
+                @error('FO_addressBrgySubdVillage') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="FO_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('FO_addressHouseNoStreet') is-invalid @enderror" id="FO_addressHouseNoStreet" name="FO_addressHouseNoStreet" value="{{ old('FO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your House No./Street Name.
+            </div>
+            <span class="text-danger"> 
+                @error('FO_addressHouseNoStreet') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+
         <div class="col-md-6">
             <label for="MR_motherName" class="form-label h6">Mother's Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('MR_motherName') is-invalid @enderror" id="MR_motherName" name="MR_motherName" value="{{ old('MR_motherName') }}" oninput="this.value = this.value.toUpperCase()" required>
@@ -565,15 +733,6 @@
             </span>
         </div>
         <div class="col-md-6">
-            <label for="MR_fatherOccupation" class="form-label h6">Father's Occupation<span class="text-danger">*</span></label>
-            <input type="text" class="form-control h6 @error('MR_fatherOccupation') is-invalid @enderror" id="MR_fatherOccupation" name="MR_fatherOccupation" value="{{ old('MR_fatherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
-            <span class="text-danger"> 
-                @error('MR_fatherOccupation') 
-                  {{ $message }} 
-                @enderror
-            </span>
-        </div>
-        <div class="col-md-6">
             <label for="MR_motherOccupation" class="form-label h6">Mother's Occupation<span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('MR_motherOccupation') is-invalid @enderror" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ old('MR_motherOccupation') }}" oninput="this.value = this.value.toUpperCase()" required>
             <span class="text-danger"> 
@@ -582,24 +741,159 @@
                 @enderror
               </span>
         </div>
-        <div class="col-md-6">
-            <label for="MR_fatherOffice" class="form-label h6">Office Address of Father<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_fatherOffice') is-invalid @enderror" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ old('MR_fatherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
+
+<!-- MOTHER OFFICE ADDRESS -->
+<label for="MR_fatherOffice" class="form-label h6">Office Address of Mother<span class="text-danger">*</span></label>
+        
+@php
+    $regions = [
+        ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+        ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+        ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+        ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+        ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+        ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+        ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+        ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+        ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+        ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+        ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+        ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+        ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+        ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+        ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+        ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+        ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+    ];
+@endphp
+
+<div class="col-md-2">
+    <label for="MO_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+    <select class="form-select  @error('MO_addressRegion') is-invalid @enderror" id="MO_addressRegion" name="MO_addressRegion">
+        <option selected="selected" disabled="disabled" value="">SELECT</option>
+        @foreach ($regions as $region)
+            <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                {{ $region['number'] }} - {{ $region['name'] }}
+            </option>
+        @endforeach
+    </select>
+    <div class="invalid-feedback">
+        Please enter your Region.
+    </div>
+    <span class="text-danger"> 
+        @error('MO_addressRegion') 
+          {{ $message }} 
+        @enderror
+    </span>
+</div>
+<div class="col-md-2">
+    <label for="MO_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+        <select class="form-select  @error('MO_addressProvince') is-invalid @enderror" id="MO_addressProvince" name="MO_addressProvince">
+            <option selected="selected" disabled="disabled" value="">SELECT</option>
+        </select>
+    <div class="invalid-feedback">
+        Please enter your Province.
+    </div>
+    <span class="text-danger"> 
+        @error('MO_addressProvince') 
+          {{ $message }} 
+        @enderror
+    </span>
+</div>
+<script>
+    var provinces={
+        "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+        "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+        "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+        "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+        "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+        "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+        "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+        "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+        "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+        "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+        "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+        "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+        "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+        "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+        "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+        "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+        "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+    };
+
+    $(document).ready(function() {
+        // get the selected region
+        var region = $('#MO_addressRegion').val();
+        // get the corresponding provinces from the provinces object
+        var selectedProvinces = provinces[region];
+        // update the list of provinces in the dropdown
+        var $provincesDropdown = $('#MO_addressProvince');
+        $provincesDropdown.empty();
+        $.each(selectedProvinces, function(i, province) {
+            $provincesDropdown.append($('<option>').text(province).attr('value', province));
+        });
+    
+
+        // when the region selection changes, update the list of provinces
+        $('#MO_addressRegion').on('change', function() {
+            var region = $(this).val();
+            var selectedProvinces = provinces[region];
+            var $provincesDropdown = $('#MO_addressProvince');
+            $provincesDropdown.empty();
+            $.each(selectedProvinces, function(i, province) {
+                $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+            });
+            // update the selected province if it's still in the list of available provinces
+            var selectedProvince = $provincesDropdown.val();
+                if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                    $provincesDropdown.val(selectedProvinces[0]);
+                }
+        });
+    });
+</script>
+        <div class="col-md-2">
+            <label for="MO_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MO_addressCityMunicipality') is-invalid @enderror" id="MO_addressCityMunicipality" name="MO_addressCityMunicipality" value="{{ old('MO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your City/Municipality.
+            </div>
             <span class="text-danger"> 
-                @error('MR_fatherOffice') 
-                  {{ $message }}
+                @error('MO_addressCityMunicipality') 
+                {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
-        <div class="col-md-6">
-            <label for="MR_motherOffice" class="form-label h6">Office Address of Mother<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MR_motherOffice') is-invalid @enderror" id="MR_motherOffice" name="MR_motherOffice" value="{{ old('MR_motherOffice') }}" oninput="this.value = this.value.toUpperCase()" required>
+        <div class="col-md-3">
+            <label for="MO_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MO_addressBrgySubdVillage') is-invalid @enderror" id="MO_addressBrgySubdVillage" name="MO_addressBrgySubdVillage" value="{{ old('MO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your Barangay.
+            </div>
             <span class="text-danger"> 
-                @error('MR_motherOffice') 
-                  {{ $message }} 
+                @error('MO_addressBrgySubdVillage') 
+                {{ $message }} 
                 @enderror
-              </span>
+            </span>
         </div>
+        <div class="col-md-3">
+            <label for="MO_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('MO_addressHouseNoStreet') is-invalid @enderror" id="MO_addressHouseNoStreet" name="MO_addressHouseNoStreet" value="{{ old('MO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your House No./Street Name.
+            </div>
+            <span class="text-danger"> 
+                @error('MO_addressHouseNoStreet') 
+                {{ $message }} 
+                @enderror
+            </span>
+        </div>
+
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+            <header class="text-center">
+                <!-- LINE BREAK -->
+            </header>
+        </section>
+
         <div class="col-md-6">
             <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
             <input type="text" class="form-control @error('MR_guardian') is-invalid @enderror" id="MR_guardian" name="MR_guardianName" value="{{ old('MR_guardianName') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
@@ -621,18 +915,152 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-6">
-            <label for="MR_guardianAddress" class="form-label h6 @error('MR_guardianAddress') is-invalid @enderror">Guardian's Address</label>
-            <input type="text" class="form-control" id="MR_guardianAddress" name="MR_guardianAddress" value="{{ old('MR_guardianAddress') }}" placeholder="skip if not applicable" oninput="this.value = this.value.toUpperCase()">
-            <div class="invalid-feedback">
-                Please enter your parent's or guardian's address.
-            </div>
-            <span class="text-danger"> 
-                @error('MR_guardianAddress') 
-                  {{ $message }} 
-                @enderror
-            </span>
-        </div>
+        
+         <!--ADDRESS GUARDIAN-->
+         <label for="GR_fatherOffice" class="form-label h6">Address of Guardian<span class="text-danger">*</span></label>
+        
+         @php
+             $regions = [
+                 ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                 ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                 ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                 ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                 ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                 ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                 ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                 ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                 ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                 ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                 ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                 ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                 ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                 ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                 ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                 ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                 ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+             ];
+         @endphp
+         <div class="col-md-2">
+             <label for="GR_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+             <select class="form-select  @error('GR_addressRegion') is-invalid @enderror" id="GR_addressRegion" name="GR_addressRegion">
+                 <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 @foreach ($regions as $region)
+                     <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                         {{ $region['number'] }} - {{ $region['name'] }}
+                     </option>
+                 @endforeach
+             </select>
+             <div class="invalid-feedback">
+                 Please enter your Region.
+             </div>
+             <span class="text-danger"> 
+                 @error('GR_addressRegion') 
+                   {{ $message }} 
+                 @enderror
+             </span>
+         </div>
+         <div class="col-md-2">
+             <label for="GR_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+                 <select class="form-select  @error('GR_addressProvince') is-invalid @enderror" id="GR_addressProvince" name="GR_addressProvince">
+                     <option selected="selected" disabled="disabled" value="">SELECT</option>
+                 </select>
+             <div class="invalid-feedback">
+                 Please enter your Province.
+             </div>
+             <span class="text-danger"> 
+                 @error('GR_addressProvince') 
+                   {{ $message }} 
+                 @enderror
+             </span>
+         </div>
+         <script>
+             var provinces={
+                 "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                 "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                 "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                 "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                 "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                 "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+                 "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                 "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                 "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                 "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                 "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                 "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                 "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                 "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                 "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                 "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                 "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+             };
+ 
+             $(document).ready(function() {
+                 // get the selected region
+                 var region = $('#GR_addressRegion').val();
+                 // get the corresponding provinces from the provinces object
+                 var selectedProvinces = provinces[region];
+                 // update the list of provinces in the dropdown
+                 var $provincesDropdown = $('#GR_addressProvince');
+                 $provincesDropdown.empty();
+                 $.each(selectedProvinces, function(i, province) {
+                     $provincesDropdown.append($('<option>').text(province).attr('value', province));
+                 });
+             
+ 
+                 // when the region selection changes, update the list of provinces
+                 $('#GR_addressRegion').on('change', function() {
+                     var region = $(this).val();
+                     var selectedProvinces = provinces[region];
+                     var $provincesDropdown = $('#GR_addressProvince');
+                     $provincesDropdown.empty();
+                     $.each(selectedProvinces, function(i, province) {
+                         $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                     });
+                     // update the selected province if it's still in the list of available provinces
+                     var selectedProvince = $provincesDropdown.val();
+                         if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                             $provincesDropdown.val(selectedProvinces[0]);
+                         }
+                 });
+             });
+         </script>
+         <div class="col-md-2">
+             <label for="GR_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+             <input type="text" class="form-control @error('GR_addressCityMunicipality') is-invalid @enderror" id="GR_addressCityMunicipality" name="GR_addressCityMunicipality" value="{{ old('GR_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+             <div class="invalid-feedback">
+                 Please enter your City/Municipality.
+             </div>
+             <span class="text-danger"> 
+                 @error('GR_addressCityMunicipality') 
+                   {{ $message }} 
+                 @enderror
+             </span>
+         </div>
+         <div class="col-md-3">
+             <label for="GR_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+             <input type="text" class="form-control @error('GR_addressBrgySubdVillage') is-invalid @enderror" id="GR_addressBrgySubdVillage" name="GR_addressBrgySubdVillage" value="{{ old('GR_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+             <div class="invalid-feedback">
+                 Please enter your Barangay.
+             </div>
+             <span class="text-danger"> 
+                 @error('GR_addressBrgySubdVillage') 
+                   {{ $message }} 
+                 @enderror
+             </span>
+         </div>
+         <div class="col-md-3">
+             <label for="GR_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
+             <input type="text" class="form-control @error('GR_addressHouseNoStreet') is-invalid @enderror" id="GR_addressHouseNoStreet" name="GR_addressHouseNoStreet" value="{{ old('GR_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+             <div class="invalid-feedback">
+                 Please enter your House No./Street Name.
+             </div>
+             <span class="text-danger"> 
+                 @error('GR_addressHouseNoStreet') 
+                   {{ $message }} 
+                 @enderror
+             </span>
+         </div>
+
         <div class="col-md-6">
             <label for="MR_studentContactNumber" class="form-label h6 @error('MR_studentContactNumber') is-invalid @enderror">Student's Contact No.<span class="text-danger">*</span></label>
             <input type="number" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" onKeyPress="if(this.value.length==11) return false;" required>
@@ -645,7 +1073,7 @@
                 @enderror
             </span>
         </div>
-        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+        <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark border-lg-end-0">
             <header class="text-center">
                 <!-- LINE BREAK -->
             </header>
@@ -670,21 +1098,49 @@
                             $('#MR_emergencyContactName').val($('#MR_fatherName').val());
                             $('#MR_emergencyContactOccupation').val($('#MR_fatherOccupation').val());
                             $('#MR_emergencyContactRelationship').val('FATHER');
+                        /**   
+                            $('#EC_addressRegion').val($('#FO_addressRegion').val());
+                            $('#EC_addressProvince').val($('#FO_addressProvince').val());
+                            $('#EC_addressCityMunicipality').val($('#FO_addressCityMunicipality').val());
+                            $('#EC_addressBrgySubdVillage').val($('#FO_addressBrgySubdVillage').val());
+                            $('#EC_addressHouseNoStreet').val($('#FO_addressHouseNoStreet').val()); */
+
                         } else if($(this).val() == 'MOTHER') {
                             console.log('Mother option is selected');
                             $('#MR_emergencyContactName').val($('#MR_motherName').val());
                             $('#MR_emergencyContactOccupation').val($('#MR_motherOccupation').val());
                             $('#MR_emergencyContactRelationship').val('MOTHER');
+                        /**   
+                            $('#EC_addressRegion').val($('#MO_addressRegion').val());
+                            $('#EC_addressProvince').val($('#MO_addressProvince').val());
+                            $('#EC_addressCityMunicipality').val($('#MO_addressCityMunicipality').val());
+                            $('#EC_addressBrgySubdVillage').val($('#MO_addressBrgySubdVillage').val());
+                            $('#EC_addressHouseNoStreet').val($('#MO_addressHouseNoStreet').val()); */
+
                         } else if($(this).val() == 'GUARDIAN') {
                             console.log('Guardian option is selected');
                             $('#MR_emergencyContactName').val($('#MR_guardian').val());
                             $('#MR_emergencyContactAddress').val($('#MR_guardianAddress').val());
                             $('#MR_emergencyContactRelationship').val('GUARDIAN');
+                            $('#MR_emergencyContactOccupation').val($('').val());
+                        /**
+                            $('#EC_addressRegion').val($('#GR_addressRegion').val());
+                            $('#EC_addressProvince').val($('#GR_addressProvince').val());
+                            $('#EC_addressCityMunicipality').val($('#GR_addressCityMunicipality').val());
+                            $('#EC_addressBrgySubdVillage').val($('#GR_addressBrgySubdVillage').val());
+                            $('#EC_addressHouseNoStreet').val($('#GR_addressHouseNoStreet').val()); */
+
                         } else if($(this).val() == 'OTHERS') {
                             console.log('Others option is selected');
                             $('#MR_emergencyContactName').val('');
                             $('#MR_emergencyContactOccupation').val('');
                             $('#MR_emergencyContactRelationship').val('');
+
+                     /**    $('#EC_addressRegion').val('');
+                            $('#EC_addressProvince').val('');
+                            $('#EC_addressCityMunicipality').val('');
+                            $('#EC_addressBrgySubdVillage').val('');
+                            $('#EC_addressHouseNoStreet').val(''); */
                         }
                     });
                 });
@@ -727,26 +1183,180 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-6">
-            <label for="MR_emergencyContactAddress" class="form-label h6 @error('MR_emergencyContactAddress') is-invalid @enderror">Address<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="MR_emergencyContactAddress" value="{{ old('MR_emergencyContactAddress') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactAddress" required>
+
+        <!--EMERGENCY CONTACT ADDRESS-->
+        <label for="EC_address" class="form-label h6">EMERGENCY CONTACT ADDRESS<span class="text-danger">*</span></label>
+        
+        @php
+            $regions = [
+                ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
+                ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
+                ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
+                ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
+                ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
+                ['number' => 'REGION V', 'name' => 'BICOL REGION'],
+                ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
+                ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
+                ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
+                ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
+                ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
+                ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
+                ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
+                ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
+                ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
+                ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
+                ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
+            ];
+        @endphp
+        <div class="col-md-2">
+            <label for="EC_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+            <select class="form-select  @error('EC_addressRegion') is-invalid @enderror" id="EC_addressRegion" name="EC_addressRegion">
+                <option selected="selected" disabled="disabled" value="">SELECT</option>
+                @foreach ($regions as $region)
+                    <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
+                        {{ $region['number'] }} - {{ $region['name'] }}
+                    </option>
+                @endforeach
+            </select>
             <div class="invalid-feedback">
-                Please enter the address of your emergency contact person.
+                Please enter your Region.
             </div>
             <span class="text-danger"> 
-                @error('MR_emergencyContactAddress') 
+                @error('EC_addressRegion') 
                   {{ $message }} 
                 @enderror
             </span>
         </div>
+        <div class="col-md-2">
+            <label for="EC_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+                <select class="form-select  @error('EC_addressProvince') is-invalid @enderror" id="EC_addressProvince" name="EC_addressProvince">
+                    <option selected="selected" disabled="disabled" value="">SELECT</option>
+                </select>
+            <div class="invalid-feedback">
+                Please enter your Province.
+            </div>
+            <span class="text-danger"> 
+                @error('EC_addressProvince') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <script>
+            var provinces={
+                "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
+                "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
+                "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
+                "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
+                "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
+                "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
+                "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
+                "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
+                "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
+                "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
+                "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
+                "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
+                "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
+                "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
+                "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
+                "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
+                "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
+            };
+
+            $(document).ready(function() {
+                // get the selected region
+                var region = $('#EC_addressRegion').val();
+                // get the corresponding provinces from the provinces object
+                var selectedProvinces = provinces[region];
+                // update the list of provinces in the dropdown
+                var $provincesDropdown = $('#EC_addressProvince');
+                $provincesDropdown.empty();
+                $.each(selectedProvinces, function(i, province) {
+                    $provincesDropdown.append($('<option>').text(province).attr('value', province));
+
+                        // clear the current options in the courseSelect element
+/** 
+                        if(region != null){
+                                $('#EC_addressProvince').empty();
+                                // add the new options based on the selected campus
+                                $.each(selectedProvinces, function(index, value) {
+                                    counter++;
+                                    var option = $('<option>').text(value).attr('value', value);
+                                    if (value == ($('#EC_addressProvince').val)) {
+                                        option.attr('selected', 'selected');
+                                    }
+                                    if(counter % 2 == 1){
+                                        $('#EC_addressProvince').append(option.addClass('alternate'));
+                                    }else{
+                                        $('#EC_addressProvince').append(option);
+                                    }
+                                });
+                            } */
+                });
+            
+
+                // when the region selection changes, update the list of provinces
+                $('#EC_addressRegion').on('change', function() {
+                    var region = $(this).val();
+                    var selectedProvinces = provinces[region];
+                    var $provincesDropdown = $('#EC_addressProvince');
+                    $provincesDropdown.empty();
+                    $.each(selectedProvinces, function(i, province) {
+                        $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
+                    });
+                    // update the selected province if it's still in the list of available provinces
+                    var selectedProvince = $provincesDropdown.val();
+                        if ($.inArray(selectedProvince, selectedProvinces) === -1) {
+                            $provincesDropdown.val(selectedProvinces[0]);
+                        }
+              
+                });
+            });
+        </script>
+        <div class="col-md-2">
+            <label for="EC_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('EC_addressCityMunicipality') is-invalid @enderror" id="EC_addressCityMunicipality" name="EC_addressCityMunicipality" value="{{ old('EC_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your City/Municipality.
+            </div>
+            <span class="text-danger"> 
+                @error('EC_addressCityMunicipality') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="EC_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('EC_addressBrgySubdVillage') is-invalid @enderror" id="EC_addressBrgySubdVillage" name="EC_addressBrgySubdVillage" value="{{ old('EC_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your Barangay.
+            </div>
+            <span class="text-danger"> 
+                @error('EC_addressBrgySubdVillage') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="EC_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('EC_addressHouseNoStreet') is-invalid @enderror" id="EC_addressHouseNoStreet" name="EC_addressHouseNoStreet" value="{{ old('EC_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <div class="invalid-feedback">
+                Please enter your House No./Street Name.
+            </div>
+            <span class="text-danger"> 
+                @error('EC_addressHouseNoStreet') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        
         <div class="col-md-6">
-            <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <label for="EC_emergencyContactNumber" class="form-label h6 @error('EC_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="EC_emergencyContactNumber" value="{{ old('EC_emergencyContactNumber') }}" name="EC_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback">
                 Please enter the contact number of your emergency contact person.
             </div>
             <span class="text-danger"> 
-                @error('MR_emergencyContactNumber') 
+                @error('EC_emergencyContactNumber') 
                   {{ $message }} 
                 @enderror
             </span>

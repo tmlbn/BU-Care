@@ -155,7 +155,7 @@
                         <th>Height</th>
                         <th>History and Physical Examination</th>
                         <th>Physician Directions</th>
-                        <th>Purpose</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -175,7 +175,7 @@
                             <td contenteditable="false" class="table-success border border-dark">{{ $record->height }}</td>
                             <td contenteditable="false" class="table-success border border-dark" style="max-width: 100px;">{{ htmlspecialchars_decode($record->historyAndPhysicalExamination) }}</td>
                             <td contenteditable="false" class="table-success border border-dark" style="max-width: 100px;">{{ htmlspecialchars_decode($record->physicianDirections) }}</td>
-                            <td contenteditable="false" class="table-success border border-dark" style="max-width: 100px;">{{ htmlspecialchars_decode($record->Purpose) }}</td>
+                            
                         </tr>
                         @endforeach
                         @php
@@ -189,7 +189,6 @@
                         <td contenteditable="true" id="table_height" name="table_height" onkeypress="return isNumeric(event)"></td>
                         <td contenteditable="true" id="table_historyAndPhysicalExamination" name="table_historyAndPhysicalExamination" style="max-width: 100px;"></td>
                         <td contenteditable="true" id="table_physicianDirections" name="table_physicianDirections" style="max-width: 100px;"></td>
-                        <td contenteditable="true" id="purpose" name="purpose" style="max-width: 100px;"></td>
                         <script>
                             function isNumeric(evt) {
                                 var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -212,7 +211,7 @@
             <input type="hidden" id="height" name="height">
             <input type="hidden" id="historyAndPhysicalExamination" name="historyAndPhysicalExamination">
             <input type="hidden" id="physicianDirections" name="physicianDirections">
-            <input type="hidden" id="purpose" name="purpose">
+
         </div>
         <span class="text-danger"> 
             @error('patientID') 
@@ -254,11 +253,7 @@
               {{ $message }}<br>
             @enderror
         </span>
-        <span class="text-danger"> 
-            @error('purpose') 
-              {{ $message }}<br>
-            @enderror
-        </span>
+
 
         <div class="row no-gutters justify-content-end pt-3 position-relative">
             <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
@@ -293,7 +288,6 @@
                     $('#confirm_height').text(heightValue);
                     $('#confirm_historyAndPhysicalExamination').text(historyAndPhysicalExaminationValue);
                     $('#confirm_physicianDirections').text(physicianDirectionsValue);
-                    $('#purpose').text(purpose);
 
                     // Update the value of hidden inputs to post
                     $('#date').val(dateValue);
@@ -303,7 +297,7 @@
                     $('#height').val(heightValue);
                     $('#historyAndPhysicalExamination').val(historyAndPhysicalExaminationValue);
                     $('#physicianDirections').val(physicianDirectionsValue);
-                    $('#purpose').val(purpose);
+
                 });
             }
 
@@ -334,7 +328,7 @@
                                     <th>Height</th>
                                     <th>History and Physical Examination</th>
                                     <th>Physician Directions</th>
-                                    <th>Purpose</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>                               
@@ -346,7 +340,7 @@
                                     <td contenteditable="false" id="confirm_height" name="height"></td>
                                     <td contenteditable="false" id="confirm_historyAndPhysicalExamination" name="historyAndPhysicalExamination"></td>
                                     <td contenteditable="false" id="confirm_physicianDirections" name="physicianDirections"></td>
-                                    <td contenteditable="false" id="purpose" name="purpose"></td>
+
                                 </tr>
                             </tbody>
                         </table>

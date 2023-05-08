@@ -188,7 +188,6 @@ class MedicalPatientRecordsController extends Controller
 
     public function filterDate(Request $request){
         $dateToFilter = $request->input('date');
-        dd($dateToFilter);
     }
 
     public function showMedicalPatientRecord($patientID){
@@ -228,9 +227,6 @@ class MedicalPatientRecordsController extends Controller
         }elseif($patient->user_type == 'PATIENT-PERSONNEL'){
             $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
         }
-
-        // $dateofExam = $medicalPatientRecords->date_of_exam;
-        // dd($medicalPatientRecords[0]->date_of_exam);
         
         return view('admin.medicalPatientRecord')
                 ->with('patient', $patient)
