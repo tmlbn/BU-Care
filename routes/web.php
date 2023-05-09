@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\BUCareAuthController;
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Models\UserStudent;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordFormController;
@@ -147,5 +148,14 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/admin/getUserOfAppointment', [AppointmentsController::class, 'getUserOfAppointment'])->name('admin.UserOfAppointment.get');
     Route::post('/admin/release-medical-certificate/{userTicketID}', [MedicalRecordsAdminController::class, 'releaseMedCertFromAppointment'])->name('admin.releaseMedCertFromAppointment');
     Route::post('/admin/release-medical-certificate/{patientID}', [MedicalRecordsAdminController::class, 'releaseMedCert'])->name('admin.releaseMedCert');
+    Route::get('/admin/appointments-history', [AdminReportsController::class, 'showAppointmentsHistory'])->name('admin.appointmentsHistory.show');
+
+    Route::post('/admin/appointments/medical-certificate-release', [AppointmentsController::class, 'appointmentMedCertRelease'])->name('appointments.medcert.release');
+    Route::post('/admin/medical-certificate-release', [MedicalRecordsAdminController::class, 'medCertRelease'])->name('medcert.release');
+
+    Route::get('/admin/printable-health-record', function(){
+        $patient = UserStudent::where('id', 2)->first();
+        return view('admin.PrintableHealthRecord')->with('patient', $patient);
+    });
 
 });

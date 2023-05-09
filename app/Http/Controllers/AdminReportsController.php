@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\UserPersonnel;
+use App\Models\UserStudent;
+use App\Models\MedicalRecordPersonnel;
+use App\Models\MedicalRecord;
+use App\Models\MedicalRecordsPersonnel_Admin;
+use App\Models\MedicalRecord_Admin;
 use DB;
 use DateTime;
+use DateInterval;
 
 class AdminReportsController extends Controller
 {
@@ -91,5 +98,28 @@ class AdminReportsController extends Controller
                     'topPatients', 'topPatientsLabels', 'topPatientsData', 
                     'months', 'count'
         ));
+    }
+
+    public function showAppointmentsHistory(){
+        // Get the current date
+        $currentDate = new DateTime();
+
+        // Get the day of the week (0 = Sunday, 6 = Saturday)
+        $dayOfWeek = $currentDate->format('w');
+
+        // Calculate the number of days to subtract from the current date to get the first day of the week
+        $numDaysToSubtract = $dayOfWeek;
+
+        // Subtract the number of days from the current date to get the first day of the week
+        $firstDayOfWeek = $currentDate->sub(new DateInterval('P'.$numDaysToSubtract.'D'));
+
+        // Format the first day of the week in the desired format
+        $firstDayOfWeekFormatted = $firstDayOfWeek->format('Y-m-d');
+
+        $today = date('Y-m-d');
+        $entries = Appointment::where('appointmentDate', $today)->orderBy('appointmentDateTime', 'asc')->paginate(15);
+        $entries->appends(request()->query());
+
+        return view('admin.appointmentsHistory', compact('entries'));
     }
 }

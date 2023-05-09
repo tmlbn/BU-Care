@@ -15,8 +15,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             // Get all appointments that are scheduled to start 1 hour ago
             $expiredAppointments = Appointment::where('appointmentTime', '<=', Carbon::now()->subHour())
-                ->where('status', '!=', 'EXPIRED') // exclude previously expired appointments
-                ->where('status', '!=', 'SUCCESS')
+                ->where('status', '!=', 'CANCELED/NO-SHOW') // exclude previously expired appointments
+                ->where('status', '!=', 'COMPLETED')
                 ->get();
     
             // Update status of expired appointments

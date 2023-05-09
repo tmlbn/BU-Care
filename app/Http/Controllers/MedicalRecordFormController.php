@@ -252,6 +252,7 @@ class MedicalRecordFormController extends Controller
     }
 */
     public function showPatientForm($patientID){
+        $fromAppointment = 0;
         try {
             // Try to find a patient with the specified applicant ID
             $student = UserStudent::with('medicalRecord')
@@ -273,7 +274,11 @@ class MedicalRecordFormController extends Controller
         }
     
         // Display the patient form with the found user data
-        return view('admin.ClinicSideMedicalRecordForm')->with('patient', $student);
+        return view('admin.ClinicSideMedicalRecordForm')
+                ->with([
+                    'patient' => $student,
+                    'fromAppointment' => $fromAppointment
+                ]);
     }
 
     public function checkAuthentication(Request $request){
@@ -357,7 +362,31 @@ class MedicalRecordFormController extends Controller
             'MR_addressHouseNoStreet' => 'nullable|string',
             'MR_fatherName' => 'required|string',
             'MR_fatherOccupation' => 'nullable',
-            'MR_fatherOffice' => 'nullable',
+            
+            'FO_addressRegion' => 'required|string',
+            'FO_addressProvince' => 'required|string',
+            'FO_addressCityMunicipality' => 'required|string',
+            'FO_addressBrgySubdVillage' => 'required|string',
+            'FO_addressHouseNoStreet' => 'nullable|string',
+
+            'MO_addressRegion' => 'required|string',
+            'MO_addressProvince' => 'required|string',
+            'MO_addressCityMunicipality' => 'required|string',
+            'MO_addressBrgySubdVillage' => 'required|string',
+            'MO_addressHouseNoStreet' => 'nullable|string',
+
+            'GR_addressRegion' => 'nullable|string',
+            'GR_addressProvince' => 'nullable|string',
+            'GR_addressCityMunicipality' => 'nullable|string',
+            'GR_addressBrgySubdVillage' => 'nullable|string',
+            'GR_addressHouseNoStreet' => 'nullable|string',
+
+            'EC_addressRegion' => 'required|string',
+            'EC_addressProvince' => 'required|string',
+            'EC_addressCityMunicipality' => 'required|string',
+            'EC_addressBrgySubdVillage' => 'required|string',
+            'EC_addressHouseNoStreet' => 'nullable|string',
+
             'MR_motherName' => 'required|string',
             'MR_motherOccupation' => 'nullable',
             'MR_motherOffice' => 'nullable',
@@ -366,7 +395,7 @@ class MedicalRecordFormController extends Controller
             'MR_emergencyContactName' => 'required|string',
             'MR_emergencyContactOccupation' => 'required|string',
             'MR_emergencyContactRelationship' => 'required|string',
-            'MR_emergencyContactAddress' => 'required|string',
+
 
             /* FAMILY HISTORY[FH_] */
             'FH_cancer' => 'required|in:0,1', 
@@ -402,7 +431,7 @@ class MedicalRecordFormController extends Controller
             'pi_kidneyDisease' => 'required|in:0,1', 
             'pi_typhoidFever' => 'required|in:0,1', 
             'pi_earProblems' => 'required|in:0,1', 
-            'pi_heartDisease' => 'required|in:0,1', 
+            'pi_heartDisease' => 'required|in:0,1',
             'pi_leukemia' => 'required|in:0,1', 
             'pi_asthma' => 'required|in:0,1', 
             'pi_diabetes' => 'required|in:0,1', 
@@ -651,12 +680,33 @@ class MedicalRecordFormController extends Controller
                 $medRecord->religion = filter_var($request->input('MR_religion'), FILTER_SANITIZE_STRING);
                 $medRecord->fatherName = filter_var($request->input('MR_fatherName'), FILTER_SANITIZE_STRING);
                 $medRecord->fatherOccupation = filter_var($request->input('MR_fatherOccupation'), FILTER_SANITIZE_STRING);
-                $medRecord->fatherOfficeAddress = filter_var($request->input('MR_fatherOffice'), FILTER_SANITIZE_STRING);
+                // father address
+                $medRecord->f_region = filter_var($request->input('FO_addressRegion'), FILTER_SANITIZE_STRING);
+                $medRecord->f_province = filter_var($request->input('FO_addressProvince'), FILTER_SANITIZE_STRING);
+                $medRecord->f_cityMunicipality = filter_var($request->input('FO_addressCityMunicipality'), FILTER_SANITIZE_STRING);
+                $medRecord->f_barangaySubdVillage = filter_var($request->input('FO_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+                $medRecord->f_houseNumberStName = filter_var($request->input('FO_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
+                
+
                 $medRecord->motherName = filter_var($request->input('MR_motherName'), FILTER_SANITIZE_STRING);
                 $medRecord->motherOccupation = filter_var($request->input('MR_motherOccupation'), FILTER_SANITIZE_STRING);
-                $medRecord->motherOfficeAddress = filter_var($request->input('MR_motherOffice'), FILTER_SANITIZE_STRING);
+                // mother address
+                $medRecord->m_region = filter_var($request->input('MO_addressRegion'), FILTER_SANITIZE_STRING);
+                $medRecord->m_province = filter_var($request->input('MO_addressProvince'), FILTER_SANITIZE_STRING);
+                $medRecord->m_cityMunicipality = filter_var($request->input('MO_addressCityMunicipality'), FILTER_SANITIZE_STRING);
+                $medRecord->m_barangaySubdVillage = filter_var($request->input('MO_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+                $medRecord->m_houseNumberStName = filter_var($request->input('MO_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
+                
+
                 $medRecord->guardianName = $request->filled('MR_guardian') ? filter_var($request->input('MR_guardian'), FILTER_SANITIZE_STRING) : 'N/A';     
-                $medRecord->guardianAddress = $request->filled('MR_guardianAddress') ? filter_var($request->input('MR_guardianAddress'), FILTER_SANITIZE_STRING) : 'N/A';    
+                // guardian address
+                $medRecord->g_region = $request->filled('GR_addressRegion') ? filter_var($request->input('GR_addressRegion'), FILTER_SANITIZE_STRING) : 'N/A';
+                $medRecord->g_province = $request->filled('GR_addressProvince') ? filter_var($request->input('GR_addressProvince'), FILTER_SANITIZE_STRING) : 'N/A';
+                $medRecord->g_cityMunicipality = $request->filled('GR_addressCityMunicipality') ? filter_var($request->input('GR_addressCityMunicipality'), FILTER_SANITIZE_STRING) : 'N/A';
+                $medRecord->g_barangaySubdVillage = $request->filled('GR_addressBrgySubdVillage') ? filter_var($request->input('GR_addressBrgySubdVillage'), FILTER_SANITIZE_STRING) : 'N/A';
+                $medRecord->g_houseNumberStName = $request->filled('GR_addressHouseNoStreet') ? filter_var($request->input('GR_addressHouseNoStreet'), FILTER_SANITIZE_STRING) : 'N/A';
+                
+
                 $medRecord->parentGuardianContactNumber = filter_var(ltrim($request->input('MR_parentGuardianContactNumber'), '0'), FILTER_VALIDATE_INT);
                 $medRecord->studentContactNumber = filter_var(ltrim($request->input('MR_studentContactNumber'), '0'), FILTER_VALIDATE_INT);
                 
@@ -683,7 +733,14 @@ class MedicalRecordFormController extends Controller
                     $medRecord->emergencyContactOccupation = filter_var($request->input('MR_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
                     $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
                 }
-                $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+                // emegerceneytg ADDRESS
+                $medRecord->ec_region = filter_var($request->input('EC_addressRegion'), FILTER_SANITIZE_STRING);
+                $medRecord->ec_province = filter_var($request->input('EC_addressProvince'), FILTER_SANITIZE_STRING);
+                $medRecord->ec_cityMunicipality = filter_var($request->input('EC_addressCityMunicipality'), FILTER_SANITIZE_STRING);
+                $medRecord->ec_barangaySubdVillage = filter_var($request->input('EC_addressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+                $medRecord->ec_houseNumberStName = filter_var($request->input('EC_addressHouseNoStreet'), FILTER_SANITIZE_STRING);
+                
+
                 $medRecord->emergencyContactNumber = filter_var(ltrim($request->input('MR_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
 
                 $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
@@ -1343,7 +1400,6 @@ class MedicalRecordFormController extends Controller
                 'MR_emergencyContactName' => 'required|string',
                 'MR_emergencyContactOccupation' => 'required|string',
                 'MR_emergencyContactRelationship' => 'required|string',
-                'MR_emergencyContactAddress' => 'required|string',
     
                 /* FAMILY HISTORY[FH_] */
                 'FH_cancer' => 'required|in:0,1', 
@@ -1658,7 +1714,7 @@ class MedicalRecordFormController extends Controller
                         $medRecord->emergencyContactOccupation = filter_var($request->input('MR_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
                         $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
                     }
-                    $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+
                     $medRecord->emergencyContactNumber = filter_var(ltrim($request->input('MR_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
     
                     $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
@@ -1837,7 +1893,6 @@ class MedicalRecordFormController extends Controller
                     'MR_emergencyContactName' => 'required|string',
                     'MR_emergencyContactOccupation' => 'required|string',
                     'MR_emergencyContactRelationship' => 'required|string',
-                    'MR_emergencyContactAddress' => 'required|string',
         
                     /* FAMILY HISTORY[FH_] */
                     'FH_cancer' => 'required|in:0,1', 
@@ -2152,7 +2207,7 @@ class MedicalRecordFormController extends Controller
                             $medRecord->emergencyContactOccupation = filter_var($request->input('MR_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
                             $medRecord->emergencyContactRelationship = filter_var($request->input('MR_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
                         }
-                        $medRecord->emergencyContactAddress = filter_var($request->input('MR_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+
                         $medRecord->emergencyContactNumber = filter_var(ltrim($request->input('MR_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
         
                         $medRecord->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);

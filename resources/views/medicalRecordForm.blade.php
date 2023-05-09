@@ -595,7 +595,7 @@
         @endphp
         <div class="col-md-2">
             <label for="FO_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
-            <select class="form-select  @error('FO_addressRegion') is-invalid @enderror" id="FO_addressRegion" name="FO_addressRegion">
+            <select class="form-select  @error('FO_addressRegion') is-invalid @enderror" id="FO_addressRegion" name="FO_addressRegion" required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 @foreach ($regions as $region)
                     <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
@@ -614,7 +614,7 @@
         </div>
         <div class="col-md-2">
             <label for="FO_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
-                <select class="form-select  @error('FO_addressProvince') is-invalid @enderror" id="FO_addressProvince" name="FO_addressProvince">
+                <select class="form-select  @error('FO_addressProvince') is-invalid @enderror" id="FO_addressProvince" name="FO_addressProvince"  required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
                 </select>
             <div class="invalid-feedback">
@@ -679,7 +679,7 @@
         </script>
         <div class="col-md-2">
             <label for="FO_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('FO_addressCityMunicipality') is-invalid @enderror" id="FO_addressCityMunicipality" name="FO_addressCityMunicipality" value="{{ old('FO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('FO_addressCityMunicipality') is-invalid @enderror" id="FO_addressCityMunicipality" name="FO_addressCityMunicipality" value="{{ old('FO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your City/Municipality.
             </div>
@@ -691,7 +691,7 @@
         </div>
         <div class="col-md-3">
             <label for="FO_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('FO_addressBrgySubdVillage') is-invalid @enderror" id="FO_addressBrgySubdVillage" name="FO_addressBrgySubdVillage" value="{{ old('FO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('FO_addressBrgySubdVillage') is-invalid @enderror" id="FO_addressBrgySubdVillage" name="FO_addressBrgySubdVillage" value="{{ old('FO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your Barangay.
             </div>
@@ -703,7 +703,7 @@
         </div>
         <div class="col-md-3">
             <label for="FO_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('FO_addressHouseNoStreet') is-invalid @enderror" id="FO_addressHouseNoStreet" name="FO_addressHouseNoStreet" value="{{ old('FO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('FO_addressHouseNoStreet') is-invalid @enderror" id="FO_addressHouseNoStreet" name="FO_addressHouseNoStreet" value="{{ old('FO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your House No./Street Name.
             </div>
@@ -769,7 +769,7 @@
 
 <div class="col-md-2">
     <label for="MO_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
-    <select class="form-select  @error('MO_addressRegion') is-invalid @enderror" id="MO_addressRegion" name="MO_addressRegion">
+    <select class="form-select  @error('MO_addressRegion') is-invalid @enderror" id="MO_addressRegion" name="MO_addressRegion"  required>
         <option selected="selected" disabled="disabled" value="">SELECT</option>
         @foreach ($regions as $region)
             <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
@@ -788,7 +788,7 @@
 </div>
 <div class="col-md-2">
     <label for="MO_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
-        <select class="form-select  @error('MO_addressProvince') is-invalid @enderror" id="MO_addressProvince" name="MO_addressProvince">
+        <select class="form-select  @error('MO_addressProvince') is-invalid @enderror" id="MO_addressProvince" name="MO_addressProvince"  required>
             <option selected="selected" disabled="disabled" value="">SELECT</option>
         </select>
     <div class="invalid-feedback">
@@ -853,7 +853,7 @@
 </script>
         <div class="col-md-2">
             <label for="MO_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MO_addressCityMunicipality') is-invalid @enderror" id="MO_addressCityMunicipality" name="MO_addressCityMunicipality" value="{{ old('MO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MO_addressCityMunicipality') is-invalid @enderror" id="MO_addressCityMunicipality" name="MO_addressCityMunicipality" value="{{ old('MO_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your City/Municipality.
             </div>
@@ -865,7 +865,7 @@
         </div>
         <div class="col-md-3">
             <label for="MO_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MO_addressBrgySubdVillage') is-invalid @enderror" id="MO_addressBrgySubdVillage" name="MO_addressBrgySubdVillage" value="{{ old('MO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MO_addressBrgySubdVillage') is-invalid @enderror" id="MO_addressBrgySubdVillage" name="MO_addressBrgySubdVillage" value="{{ old('MO_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your Barangay.
             </div>
@@ -877,7 +877,7 @@
         </div>
         <div class="col-md-3">
             <label for="MO_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('MO_addressHouseNoStreet') is-invalid @enderror" id="MO_addressHouseNoStreet" name="MO_addressHouseNoStreet" value="{{ old('MO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('MO_addressHouseNoStreet') is-invalid @enderror" id="MO_addressHouseNoStreet" name="MO_addressHouseNoStreet" value="{{ old('MO_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your House No./Street Name.
             </div>
@@ -1210,7 +1210,7 @@
         @endphp
         <div class="col-md-2">
             <label for="EC_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
-            <select class="form-select  @error('EC_addressRegion') is-invalid @enderror" id="EC_addressRegion" name="EC_addressRegion">
+            <select class="form-select  @error('EC_addressRegion') is-invalid @enderror" id="EC_addressRegion" name="EC_addressRegion"  required>
                 <option selected="selected" disabled="disabled" value="">SELECT</option>
                 @foreach ($regions as $region)
                     <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
@@ -1229,7 +1229,7 @@
         </div>
         <div class="col-md-2">
             <label for="EC_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
-                <select class="form-select  @error('EC_addressProvince') is-invalid @enderror" id="EC_addressProvince" name="EC_addressProvince">
+                <select class="form-select  @error('EC_addressProvince') is-invalid @enderror" id="EC_addressProvince" name="EC_addressProvince"  required>
                     <option selected="selected" disabled="disabled" value="">SELECT</option>
                 </select>
             <div class="invalid-feedback">
@@ -1314,7 +1314,7 @@
         </script>
         <div class="col-md-2">
             <label for="EC_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('EC_addressCityMunicipality') is-invalid @enderror" id="EC_addressCityMunicipality" name="EC_addressCityMunicipality" value="{{ old('EC_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('EC_addressCityMunicipality') is-invalid @enderror" id="EC_addressCityMunicipality" name="EC_addressCityMunicipality" value="{{ old('EC_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your City/Municipality.
             </div>
@@ -1326,7 +1326,7 @@
         </div>
         <div class="col-md-3">
             <label for="EC_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('EC_addressBrgySubdVillage') is-invalid @enderror" id="EC_addressBrgySubdVillage" name="EC_addressBrgySubdVillage" value="{{ old('EC_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('EC_addressBrgySubdVillage') is-invalid @enderror" id="EC_addressBrgySubdVillage" name="EC_addressBrgySubdVillage" value="{{ old('EC_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your Barangay.
             </div>
@@ -1338,7 +1338,7 @@
         </div>
         <div class="col-md-3">
             <label for="EC_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('EC_addressHouseNoStreet') is-invalid @enderror" id="EC_addressHouseNoStreet" name="EC_addressHouseNoStreet" value="{{ old('EC_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control @error('EC_addressHouseNoStreet') is-invalid @enderror" id="EC_addressHouseNoStreet" name="EC_addressHouseNoStreet" value="{{ old('EC_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()"  required>
             <div class="invalid-feedback">
                 Please enter your House No./Street Name.
             </div>
@@ -1350,19 +1350,18 @@
         </div>
         
         <div class="col-md-6">
-            <label for="EC_emergencyContactNumber" class="form-label h6 @error('EC_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" id="EC_emergencyContactNumber" value="{{ old('EC_emergencyContactNumber') }}" name="EC_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
             <div class="invalid-feedback">
                 Please enter the contact number of your emergency contact person.
             </div>
             <span class="text-danger"> 
-                @error('EC_emergencyContactNumber') 
+                @error('MR_emergencyContactNumber') 
                   {{ $message }} 
                 @enderror
             </span>
         </div>
 
-        
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">
                 <!-- LINE BREAK -->

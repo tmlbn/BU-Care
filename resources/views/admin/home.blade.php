@@ -5,7 +5,7 @@
         <script>
           $(document).ready(function(){
               $('#successModal').modal("show");
-          });          
+          });
         </script>
             <div class="modal fade modal-lg" id="successModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -18,34 +18,14 @@
                         <div class="alert alert-success fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
                           <svg class="bi flex-shrink-0 me-2" fill="#61ff61" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#check-circle-fill"/></svg>
                           <div class="text-center mt-3">
-                            <p class="alert-heading fs-5 p-2">Your medical record was successfully submitted!</p>
+                            <p class="alert-heading fs-5 p-2">Medical record was successfully submitted!</p>
                           </div>
                         </div>
-                          
-                        <p class="fs-5">Release Medical Ceriticate?</p>
-                      </div>
-                      <div class="modal-footer">
-                        @if(session('userTicketID'))
-                          <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('releaseMedCertFromAppointment').submit();">
-                            Yes
-                          </button>
-                          <form id="releaseMedCertFromAppointment" action="{{ route('admin.releaseMedCertFromAppointment', ['userTicketID' => session('userTicketID')]) }}" method="POST" class="d-none">
-                              @csrf
-                          </form>
-                        @endif
-                        @if(session('patientID'))
-                          <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('releaseMedCert').submit();">
-                            Yes
-                          </button>
-                          <form id="releaseMedCert" action="{{ route('admin.releaseMedCert', ['patientID' => session('patientID')]) }}" method="POST" class="d-none">
-                              @csrf
-                          </form>
-                        @endif
                       </div>
                   </div>
                 </div>
             </div>
-        @endif
+@endif
 <div class="d-flex bg-cover p-5 p-md-16 p-lg-28 pillars-bg">
     <div class="d-flex flex-column text-white mx-auto pillars-bg-content" style="max-width: 100rem;">
         <img class="" src="{{ asset('media/BU-CareText.png') }}" style="width: 20%;"></h1>

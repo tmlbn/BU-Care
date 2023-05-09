@@ -187,6 +187,9 @@
                             echo '</p>';
                             echo '<p class="m-0">';
                             echo 'Ticket# '. $appointment->ticket_id;
+                            if($appointment->released){
+                                echo '<i class="bi bi-clipboard-check-fill icon fs-4" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Certificate Released"></i>';
+                            }
                             echo '</p>';
                             echo '<p class="m-0">';
                             if(Auth::user()){

@@ -3,6 +3,7 @@
 @section('content')
 
 <style>
+
     ::-webkit-input-placeholder {
    font-style: italic;
     }
@@ -15,7 +16,53 @@
     :-ms-input-placeholder {  
     font-style: italic; 
     }
-
+    /*@media print {
+        body {
+             font-size: 12pt;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+        .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+                float: left;
+        }
+        .col-md-12 {
+                width: 100%;
+        }
+        .col-md-11 {
+                width: 91.66666667%;
+        }
+        .col-md-10 {
+                width: 83.33333333%;
+        }
+        .col-md-9 {
+                width: 75%;
+        }
+        .col-md-8 {
+                width: 66.66666667%;
+        }
+        .col-md-7 {
+                width: 58.33333333%;
+        }
+        .col-md-6 {
+                width: 50%;
+        }
+        .col-md-5 {
+                width: 41.66666667%;
+        }
+        .col-md-4 {
+                width: 33.33333333%;
+        }
+        .col-md-3 {
+                width: 25%;
+        }
+        .col-md-2 {
+                width: 16.66666667%;
+        }
+        .col-md-1 {
+                width: 8.33333333%;
+        }
+    }*/
     body{
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
         background-repeat: no-repeat;
@@ -85,15 +132,87 @@
             @endforeach
         </ul>
     </div>
-    @endif
+@endif
+@php
+    $ticket_id = request()->query('ticket_id');
+
+    $released = 1;
+    if($patient->hasValidatedRecord && $patient->medicalRecordAdmin->released === 0){
+        $released = 0;
+    }
+@endphp
+<script>
+    const releasedValue = '<?php echo $released;?>';
+    const released = parseInt(releasedValue);
+
+    if(released === 0){
+        console.log(released);
+        $(document).ready(function(){
+              $('#successModal').modal("show");
+          });
+    }
+
+</script>
+
+<div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">BU-Care</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="alert alert-info fade show d-flex align-items-center justify-content-center" style="height:70px;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              <div class="text-center mt-3">
+                <p class="alert-heading fs-5 p-2">This health record form is already complete but medical certificate is not yet released.</p>
+              </div>
+            </div>
+            <p class="fs-4 p-2 fw-bold text-black"> Release medical certificate?</p>
+            <div class="modal-footer">
+                @if($patient->hasValidatedRecord && $ticket_id)
+                    <button type="button" class="btn btn-primary" onclick="submitmedcertAppointmentReleaseForm()">Yes</button>
+                @elseif($patient->hasValidatedRecord)
+                    <button type="button" class="btn btn-primary" onclick="submitMedcertReleaseForm()">Yes</button>
+                @endif
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+<script>
+    function submitmedcertAppointmentReleaseForm(){
+        $('#medcertAppointmentRelease').submit();
+    }
+    function submitMedcertReleaseForm(){
+        $('#medcertRelease').submit();
+    }
+</script>
+@if($patient->hasValidatedRecord && $ticket_id)
+    <form method="POST" action="{{ route('appointments.medcert.release') }}" enctype="multipart/form-data" id="medcertAppointmentRelease" class="d-print-none">
+        @csrf
+        <input type="hidden" name="patientID" value="{{ $patient->id }}">
+        <input type="hidden" name="MRA_id" value="{{ $patient->medicalRecordAdmin->MRA_id }}">
+        <input type="hidden" name="ticketID" value="{{ $ticket_id }}">
+    </form>
+@elseif($patient->hasValidatedRecord)
+    <form method="POST" action="{{ route('medcert.release') }}" enctype="multipart/form-data" id="medcertRelease" class="d-print-none">
+        @csrf
+        <input type="hidden" name="patientID" value="{{ $patient->id }}">
+        <input type="hidden" name="MRA_id" value="{{ $patient->medicalRecordAdmin->MRA_id }}">
+    </form>
+@endif
+
 <div class="container position-relative my-2 bg-light w-20 text-dark pt-5 px-3 headMargin checkboxes d-print-inline-block">
     @if($patient->hasValidatedRecord)
           <!-- HAS VALIDATED MEDICAL RECORD -->
-          <i class="bi bi-person-check icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
+          <i class="bi bi-person-check icon position-absolute top-0 end-0 fs-2 d-print-none" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Validated Medical Record"></i>
         @else
           <!-- HAS MEDICAL RECORD BUT NOT VALIDATED -->
-          <i class="bi bi-file-earmark-medical icon position-absolute top-0 end-0 fs-2" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Record not Validated"></i>
+          <i class="bi bi-file-earmark-medical icon position-absolute top-0 end-0 fs-2 d-print-none" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Record not Validated"></i>
     @endif
+<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" id="MR_form" class="d-print-inline-flex row g-3 pt-5 mx-2 d-print-inline-block needs-validation" novalidate>
+    @csrf
     <div class="d-flex flex-row">
         <div class="col-6 border border-dark border-end-0 d-flex align-items-center justify-content-center">
             <div class="row">
@@ -133,14 +252,13 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('medicalFormAdmin.store') }}" enctype="multipart/form-data" class="row g-3 pt-5 mx-2 d-print-inline-block needs-validation" novalidate>
-    @csrf
     @php
-    if(isset($fromAppointment)){
-        '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
-        '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
+    if(isset($fromAppointment) && $fromAppointment === 1){
+        echo '<input type="hidden" name="fromAppointment" value="'.$fromAppointment.'">';
+        echo '<input type="hidden" name="ticketID" value="'. $ticketID .'">';
     }
     @endphp
+
     <div class="container d-print-inline-block">
         <input type="hidden" class="form-control" id="studentID" name="studentID" value="{{ $patient->id }}">
         <input type="hidden" class="form-control" id="medRecID" name="medRecID" value="{{ $patient->MR_id }}">
@@ -178,7 +296,56 @@
     </div>   
     <div class="d-flex flex-row d-print-inline-block">
     </div>
-    <div class="row justify-content-end pb-0 mb-0 d-print-inline-block">
+
+    <!-- PRINTABLE -->
+    <div class="row d-flex d-print-inline-block d-none d-print-block">
+        <div class="col-md-1 mt-5 d-flex align-items-center justify-content-center d-print-inline-block">
+            <p class="h5">Name</p>
+        </div>
+        <div class="col-md-9 text-bottom" style="">
+            <p class="form-label h6 p-0" style="margin-top: 0.3%; user-select:none;">&nbsp;</p>
+            <div class="row justify-content-around text-center border-bottom border-dark pb-0" style="margin-top: -50px;">
+                <div class="col-4 pb-0 mb-0">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="last_name" name="last_name" value="{{ $patient->medicalRecord->last_name }}" readonly>
+                </div>
+                <div class="col-5">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="first_name" name="first_name" value="{{ $patient->medicalRecord->first_name }}" readonly>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control-plaintext text-center mb-0 pb-0 fs-5 fw-bold" id="middle_name" name="middle_name" value="{{ $patient->medicalRecord->middle_name }}" readonly>
+                </div>
+            </div>
+            <div class="row justify-content-around text-center">
+                <div class="col-4">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(LAST)</p>
+                </div>
+                <div class="col-5">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(FIRST)</p>
+                </div>
+                <div class="col-3">
+                    <p class="fst-italic fs-6 text-secondary" style="user-select: none;">(MIDDLE)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <label for="pr_age" class="form-label h6">Age</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="pr_age" name="pr_age" value="" readonly>
+        </div>
+        <div class="col-1">
+            <label for="MR_sex" class="form-label h6">Sex</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
+        </div>
+        <script>
+            $(document).ready(function() {
+                var birthDate = new Date("<?php echo $date; ?>");
+                var age = Math.floor((new Date() - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+                $('#pr_age').val(age);
+            });
+        </script>
+    </div>
+    <!-- END OF PRINTABLE -->
+
+    <div class="row justify-content-end pb-0 mb-0 d-print-inline-block d-print-none">
         <div class="col-md-1 d-flex align-items-center justify-content-center d-print-inline-block">
             <p class="h5 text-center text-bottom m-0 p-0">Name</p>
         </div>
@@ -209,7 +376,7 @@
         </div>
         <div class="col-md-1">
             <label for="age" class="form-label h6">Age</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="age" name="age" value="" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark fs-5 fw-bold" id="age" name="age" value="" readonly>
         </div>
         <script>
             $(document).ready(function() {
@@ -220,7 +387,7 @@
         </script>
         <div class="col-md-1">
             <label for="MR_sex" class="form-label h6">Sex</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark fs-5 fw-bold" id="MR_sex" name="MR_sex" value="{{ $patient->medicalRecord->sex }}" readonly>
         </div>
     </div>
         <div class="col-md-4">
@@ -239,115 +406,10 @@
             <label for="MR_religion" class="form-label h6">Religion</label>
             <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_religion" name="MR_religion" value="{{ $patient->medicalRecord->religion }}" readonly>
             </div>
-            
-        <!--STUDENT ADDRESS-->
-        <label for="MR_student" class="form-label h6">Student Address</label>
-        
-        @php
-            $regions = [
-                ['number' => 'REGION I', 'name' => 'ILOCOS REGION'],
-                ['number' => 'REGION II', 'name' => 'CAGAYAN VALLEY'],
-                ['number' => 'REGION III', 'name' => 'CENTRAL LUZON'],
-                ['number' => 'REGION IV-A', 'name' => 'CALABARZON'],
-                ['number' => 'MIMAROPA REGION', 'name' => 'MIMAROPA REGION'],
-                ['number' => 'REGION V', 'name' => 'BICOL REGION'],
-                ['number' => 'REGION VI', 'name' => 'WESTERN VISAYAS'],
-                ['number' => 'REGION VII', 'name' => 'CENTRAL VISAYAS'],
-                ['number' => 'REGION VIII', 'name' => 'EASTERN VISAYAS'],
-                ['number' => 'REGION IX', 'name' => 'ZAMBOANGA PENINSULA'],
-                ['number' => 'REGION X', 'name' => 'NORTHERN MINDANAO'],
-                ['number' => 'REGION XI', 'name' => 'DAVAO REGION'],
-                ['number' => 'REGION XII', 'name' => 'SOCCSKSARGEN'],
-                ['number' => 'CARAGA REGION', 'name' => 'CARAGA'],
-                ['number' => 'NCR', 'name' => 'NATIONAL CAPITAL REGION'],
-                ['number' => 'CAR', 'name' => 'CORDILLERA ADMINISTRATIVE REGION'],
-                ['number' => 'BARMM', 'name' => 'BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO']
-            ];
-        @endphp
-        <div class="col-md-2">
-            <label for="ClinicSide_addressRegion" class="form-label h6">Region</label>
-            <select class="form-select" id="ClinicSide_addressRegion" name="ClinicSide_addressRegion" value="{{  }}" readonly>
-                <option selected="selected" disabled="disabled" value="">SELECT</option>
-                @foreach ($regions as $region)
-                    <option value="{{ $region['number'] }}" {{ old('region') == $region['number'] ? 'selected' : '' }}>
-                        {{ $region['number'] }} - {{ $region['name'] }}
-                    </option>
-                @endforeach
-            </select>
-    
-        </div>
-        <div class="col-md-2">
-            <label for="ClinicSide_addressProvince" class="form-label h6">Province</label>
-                <select class="form-select" id="ClinicSide_addressProvince" name="ClinicSide_addressProvince" value="{{  }}" readonly>
-                    <option selected="selected" disabled="disabled" value="">SELECT</option>
-                </select>
-        </div>
-        <script>
-            var provinces={
-                "REGION I": ["ILOCOS NORTE","ILOCOS SUR","LA UNION","PANGASINAN"],
-                "REGION II": ["BATANES","CAGAYAN","ISABELA","NUEVA VIZCAYA","QUIRINO"],
-                "REGION III": ["AURORA","BATAAN","BULACAN","NUEVA ECIJA","PAMPANGA","TARLAC","ZAMBALES"],
-                "REGION IV-A": ["BATANGAS","CAVITE","LAGUNA","QUEZON","RIZAL"],
-                "MIMAROPA REGION": ["MARINDUQUE","OCCIDENTAL MINDORO","ORIENTAL MINDORO","PALAWAN","ROMBLON"],
-                "REGION V": ["ALBAY","CAMARINES NORTE","CAMARINES SUR","CATANDUANES","MASBATE","SORSOGON"],
-                "REGION VI": ["AKLAN","ANTIQUE","CAPIZ","GUIMARAS","ILOILO","NEGROS OCCIDENTAL"],
-                "REGION VII": ["BOHOL","CEBU","NEGROS ORIENTAL","SIQUIJOR"],
-                "REGION VIII": ["BILIRAN","EASTERN SAMAR","LEYTE","NORTHERN SAMAR","SAMAR","SOUTHERN LEYTE"],
-                "REGION IX": ["ZAMBOANGA DEL NORTE","ZAMBOANGA DEL SUR","ZAMBOANGA SIBUGAY"],
-                "REGION X": ["BUKIDNON","CAMIGUIN","LANAO DEL NORTE","MISAMIS OCCIDENTAL","MISAMIS ORIENTAL"],
-                "REGION XI": ["DAVAO DE ORO","DAVAO DEL NORTE","DAVAO DEL SUR","DAVAO OCCIDENTAL","DAVAO ORIENTAL"],
-                "REGION XII": ["COTABATO","SARANGANI","SOUTH COTABATO","SULTAN KUDARAT"],
-                "CARAGA REGION": ["AGUSAN DEL NORTE","AGUSAN DEL SUR","DINAGAT ISLANDS","SURIGAO DEL NORTE","SURIGAO DEL SUR"],
-                "NCR": ["MANILA","CALOOCAN","LAS PIÑAS","MAKATI","MALABON","MANDALUYONG","MARIKINA","MUNTINLUPA","NAVOTAS","PARAÑAQUE","PASAY","PASIG","QUEZON CITY","SAN JUAN","TAGUIG","VALENZUELA"],
-                "CAR": ["ABRA","APAYAO","BENGUET","IFUGAO","KALINGA","MOUNTAIN PROVINCE"],
-                "BARMM": ["BASILAN","LANAO DEL SUR","MAGUINDANAO","SULU","TAWI-TAWI"]
-            };
-
-            $(document).ready(function() {
-                // get the selected region
-                var region = $('#ClinicSide_addressRegion').val();
-                // get the corresponding provinces from the provinces object
-                var selectedProvinces = provinces[region];
-                // update the list of provinces in the dropdown
-                var $provincesDropdown = $('#ClinicSide_addressProvince');
-                $provincesDropdown.empty();
-                $.each(selectedProvinces, function(i, province) {
-                    $provincesDropdown.append($('<option>').text(province).attr('value', province));
-                });
-            
-
-                // when the region selection changes, update the list of provinces
-                $('#ClinicSide_addressRegion').on('change', function() {
-                    var region = $(this).val();
-                    var selectedProvinces = provinces[region];
-                    var $provincesDropdown = $('#ClinicSide_addressProvince');
-                    $provincesDropdown.empty();
-                    $.each(selectedProvinces, function(i, province) {
-                        $provincesDropdown.append($('<option></option>').attr('value', province).text(province));
-                    });
-                    // update the selected province if it's still in the list of available provinces
-                    var selectedProvince = $provincesDropdown.val();
-                        if ($.inArray(selectedProvince, selectedProvinces) === -1) {
-                            $provincesDropdown.val(selectedProvinces[0]);
-                        }
-                });
-            });
-        </script>
-        <div class="col-md-2">
-            <label for="ClinicSide_addressCityMunicipality" class="form-label h6">City/Municipality</label>
-            <input type="text" class="form-control" id="ClinicSide_addressCityMunicipality" name="ClinicSide_addressCityMunicipality" value="{{  }}" readonly>
-        </div>
-        <div class="col-md-3">
-            <label for="ClinicSide_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village</label>
-            <input type="text" class="form-control" id="ClinicSide_addressBrgySubdVillage" name="ClinicSide_addressBrgySubdVillage" value="{{  }}" readonly>
-        
-        </div>
-        <div class="col-md-3">
-            <label for="ClinicSide_addressHouseNoStreet" class="form-label h6">House No./Street Name</label>
-            <input type="text" class="form-control" id="ClinicSide_addressHouseNoStreet" name="ClinicSide_addressHouseNoStreet" value="{{  }}" readonly>
-        </div>
-
-
+        <div class="col-md-12">
+            <label for="MR_address" class="form-label h6">Home Address</label>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->region }}, {{ $patient->medicalRecord->province }}, {{ $patient->medicalRecord->cityMunicipality }}, {{ $patient->medicalRecord->barangaySubdVillage }}, {{ $patient->medicalRecord->houseNumberStName }}" readonly>
+            </div>
         <div class="col-md-6">
             <label for="MR_fatherName" class="form-label h6">Father's Name</label>
             <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherName" name="MR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
@@ -364,19 +426,17 @@
             <label for="MR_motherOccupation" class="form-label h6">Mother's Occupation</label>
             <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOccupation" name="MR_motherOccupation" value="{{ $patient->medicalRecord->motherOccupation }}" readonly>
             </div>
-
         <div class="col-md-6">
             <label for="MR_fatherOffice" class="form-label h6">Office Address of Father</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->fatherOfficeAddress) }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ htmlspecialchars_decode( $patient->medicalRecord->f_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_houseNumberStName) }}" readonly>
             </div>
-            
         <div class="col-md-6">
             <label for="MR_motherOffice" class="form-label h6">Office Address of Mother</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->motherOfficeAddress) }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ htmlspecialchars_decode( $patient->medicalRecord->m_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_houseNumberStName) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardian" name="MR_guardianName" value="{{ $patient->medicalRecord->guardianName }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardian" name="MR_guardianName" value="{{ $patient->medicalRecord->m_guardianName }}" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_parentGuardianContactNumber" class="form-label h6">Parent's/Guardian's Contact No.</label>
@@ -384,7 +444,7 @@
             </div>
         <div class="col-md-6">
             <label for="MR_guardianAddress" class="form-label h6">Guardian's Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardianAddress" name="MR_guardianAddress" value="{{ $patient->medicalRecord->guardianAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_guardianAddress" name="MR_guardianAddress" value="@if($patient->medicalRecord->g_region) {{ htmlspecialchars_decode($patient->medicalRecord->g_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->g_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->g_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->g_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->g_houseNumberStName) }} @endif" readonly>
         </div>
         <div class="col-md-6">
             <label for="MR_studentContactNumber" class="form-label h6">Student's Contact No.</label>
@@ -411,10 +471,9 @@
             <label for="MR_emergencyContactNumber" class="form-label h6">Contact Number</label>
             <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactNumber" value="0{{ $patient->medicalRecord->emergencyContactNumber }}" name="MR_emergencyContactNumber" readonly>
         </div>
-
         <div class="col-md-12">
             <label for="MR_emergencyContactAddress" class="form-label h6">Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactAddress" value="{{ $patient->medicalRecord->emergencyContactAddress }}" name="MR_emergencyContactAddress" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_emergencyContactAddress" value="{{ htmlspecialchars_decode( $patient->medicalRecord->ec_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->ec_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->ec_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->ec_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->ec_houseNumberStName) }}" name="MR_emergencyContactAddress" readonly>
         </div>
         
         
@@ -423,7 +482,17 @@
                 <!-- LINE BREAK -->
             </header>
         </section>
+
         
+        <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 600px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
 
         <h5>Please click the box if one of the following is applicable to you</h5>
 
@@ -936,6 +1005,15 @@
                     </div><!-- END OF OTHERS ROW DIV -->
             </div>
         </div>
+        <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 300px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
     <!-- ATTACHMENTS -->
     <div class="mx-auto row row-cols-lg-1 mt-2">
         <div class="col-md-12 p-1 border border-dark">
@@ -950,6 +1028,15 @@
                             </div>
                         </a>
                     </div>
+                    <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 50px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">CBC Results</label>
                             <a href="{{ asset('storage/'.$patient->medicalRecord->CBCResults) }}" data-lightbox="CBC Results" data-title="CBC Results">
@@ -958,6 +1045,15 @@
                                 </div>
                             </a>
                       </div>
+                      <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 380px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Hepatitis B Screening</label>
                         <a href="{{ asset('storage/'.$patient->medicalRecord->hepaBscreening) }}" data-lightbox="Hepatitis B Screening" data-title="Hepatitis B Screening">
@@ -966,6 +1062,15 @@
                             </div>
                         </a>
                     </div> 
+                    <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 50px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
                     <div class="mb-3 col-3 d-flex flex-column justify-content-center align-items-center">
                         <label for="MR_parentGuardianSignature" class="form-label fw-bold">Blood Type</label>
                         <a href="{{ asset('storage/'.$patient->medicalRecord->bloodType) }}" data-lightbox="Blood Type" data-title="Blood Type">
@@ -1005,6 +1110,16 @@
                 <!-- LINE BREAK -->
             </header>
         </section>
+        <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 270px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
+        
         
         <p class="text-center fw-bold pt-1" style="user-select:none;">
             ---------- TO BE ACCOMPLISHED BY THE MEDICAL PERSONNEL ----------
@@ -1211,7 +1326,7 @@
                               Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_GenAppearance" id="PE_GenAppearance_others" value="2" {{ (old('PE_GenAppearance') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->generalAppearance =='2') ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : '' }}>
-                            <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_GenAppearance') is-invalid @enderror" id="PE_GenAppearanceDetails" name="PE_GenAppearanceDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->generalAppearanceDetails ? $patient->medicalRecordAdmin->generalAppearanceDetails : old('PE_GenAppearanceDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text" oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_GenAppearance') is-invalid @enderror" id="PE_GenAppearanceDetails" name="PE_GenAppearanceDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->generalAppearanceDetails ? $patient->medicalRecordAdmin->generalAppearanceDetails : old('PE_GenAppearanceDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                           </div>
                           <span class="text-danger"> 
                             @error('PE_GenAppearance') 
@@ -1236,7 +1351,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_HEENT" id="PE_HEENT_others" value="2" {{ (old('PE_HEENT') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->HEENT == 2) ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_HEENT') is-invalid @enderror" id="PE_HEENTDetails" name="PE_HEENTDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->HEENTDetails ? $patient->medicalRecordAdmin->HEENTDetails : old('PE_HEENTDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_HEENT') is-invalid @enderror" id="PE_HEENTDetails" name="PE_HEENTDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->HEENTDetails ? $patient->medicalRecordAdmin->HEENTDetails : old('PE_HEENTDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_HEENT') 
@@ -1261,7 +1376,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_ChestLungs" id="PE_ChestLungsothers" value="2" {{ (old('PE_ChestLungs') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestLungs == 2) ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_ChestLungs') is-invalid @enderror" id="PE_ChestLungsDetails" name="PE_ChestLungsDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestLungsDetails ? $patient->medicalRecordAdmin->chestLungsDetails : old('PE_ChestLungsDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_ChestLungs') is-invalid @enderror" id="PE_ChestLungsDetails" name="PE_ChestLungsDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->chestLungsDetails ? $patient->medicalRecordAdmin->chestLungsDetails : old('PE_ChestLungsDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_ChestLungs') 
@@ -1286,7 +1401,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_Cardio" id="PE_Cardioothers" value="2" {{ (old('PE_Cardio') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardio == 2)  ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Cardio') is-invalid @enderror" id="PE_CardioDetails" name="PE_CardioDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardioDetails ? $patient->medicalRecordAdmin->cardioDetails : old('PE_CardioDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Cardio') is-invalid @enderror" id="PE_CardioDetails" name="PE_CardioDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->cardioDetails ? $patient->medicalRecordAdmin->cardioDetails : old('PE_CardioDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_Cardio') 
@@ -1311,7 +1426,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_Abdomen" id="PE_Abdomenothers" value="2" {{ (old('PE_Abdomen') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomen == 2) ? 'checked ' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Abdomen') is-invalid @enderror" id="PE_AbdomenDetails" name="PE_AbdomenDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomenDetails ? $patient->medicalRecordAdmin->abdomenDetails : old('PE_AbdomenDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Abdomen') is-invalid @enderror" id="PE_AbdomenDetails" name="PE_AbdomenDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->abdomenDetails ? $patient->medicalRecordAdmin->abdomenDetails : old('PE_AbdomenDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_Abdomen') 
@@ -1336,7 +1451,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_Genito" id="PE_Genitoothers" value="2" {{ (old('PE_Genito') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genito == 2) ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Genito') is-invalid @enderror" id="PE_GenitoDetails" name="PE_GenitoDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genitoDetails ? $patient->medicalRecordAdmin->genitoDetails : old('PE_GenitoDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Genito') is-invalid @enderror" id="PE_GenitoDetails" name="PE_GenitoDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->genitoDetails ? $patient->medicalRecordAdmin->genitoDetails : old('PE_GenitoDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_Genito') 
@@ -1361,7 +1476,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_Musculoskeletal" id="PE_Musculoskeletalothers" value="2" {{ (old('PE_Musculoskeletal') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletal == '2') ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Musculoskeletal') is-invalid @enderror" id="PE_MusculoskeletalDetails" name="PE_MusculoskeletalDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletalDetails ? $patient->medicalRecordAdmin->musculoskeletalDetails : old('PE_MusculoskeletalDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_Musculoskeletal') is-invalid @enderror" id="PE_MusculoskeletalDetails" name="PE_MusculoskeletalDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->musculoskeletalDetails ? $patient->medicalRecordAdmin->musculoskeletalDetails : old('PE_MusculoskeletalDetails') }}" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_Musculoskeletal') 
@@ -1386,7 +1501,7 @@
                                 Other findings
                             </label>
                             <input class="form-check-input" type="radio" name="PE_NervousSystem" id="PE_NervousSystemothers" value="2" {{ (old('PE_NervousSystem') == '2') || ($patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystem == '2') ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled ' : '' }}>
-                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_NervousSystem') is-invalid @enderror" id="PE_NervousSystemDetails" name="PE_NervousSystemDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystemDetails ? $patient->medicalRecordAdmin->nervousSystemDetails : old('PE_NervousSystemDetails') }}" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystemDetails ? 'readonly' : '' }}>
+                            <input type="text"  oninput="this.value = this.value.toUpperCase()" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('PE_NervousSystem') is-invalid @enderror" id="PE_NervousSystemDetails" name="PE_NervousSystemDetails" size="90" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystemDetails ? $patient->medicalRecordAdmin->nervousSystemDetails : old('PE_NervousSystemDetails') }}" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->nervousSystemDetails ? 'readonly' : 'disabled' }}>
                         </div>
                         <span class="text-danger"> 
                             @error('PE_NervousSystem') 
@@ -1499,19 +1614,19 @@
                     <h5 class="pl-6">FITNESS CERTIFICATION<span class="text-danger">*</span></h5>
                     <div class="d-flex justify-content-evenly mt-3">
                         <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
-                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" value="fit" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'fit' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
+                            <input class="form-check-input ms-2" name="fitness" type="radio" id="fitness_Fit" onclick="disableReasonInput();" value="fit" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'fit' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
                             <label class="form-check-label ms-1 fw-bold" for="fitness_Fit">
                                 Fit for Enrollment
                             </label>
                         </div>
                         <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
-                            <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" value="notFit" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'notFit' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_notFit" onclick="enableReasonInput();" value="notFit" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'notFit' ? 'checked' : '' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
                             <label class="form-check-label fw-bold" for="fitness_notFit">
                                 Not Fit for Enrollment
                             </label>
                         </div>
                         <div class="col-xl-2 col-lg-6 col-sm-12 form-check">
-                            <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" value="pending" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'pending' ? 'checked' : ' ' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
+                            <input class="form-check-input" name="fitness" type="radio" id="fitness_Pending" onclick="enableReasonInput();" value="pending" {{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->fitness == 'pending' ? 'checked' : ' ' }} {{ $patient->medicalRecordAdmin ? 'disabled' : 'required' }}>
                             <label class="form-check-label fw-bold" for="fitness_Pending">
                                 Pending
                             </label>
@@ -1520,7 +1635,7 @@
                     <div class="row mt-3">
                         <div class="col-12 d-flex">
                             <label for="fit_Reason" class="form-label me-1">Reason:</label>
-                            <input type="text" id="fit_Reason" name="fit_reason" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('fit_reason') is-invalid @enderror" placeholder="For 'not fit' and 'pending'" style="margin-top: -6px;" {{ $patient->medicalRecordAdmin ? 'readonly' : 'required' }} value={{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->notfitPendingReason ? $patient->medicalRecordAdmin->notfitPendingReason : old("fit_reason") }}> 
+                            <input type="text" id="fit_Reason" name="fit_reason" class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('fit_reason') is-invalid @enderror" placeholder="For 'not fit' and 'pending'" style="margin-top: -6px;" {{ $patient->medicalRecordAdmin ? 'readonly' : 'disabled' }} value={{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->notfitPendingReason ? $patient->medicalRecordAdmin->notfitPendingReason : old("fit_reason") }}> 
                         </div>
                         <div class="invalid-feedback">
                             This field is required. Please fill up this field.
@@ -1570,7 +1685,7 @@
                 <!-- Recommendations -->
                 <div class="pt-3 border border-top-0 border-dark pb-2">
                     <h5>Impression/Recommendations</h5>
-                    <textarea class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }}" id="MRA_recommendations" name="MRA_recommendations" style="resize: none; overflow: hidden;" {{ $patient->medicalRecordAdmin ? 'readonly' : '' }}>{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->impression ? $patient->medicalRecordAdmin->impression : old('MRA_recommendations')  }}</textarea>
+                    <textarea class="{{ $patient->medicalRecordAdmin ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }}" id="MRA_recommendations" name="MRA_recommendations" style="resize: none; overflow: hidden;" {{ $patient->medicalRecordAdmin ? 'readonly' : 'required' }}>{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->impression ? $patient->medicalRecordAdmin->impression : old('MRA_recommendations')  }}</textarea>
                         <script>
                             var textarea = document.getElementById('MRA_recommendations');
 
@@ -1587,6 +1702,15 @@
                 <!-- LINE BREAK -->
             </header>
         </section>
+        <!-- PRINTABLE -->
+        <div class="row d-flex d-print-inline-block d-none d-print-block" style="margin-bottom: 200px;">
+            <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
+                <header class="text-center">
+                    <!-- LINE BREAK -->
+                </header>
+            </section>
+        </div>
+        <!-- END OF PRINTABLE -->
         
         <p class="text-center fw-bold pt-1" style="user-select:none;"> FOR BICOL UNIVERSITY HEALTH SERVICE PHYSICIAN'S VALIDATION ONLY </p>
 
@@ -1635,7 +1759,7 @@
                                 changeYear: true,
                                 dateFormat: 'yy MM dd',
                                 showButtonPanel: true,
-                                yearRange: "1900:c",
+                                yearRange: "2023:c",
                                 showAnim: 'slideDown',
                             });
                         });
@@ -1647,10 +1771,21 @@
      
     <div class="row no-gutters justify-content-end pt-3 position-relative">
         <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-            <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit">Submit</button>
-        </div>
+            <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit" style="{{ $patient->medicalRecordAdmin ? 'display:none;' : '' }}">Submit</button>
+
+        </div
     </div>
     <script>
+        function printForm() {
+            var formContainer = document.getElementById("MR_form");
+            var printWindow = window.open('', 'PrintWindow', 'height=400,width=600');
+            printWindow.document.write('<html><head><title>Printable Form</title></head><body>');
+            printWindow.document.write(formContainer.innerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
         (() => {
             'use strict'
 

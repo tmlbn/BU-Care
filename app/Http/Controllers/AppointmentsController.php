@@ -18,6 +18,7 @@ use App\Models\PastIllness;
 use App\Models\PersonalSocialHistory;
 use App\Models\PresentIllness;
 use App\Models\MedicalPatientRecord;
+use App\Models\MedicalRecord_Admin;
 
 use Carbon\Carbon;
 use Session;
@@ -52,7 +53,7 @@ class AppointmentsController extends Controller
         }
         $userID = $user->id;
         // Get current user's appointment entries
-        $myAppointments = Appointment::where('status', '=', 'ACTIVE')
+        $myAppointments = Appointment::where('status', '=', 'SCHEDULED')
                                     ->where(function($query) use ($userID, $user_type){
                                         $query->where($user_type, '=', $userID);
                                     })
@@ -636,6 +637,7 @@ class AppointmentsController extends Controller
 
     public function adminShowMedRecordFromAppointment($patientType, $patientID, $ticketID){
         $appointmentEntry = Appointment::where('ticket_id', $ticketID)->first();
+        $fromAppointment = 1;
         if($appointmentEntry->status == 'SUCCESS'){
             return redirect()->back()->with('warning', 'Appointment #'.$ticketID.' is already done!');
         }
@@ -647,12 +649,12 @@ class AppointmentsController extends Controller
                     return view('admin.medicalPatientRecord')
                     ->with('medicalPatientRecords', $medicalPatientRecords)
                     ->with('patient', $user)
-                    ->with('fromAppointment', 1)
+                    ->with('fromAppointment', $fromAppointment)
                     ->with('ticketID', $ticketID);
                 }
                 return view('admin.ClinicSideMedicalRecordForm')
                 ->with('patient', $user)
-                ->with('fromAppointment', 1)
+                ->with('fromAppointment', $fromAppointment)
                 ->with('ticketID', $ticketID);
             }
         }
@@ -664,12 +666,12 @@ class AppointmentsController extends Controller
                     return view('admin.medicalPatientRecord')
                     ->with('medicalPatientRecords', $medicalPatientRecords)
                     ->with('patient', $user)
-                    ->with('fromAppointment', 1)
+                    ->with('fromAppointment', $fromAppointment)
                     ->with('ticketID', $ticketID);
                 }
                 return view('admin.ClinicSideMedicalRecordFormPersonnel')
                     ->with('patient', $user)
-                    ->with('fromAppointment', 1)
+                    ->with('fromAppointment', $fromAppointment)
                     ->with('ticketID', $ticketID);
             }
         }
@@ -677,5 +679,24 @@ class AppointmentsController extends Controller
             // handle error case when $patientType is neither 'PATIENT-STUDENT' nor 'PATIENT-PERSONNEL'
             return redirect()->route('admin.appointments.show')->with('fail', 'Invalid patient type. Please contact a BU-Care admin.');
         }
+    }
+
+    public function appointmentMedCertRelease(Request $request){
+        
+        $patientID = $request->input('patientID');
+        $MRA_id = $request->input('MRA_id');
+        $ticketID = $request->input('ticketID');
+        
+        $patient = UserStudent::where('id', $patientID)->first();
+        $MRA_of_patient = MedicalRecord_Admin::where('MRA_id', $MRA_id)->first();
+        $appointment_of_patient = Appointment::where('ticket_id', $ticketID)->first();
+
+        $MRA_of_patient->released = intval('1');
+        $appointment_of_patient->released = intval('1');
+
+        $MRA_of_patient->save();
+        $appointment_of_patient->save();
+
+        return back()->with('success', 'Medical Certificate released.');
     }
 }   

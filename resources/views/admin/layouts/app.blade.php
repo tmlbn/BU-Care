@@ -45,6 +45,13 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design.css') }}">
     <style>
+        @media print {
+            html {
+                font-size: 12px !important;
+                width: 8.5in; /* or 210mm */
+                margin: 0 auto;
+            }
+        }
         html{
             margin: 0;
             padding: 0;
@@ -231,7 +238,7 @@
 </head>
 
 <body>
-    <div class="main-navbar shadow-sm">
+    <div class="main-navbar shadow-sm d-print-none">
         <div class="top-navbar">
             <div class="container-fluid">
                 <div class="row">
@@ -242,7 +249,7 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-light d-print-none">
         <div class="container-fluid">
             <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="{{ route('home') }}">
                 <img src="{{ asset('media/BU-Carelogo1.png') }}" alt="BU-Care Logo" style="height:40px;">

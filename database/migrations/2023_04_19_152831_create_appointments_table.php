@@ -42,6 +42,14 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        Schema::table('medicalrecords_admin', function (Blueprint $table){
+            $table->foreign('ticketID')
+                ->references('ticket_id')
+                ->on('appointments')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
     }
 
     /**

@@ -34,6 +34,7 @@ class MedicalRecordsAdminController extends Controller
     try{
         /* VALIDATE USER INPUT */
         $validator = Validator::make($request->all(), [
+            'ticketID' => 'nullable|string',
             'VS_bp_systolic' => 'required|integer',
             'VS_bp_diastolic' => 'required|integer',
             'VS_pulseRate' => 'required|integer',
@@ -101,6 +102,7 @@ class MedicalRecordsAdminController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        $ticketID = $request->input('ticketID', null);
 
         /* IF VALIDATION IS GOOD, GET USER AND SANITIZE USER-INPUT THEN SAVE TO DATABASE */
         
@@ -147,6 +149,9 @@ class MedicalRecordsAdminController extends Controller
                 $formatted_date = $date->format('Y-m-d');
 
             $medRecordAdmin->dateOfExam = $formatted_date;
+            $medRecordAdmin->ticketID = $ticketID;
+            $medRecordAdmin->filled = intval('1');
+
         $res = $medRecordAdmin->save();
 
             //IF FALSE
@@ -159,27 +164,9 @@ class MedicalRecordsAdminController extends Controller
             $patient->hasValidatedRecord = intval('1');
             $patient->MRA_id =  $medRecordAdmin->MRA_id;
             $patient->save();
-            if($request->input('fromAppointment') == 1){
-                try{
-                    $ticketID = $request->input('ticketID');
-                    $userAppointment = Appointment::where('ticket_id', $ticketID)->first();
-                    $userAppointment->status = 'SUCCESS';
-                    $userAppointment->save();
-                    return redirect('/')
-                            ->with('MedicalRecordSuccess', 'Medical record saved successfully')
-                            ->with('userTicketID', $ticketID);
-                }
-                catch (\Throwable $e) {
-                // handle $e
-                    return redirect('/')->with('fail', 'An error occured. Please Try again later.');
-                }
-            }
-            elseif($request->input('fromAppointment') == 0){
-                return redirect('/')
-                        ->with('MedicalRecordSuccess', 'Medical record saved successfully')
-                        ->with('patientID', $patient->id);
-            }
-        
+            return redirect('/')
+                    ->with('MedicalRecordSuccess', 'Medical record saved successfully')
+                    ->with('patientID', $patient->id);
         } 
         catch (QueryException $ex) {
             // Handle the SQL error here
@@ -195,6 +182,7 @@ class MedicalRecordsAdminController extends Controller
     public function medicalRecordsPersonnelAdmin(Request $request){
         try{
             $validator = Validator::make($request->all(), [
+                'ticketID' => 'nullable|string',
                 'VS_bp_systolic' => 'required|integer',
                 'VS_bp_diastolic' => 'required|integer',
                 'VS_pulseRate' => 'required|integer',
@@ -235,7 +223,8 @@ class MedicalRecordsAdminController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
-            
+            $request->input('ticketID');
+
             // Get the admin/doctor type user
             $user = Auth::guard('admin')->user();
             // Create new instance of MedicalRecordsPersonnel_Admin and save
@@ -331,5 +320,22 @@ class MedicalRecordsAdminController extends Controller
         $userMRA = MedicalRecord_Admin::where('student_id', $patientID->id)->first();
         $userMRA->released = intval('1');
         $userMRA->save();
+
+        return redirect('/')->with('success', 'Appointment done and Medical Certificate Released.');
+    }
+
+    public function medCertRelease(Request $request){
+        
+        $patientID = $request->input('patientID');
+        $MRA_id = $request->input('MRA_id');
+        
+        $patient = UserStudent::where('id', $patientID)->first();
+        $MRA_of_patient = MedicalRecord_Admin::where('MRA_id', $MRA_id)->first();
+
+        $MRA_of_patient->released = intval('1');
+
+        $MRA_of_patient->save();
+
+        return back()->with('success', 'Medical Certificate released.');
     }
 }

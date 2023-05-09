@@ -90,18 +90,21 @@
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
             <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
             <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
-  
+    
             <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio2" autocomplete="off" onclick="redirectToPersonnelMedFormList()" {{ Route::currentRouteName() === 'admin.personnelMedFormList.show' || Str::contains(url()->current(), '/admin/personnelMedFormList/') ? 'checked' : '' }}>
             <label class="btn btn-outline-primary" for="btnradio2">PERSONNEL HEALTH RECORDS</label>
         
-            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' ? 'checked' : '' }}>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio3" autocomplete="off" onclick="redirectToMedPatientRecords()" {{ Route::currentRouteName() === 'admin.medPatientRecords.show' || Str::contains(url()->current(), '/admin/medical-patient-records-list/') ? 'checked' : '' }}>
             <label class="btn btn-outline-primary" for="btnradio3">MEDICAL PATIENT RECORDS</label>
           
-            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' ? 'checked' : '' }}>
-            <label class="btn btn-outline-primary" for="btnradio4">DAILY CONSULTATIONS</label>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio4" autocomplete="off" onclick="redirectToAppointmentsRecords()" {{ Route::currentRouteName() === 'admin.appointmentsHistory.show' || Str::contains(url()->current(), '/admin/appointments-history') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio4">APPOINTMENTS</label>
+            
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio5" autocomplete="off" onclick="redirectToDailyConsultations()" {{ Route::currentRouteName() === 'admin.medPatientRecordList.show' || Str::contains(url()->current(), '/admin/medical-patient-records/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio5">DAILY CONSULTATIONS</label>
           
-            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio5" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' ? 'checked' : '' }}>
-            <label class="btn btn-outline-primary" for="btnradio5">REPORTS</label>
+            <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio6" autocomplete="off" onclick="redirectToReports()" {{ Route::currentRouteName() === 'admin.reports' || Str::contains(url()->current(), '/admin/reports/') ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="btnradio6">REPORTS</label>
           </div>
       </div>
     
@@ -109,19 +112,23 @@
       function redirectToStudentMedFormList() {
           window.location.href = "{{ route('admin.patientMedFormList.show') }}";
       }
-
+    
       function redirectToPersonnelMedFormList() {
           window.location.href = "{{ route('admin.personnelMedFormList.show') }}";
       }
-
+    
       function redirectToMedPatientRecords() {
           window.location.href = "{{ route('admin.medPatientRecords.show') }}";
+      }
+
+      function redirectToAppointmentsRecords() {
+          window.location.href = "{{ route('admin.appointmentsHistory.show') }}";
       }
       
       function redirectToDailyConsultations() {
           window.location.href = "{{ route('admin.medPatientRecordList.show') }}";
       }
-
+    
       function redirectToReports() {
           window.location.href = "{{ route('admin.reports') }}";
       }
