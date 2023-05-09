@@ -257,7 +257,7 @@
 
         <div class="row no-gutters justify-content-end pt-3 position-relative">
             <div class="col d-flex justify-content-end" style="margin-right:-1  %;">
-                <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#saveModal" onclick="confirmTable();">
+                <button type="button" class="btn btn-lg btn-primary btn-login fw-bold mb-2 d-print-none" data-bs-toggle="modal" data-bs-target="#saveModal" onclick="confirmTable();">
                     Submit
                 </button>
             </div>
