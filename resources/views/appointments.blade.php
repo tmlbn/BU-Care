@@ -793,13 +793,13 @@
                                                 <div class="form-group col-lg-6 col-md-12">
                                                     <select id="servicesAvail" name="servicesAvail" class="form-select" required>
                                                         <option value="" selected disabled>SELECT</option>
-                                                        <option value="medcert">Medical Certificate</option>
-                                                        <option value="opd">OPD Consultant</option>
-                                                        <option value="others">Others</option>
+                                                        <option value="Medical Certificate">Medical Certificate</option>
+                                                        <option value="OPD Consultant">OPD Consultant</option>
+                                                        <option value="Others">Others</option>
                                                         @if(Auth::guard('employee')->check())
-                                                        <option value="reinstatement">Reinstatement</option>
-                                                        <option value="sickleave">Sick Leave</option>
-                                                        <option value="newlyhired">Newly Hired</option>
+                                                        <option value="Reinstatement">Reinstatement</option>
+                                                        <option value="Sick Leave">Sick Leave</option>
+                                                        <option value="Newly Hired">Newly Hired</option>
                                                         @endif
                                                     </select>
                                                 </div><!-- END OF DIV -->

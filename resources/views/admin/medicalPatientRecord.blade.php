@@ -93,27 +93,27 @@
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_age" name="MPR_age" value="{{ $patient->medicalRecord->age }}" readonly>
             </div>
                 <span class="h5 mt-4" style="margin-bottom: -1%;">Parents</span>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="MPR_fatherName" class="form-label">Father's Name</label>
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherName" name="MPR_fatherName" value="{{ $patient->medicalRecord->fatherName }}" readonly>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-7">
                 <label for="MPR_fatherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->fatherOfficeAddress) }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherOffice" name="MPR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->f_region) }} {{ htmlspecialchars_decode($patient->medicalRecord->f_province) }} {{ htmlspecialchars_decode($patient->medicalRecord->f_cityMunicipality) }} {{ htmlspecialchars_decode($patient->medicalRecord->f_barangaySubdVillage) }} {{ htmlspecialchars_decode($patient->medicalRecord->f_houseNumberStName) }}" readonly>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <label for="MPR_fatherContact" class="form-label">Contact Number</label>
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_fatherContact" name="MPR_fatherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="MPR_motherName" class="form-label">Mother's Name</label>
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherName" name="MPR_motherName" value="{{ $patient->medicalRecord->motherName }}" readonly>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-7">
                 <label for="MPR_motherOffice" class="form-label">Office Address</label>
-                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->motherOfficeAddress) }}" readonly>
+                <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherOffice" name="MPR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->m_region) }} {{ htmlspecialchars_decode($patient->medicalRecord->m_province) }} {{ htmlspecialchars_decode($patient->medicalRecord->m_cityMunicipality) }} {{ htmlspecialchars_decode($patient->medicalRecord->m_barangaySubdVillage) }} {{ htmlspecialchars_decode($patient->medicalRecord->m_houseNumberStName) }}" readonly>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <label for="MPR_motherContact" class="form-label">Contact Number</label>
                 <input type="text" class="form-control-plaintext border-bottom border-dark border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MPR_motherContact" name="MPR_motherContact" value="0{{ $patient->medicalRecord->parentGuardianContactNumber }}" readonly>
             </div>

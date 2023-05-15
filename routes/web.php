@@ -132,7 +132,7 @@ Route::group(['middleware' => ['web', 'admin']], function(){
     Route::get('/filter-table', [MedicalRecordFormController::class, 'filterTable'])->name('filterTable');
     
     Route::get('/admin/medical-patient-records-list', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordsList'])->name('admin.medPatientRecords.show');
-    Route::get('/admin/medical-patient-records', [MedicalPatientRecordsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
+    Route::get('/admin/medical-patient-records', [AdminReportsController::class, 'showMedicalPatientRecordList'])->name('admin.medPatientRecordList.show');
     Route::post('admin/medical-patient-record', [MedicalPatientRecordsController::class, 'storeMedicalPatientRecord'])->name('admin.medicalPatientRecord.store');
     Route::get('/admin/medical-patient-record/{patientID}', [MedicalPatientRecordsController::class, 'showMedicalPatientRecord'])->name('admin.medicalPatientRecord.show');
     Route::get('/admin/medical-patient-record/{patientID}/edit', [MedicalPatientRecordsController::class, 'editMedicalPatientRecord'])->name('admin.medicalPatientRecord.edit');

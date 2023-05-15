@@ -84,7 +84,15 @@
     .bg-custom{
         background-color:#f0faff;
     }
-
+    .month-toggle{
+        color: #0275d8 !important;
+    }
+    .month-toggle.show{
+        color: white !important;
+    }
+    .month-toggle:hover{
+        color: white !important;
+    }
 </style>
 
 @csrf
@@ -169,44 +177,105 @@
             </header>
         </div>
     </div>
+    @php
+    if(isset($byMonth)){
+        if($byMonth == '1'){
+            $byMonth = 'JANUARY';
+        } elseif($byMonth == '2'){
+            $byMonth = 'FEBRUARY';
+        } elseif($byMonth == '3'){
+            $byMonth = 'MARCH';
+        } elseif($byMonth == '4'){
+            $byMonth = 'APRIL';
+        } elseif($byMonth == '5'){
+            $byMonth = 'MAY';
+        } elseif($byMonth == '6'){
+            $byMonth = 'JUNE';
+        } elseif($byMonth == '7'){
+            $byMonth = 'JULY';
+        } elseif($byMonth == '8'){
+            $byMonth = 'AUGUST';
+        } elseif($byMonth == '9'){
+            $byMonth = 'SEPTEMBER';
+        } elseif($byMonth == '10'){
+            $byMonth = 'OCTOBER';
+        } elseif($byMonth == '11'){
+            $byMonth = 'NOVEMBER';
+        } elseif($byMonth == '12'){
+            $byMonth = 'DECEMBER';
+        }
+    }
+    $monthNow = strtoupper(date('F'));
+                                
+    @endphp
 
     <!-- Search function -->
-        <form method="GET" action="{{ route('admin.patientMedFormList.show') }}" id="searchForm">
+            <form method="GET" action="{{ route('admin.medPatientRecordList.show') }}" id="searchForm">
                 <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2 d-print-none" style="margin-right: -3%;">
                     <div class="row align-items-center">
                         <div class="col-sm">
-                            <input type="text" class="form-control" id="search" name="search" value="{{ request()->input('search') }}" placeholder="Search...">
+                            <input type="text" class="form-control" id="search" name="search" value="{{ request()->input('search') }}" placeholder="Search by Name or ID">
                         </div>
                         <div class="col-sm">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </div>
-                    <div class="row justify-content-end mt-2">
-                        <div class="col-sm-2 ">
-                            <p class="fs-5 fw-light float-end pt-1">
-                                Filter by:
-                            </p>
-                        </div>
-                        <div class="col-sm-5">
-                            <select id="campusFilter" name="campusFilter" class="form-select">
-                                <option value="TODAY">Today</option>
-                                <option value="MOTNH" class="alternate">Month</option>
-                                <option value="YEAR">Year</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <form method="GET" action="{{ route('admin.medicalPatientRecord.filterDate') }}" id="filterByDate">
-                    <div class="row align-items-center">
-                        <div class="col-sm">
-                            <input type="text" class="form-control" id="date" name="date" onkeydown="return false;">
-                        </div>
-                        <div class="col-sm">
-                            <button type="submit" class="btn btn-primary">Filter</button>
-                        </div>
-                    </div>
                 </div>
-            </form>
+                <div class="row justify-content-between">
+                    <div class="col-sm-3 btn-group mb-3 d-print-non" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="timely" id="today" autocomplete="off" value="today">
+                        <label class="btn btn-outline-primary" for="today">Today</label>
+            
+                        <input type="radio" class="btn-check" name="timely" id="thisWeek" autocomplete="off" value="thisWeek">
+                        <label class="btn btn-outline-primary" for="thisWeek">This Week</label>
+
+                        <input type="radio" class="btn-check" name="timely" id="thisMonth" autocomplete="off" value="thisMonth">
+                        <label class="btn btn-outline-primary" for="thisMonth">This Month</label>
+                    </div>
+                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start">
+                        <button class="btn btn-outline-primary dropdown-toggle month-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ isset($byMonth) ? $byMonth : $monthNow }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JANUARY' || !isset($byMonth) && $monthNow == 'JANUARY' ? 'active' : '' }}" type="button" value="1" onclick="filterByMonth(this);">JANUARY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'FEBRUARY' || !isset($byMonth) && $monthNow == 'FEBRUARY' ? 'active' : '' }}" type="button" value="2" onclick="filterByMonth(this);">FEBRUARY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'MARCH' || !isset($byMonth) && $monthNow == 'MARCH' ? 'active' : '' }}" type="button" value="3" onclick="filterByMonth(this);">MARCH</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'APRIL' || !isset($byMonth) && $monthNow == 'APRIL' ? 'active' : '' }}" type="button" value="4" onclick="filterByMonth(this);">APRIL</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'MAY' || !isset($byMonth) && $monthNow == 'MAY' ? 'active' : '' }}" type="button" value="5" onclick="filterByMonth(this);">MAY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JUNE' || !isset($byMonth) && $monthNow == 'JUNE' ? 'active' : '' }}" type="button" value="6" onclick="filterByMonth(this);">JUNE</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JULY' || !isset($byMonth) && $monthNow == 'JULY' ? 'active' : '' }}" type="button" value="7" onclick="filterByMonth(this);">JULY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'AUGUST' || !isset($byMonth) && $monthNow == 'AUGUST' ? 'active' : '' }}" type="button" value="8" onclick="filterByMonth(this);">AUGUST</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'SEPTEMBER' || !isset($byMonth) && $monthNow == 'SEPTEMBER' ? 'active' : '' }}" type="button" value="9" onclick="filterByMonth(this);">SEPTEMBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'OCTOBER' || !isset($byMonth) && $monthNow == 'OCTOBER' ? 'active' : '' }}" type="button" value="10" onclick="filterByMonth(this);">OCTOBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'NOVEMBER' || !isset($byMonth) && $monthNow == 'NOVEMBER' ? 'active' : '' }}" type="button" value="11" onclick="filterByMonth(this);">NOVEMBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'DECEMBER' || !isset($byMonth) && $monthNow == 'DECEMBER' ? 'active' : '' }}" type="button" value="12" onclick="filterByMonth(this);">DECEMBER</button></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="month" id="month">
+                </form>
+            </div>
+                    <script>
+                        $(document).ready(function(){
+                            var filterBy = '<?php echo $filterBy ?>';
+                            var month = '<?php echo $byMonth ?>';
+                            console.log(filterBy);
+
+                            if(!month){
+                                $('input[name="timely"][value="' + filterBy + '"]').prop('checked', true);
+                            }
+                            $('input[name="timely"]').on('change', function(){
+                                $('#searchForm').submit();
+                            });
+
+                            $('select[name="status"]').on('change', function(){
+                                $('#searchForm').submit();
+                            });
+                        });
+                        function filterByMonth($this) {
+                                $('#month').val($this.value);
+                                $('#searchForm').submit();
+                            }
+                    </script>
                     <script>
                        $(document).ready(function() {
                             let today = new Date();
@@ -228,9 +297,12 @@
                                 defaultDate: formatted_today // Set the initial date value here
                             });
                         });
+
+                        $('#Date').on('click', function(event){
+                            event.preventDefault();
+                            $("#date").datepicker('show');
+                        });
                     </script>
-                    
-        
 
     <script>
         $searchQuery = '';
@@ -239,7 +311,7 @@
         }
     </script>
       
-        <table id="studentsList" name="studentsList" class="table table-striped table-bordered border-dark table-hover mt-3">       
+        <table id="studentsList" name="studentsList" class="table table-striped table-bordered border-dark table-hover mt-3 mx-auto">       
             <caption>Medical Patient Records</caption>       
             <thead>
                 <tr>

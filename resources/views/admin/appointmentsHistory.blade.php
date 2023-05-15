@@ -3,7 +3,7 @@
 @section('content')
 
 <style>
-     body{
+    body{
         background-image: url({{ asset('media/RegistrationBG.jpg') }});
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -81,11 +81,20 @@
     .bg-custom{
         background-color:#f0faff;
     }
+    .month-toggle{
+        color: #0275d8 !important;
+    }
+    .month-toggle.show{
+        color: white !important;
+    }
+    .month-toggle:hover{
+        color: white !important;
+    }
 </style>
 
 @csrf
 <!-- Header -->
-<div class="container-fluid bg-custom text-dark p-5">
+<div class="container-fluid bg-custom text-dark p-5" style="min-height:900px;">
     <div class="col-md-12 p-3 text-decoration-none d-print-none">    
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
             <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
@@ -163,29 +172,109 @@
                             </p>
                         </div>
                         <div class="col-lg-5">
-                            <select id="campusSelect" name="campusSelect" class="form-select fw-bold border-dark">
+                            <select id="status" name="status" class="form-select fw-bold border-dark">
                                 <option selected="selected" disabled="disabled" value="">STATUS</option>
-                                <option value="RELEASED">RELEASED</option>
-                                <option value="COMPLETED">COMPLETED</option>
-                                <option value="SCHEDULED">SCHEDULED</option>
-                                <option value="CANCELED-NOSHOW">CANCELED/NO-SHOW</option>
+                                <option value="ALL" {{ $status && $status == 'ALL' || (!$status) ? 'selected' : '' }}>ALL</option>
+                                <option value="RELEASED" {{ $status && $status == 'RELEASED' ? 'selected' : '' }}>RELEASED</option>
+                                <option value="COMPLETED" {{ $status && $status == 'COMPLETED' ? 'selected' : '' }}>COMPLETED BUT NOT RELEASED</option>
+                                <option value="SCHEDULED" id="scheduledStatus" {{ $status && $status == 'SCHEDULED' ? 'selected' : '' }}>SCHEDULED</option>
+                                <option value="CANCELLED or NO-SHOW" {{ $status && $status == 'CANCELLED or NO-SHOW' ? 'selected' : '' }}>CANCELLED or NO-SHOW</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="btn-group mb-3 d-print-none" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="timely" id="past" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="past">Past</label>
+                <div class="row justify-content-between">
+                    <div class="col-sm-3 btn-group mb-3 d-print-none" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="timely" id="today" autocomplete="off" value="today">
+                        <label class="btn btn-outline-primary" for="today">Today</label>
 
-                    <input type="radio" class="btn-check" name="timely" id="today" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="today">Today</label>
-
-                    <input type="radio" class="btn-check" name="timely" id="thisWeek" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="thisWeek">This Week</label>
-                    
-                    <input type="radio" class="btn-check" name="timely" id="thisMonth" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="thisMonth">This Month</label>
+                        <input type="radio" class="btn-check" name="timely" id="thisWeek" autocomplete="off" value="thisWeek">
+                        <label class="btn btn-outline-primary" for="thisWeek">This Week</label>
+                        
+                        <input type="radio" class="btn-check" name="timely" id="thisMonth" autocomplete="off" value="thisMonth">
+                        <label class="btn btn-outline-primary" for="thisMonth">This Month</label>
+                    </div>
+                    @php
+                       if(isset($byMonth)){
+                            if($byMonth == '1'){
+                                $byMonth = 'JANUARY';
+                            } elseif($byMonth == '2'){
+                                $byMonth = 'FEBRUARY';
+                            } elseif($byMonth == '3'){
+                                $byMonth = 'MARCH';
+                            } elseif($byMonth == '4'){
+                                $byMonth = 'APRIL';
+                            } elseif($byMonth == '5'){
+                                $byMonth = 'MAY';
+                            } elseif($byMonth == '6'){
+                                $byMonth = 'JUNE';
+                            } elseif($byMonth == '7'){
+                                $byMonth = 'JULY';
+                            } elseif($byMonth == '8'){
+                                $byMonth = 'AUGUST';
+                            } elseif($byMonth == '9'){
+                                $byMonth = 'SEPTEMBER';
+                            } elseif($byMonth == '10'){
+                                $byMonth = 'OCTOBER';
+                            } elseif($byMonth == '11'){
+                                $byMonth = 'NOVEMBER';
+                            } elseif($byMonth == '12'){
+                                $byMonth = 'DECEMBER';
+                            }
+                        }
+                        $monthNow = strtoupper(date('F'));
+                        
+                    @endphp
+                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start">
+                        <button class="btn btn-outline-primary dropdown-toggle month-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          {{ isset($byMonth) ? $byMonth : $monthNow }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JANUARY' || !isset($byMonth) && $monthNow == 'JANUARY' ? 'active' : '' }}" type="button" value="1" onclick="filterByMonth(this);">JANUARY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'FEBRUARY' || !isset($byMonth) && $monthNow == 'FEBRUARY' ? 'active' : '' }}" type="button" value="2" onclick="filterByMonth(this);">FEBRUARY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'MARCH' || !isset($byMonth) && $monthNow == 'MARCH' ? 'active' : '' }}" type="button" value="3" onclick="filterByMonth(this);">MARCH</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'APRIL' || !isset($byMonth) && $monthNow == 'APRIL' ? 'active' : '' }}" type="button" value="4" onclick="filterByMonth(this);">APRIL</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'MAY' || !isset($byMonth) && $monthNow == 'MAY' ? 'active' : '' }}" type="button" value="5" onclick="filterByMonth(this);">MAY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JUNE' || !isset($byMonth) && $monthNow == 'JUNE' ? 'active' : '' }}" type="button" value="6" onclick="filterByMonth(this);">JUNE</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'JULY' || !isset($byMonth) && $monthNow == 'JULY' ? 'active' : '' }}" type="button" value="7" onclick="filterByMonth(this);">JULY</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'AUGUST' || !isset($byMonth) && $monthNow == 'AUGUST' ? 'active' : '' }}" type="button" value="8" onclick="filterByMonth(this);">AUGUST</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'SEPTEMBER' || !isset($byMonth) && $monthNow == 'SEPTEMBER' ? 'active' : '' }}" type="button" value="9" onclick="filterByMonth(this);">SEPTEMBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'OCTOBER' || !isset($byMonth) && $monthNow == 'OCTOBER' ? 'active' : '' }}" type="button" value="10" onclick="filterByMonth(this);">OCTOBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'NOVEMBER' || !isset($byMonth) && $monthNow == 'NOVEMBER' ? 'active' : '' }}" type="button" value="11" onclick="filterByMonth(this);">NOVEMBER</button></li>
+                            <li><button class="dropdown-item {{ isset($byMonth) && $byMonth == 'DECEMBER' || !isset($byMonth) && $monthNow == 'DECEMBER' ? 'active' : '' }}" type="button" value="12" onclick="filterByMonth(this);">DECEMBER</button></li>
+                        </ul>
+                    </div>
+                      <input type="hidden" name="month" id="month">
                 </div>
+                <script>
+                    $(document).ready(function(){
+                        var filterBy = '<?php echo $filterBy ?>';
+                        var status = '<?php echo $status ?>';
+                        var month = '<?php echo $byMonth ?>';
+
+                        if(!month){
+                            $('input[name="timely"][value="' + filterBy + '"]').prop('checked', true);
+                        }
+                        $('input[name="timely"]').on('change', function(){
+                            $('#searchForm').submit();
+                        });
+
+                        $('select[name="status"]').on('change', function(){
+                            $('#searchForm').submit();
+                        });
+
+                        if($('#past').is(':checked')){
+                            $('#scheduledStatus').attr('disabled', true);
+                        }
+                        else{
+                            $('#scheduledStatus').attr('disabled', false);
+                        }
+                    });
+                    function filterByMonth($this) {
+                            $('#month').val($this.value);
+                            $('#searchForm').submit();
+                        }
+                </script>
         </form>
         <div class="table-responsive" id="studentsList">
             <table class="table table-bordered table-sm mt-3">
@@ -239,7 +328,7 @@
                             @if ($entry->usersStudent)
                                 <td class="col-md-3 col-sm-3 border border-dark border-end-0">
                                     <p class="fs-5 fw-normal mt-2">{{ $entry->usersStudent->first_name }} {{ $entry->usersStudent->middle_name }} {{ $entry->usersStudent->last_name }}
-                                        @if($entry->usersStudent->medicalRecordAdmin && $entry->usersStudent->medicalRecordAdmin->released)
+                                        @if($entry->released)
                                             <i class="bi bi-clipboard-check-fill icon fs-4" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Certificate Released"></i>
                                         @endif
                                     </p>
@@ -247,7 +336,7 @@
                             @elseif ($entry->usersPersonnel)
                             <td class="col-md-3 col-sm-3 border border-dark border-end-0">
                                 <p class="fs-5 fw-normal mt-2">{{ $entry->usersPersonnel->first_name }} {{ $entry->usersPersonnel->middle_name }} {{ $entry->usersPersonnel->last_name }}
-                                    @if($entry->usersPersonnel->medicalRecord_admin && $entry->usersPersonnel->medicalRecord_admin->released)
+                                    @if($entry->released)
                                         <i class="bi bi-clipboard-check-fill icon fs-4" style="color:#f1731f;" data-toggle="tooltip" data-container="body" data-bs-placement="top" title="Medical Certificate Released"></i>
                                     @endif
                                 </p>

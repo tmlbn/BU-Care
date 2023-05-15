@@ -291,7 +291,7 @@
         </div>
         <div class="col-md-12">
             <label for="MRP_OfficeAdd" class="form-label h6">Work/Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{ $patient->medicalRecordPersonnel->emergencyContactAddress }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-black border-top-0 mb-0 pb-0 fs-5 fw-bold" id="MRP_OfficeAdd" name="MRP_OfficeAdd" value="{{ $patient->medicalRecordPersonnel->emergencyContactAddressRegion }} {{ $patient->medicalRecordPersonnel->emergencyContactAddressProvince }} {{ $patient->medicalRecordPersonnel->emergencyContactAddressCityMunicipality }} {{ $patient->medicalRecordPersonnel->emergencyContactAddressBrgySubdVillage }} {{ $patient->medicalRecordPersonnel->emergencyContactAddressHouseNoStreet }}" readonly>
         </div>
         
         

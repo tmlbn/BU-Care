@@ -408,7 +408,7 @@
             </div>
         <div class="col-md-12">
             <label for="MR_address" class="form-label h6">Home Address</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ $patient->medicalRecord->region }}, {{ $patient->medicalRecord->province }}, {{ $patient->medicalRecord->cityMunicipality }}, {{ $patient->medicalRecord->barangaySubdVillage }}, {{ $patient->medicalRecord->houseNumberStName }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_address" name="MR_address" value="{{ htmlspecialchars_decode($patient->medicalRecord->region) }}, {{ htmlspecialchars_decode($patient->medicalRecord->province) }}, {{ htmlspecialchars_decode($patient->medicalRecord->cityMunicipality) }}, {{ htmlspecialchars_decode($patient->medicalRecord->barangaySubdVillage) }}, {{ htmlspecialchars_decode($patient->medicalRecord->houseNumberStName) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_fatherName" class="form-label h6">Father's Name</label>
@@ -428,11 +428,11 @@
             </div>
         <div class="col-md-6">
             <label for="MR_fatherOffice" class="form-label h6">Office Address of Father</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ htmlspecialchars_decode( $patient->medicalRecord->f_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_houseNumberStName) }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_fatherOffice" name="MR_fatherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->f_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->f_houseNumberStName) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_motherOffice" class="form-label h6">Office Address of Mother</label>
-            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ htmlspecialchars_decode( $patient->medicalRecord->m_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_houseNumberStName) }}" readonly>
+            <input type="text" class="form-control-plaintext border-bottom border-dark mb-0 pb-0 fs-5 fw-bold" id="MR_motherOffice" name="MR_motherOffice" value="{{ htmlspecialchars_decode($patient->medicalRecord->m_region)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_province )}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_cityMunicipality)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_barangaySubdVillage)}}, {{ htmlspecialchars_decode($patient->medicalRecord->m_houseNumberStName) }}" readonly>
             </div>
         <div class="col-md-6">
             <label for="MR_guardian" class="form-label h6">Guardian's Name</label>
@@ -1171,7 +1171,7 @@
                         <div class="form-group d-flex">
                             <label for="VS_height" class="form-label h6 my-auto me-1">Height<span class="text-danger" style="user-select: none;">*</span>:</label>
                             <div class="d-flex align-items-center" style="margin-top:-1%;">
-                                <input type="number" placeholder="e.g. 1.7" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_height') is-invalid @enderror me-1 ms-1" step="0.1" min="0" lang="en" id="VS_height" name="VS_height" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? $patient->medicalRecordAdmin->height : old('VS_height') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" {{ $patient->medicalRecordAdmin ? 'readonly' : 'required' }}>
+                                <input type="number" placeholder="e.g. 1.7" class="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? 'form-control-plaintext border-bottom border-black border-top-0 mb-2 pb-0 fs-5 fw-bold' : 'form-control' }} @error('VS_height') is-invalid @enderror me-1 ms-1" step="0.1" min="0" lang="en" id="VS_height" name="VS_height" value="{{ $patient->medicalRecordAdmin && $patient->medicalRecordAdmin->height ? htmlspecialchars_decode($patient->medicalRecordAdmin->height) : old('VS_height') }}" step="0.01" min="0" lang="en" onKeyPress="if(this.value.length==4) return false;" {{ $patient->medicalRecordAdmin ? 'readonly' : 'required' }}>
                                 <p class="pt-3" style="margin-left: 4px;">meters</p>
                             </div>
                         </div>  

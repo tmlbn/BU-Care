@@ -196,33 +196,6 @@
         .textOrange{
             color: #f1731f !important;
         }
-    
-        .dropdown-menu {
-            transition: transform 0.3s ease-in-out 0.3s; /* added delay of 0.1s */
-            transform: translateY(-10px);
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 1000;
-            float: left;
-            min-width: 10rem;
-            padding: 0.5rem 0;
-            margin: 0.125rem 0 0;
-            font-size: 1rem;
-            color: #212529;
-            text-align: left;
-            list-style: none;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 0.25rem;
-        }
-    
-        .dropdown-menu.show {
-            transform: translateY(0);
-            display: block;
-        }
         .icon {
             position: relative;
             top: -4px; /* adjust the value as needed */

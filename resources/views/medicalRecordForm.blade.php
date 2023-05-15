@@ -374,7 +374,7 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="MR_nationality" class="form-label h6 @error('MR_nationality') is-invalid @enderror">Nationality<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="MR_nationality" name="MR_nationality" value="{{ old('MR_nationality') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
@@ -386,7 +386,7 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="MR_religion" class="form-label h6 @error('MR_religion') is-invalid @enderror">Religion<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="MR_religion" name="MR_religion" value="{{ old('MR_religion') }}" oninput="this.value = this.value.toUpperCase()" required>
             <div class="invalid-feedback">
@@ -394,6 +394,18 @@
             </div>
             <span class="text-danger"> 
                 @error('MR_religion') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
+        <div class="col-md-3">
+            <label for="MR_studentContactNumber" class="form-label h6 @error('MR_studentContactNumber') is-invalid @enderror">Student's Contact No.<span class="text-danger">*</span></label>
+            <input type="number" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" onKeyPress="if(this.value.length==11) return false;" required>
+            <div class="invalid-feedback" id="studentContactFeedback">
+                Please enter your contact number.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_studentContactNumber') 
                   {{ $message }} 
                 @enderror
             </span>
@@ -941,7 +953,7 @@
              ];
          @endphp
          <div class="col-md-2">
-             <label for="GR_addressRegion" class="form-label h6">Region<span class="text-danger">*</span></label>
+             <label for="GR_addressRegion" class="form-label h6">Region</label>
              <select class="form-select  @error('GR_addressRegion') is-invalid @enderror" id="GR_addressRegion" name="GR_addressRegion">
                  <option selected="selected" disabled="disabled" value="">SELECT</option>
                  @foreach ($regions as $region)
@@ -960,7 +972,7 @@
              </span>
          </div>
          <div class="col-md-2">
-             <label for="GR_addressProvince" class="form-label h6">Province<span class="text-danger">*</span></label>
+             <label for="GR_addressProvince" class="form-label h6">Province</label>
                  <select class="form-select  @error('GR_addressProvince') is-invalid @enderror" id="GR_addressProvince" name="GR_addressProvince">
                      <option selected="selected" disabled="disabled" value="">SELECT</option>
                  </select>
@@ -1025,7 +1037,7 @@
              });
          </script>
          <div class="col-md-2">
-             <label for="GR_addressCityMunicipality" class="form-label h6">City/Municipality<span class="text-danger">*</span></label>
+             <label for="GR_addressCityMunicipality" class="form-label h6">City/Municipality</label>
              <input type="text" class="form-control @error('GR_addressCityMunicipality') is-invalid @enderror" id="GR_addressCityMunicipality" name="GR_addressCityMunicipality" value="{{ old('GR_addressCityMunicipality') }}" oninput="this.value = this.value.toUpperCase()">
              <div class="invalid-feedback">
                  Please enter your City/Municipality.
@@ -1037,7 +1049,7 @@
              </span>
          </div>
          <div class="col-md-3">
-             <label for="GR_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village<span class="text-danger">*</span></label>
+             <label for="GR_addressBrgySubdVillage" class="form-label h6">Barangay/Subdivision/Village</label>
              <input type="text" class="form-control @error('GR_addressBrgySubdVillage') is-invalid @enderror" id="GR_addressBrgySubdVillage" name="GR_addressBrgySubdVillage" value="{{ old('GR_addressBrgySubdVillage') }}" oninput="this.value = this.value.toUpperCase()">
              <div class="invalid-feedback">
                  Please enter your Barangay.
@@ -1049,7 +1061,7 @@
              </span>
          </div>
          <div class="col-md-3">
-             <label for="GR_addressHouseNoStreet" class="form-label h6">House No./Street Name<span class="text-danger">*</span></label>
+             <label for="GR_addressHouseNoStreet" class="form-label h6">House No./Street Name</label>
              <input type="text" class="form-control @error('GR_addressHouseNoStreet') is-invalid @enderror" id="GR_addressHouseNoStreet" name="GR_addressHouseNoStreet" value="{{ old('GR_addressHouseNoStreet') }}" oninput="this.value = this.value.toUpperCase()">
              <div class="invalid-feedback">
                  Please enter your House No./Street Name.
@@ -1061,25 +1073,13 @@
              </span>
          </div>
 
-        <div class="col-md-6">
-            <label for="MR_studentContactNumber" class="form-label h6 @error('MR_studentContactNumber') is-invalid @enderror">Student's Contact No.<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" placeholder="09123456789" id="MR_studentContactNumber" value="{{ old('MR_studentContactNumber') }}" name="MR_studentContactNumber" aria-describedby="studentContactFeedback" onKeyPress="if(this.value.length==11) return false;" required>
-            <div class="invalid-feedback" id="studentContactFeedback">
-                Please enter your contact number.
-            </div>
-            <span class="text-danger"> 
-                @error('MR_studentContactNumber') 
-                  {{ $message }} 
-                @enderror
-            </span>
-        </div>
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark border-lg-end-0">
             <header class="text-center">
                 <!-- LINE BREAK -->
             </header>
         </section>
-        <div class="col-md-6">
-            <p class="h6 me-2">In case of emergency, contact:<span class="text-danger">*</span></p>
+        <div class="col-md-4">
+            <label for="MR_emergencyContactPerson" class="form-label h6">In case of emergency, contact:<span class="text-danger">*</span></label>
             <select class="form-select @error('MR_emergencyContactPerson') is-invalid @enderror" name="MR_emergencyContactPerson" id="MR_emergencyContactPerson" required>
                 <option value="" selected disabled>SELECT</option>
                 <option value="FATHER" {{ old('MR_emergencyContactPerson') == 'FATHER' ? 'selected' : '' }}>Father</option>
@@ -1146,8 +1146,20 @@
                 });
             </script>
         </div>
+        <div class="col-md-4">
+            <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
+            <div class="invalid-feedback">
+                Please enter the contact number of your emergency contact person.
+            </div>
+            <span class="text-danger"> 
+                @error('MR_emergencyContactNumber') 
+                  {{ $message }} 
+                @enderror
+            </span>
+        </div>
         
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="MR_emergencyContactName" class="form-label h6 @error('MR_emergencyContactName') is-invalid @enderror">Emergency Contact Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="MR_emergencyContactName" value="{{ old('MR_emergencyContactName') }}" oninput="this.value = this.value.toUpperCase()" name="MR_emergencyContactName" required>
             <div class="invalid-feedback">
@@ -1349,18 +1361,6 @@
             </span>
         </div>
         
-        <div class="col-md-6">
-            <label for="MR_emergencyContactNumber" class="form-label h6 @error('MR_emergencyContactNumber') is-invalid @enderror">Contact Number<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" id="MR_emergencyContactNumber" value="{{ old('MR_emergencyContactNumber') }}" name="MR_emergencyContactNumber" onKeyPress="if(this.value.length==11) return false;" required>
-            <div class="invalid-feedback">
-                Please enter the contact number of your emergency contact person.
-            </div>
-            <span class="text-danger"> 
-                @error('MR_emergencyContactNumber') 
-                  {{ $message }} 
-                @enderror
-            </span>
-        </div>
 
         <section class="container my-2 bg-dark w-100 text-light mt-4 border border-dark">
             <header class="text-center">

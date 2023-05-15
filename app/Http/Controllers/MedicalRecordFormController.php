@@ -918,7 +918,11 @@ class MedicalRecordFormController extends Controller
             'MRP_emergencyContactName' => 'required|string',
             'MRP_emergencyContactOccupation' => 'required|string',
             'MRP_emergencyContactRelationship' => 'required|string',
-            'MRP_emergencyContactAddress' => 'required|string',
+            'MRP_emergencyContactAddressRegion' => 'required|string',
+            'MRP_emergencyContactAddressProvince' => 'required|string',
+            'MRP_emergencyContactAddressCityMunicipality' => 'required|string',
+            'MRP_emergencyContactAddressBrgySubdVillage' => 'required|string',
+            'MRP_emergencyContactAddressHouseNoStreet' => 'nullable|string',
             'certify' => 'required|in:1',
 
             /* FAMILY and SOCIAL HISTORY  PERSONNEL*/
@@ -1193,7 +1197,13 @@ class MedicalRecordFormController extends Controller
             $medRecordPersonnel->emergencyContactNumber = filter_var(ltrim($request->input('MRP_emergencyContactNumber'), '0'), FILTER_VALIDATE_INT);
             $medRecordPersonnel->emergencyContactOccupation = filter_var($request->input('MRP_emergencyContactOccupation'), FILTER_SANITIZE_STRING);
             $medRecordPersonnel->emergencyContactRelationship = filter_var($request->input('MRP_emergencyContactRelationship'), FILTER_SANITIZE_STRING);
-            $medRecordPersonnel->emergencyContactAddress = filter_var($request->input('MRP_emergencyContactAddress'), FILTER_SANITIZE_STRING);
+
+            $medRecordPersonnel->emergencyContactAddressRegion = filter_var($request->input('MRP_emergencyContactAddressRegion'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactAddressProvince = filter_var($request->input('MRP_emergencyContactAddressProvince'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactAddressCityMunicipality = filter_var($request->input('MRP_emergencyContactAddressCityMunicipality'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactAddressBrgySubdVillage = filter_var($request->input('MRP_emergencyContactAddressBrgySubdVillage'), FILTER_SANITIZE_STRING);
+            $medRecordPersonnel->emergencyContactAddressHouseNoStreet = filter_var($request->input('MRP_emergencyContactAddressHouseNoStreet'), FILTER_SANITIZE_STRING);
+
             $medRecordPersonnel->hospitalization = filter_var($request->input('hospitalization'), FILTER_SANITIZE_NUMBER_INT);
             $medRecordPersonnel->hospDetails = $request->filled('hospitalizationDetails') ? filter_var($request->input('hospitalizationDetails'), FILTER_SANITIZE_STRING) : 'N/A';  
             $medRecordPersonnel->takingMedsRegularly = filter_var($request->input('regMeds'), FILTER_SANITIZE_NUMBER_INT);
