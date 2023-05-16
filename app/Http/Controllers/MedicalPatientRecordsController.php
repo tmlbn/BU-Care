@@ -223,9 +223,13 @@ class MedicalPatientRecordsController extends Controller
         $patientID = $patient->id;
             
         if($patient->user_type == 'PATIENT-STUDENT'){
-            $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)->get();
+            $medicalPatientRecords = MedicalPatientRecord::where('student_id', $patientID)
+            ->orderBy('date_of_exam')
+            ->get();
         }elseif($patient->user_type == 'PATIENT-PERSONNEL'){
-            $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)->get();
+            $medicalPatientRecords = MedicalPatientRecord::where('personnel_id', $patientID)
+            ->orderBy('date_of_exam')
+            ->get();
         }
         
         return view('admin.medicalPatientRecord')

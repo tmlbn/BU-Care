@@ -225,7 +225,7 @@
                         $monthNow = strtoupper(date('F'));
                         
                     @endphp
-                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start">
+                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start d-print-none">
                         <button class="btn btn-outline-primary dropdown-toggle month-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                           {{ isset($byMonth) ? $byMonth : $monthNow }}
                         </button>

@@ -99,7 +99,7 @@
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
     <div class="col-md-12 p-3 text-decoration-none">    
-        <div class="col-md-12 p-3 text-decoration-none d-print-none">    
+        <div class="col-md-12 p-3 text-decoration-none d-print-none d-print-none">    
             <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
                 <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
                 <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
@@ -222,7 +222,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-between">
-                    <div class="col-sm-3 btn-group mb-3 d-print-non" role="group" aria-label="Basic radio toggle button group">
+                    <div class="col-sm-3 btn-group mb-3 d-print-none" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="timely" id="today" autocomplete="off" value="today">
                         <label class="btn btn-outline-primary" for="today">Today</label>
             
@@ -232,7 +232,7 @@
                         <input type="radio" class="btn-check" name="timely" id="thisMonth" autocomplete="off" value="thisMonth">
                         <label class="btn btn-outline-primary" for="thisMonth">This Month</label>
                     </div>
-                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start">
+                    <div class="col-sm-3 d-flex justify-content-end dropdown align-self-start d-print-none">
                         <button class="btn btn-outline-primary dropdown-toggle month-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ isset($byMonth) ? $byMonth : $monthNow }}
                         </button>

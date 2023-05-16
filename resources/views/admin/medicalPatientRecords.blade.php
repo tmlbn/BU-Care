@@ -86,7 +86,7 @@
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
-    <div class="col-md-12 p-3 text-decoration-none">    
+    <div class="col-md-12 p-3 text-decoration-none d-print-none">    
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
             <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
             <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
@@ -134,7 +134,7 @@
       }
     </script>
 
-    <div class="col-xl-2 col-lg-12 my-2">
+    <div class="col-xl-2 col-lg-12 my-2 d-print-none">
         <label for="listType" class="form-label h6">Select Table</label>
         <select id="listType" name="listType" class="form-select fw-bold border-dark" required>
             <option value="STUDENTS" selected="selected">Students</option>
@@ -167,7 +167,7 @@
 
     <!-- Search function -->
         <form method="GET" action="{{ route('admin.medPatientRecords.show') }}" id="searchForm">
-                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2" style="margin-right: -3%;">
+                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2 d-print-none" style="margin-right: -3%;">
                     <div class="row align-items-center">
                         <div class="col-sm">
                             <input type="text" class="form-control fw-bold border-dark" id="search" name="search" value="{{ request()->input('search') }}" placeholder="Search...">
@@ -206,7 +206,7 @@
                     </div>
                 </div>
         </form>
-        <div class="table-responsive" id="studentsList">
+        <div class="table-responsive mt-3" id="studentsList">
             <table class="table table-bordered table-sm">
                 <caption style="user-select: none;">Student Health Records List</caption>
                 <thead>

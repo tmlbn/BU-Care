@@ -86,7 +86,7 @@
 @csrf
 <!-- Header -->
 <div class="container-fluid bg-custom text-dark p-5">
-    <div class="col-md-12 p-3 text-decoration-none">    
+    <div class="col-md-12 p-3 text-decoration-none d-print-none">    
         <div class="btn-group col-md-12" role="group" aria-label="Reports radio button group">
             <input type="radio" class="btn-check col-3" name="btnradio" id="btnradio1" autocomplete="off" onclick="redirectToStudentMedFormList()" {{ Route::currentRouteName() === 'admin.patientMedFormList.show' || Str::contains(url()->current(), '/admin/studentMedFormList/') ? 'checked' : '' }}>
             <label class="btn btn-outline-primary" for="btnradio1">STUDENT HEALTH RECORDS</label>
@@ -148,7 +148,7 @@
 
     <!-- Search function -->
     <form method="GET" action="{{ route('admin.patientMedFormList.index') }}" id="searchForm">
-            <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2" style="margin-right: -3%;">
+            <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 align-items-center my-2 d-print-none" style="margin-right: -3%;">
                     <div class="row align-items-center">
                         <div class="col-sm">
                             <input type="text" class="form-control border-dark fw-bold" placeholder="Search by ID number or name" name="search">    
@@ -199,7 +199,7 @@
                     </div>
                 </div>
             </form>
-        <div class="table-responsive" id="studentsList">
+        <div class="table-responsive mt-3" id="studentsList">
             <table class="table table-bordered table-sm" id="studentsTable">
                 <caption style="user-select: none;">Student Health Records List</caption>
                 <thead>
