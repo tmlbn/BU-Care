@@ -28,7 +28,7 @@ If you don't have Composer installed, you can download the latest version from h
 <br>
 •	Install MySQL for the database and XAMPP for the server.<br>
 <br>
-2.	Clone or download the repository of the application.<br>
+2.	Clone or download the repository of the application.<br><br>
 3.	Install Dependencies:<br>
 •	Open a command prompt or terminal and navigate to the project directory.<br>
 •	Run the following command to install the project dependencies: 
