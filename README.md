@@ -14,17 +14,13 @@ BU-Care is a web application designed specifically for Bicol University Health s
 ## Installation
 1.	Prerequisites:<br>
 •	Make sure you have PHP installed on your machine. You can check the installed PHP version by running the following command in the command line: 
-```
-php -v
-```
+`php -v`
 <br>
 <i>*Note: BU-Care requires PHP version 8.2.1 or later. <br>
 If you have an older version, consider upgrading to PHP 8.2.1 or later from https://www.php.net/downloads.php (choose the appropriate platform for your device).<br>
 </i>
 •	Ensure you have Composer installed. You can verify this by running the following command in the command line: 
-```
-composer -v
-```
+`composer -v`
 <br>
 <i>*Note: Composer is a dependency management tool for PHP. <br>
 If you don't have Composer installed, you can download the latest version from https://getcomposer.org/download/ (choose the appropriate platform for your device).<br>
@@ -35,9 +31,7 @@ If you don't have Composer installed, you can download the latest version from h
 2.	Install Dependencies:<br>
 •	Open a command prompt or terminal and navigate to the project directory.<br>
 •	Run the following command to install the project dependencies: 
-```
-composer install
-```
+`composer install`
 <br>
 <br>
 3.	Clone or download the repository of the application.<br>
@@ -46,10 +40,7 @@ composer install
 •	Duplicate the .env.example file and rename the copy to .env.<br>
 <img src="https://i.imgur.com/FJagmzp_d.webp?maxwidth=760&fidelity=grand" width="400" alt="Laravel Logo"><br>
 <br>
-•	In the command prompt or terminal, run the following command: 
-```
-php artisan key:generate
-```
+•	In the command prompt or terminal, run the following command: `php artisan key:generate`
 <br>
 •	Open the .env file and set up the MySQL and XAMPP database connection details, such as database name, username, and password.<br>
 *Note: The details shown in the image might not be the same for your case.<br>
@@ -60,10 +51,10 @@ php artisan key:generate
 <img src="https://i.imgur.com/hCAnMAj_d.webp?maxwidth=760&fidelity=grand" width="400" alt="Laravel Logo"><br>
 <br>
 6.	Run Database Migrations:<br>
-•	To create the required tables in the database, run the following command: ```php artisan migrate```<br>
+•	To create the required tables in the database, run the following command: `php artisan migrate` <br>
 <br>
 7.	Serve the Application:<br>
-•	You can use Laravel's built-in server to run the application. In the command prompt or terminal, run the following command: ```php artisan serve```<br>
+•	You can use Laravel's built-in server to run the application. In the command prompt or terminal, run the following command: `php artisan serve` <br>
 •	By default, the application will be served at http://localhost:8000 or http://127.0.0.1:8000/.<br>
 <br>
 8.	Access the Application:<br>
