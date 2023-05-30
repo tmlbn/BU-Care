@@ -11,53 +11,55 @@
 
 BU-Care is a web application designed specifically for Bicol University Health services. It serves as a platform for patients to conveniently submit their health records and schedule clinic appointments. On the other hand, physicians and nurses can efficiently navigate through the health records, storing vital medical information such as patient health records and daily consultations. BU-Care aims to streamline the process of managing patient health records and enhance the overall efficiency of healthcare services provided by Bicol University Health services.
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1.	Prerequisites:
+•	Make sure you have PHP installed on your machine. You can check the installed PHP version by running the following command in the command line: `php -v`
+*Note: BU-Care requires PHP version 8.2.1 or later. 
+If you have an older version, consider upgrading to PHP 8.2.1 or later from https://www.php.net/downloads.php (choose the appropriate platform for your device).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+•	Ensure you have Composer installed. You can verify this by running the following command in the command line: `composer -v`
+*Note: Composer is a dependency management tool for PHP. 
+If you don't have Composer installed, you can download the latest version from https://getcomposer.org/download/ (choose the appropriate platform for your device).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+•	Install MySQL for the database and XAMPP for the server.
 
-## Laravel Sponsors
+2.	Install Dependencies:
+•	Open a command prompt or terminal and navigate to the project directory.
+•	Run the following command to install the project dependencies: `composer install`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3.	Clone or download the repository of the application.
 
-### Premium Partners
+4.	Environment Configuration:
+•	Duplicate the .env.example file and rename the copy to .env.
+<img src="https://imgur.com/FJagmzp" width="400" alt="Laravel Logo">
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+•	In the command prompt or terminal, run the following command:
+	`php artisan key:generate`
 
-## Contributing
+•	Open the .env file and set up the MySQL and XAMPP database connection details, such as database name, username, and password.
+*Note: The details shown in the image might not be the same for your case.
+<img src="https://imgur.com/56NyjNM" width="400" alt="Laravel Logo">
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5.	Start Apache and MySQL modules in XAMPP.
+•	Open XAMPP Control Panel and start the Apache and MySQL modules.
+<img src="https://imgur.com/hCAnMAj" width="400" alt="Laravel Logo">
 
-## Code of Conduct
+6.	Run Database Migrations:
+•	To create the required tables in the database, run the following command: `php artisan migrate`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7.	Serve the Application:
+•	You can use Laravel's built-in server to run the application. In the command prompt or terminal, run the following command: `php artisan serve`
+•	By default, the application will be served at http://localhost:8000 or http://127.0.0.1:8000/.
 
-## Security Vulnerabilities
+8.	Access the Application:
+•	Open a web browser and navigate to the URL where the application is being served (http://localhost:8000 by default).
+•	Open http://localhost/phpmyadmin to navigate the application’s database with GUI.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## The Team
 
 - **[Tom Jherald G. Labini](https://github.com/suou09)**
-- **Kayle V. Garrido**
+- **[Kayle V. Garrido](https://github.com/kylgrrd)**
 - **[Austin R. Nieves](https://github.com/austin-nieves)**
 - **[John Francis Rhei Bien](https://github.com/RheiBien)**
