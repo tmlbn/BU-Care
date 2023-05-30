@@ -9,17 +9,7 @@
 
 ## About BU-Care
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+BU-Care is a web application designed specifically for Bicol University Health services. It serves as a platform for patients to conveniently submit their health records and schedule clinic appointments. On the other hand, physicians and nurses can efficiently navigate through the health records, storing vital medical information such as patient health records and daily consultations. BU-Care aims to streamline the process of managing patient health records and enhance the overall efficiency of healthcare services provided by Bicol University Health services.
 
 ## Learning Laravel
 
@@ -64,3 +54,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## The Team
+tom
+kyl
+austin
+rheibien
