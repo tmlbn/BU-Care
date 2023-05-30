@@ -57,7 +57,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## The Team
 
-- **[Tom Jherald G. Labini]((https://github.com/suou09))**
+- **[Tom Jherald G. Labini](https://github.com/suou09)**
 - **Kayle V. Garrido**
 - **[Austin R. Nieves](https://github.com/austin-nieves)**
 - **[John Francis Rhei Bien](https://github.com/RheiBien)**
