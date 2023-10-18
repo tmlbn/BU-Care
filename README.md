@@ -62,7 +62,7 @@ If you don't have Composer installed, you can download the latest version from h
 
 ## The Team
 
-- **[Tom Jherald G. Labini](https://github.com/suou09)**
+- **[Tom Jherald G. Labini](https://github.com/tmlbn)**
 - **[Kayle V. Garrido](https://github.com/kylgrrd)**
 - **[Austin R. Nieves](https://github.com/austin-nieves)**
 - **[John Francis Rhei Bien](https://github.com/RheiBien)**
